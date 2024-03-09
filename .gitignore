@@ -1,0 +1,85 @@
+HELP.md
+.gradle
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+### VS Code ###
+.vscode/
+
+# IntelliJ / Eclipse 등의 IDE 설정 파일
+.idea/
+.classpath
+.project
+.settings/
+
+# Gradle / Maven 빌드 디렉토리
+build/
+target/
+
+# 로그 파일
+*.log
+
+# 프로퍼티 파일
+*.properties
+
+# 개인적인 설정 파일
+application-dev.yml
+application-local.yml
+
+# IntelliJ IDEA에 대한 Spring Boot DevTools 설정 파일
+.idea-spring-boot/
+
+# Spring Boot 자동 생성된 파일
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/resources/application.yml
+!**/src/main/resources/application-dev.yml
+!**/src/main/resources/application-prod.yml
+!**/src/main/resources/application.properties
+!**/src/main/resources/application-dev.properties
+!**/src/main/resources/application-prod.properties
+
+# IntelliJ IDEA 사용시 생성되는 파일
+*.iml
+*.ipr
+*.iws
+
+# 개발 환경에 따라 다를 수 있는 파일
+.DS_Store
+Thumbs.db
+
+
+# Node.js와 npm 환경을 위한 파일
+node_modules/
+npm-debug.log
+yarn-error.log
