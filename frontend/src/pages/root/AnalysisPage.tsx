@@ -1,11 +1,11 @@
 import React from 'react';
 
-const LandingPage = () => {
+const AnalysisPage = () => {
     return (
         <div>
-            
+
         </div>
     );
 };
 
-export default LandingPage;
+export default AnalysisPage;
