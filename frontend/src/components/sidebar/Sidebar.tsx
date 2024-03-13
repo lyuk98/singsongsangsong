@@ -67,7 +67,7 @@ const Sidebar = () => {
                             to="/login"
                             className={({ isActive }) => isActive ? styles.active : undefined}
                         >
-                            <MdOutlineLogin size='20px' /> <span>Sign In</span>
+                            <MdOutlineLogin size='20px' /> <span>Login</span>
                         </NavLink>
                     </>
                 }

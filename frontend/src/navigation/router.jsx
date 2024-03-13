@@ -6,6 +6,7 @@ import AnalysisPage from "../pages/root/AnalysisPage";
 import DiscoverPage from "../pages/root/DiscoverPage";
 import RegisterPage from "../pages/root/RegisterPage";
 import LoginPage from "../pages/root/LoginPage";
+import AuthLayout from "../pages/layout/AuthLayout";
 
 export const router = createBrowserRouter([
     {
@@ -28,11 +29,17 @@ export const router = createBrowserRouter([
         ]
     },
     {
-        path: '/register',
-        element: <RegisterPage />
-    },
-    {
-        path: '/login',
-        element: <LoginPage />
-    },
+        element: <AuthLayout />,
+        children: [
+            {
+                path: '/register',
+                element: <RegisterPage />
+            },
+            {
+                path: '/login',
+                element: <LoginPage />
+            },
+        ]
+    }
+
 ])
