@@ -1,10 +1,22 @@
-import React from 'react';
+import React, { ComponentProps, ReactNode } from 'react';
 
-const Button = () => {
+import styles from './Button.module.css'
+
+interface ButtonType extends ComponentProps<"button"> {
+    children?: ReactNode
+    disabled?: boolean
+}
+
+
+const Button: React.FC<ButtonType> = ({ children, disabled = false, ...rest }) => {
     return (
-        <div>
-
-        </div>
+        <button
+            disabled={disabled}
+            className={`${styles.base} `}
+            {...rest}
+        >
+            {children}
+        </button>
     );
 };
 

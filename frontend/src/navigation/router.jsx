@@ -4,7 +4,7 @@ import MainLayout from "../pages/layout/MainLayout";
 import TrendPage from "../pages/root/TrendPage";
 import AnalysisPage from "../pages/root/AnalysisPage";
 import DiscoverPage from "../pages/root/DiscoverPage";
-import RegisterPage from "../pages/root/RegisterPage";
+import RegisterPage, {action as RegisterAction} from "../pages/root/RegisterPage";
 import LoginPage from "../pages/root/LoginPage";
 import AuthLayout from "../pages/layout/AuthLayout";
 
@@ -33,7 +33,8 @@ export const router = createBrowserRouter([
         children: [
             {
                 path: '/register',
-                element: <RegisterPage />
+                element: <RegisterPage />,
+                action : RegisterAction
             },
             {
                 path: '/login',

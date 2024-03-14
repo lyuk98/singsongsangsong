@@ -5,7 +5,6 @@ import Notice from "../../components/auth/Notice";
 const AuthLayout = () => {
     const { pathname } = useLocation();
 
-    console.log(pathname)
     return (
         <>
             <div className={styles.container}>

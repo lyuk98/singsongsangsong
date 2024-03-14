@@ -1,26 +1,30 @@
-.contaienr {
+.container {
+    width: 400px;
     margin-top: 6px;
     display: flex;
     flex-direction: column;
 }
 
-.contaienr input {
+.container input {
     width: 400px;
-    height: 24px;
+    height: 30px;
+    font-size: 18px;
+    padding-left: 5px;
     border: 1px solid #C5E7FF;
     border-radius: 5px;
     background-color: #C5E7FF;
+    box-sizing: border-box;
 }
 
-.contaienr input:hover,
-.contaienr input:focus {
+.container input:hover,
+.container input:focus {
     border: 0.5px solid #0085E5;
     outline: 0.5px solid #0085E5;
 }
 
-.contaienr label {
+.container label {
     font-family: 'Pretendart-600';
-    font-size: 24px;
+    font-size: 22px;
     color: #0085E5;
-    margin-bottom: 6px;
+    margin-bottom: 5px;
 }

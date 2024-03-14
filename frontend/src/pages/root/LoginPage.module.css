@@ -1,3 +1,19 @@
 .container {
     width: 400px;
 }
+
+.linkBox {
+    width: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.buttonBox {
+    width: 400px;
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

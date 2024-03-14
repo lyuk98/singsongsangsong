@@ -5,11 +5,12 @@ type NoticeProps = {
     pathname: string,
 }
 
-const Notice: React.FC<NoticeProps> = ({ pathname }) => {
+const Notice: React.FC<NoticeProps> = ({ pathname }): JSX.Element => {
     let authInfo = {
         index: '',
         notice: '',
     }
+
     switch (pathname) {
         case '/register':
             authInfo.index = 'Create your account'

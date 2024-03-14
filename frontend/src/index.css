@@ -6,11 +6,12 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #002A49;
-  /* 스크롤 금지 */
+  /* 페이지 내 스크롤 금지 */
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  height: auto;
 }
 
 article,
