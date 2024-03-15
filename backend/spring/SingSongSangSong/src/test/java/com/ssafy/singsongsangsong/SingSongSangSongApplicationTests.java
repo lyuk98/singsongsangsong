@@ -9,5 +9,4 @@ class SingSongSangSongApplicationTests {
 	@Test
 	void contextLoads() {
 	}
-
 }
