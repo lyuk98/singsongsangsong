@@ -1,4 +1,4 @@
-package com.ssafy.singsongsangsong.repository;
+package com.ssafy.singsongsangsong.repository.maria;
 
 import static com.ssafy.singsongsangsong.domain.QTestEntity.*;
 

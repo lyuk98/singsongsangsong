@@ -13,7 +13,7 @@ import jakarta.persistence.PersistenceContext;
 @Configuration
 public class QueryDslConfig {
 
-	@PersistenceContext
+	@PersistenceContext(name = "mariaDbEntityManagerFactory")
 	private EntityManager entityManager;
 
 	@Bean

@@ -1,4 +1,4 @@
-package com.ssafy.singsongsangsong.repository;
+package com.ssafy.singsongsangsong.repository.maria;
 
 import java.util.List;
 
