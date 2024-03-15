@@ -7,6 +7,7 @@ name = "pypi"
 fastapi = "~=0.110.0"
 uvicorn = {extras = ["standard"], version = "<0.23.0,>=0.12.0"}
 python-dotenv = "~=1.0.1"
+gunicorn = "~=21.2.0"
 
 [dev-packages]
 pylint = "*"
