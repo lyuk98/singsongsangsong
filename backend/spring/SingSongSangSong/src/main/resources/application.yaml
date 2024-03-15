@@ -16,11 +16,3 @@ spring:
   data:
     mongodb:
       uri: mongodb+srv://S10P22E206:rui4ZhwEt1@ssafy.ngivl.mongodb.net/S10P22E206?authSource=admin
-  #    mongodb:
-##      uri: mongodb+srv://S10P22E206:rui4ZhwEt1@ssafy.ngivl.mongodb.net/S10P22E206?authSource=admin
-#      host: S10P22E206:rui4ZhwEt1@ssafy.ngivl.mongodb.net
-#      database: S10P22E206
-#      authentication-database: admin
-#      username: S10P22E206
-#      password: rui4ZhwEt1
-#      port: 27017
