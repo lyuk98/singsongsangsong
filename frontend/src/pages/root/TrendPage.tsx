@@ -1,10 +1,27 @@
-import React from 'react';
+import React, { useState } from 'react';
+import Modal from '../../components/modal/Modal';
 
 const TrendPage = () => {
-    return (
-        <div style={{ height: '2000px' }}>
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(true)
 
-        </div>
+    const handleModalClose = (): void => {
+        setIsModalOpen(false)
+    }
+    
+    return (
+        <>
+            <Modal
+                open={isModalOpen}
+                onClose={handleModalClose}
+            >
+                {/* 달력 컴포넌트 제작 예정 */}
+                <p>hello</p>
+                <button onClick={handleModalClose}>close</button>
+            </Modal>
+            <div style={{ height: '2000px' }}>
+
+            </div>
+        </>
     );
 };
 
