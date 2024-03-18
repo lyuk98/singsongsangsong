@@ -1,5 +1,68 @@
 .container {
     width: 100%;
-    height: 250px;
+    height: 300px;
     background-color: cadetblue;
+}
+
+.chartContainer {
+    display: flex;
+    justify-content: center;
+    height: 90%;
+    width: 100%;
+    border: 3px solid black;
+}
+
+.headerContainer {
+    height: 10%;
+}
+
+.leftTopBox {
+    display: flex;
+}
+
+.albumCover {
+    width: 75px;
+    height: 75px;
+    border-radius: 15px;
+    margin-right: 10px;
+}
+
+.albumCover img {
+    border-radius: 15px;
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+}
+
+.musicBox {}
+
+.topIndicator {}
+
+.leftArrow {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 3%;
+}
+
+.leftBox {
+    width: 50%;
+    height: 100%;
+    padding: 15px;
+    border: 1px solid black;
+}
+
+.rightBox {
+    width: 30%;
+    height: 100%;
+    padding: 15px;
+    border: 1px dotted black;
+
+}
+
+.rightArrow {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 3%;
 }
