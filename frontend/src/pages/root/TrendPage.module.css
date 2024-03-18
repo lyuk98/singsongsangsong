@@ -1,0 +1,10 @@
+.calanderContent {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.calanderContent > button {
+    margin-top: 15px;
+}
