@@ -36,6 +36,8 @@ a {
   text-decoration: none;
 }
 
+h1,
+h2,
 p {
   padding: 0;
   margin: 0;
@@ -67,13 +69,14 @@ code {
 }
 
 .modal {
+  position: relative ;
   min-width: 30rem;
-  ;
-  padding: 0;
-  z-index: 2;
-  background: #d5c7bc;
+  min-height: 23rem;
+  padding: 15px;
+  background: #F4F9FD;
+  border : 1px solid #22A2FF;
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+  box-shadow: 0 2px 8px #71C3FF;
   animation: slide-down-fade-in 0.3s ease-out forwards;
 }
 

@@ -1,26 +1,71 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+
+import styles from './TrendPage.module.css'
 import Modal from '../../components/modal/Modal';
+import Header from '../../components/pageComponents/trendpageComponent/Header';
+import Button from '../../components/buttons/Button';
+import ModalCalendar from '../../components/pageComponents/trendpageComponent/ModalCalendar';
+import { getToday, getWeekNumber } from './../../utils/dateUtils'
+import { DateType } from '../../utils/types';
+import WeeklySingsongChart from '../../components/pageComponents/trendpageComponent/WeeklySingsongChart';
+
 
 const TrendPage = () => {
-    const [isModalOpen, setIsModalOpen] = useState<boolean>(true)
+    const { year, month, day } = getToday();
+    const [selectedDate, setSelectedDate] = useState<DateType>({
+        year: year,
+        month: month,
+        day: day,
+    })
+    const [weekNumber, setWeekNumber] = useState<number>(1)
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
 
-    const handleModalClose = (): void => {
+    useEffect(() => {
+        setWeekNumber(getWeekNumber(selectedDate))
+    }, [selectedDate])
+
+    const handleCalendarOpen = (): void => {
+        setIsModalOpen(true)
+    }
+
+    const handleCalendarClose = (): void => {
         setIsModalOpen(false)
     }
-    
+
+    const handleDateChange = (newDate: any) => {
+        setSelectedDate(() => {
+            const newYear: number = newDate.getFullYear()
+            const newMonth: number = newDate.getMonth() + 1
+            const newDay: number = newDate.getDate()
+            return {
+                year: newYear,
+                month: newMonth,
+                day: newDay
+            }
+        })
+        setIsModalOpen(false)
+    }
+
     return (
         <>
             <Modal
                 open={isModalOpen}
-                onClose={handleModalClose}
+                onClose={handleCalendarClose}
             >
-                {/* 달력 컴포넌트 제작 예정 */}
-                <p>hello</p>
-                <button onClick={handleModalClose}>close</button>
+                <div className={styles.calanderContent}>
+                    <ModalCalendar
+                        selectedDate={selectedDate}
+                        handleDateChange={handleDateChange}
+                    />
+                    <Button onClick={handleCalendarClose}>close</Button>
+                </div>
             </Modal>
-            <div style={{ height: '2000px' }}>
-
-            </div>
+            <Header
+                selectedDate={selectedDate}
+                selectedWeek={weekNumber}
+                onOpen={handleCalendarOpen}
+            />
+            <WeeklySingsongChart />
         </>
     );
 };

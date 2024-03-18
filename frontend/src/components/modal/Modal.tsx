@@ -14,6 +14,7 @@ interface DialogType extends ComponentProps<"dialog"> {
  */
 const Modal: React.FC<DialogType> = ({ children, open, onClose }) => {
     const dialog = useRef<HTMLDialogElement>(null)
+    
     useEffect(() => {
         if (dialog.current && open) {
             dialog.current.showModal();
@@ -21,6 +22,7 @@ const Modal: React.FC<DialogType> = ({ children, open, onClose }) => {
             dialog.current.close();
         }
     }, [open])
+
     return createPortal(
         <dialog
             className='modal'
