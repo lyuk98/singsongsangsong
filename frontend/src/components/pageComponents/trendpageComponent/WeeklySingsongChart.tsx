@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
-import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import { FaArrowLeft, FaArrowRight, FaHeart } from "react-icons/fa";
+import { LiaHeadsetSolid } from "react-icons/lia";
+import { MdOutlineFileDownload } from "react-icons/md";
+
 
 import img from './../../../sources/testimg/cover.png'
 import styles from './WeeklySingsongChart.module.css'
+import MoodTag from '../../moodTag/MoodTag';
 
 const DUMMY_DATA = [
     {
@@ -14,7 +18,7 @@ const DUMMY_DATA = [
     },
     {
         title: '2',
-        author: 'oh',
+        author: 'ohasdassdddd',
         tag: [1, 2, 3, 4],
         emotion: [1, 2, 3, 4, 5],
     },
@@ -63,8 +67,31 @@ const WeeklySingsongChart = () => {
                                             <h2>{element.author}</h2>
                                         </div>
                                         <div className={styles.topIndicator}>
-                                            {/* 이곳에 다운로드 수 좋아요 수 표시 예정 */}
+                                            <span>
+                                                <LiaHeadsetSolid size={24} />
+                                                <p style={{ display: 'inline' }}>24</p>
+                                            </span>
+                                            <span>
+                                                <MdOutlineFileDownload size={24} />
+                                                <p style={{ display: 'inline' }}>24</p>
+                                            </span>
+                                            <span>
+                                                <FaHeart size={20} />
+                                                <p style={{ display: 'inline' }}>24</p>
+                                            </span>
                                         </div>
+                                    </div>
+                                    <div className={`flex-col-center ${styles.songInfoBox}`}>
+                                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae in cum nesciunt assumenda tempora eligendi fuga iste aut voluptates optio, accusamus delectus labore quae soluta velit harum, illo at molestias?</p>
+                                    </div>
+                                    <div className={styles.tagBox}>
+                                        <MoodTag mood={'활기찬'} />
+                                        <MoodTag mood={'활기찬'} />
+                                        <MoodTag mood={'활기찬'} />
+                                        <MoodTag mood={'활기찬'} />
+                                    </div>
+                                    <div className={styles.emotionBox}>
+
                                     </div>
                                 </div>
                                 <div className={styles.rightBox}>
