@@ -1,7 +1,6 @@
 .container {
     width: 100%;
     height: 500px;
-    background-color: cadetblue;
 }
 
 .chartContainer {
@@ -9,7 +8,6 @@
     justify-content: center;
     height: 90%;
     width: 100%;
-    border: 3px solid black;
 }
 
 .headerContainer {
@@ -32,10 +30,10 @@
 }
 
 .albumCover img {
+    object-fit: fill;
     border-radius: 15px;
     width: 100%;
     height: 100%;
-    object-fit: fill;
 }
 
 .musicBox {
@@ -44,6 +42,7 @@
     align-items: normal;
     font-size: 24px;
     overflow: hidden;
+    padding: 0px 5px
 }
 
 .topIndicator {
@@ -84,19 +83,26 @@
     width: 3%;
 }
 
+.wrapper {
+    width: 90%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #22A2FF;
+    border-radius: 15px;
+    box-shadow: 7px 7px 7px #71C3FF;
+}
+
 .leftBox {
-    width: 50%;
+    width: 70%;
     height: 100%;
-    padding: 15px 30px;
-    border: 1px solid black;
+    padding: 15px 15px;
 }
 
 .rightBox {
     width: 30%;
     height: 100%;
     padding: 15px;
-    border: 1px dotted black;
-
 }
 
 .rightArrow {

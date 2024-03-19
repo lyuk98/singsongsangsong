@@ -7,6 +7,8 @@ import { MdOutlineFileDownload } from "react-icons/md";
 import img from './../../../sources/testimg/cover.png'
 import styles from './WeeklySingsongChart.module.css'
 import MoodTag from '../../moodTag/MoodTag';
+import EmotionBox from '../../public/emotionBox/EmotionBox';
+import RaderChart from '../../public/chart/raderChart/RaderChart';
 
 const DUMMY_DATA = [
     {
@@ -57,45 +59,47 @@ const WeeklySingsongChart = () => {
                                         <FaArrowLeft />
                                     </span>
                                 </div>
-                                <div className={styles.leftBox}>
-                                    <div className={styles.leftTopBox}>
-                                        <div className={styles.albumCover}>
-                                            <img src={img} alt="" />
+                                <div className={styles.wrapper}>
+                                    <div className={styles.leftBox}>
+                                        <div className={styles.leftTopBox}>
+                                            <div className={styles.albumCover}>
+                                                <img src={img} alt="" />
+                                            </div>
+                                            <div className={`flex-col-center ${styles.musicBox}`}>
+                                                <h2>{element.title}</h2>
+                                                <p>{element.author}</p>
+                                            </div>
+                                            <div className={styles.topIndicator}>
+                                                <span>
+                                                    <LiaHeadsetSolid size={24} />
+                                                    <p style={{ display: 'inline' }}>24</p>
+                                                </span>
+                                                <span>
+                                                    <MdOutlineFileDownload size={24} />
+                                                    <p style={{ display: 'inline' }}>24</p>
+                                                </span>
+                                                <span>
+                                                    <FaHeart size={20} />
+                                                    <p style={{ display: 'inline' }}>24</p>
+                                                </span>
+                                            </div>
                                         </div>
-                                        <div className={`flex-col-center ${styles.musicBox}`}>
-                                            <h2>{element.title}</h2>
-                                            <h2>{element.author}</h2>
+                                        <div className={`flex-col-center ${styles.songInfoBox}`}>
+                                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae in cum nesciunt assumenda tempora eligendi fuga iste aut voluptates optio, accusamus delectus labore quae soluta velit harum, illo at molestias?</p>
                                         </div>
-                                        <div className={styles.topIndicator}>
-                                            <span>
-                                                <LiaHeadsetSolid size={24} />
-                                                <p style={{ display: 'inline' }}>24</p>
-                                            </span>
-                                            <span>
-                                                <MdOutlineFileDownload size={24} />
-                                                <p style={{ display: 'inline' }}>24</p>
-                                            </span>
-                                            <span>
-                                                <FaHeart size={20} />
-                                                <p style={{ display: 'inline' }}>24</p>
-                                            </span>
+                                        <div className={styles.tagBox}>
+                                            <MoodTag mood={'활기찬'} />
+                                            <MoodTag mood={'활기찬'} />
+                                            <MoodTag mood={'활기찬'} />
+                                            <MoodTag mood={'활기찬'} />
+                                        </div>
+                                        <div className={styles.emotionBox}>
+                                            <EmotionBox />
                                         </div>
                                     </div>
-                                    <div className={`flex-col-center ${styles.songInfoBox}`}>
-                                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae in cum nesciunt assumenda tempora eligendi fuga iste aut voluptates optio, accusamus delectus labore quae soluta velit harum, illo at molestias?</p>
+                                    <div className={styles.rightBox}>
+                                        <RaderChart />
                                     </div>
-                                    <div className={styles.tagBox}>
-                                        <MoodTag mood={'활기찬'} />
-                                        <MoodTag mood={'활기찬'} />
-                                        <MoodTag mood={'활기찬'} />
-                                        <MoodTag mood={'활기찬'} />
-                                    </div>
-                                    <div className={styles.emotionBox}>
-
-                                    </div>
-                                </div>
-                                <div className={styles.rightBox}>
-                                    오른쪽박스
                                 </div>
                                 <div className={styles.rightArrow}>
                                     <span onClick={handleNextIndex}>
