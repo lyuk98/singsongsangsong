@@ -18,7 +18,7 @@ public class TestRepositoryCustomImpl implements TestRepositoryCustom {
 	private final JPAQueryFactory jpaQueryFactory;
 
 	@Override
-	public List<TestEntity> customFindByValue(String value) {
-		return jpaQueryFactory.selectFrom(testEntity).where(testEntity.value.eq(value)).fetch();
+	public List<TestEntity> customFindByAbc(String abc) {
+		return jpaQueryFactory.selectFrom(testEntity).where(testEntity.abc.eq(abc)).fetch();
 	}
 }

@@ -1,5 +1,7 @@
 package com.ssafy.singsongsangsong.entity;
 
+import java.util.List;
+
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
@@ -10,16 +12,19 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Getter
 @Setter
 @AllArgsConstructor
-public class Song {
+@NoArgsConstructor
+public class Song extends BaseTimeEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -36,6 +41,9 @@ public class Song {
 	@OneToOne
 	@JoinColumn(name = "albumImageId")
 	private Image albumImage;
+
+	@OneToMany(mappedBy = "song")
+	private List<Atmosphere> atmospheres;
 
 	private String title;
 	private String lyrics;
