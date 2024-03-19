@@ -97,7 +97,7 @@ pipeline {
                 sh 'docker run -d --name spring-service \
                 -p 8080:8080 \
                 -v /etc/localtime:/etc/localtime:ro \
-                jinjoo0402/jenkins:latest'
+                ${dockerHubRegistry}:latest'
             }
 
             post {
