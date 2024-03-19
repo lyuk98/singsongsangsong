@@ -80,6 +80,13 @@ code {
   animation: slide-down-fade-in 0.3s ease-out forwards;
 }
 
+.flex-col-center{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
 /* 폰트 영역  */
 @font-face {
   font-family: "Pretendard-100";
