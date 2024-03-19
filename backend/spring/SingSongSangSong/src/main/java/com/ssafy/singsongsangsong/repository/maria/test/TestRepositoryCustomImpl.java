@@ -1,13 +1,13 @@
-package com.ssafy.singsongsangsong.repository.maria;
+package com.ssafy.singsongsangsong.repository.maria.test;
 
-import static com.ssafy.singsongsangsong.domain.QTestEntity.*;
+import static com.ssafy.singsongsangsong.entity.QTestEntity.*;
 
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.ssafy.singsongsangsong.domain.TestEntity;
+import com.ssafy.singsongsangsong.entity.TestEntity;
 
 import lombok.RequiredArgsConstructor;
 

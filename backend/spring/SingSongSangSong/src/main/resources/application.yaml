@@ -16,3 +16,7 @@ spring:
   data:
     mongodb:
       uri: mongodb+srv://S10P22E206:rui4ZhwEt1@ssafy.ngivl.mongodb.net/S10P22E206?authSource=admin
+
+  output:
+    ansi:
+      enabled: always
