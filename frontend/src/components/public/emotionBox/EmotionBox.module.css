@@ -21,9 +21,9 @@
   background-color: transparent;
 }
 
-.emotionButton[title]:hover::after {
+.emotionButton[name]:hover::after {
   font-family: "Pretendard-300";
-  content: attr(title);
+  content: attr(name);
   position: absolute;
   padding: 4px;
   background: #f4f9fd;

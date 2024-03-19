@@ -25,7 +25,7 @@ const EMOTIONS = [
     image: emotion2,
   },
   {
-    name: "Impressive",
+    name: "Empowering",
     title: "힘이나요",
     image: emotion3,
   },
@@ -50,7 +50,11 @@ const EmotionBox = () => {
     <div className={`flex-col-center ${styles.container}`}>
       {EMOTIONS.map((element, index) => (
         <div key={element.name} className={`flex-col-center ${styles.emotion}`}>
-          <button title={element.title} className={styles.emotionButton}>
+          <button
+            title={element.title}
+            name={element.title}
+            className={styles.emotionButton}
+          >
             <img src={element.image} alt={element.name} />
           </button>
           <p>134</p>
