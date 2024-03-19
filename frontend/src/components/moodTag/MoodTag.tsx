@@ -1,16 +1,16 @@
-import React from 'react';
-import styles from './ModalTag.module.css'
+import React from "react";
+import styles from "./ModalTag.module.css";
 
 type PropsType = {
-    mood: string
-}
+  mood: string;
+};
 
 const MoodTag = ({ mood }: PropsType) => {
-    return (
-        <div className={styles.container}>
-            <p>{mood}</p>
-        </div>
-    );
+  return (
+    <div className={styles.container}>
+      <p>{mood}</p>
+    </div>
+  );
 };
 
 export default MoodTag;
