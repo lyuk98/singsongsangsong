@@ -9,13 +9,15 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Getter
 @Setter
 @AllArgsConstructor
-public class Likes {
+@NoArgsConstructor
+public class Likes extends BaseTimeEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;

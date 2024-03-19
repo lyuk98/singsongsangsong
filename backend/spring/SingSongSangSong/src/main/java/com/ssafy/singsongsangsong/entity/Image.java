@@ -7,13 +7,15 @@ import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Getter
 @Setter
 @AllArgsConstructor
-public class Image {
+@NoArgsConstructor
+public class Image extends BaseTimeEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;

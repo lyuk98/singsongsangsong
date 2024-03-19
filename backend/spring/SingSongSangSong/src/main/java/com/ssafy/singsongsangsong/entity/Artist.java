@@ -2,6 +2,7 @@ package com.ssafy.singsongsangsong.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -20,7 +21,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Artist {
+public class Artist extends BaseTimeEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -32,7 +33,7 @@ public class Artist {
 	@NotNull
 	private String password;
 
-	@OneToOne
+	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "profileImageId")
 	private Image profileImage;
 

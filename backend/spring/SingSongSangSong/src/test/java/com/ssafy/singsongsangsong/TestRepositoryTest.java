@@ -27,8 +27,8 @@ public class TestRepositoryTest {
 			String value = "this is test";
 			@Test
 			void It_테스트_엔티티가_생성된다() {
-				TestEntity saved = testRepository.save(TestEntity.builder().value(value).build());
-				List<TestEntity> testEntities = testRepository.customFindByValue(value);
+				TestEntity saved = testRepository.save(TestEntity.builder().abc(value).build());
+				List<TestEntity> testEntities = testRepository.customFindByAbc(value);
 				assertThat(testEntities.size()).isEqualTo(1);
 				assertThat(testEntities.getFirst()).isEqualTo(saved);
 			}

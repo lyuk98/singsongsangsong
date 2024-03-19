@@ -19,11 +19,10 @@ public class TestEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-
-	private String value;
+	private String abc;
 
 	@Builder
-	public TestEntity(String value) {
-		this.value = value;
+	public TestEntity(String abc) {
+		this.abc = abc;
 	}
 }
