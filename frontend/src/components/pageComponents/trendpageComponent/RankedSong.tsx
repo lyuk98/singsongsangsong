@@ -1,11 +1,15 @@
 import React from "react";
 import styles from "./RankedSong.module.css";
 import img from "./../../../sources/testimg/cover.png";
+import crwon from "./../../../sources/imgs/crownicon.png";
 
 const RankedSong = () => {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
+        <span>
+          <img src={crwon} alt="" style={{ width: "36px", height: "36px" }} />
+        </span>
         <p>#{" 따뜻함"}</p>
       </div>
       <div className={`flex-row-center ${styles.content}`}>
@@ -19,7 +23,7 @@ const RankedSong = () => {
         <div className={styles.playCount}>
           <p>
             <span style={{ fontSize: "36px", color: "#0085E5" }}>
-              {"count"}
+              {"3211"}
             </span>
             회 재생
           </p>
