@@ -87,6 +87,12 @@ code {
   flex-direction: column;
 }
 
+.flex-row-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 /* 폰트 영역  */
 @font-face {
   font-family: "Pretendard-100";

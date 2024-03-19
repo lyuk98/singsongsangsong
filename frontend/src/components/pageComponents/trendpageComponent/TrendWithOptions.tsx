@@ -3,6 +3,7 @@ import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 
 import styles from "./TrendWithOptions.module.css";
 import BarChart from "../../public/chart/barChart/BarChart";
+import RankedSong from "./RankedSong";
 
 const AGES = [10, 20, 30, 40, 50, 60];
 const TAB_OPTIONS = ["장르", "분위기", "곡", "아티스트"];
@@ -86,8 +87,11 @@ const TrendWithOptions = () => {
             </div>
             <BarChart option={option} />
           </div>
-          <div className={styles.bottomRightContainer}>
-            <h2>{option} 1등 곡은??</h2>
+          <div className={`flex-col-center ${styles.bottomRightContainer}`}>
+            <h1>{option} 1등 곡은??</h1>
+            <RankedSong />
+            <RankedSong />
+            <RankedSong />
           </div>
         </div>
       </div>
