@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Fragment, useState } from "react";
 import { FaArrowLeft, FaArrowRight, FaHeart } from "react-icons/fa";
 import { LiaHeadsetSolid } from "react-icons/lia";
 import { MdOutlineFileDownload } from "react-icons/md";
@@ -51,7 +51,7 @@ const WeeklySingsongChart = () => {
         {DUMMY_DATA.map((element, index) => {
           return (
             index === currentIndex && (
-              <>
+              <Fragment key={element.title}>
                 <div className={styles.leftArrow}>
                   <span onClick={handlePrevIndex}>
                     <FaArrowLeft />
@@ -109,7 +109,7 @@ const WeeklySingsongChart = () => {
                     <FaArrowRight />
                   </span>
                 </div>
-              </>
+              </Fragment>
             )
           );
         })}
