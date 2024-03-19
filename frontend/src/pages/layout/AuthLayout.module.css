@@ -1,27 +1,27 @@
 .container {
-    width: 500px;
-    min-height: 440px;
-    position: fixed;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    top: 50%;
-    left: 50%;
-    padding: 20px;
-    transform: translate(-50%, -50%);
-    border: 0.3px solid #0085FF;
-    border-radius: 15px;
-    background-color: #F4F9FD;
+  width: 500px;
+  min-height: 440px;
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  top: 50%;
+  left: 50%;
+  padding: 20px;
+  transform: translate(-50%, -50%);
+  border: 0.3px solid #0085ff;
+  border-radius: 15px;
+  background-color: #f4f9fd;
 }
 
 .title {
-    width: 400px;
-    text-align: center;
-    margin-bottom: 20px;
+  width: 400px;
+  text-align: center;
+  margin-bottom: 20px;
 }
 
 .title a {
-    font-family: 'Pretendart-700';
-    font-size: 32px;
-    font-weight: 700;
+  font-family: "Pretendart-700";
+  font-size: 32px;
+  font-weight: 700;
 }

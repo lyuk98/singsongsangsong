@@ -1,11 +1,11 @@
 body {
   margin: 0;
-  font-family: 'Pretendard-500', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: "Pretendard-500", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
+    "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: #002A49;
+  color: #002a49;
   /* 페이지 내 스크롤 금지 */
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -50,12 +50,12 @@ ul {
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
 
 .bg-color1 {
-  background-color: #F4F9FD;
+  background-color: #f4f9fd;
 }
 
 .modal::backdrop {
@@ -69,18 +69,18 @@ code {
 }
 
 .modal {
-  position: relative ;
+  position: relative;
   min-width: 30rem;
   min-height: 23rem;
   padding: 15px;
-  background: #F4F9FD;
-  border : 1px solid #22A2FF;
+  background: #f4f9fd;
+  border: 1px solid #22a2ff;
   border-radius: 8px;
-  box-shadow: 0 2px 8px #71C3FF;
+  box-shadow: 0 2px 8px #71c3ff;
   animation: slide-down-fade-in 0.3s ease-out forwards;
 }
 
-.flex-col-center{
+.flex-col-center {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -90,45 +90,45 @@ code {
 /* 폰트 영역  */
 @font-face {
   font-family: "Pretendard-100";
-  src: url('./sources/font/Pretendard-Thin.woff') format('woff');
+  src: url("./sources/font/Pretendard-Thin.woff") format("woff");
 }
 
 @font-face {
   font-family: "Pretendard-200";
-  src: url('./sources/font/Pretendard-ExtraLight.woff') format('woff');
+  src: url("./sources/font/Pretendard-ExtraLight.woff") format("woff");
 }
 
 @font-face {
   font-family: "Pretendard-300";
-  src: url('./sources/font/Pretendard-Light.woff') format('woff');
+  src: url("./sources/font/Pretendard-Light.woff") format("woff");
 }
 
 @font-face {
   font-family: "Pretendard-400";
-  src: url('./sources/font/Pretendard-Regular.woff') format('woff');
+  src: url("./sources/font/Pretendard-Regular.woff") format("woff");
 }
 
 @font-face {
   font-family: "Pretendard-500";
-  src: url('./sources/font/Pretendard-Medium.woff') format('woff');
+  src: url("./sources/font/Pretendard-Medium.woff") format("woff");
 }
 
 @font-face {
   font-family: "Pretendard-600";
-  src: url('./sources/font/Pretendard-SemiBold.woff') format('woff');
+  src: url("./sources/font/Pretendard-SemiBold.woff") format("woff");
 }
 
 @font-face {
   font-family: "Pretendard-700";
-  src: url('./sources/font/Pretendard-Bold.woff') format('woff');
+  src: url("./sources/font/Pretendard-Bold.woff") format("woff");
 }
 
 @font-face {
   font-family: "Pretendard-800";
-  src: url('./sources/font/Pretendard-ExtraBold.woff') format('woff');
+  src: url("./sources/font/Pretendard-ExtraBold.woff") format("woff");
 }
 
 @font-face {
   font-family: "Pretendard-900";
-  src: url('./sources/font/Pretendard-Black.woff') format('woff');
+  src: url("./sources/font/Pretendard-Black.woff") format("woff");
 }
