@@ -34,46 +34,29 @@ const data = [
 ];
 
 const RaderChart = () => (
-  <ResponsiveRadar
-    data={data}
-    keys={["chardonay", "carmenere", "syrah"]}
-    indexBy="taste"
-    valueFormat=" >-.2f"
-    margin={{ top: 70, right: 60, bottom: 40, left: 60 }}
-    borderColor={{ theme: "grid.line.stroke" }}
-    gridLevels={4}
-    gridShape="linear"
-    gridLabelOffset={36}
-    dotSize={5}
-    dotColor="#22A2FF"
-    dotBorderWidth={2}
-    dotBorderColor={{ theme: "grid.line.stroke" }}
-    colors={{ scheme: "purple_blue_green" }}
-    fillOpacity={1}
-    blendMode="multiply"
-    motionConfig="wobbly"
-    legends={[
-      {
-        anchor: "top-left",
-        direction: "column",
-        translateX: -50,
-        translateY: -40,
-        itemWidth: 80,
-        itemHeight: 20,
-        itemTextColor: "#999",
-        symbolSize: 12,
-        symbolShape: "circle",
-        effects: [
-          {
-            on: "hover",
-            style: {
-              itemTextColor: "#000",
-            },
-          },
-        ],
-      },
-    ]}
-  />
+  <div style={{ width: "100%", height: "100%", margin: "0 auto" }}>
+    <ResponsiveRadar
+      data={data}
+      keys={["chardonay", "carmenere", "syrah"]}
+      indexBy="taste"
+      valueFormat=" >-.2f"
+      margin={{ top: 0, right: 70, bottom: 0, left: 70 }}
+      borderColor={{ theme: "grid.line.stroke" }}
+      gridLevels={4}
+      gridShape="linear"
+      gridLabelOffset={12}
+      enableDots={false}
+      colors={{ scheme: "purple_blue_green" }}
+      fillOpacity={1}
+      blendMode="multiply"
+      motionConfig="wobbly"
+      theme={{
+        text: {
+          fontSize: 18,
+        },
+      }}
+    />
+  </div>
 );
 
 export default RaderChart;
