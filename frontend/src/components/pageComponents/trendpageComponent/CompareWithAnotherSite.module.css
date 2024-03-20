@@ -1,0 +1,29 @@
+.container {
+  width: 100%;
+  height: 830px;
+  padding: 15px 60px;
+  border: 1px solid black;
+}
+
+.content {
+    width: 100%;
+    height: 100%;
+    background-color: #f4f9fd;
+    border: 1px solid #22a2ff;
+    border-radius: 15px;
+    box-shadow: 7px 7px 7px #71c3ff;
+}
+
+.billboard {
+    width: 50%;
+    height: 100%;
+    padding : 15px;
+    border: 1px solid black;
+}
+
+.melon {
+    width: 50%;
+    height: 100%;
+    padding : 15px;
+    border: 1px solid black;
+}
