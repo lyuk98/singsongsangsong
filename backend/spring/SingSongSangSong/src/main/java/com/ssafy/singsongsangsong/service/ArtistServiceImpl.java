@@ -5,13 +5,15 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.singsongsangsong.dto.ArtistInfoDto;
+import com.ssafy.singsongsangsong.dto.EmotionsDto;
 import com.ssafy.singsongsangsong.dto.SimpleSongDto;
 import com.ssafy.singsongsangsong.entity.Artist;
 import com.ssafy.singsongsangsong.entity.Follower_Following;
+import com.ssafy.singsongsangsong.entity.Song;
 import com.ssafy.singsongsangsong.exception.artist.ArtistNotFoundException;
 import com.ssafy.singsongsangsong.repository.maria.artist.ArtistRepository;
 import com.ssafy.singsongsangsong.repository.maria.artist.FollowingRepository;
-import com.ssafy.singsongsangsong.utils.EnumUtils;
+import com.ssafy.singsongsangsong.repository.maria.song.SongRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -19,7 +21,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ArtistServiceImpl implements ArtistService {
 	private final ArtistRepository artistRepository;
-
+	private final SongRepository songRepository;
 	private final FollowingRepository followingRepository;
 
 	@Override
@@ -53,9 +55,17 @@ public class ArtistServiceImpl implements ArtistService {
 	}
 
 	@Override
-	public void expressFeeling(String username, Long songId, String feeling) {
-		EnumUtils.Emotion.checkIfSupported(feeling);
-		// TODO implement this method, Spring AOP 사용하여 Eagerly fetching
+	public EmotionsDto getEmotions(Long artistId) {
+		List<Song> publishedSongs = songRepository.getPublishedSongsByArtistId(artistId);
+		EmotionsDto result = new EmotionsDto();
+		for (Song song : publishedSongs) {
+			result.setEnergizedEmotionCount(result.getEnergizedEmotionCount() + song.getEnergizedEmotionCount());
+			result.setExcitedEmotionCount(result.getExcitedEmotionCount() + song.getExcitedEmotionCount());
+			result.setFunnyEmotionCount(result.getFunnyEmotionCount() + song.getFunnyEmotionCount());
+			result.setSadEmotionCount(result.getSadEmotionCount() + song.getSadEmotionCount());
+			result.setMovedEmotionCount(result.getMovedEmotionCount() + song.getMovedEmotionCount());
+			result.setLikeEmotionCount(result.getLikeEmotionCount() + song.getLikeEmotionCount());
+		}
+		return result;
 	}
-
 }
