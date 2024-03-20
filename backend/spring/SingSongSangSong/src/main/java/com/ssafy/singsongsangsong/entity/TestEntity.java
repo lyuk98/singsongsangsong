@@ -1,4 +1,4 @@
-package com.ssafy.singsongsangsong.domain;
+package com.ssafy.singsongsangsong.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

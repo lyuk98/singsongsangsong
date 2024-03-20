@@ -2,11 +2,6 @@ package com.ssafy.singsongsangsong.dto;
 
 import java.util.Optional;
 
-import org.modelmapper.ModelMapper;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-
-import com.ssafy.singsongsangsong.config.ModelMapperConfig;
 import com.ssafy.singsongsangsong.entity.Artist;
 import com.ssafy.singsongsangsong.entity.Image;
 

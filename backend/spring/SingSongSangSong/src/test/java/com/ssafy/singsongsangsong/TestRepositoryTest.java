@@ -9,8 +9,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.ssafy.singsongsangsong.domain.TestEntity;
-import com.ssafy.singsongsangsong.repository.maria.TestRepository;
+import com.ssafy.singsongsangsong.entity.TestEntity;
+import com.ssafy.singsongsangsong.repository.maria.test.TestRepository;
 
 @SpringBootTest
 public class TestRepositoryTest {
@@ -18,13 +18,13 @@ public class TestRepositoryTest {
 	@Autowired
 	private TestRepository testRepository;
 
-
 	@Nested
 	class Describe_Create {
 		// context
 		@Nested
 		class Context_유효한_입력 {
 			String value = "this is test";
+
 			@Test
 			void It_테스트_엔티티가_생성된다() {
 				TestEntity saved = testRepository.save(TestEntity.builder().abc(value).build());
