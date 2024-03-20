@@ -30,7 +30,7 @@
   width: 90%;
   height: 120px;
   justify-content: flex-start;
-  border: 1px solid black;
+  border: 1px solid #dddddd;
   gap: 15px;
   border-radius: 15px;
   padding: 15px;
@@ -39,6 +39,7 @@
 .chartBox {
   width: 100%;
   height: 200px;
+  padding: 15px 0;
 }
 
 .leftChart {
@@ -59,4 +60,10 @@
 
 .selected {
   background-color: #c5e7ff;
+}
+
+.tagBox {
+  width: 100%;
+  height: 50px;
+  padding: 15px 0;
 }
