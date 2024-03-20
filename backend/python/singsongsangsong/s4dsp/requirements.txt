@@ -1,0 +1,4 @@
+librosa
+setuptools
+essentia-tensorflow==2.1b6.dev1110
+voyager~=2.0.2
