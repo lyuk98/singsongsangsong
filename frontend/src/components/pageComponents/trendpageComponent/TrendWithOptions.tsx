@@ -14,7 +14,7 @@ const TAB_OPTIONS = ["장르", "분위기", "곡", "아티스트"];
 //   tabOption: string;
 // };
 
-/**
+/** 성별과 연령으로 알아보는 트렌드
  * @todo 나중에 주차별 데이터를 부모 page에서 내려받아야함
  * @todo props를 내리는건 주차로 관리하고 기본적으로 state는 여기서 관리하는게 좋을듯
  * @returns
@@ -77,6 +77,7 @@ const TrendWithOptions = () => {
               <ul className={styles.tabMenu}>
                 {TAB_OPTIONS.map((element) => (
                   <li
+                    key={element}
                     className={element === option ? styles.tabActive : ""}
                     onClick={() => handleOptionChange(element)}
                   >

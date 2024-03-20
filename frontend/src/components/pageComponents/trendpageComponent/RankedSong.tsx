@@ -3,6 +3,9 @@ import styles from "./RankedSong.module.css";
 import img from "./../../../sources/testimg/cover.png";
 import crwon from "./../../../sources/imgs/crownicon.png";
 
+/** 성별과 연령으로 알아보는 트렌드에서 사용할 랭킹 컴포넌트
+ * @todo 데이터 넘어오는거 확인하고 윗 태그 / 작곡가 / 제목 쪽 손봐야함
+ */
 const RankedSong = () => {
   return (
     <div className={styles.container}>

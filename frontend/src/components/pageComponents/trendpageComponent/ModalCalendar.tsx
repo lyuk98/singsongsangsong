@@ -73,6 +73,10 @@ interface CalendarType {
   handleDateChange: (newDate: any) => void;
 }
 
+/**
+ * @todo 나중에 스타일 손봐야함, 주차별 disable 값도 조정해야함 
+ */
+
 const ModalCalendar = ({ selectedDate, handleDateChange }: CalendarType) => {
   const date = new Date(
     `${selectedDate.year}-${selectedDate.month}-${selectedDate.day}`

@@ -52,7 +52,7 @@ const RegisterPage = () => {
       <Form method="post">
         <AuthInput
           id="id"
-          label="input your id"
+          label="ID"
           name="id"
           hasError={!idIsValid && "아이디는 4-16글자 사이입니다"}
           type="text"
@@ -63,7 +63,7 @@ const RegisterPage = () => {
         />
         <AuthInput
           id="password"
-          label="create password"
+          label="PASSWORD"
           name="password"
           hasError={!passwordIsValid && "비밀번호는 4-16글자 사이입니다"}
           type="password"
