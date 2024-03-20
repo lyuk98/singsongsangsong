@@ -30,7 +30,10 @@ const DUMMY_DATA = [
     emotion: [1, 2, 3, 4, 5],
   },
 ];
-
+/** 금주의 싱송차트 주간 데이터 받아와서 여기서 조회해야하나?
+ * @todo 3개의 곡데이터 받아와서 처리하고 변수에 넣어줘야함(Raderchart에)
+ * @todo element.~~~ 으로 되어있는 부분이 전부 처리해야 할 부분
+ */
 const WeeklySingsongChart = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
 

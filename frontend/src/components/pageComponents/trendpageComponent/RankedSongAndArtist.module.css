@@ -1,0 +1,41 @@
+.container {
+  padding: 5px 10px;
+  justify-content: space-evenly;
+  width: 80%;
+  height: 30%;
+  border: 1px solid #22a2ff;
+  border-radius: 15px;
+}
+
+.album {
+  width: 30%;
+}
+
+.info {
+  width: 40%;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.indicator {
+  width: 30%;
+  border: 2px solid #c5e7ff;
+  border-radius: 15px;
+  padding: 15px;
+}
+
+.indicator p {
+  gap: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@media screen and (max-width: 992px) {
+  .indicator {
+    display: none;
+  }
+  .info {
+    width: 60%;
+  }
+}

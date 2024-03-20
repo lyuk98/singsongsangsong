@@ -8,7 +8,7 @@
   width: 250px;
   height: 100vh;
   box-shadow: 6px 0 3px #d9d9d9;
-  overflow: scroll;
+  overflow-y: auto;
   -ms-overflow-style: none;
   transition: 0.5s;
 }
@@ -22,9 +22,9 @@
   text-transform: uppercase;
 }
 
-.mainContainer::-webkit-scrollbar {
+/* .mainContainer::-webkit-scrollbar {
   display: none;
-}
+} */
 
 .title {
   display: flex;

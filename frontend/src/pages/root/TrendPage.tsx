@@ -9,6 +9,7 @@ import { getToday, getWeekNumber } from "./../../utils/dateUtils";
 import { DateType } from "../../utils/types";
 import WeeklySingsongChart from "../../components/pageComponents/trendpageComponent/WeeklySingsongChart";
 import TrendWithOptions from "../../components/pageComponents/trendpageComponent/TrendWithOptions";
+import RankWithOption from "../../components/pageComponents/trendpageComponent/RankWithOption";
 
 const TrendPage = () => {
   const { year, month, day } = getToday();
@@ -64,6 +65,7 @@ const TrendPage = () => {
       />
       <WeeklySingsongChart />
       <TrendWithOptions />
+      <RankWithOption />
     </>
   );
 };

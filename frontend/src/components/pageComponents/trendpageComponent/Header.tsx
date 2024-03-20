@@ -8,7 +8,8 @@ interface HeaderType {
   selectedWeek: number;
   onOpen: () => void;
 }
-
+/** 트렌트 페이지 최상단에 위치할 header 컴포넌트
+ */
 const Header = ({ selectedDate, selectedWeek, onOpen }: HeaderType) => {
   return (
     <div className={styles.header}>
