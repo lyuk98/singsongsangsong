@@ -1,7 +1,14 @@
 import React, { useState } from "react";
+
+// 이미지
+import trophy from "./../../../sources/imgs/trophy.png";
+import medal0 from "./../../../sources/imgs/medal0.png";
+import medal1 from "./../../../sources/imgs/medal1.png";
+import medal2 from "./../../../sources/imgs/medal2.png";
+// import받아온 컴포넌트
+import RaderChart from "../../public/chart/raderChart/RaderChart";
 import styles from "./ChartWithMelonBillboard.module.css";
 import Album from "../../public/Album";
-import RaderChart from "../../public/chart/raderChart/RaderChart";
 import MoodTag from "../../moodTag/MoodTag";
 
 const DUMMY_DATA = [
@@ -37,15 +44,29 @@ const ChartWithMelonBillboard = ({ type }: PropsType) => {
 
   return (
     <div className={`${styles.container}`}>
-      <div className={`flex-col-center ${styles.header}`}>
-        {type === "melon" && <h2>한국인이 선택한 노래</h2>}
-        {type === "billboard" && <h2>세계가 선택한 노래</h2>}
+      <div className={`flex-row-center ${styles.header}`}>
+        {type === "melon" && (
+          <>
+            <img src={trophy} alt="trophy" />
+            <h2 style={{ margin: "0px 7px" }}>한국인이 선택한 노래</h2>
+            <img src={trophy} alt="trophy" />
+          </>
+        )}
+        {type === "billboard" && (
+          <>
+            <img src={trophy} alt="trophy" />
+            <h2 style={{ margin: "0px 7px" }}>세계가 선택한 노래</h2>
+            <img src={trophy} alt="trophy" />
+          </>
+        )}
       </div>
       <div className={`${styles.content}`}>
         <div className={`flex-col-center ${styles.songs}`}>
           {/* 아래쪽 코드는 반복문으로 받아온 데이터 출력해야함 */}
           {/* 또한 데이터받아오고 그거맞춰서 입력 해줘야함 */}
           {DUMMY_DATA.map((element, index) => {
+            const medalImage =
+              index === 0 ? medal0 : index === 1 ? medal1 : medal2;
             return (
               <div
                 onClick={() => handleSongIndex(index)}
@@ -56,6 +77,7 @@ const ChartWithMelonBillboard = ({ type }: PropsType) => {
               >
                 <Album />
                 <div className={styles.info}>
+                  <img src={medalImage} alt="" />
                   <p>{element.songAuthor}</p>
                   <h2>{element.songTitle}</h2>
                 </div>
