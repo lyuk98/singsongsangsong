@@ -2,10 +2,6 @@ package com.ssafy.singsongsangsong.entity;
 
 import java.util.List;
 
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
-
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -62,11 +58,11 @@ public class Song extends BaseTimeEntity {
 
 	private boolean isPublished;
 	private String musicLocation;
-
+	
 	private int movedEmotionCount;
 	private int likeEmotionCount;
 	private int excitedEmotionCount;
-	private int cheerUpEmotionCount;
+	private int energizedEmotionCount;
 	private int funnyEmotionCount;
-	private int sadEmotionFCount;
+	private int sadEmotionCount;
 }

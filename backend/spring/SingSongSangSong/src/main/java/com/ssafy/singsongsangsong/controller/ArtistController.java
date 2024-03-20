@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.singsongsangsong.dto.ArtistInfoDto;
+import com.ssafy.singsongsangsong.dto.EmotionsDto;
 import com.ssafy.singsongsangsong.dto.SimpleSongDto;
 import com.ssafy.singsongsangsong.service.ArtistService;
 
@@ -38,4 +39,11 @@ public class ArtistController {
 		String username = loginUser.getUsername();
 		artistService.toggleFollowArtist(username, id);
 	}
+
+	// todo: 아래 메소드는 song 데이터가 추가된 후에, 테스트 코드 작성 예정입니다.
+	@GetMapping("/emotions/{id}")
+	public EmotionsDto getEmotions(@PathVariable Long id) {
+		return artistService.getEmotions(id);
+	}
+
 }
