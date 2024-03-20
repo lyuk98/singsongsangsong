@@ -20,3 +20,7 @@ spring:
   output:
     ansi:
       enabled: always
+  
+  batch:
+    jdbc:
+      initialize-schema: always
