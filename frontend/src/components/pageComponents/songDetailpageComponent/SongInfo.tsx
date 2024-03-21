@@ -1,4 +1,5 @@
 import React from "react";
+import { PiVinylRecord } from "react-icons/pi";
 import styles from "./SongInfo.module.css";
 import MoodTag from "../../moodTag/MoodTag";
 
@@ -6,7 +7,10 @@ const SongInfo = () => {
   return (
     <div className={`flex-col-center ${styles.container}`}>
       <header>
-        <h2>곡설명</h2>
+        <h2>
+          곡설명
+          <PiVinylRecord color="#0085E5" size={"42"} />
+        </h2>
       </header>
       <div className={`${styles.explanationBox}`}>
         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dignissimos
