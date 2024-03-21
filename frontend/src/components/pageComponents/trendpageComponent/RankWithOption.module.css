@@ -1,7 +1,7 @@
 .container {
   margin-top: 60px;
   width: 100%;
-  height: 720px;
+  height: 620px;
   padding: 15px 60px;
   margin: 15px 0px;
 }
@@ -73,7 +73,7 @@
 /* 음악 ,작곡가 랭킹을 감쌀 큰 div */
 .rankSection {
   width: 100%;
-  height: 570px;
+  height: 470px;
 }
 
 .songSection {

@@ -11,6 +11,8 @@ import WeeklySingsongChart from "../../components/pageComponents/trendpageCompon
 import TrendWithOptions from "../../components/pageComponents/trendpageComponent/TrendWithOptions";
 import RankWithOption from "../../components/pageComponents/trendpageComponent/RankWithOption";
 import CompareWithAnotherSite from "../../components/pageComponents/trendpageComponent/CompareWithAnotherSite";
+import SongWithEmotion from "../../components/pageComponents/trendpageComponent/SongWithEmotion";
+import SongWithBPM from "../../components/pageComponents/trendpageComponent/SongWithBPM";
 
 const TrendPage = () => {
   const { year, month, day } = getToday();
@@ -68,6 +70,8 @@ const TrendPage = () => {
       <TrendWithOptions />
       <RankWithOption />
       <CompareWithAnotherSite />
+      <SongWithEmotion />
+      <SongWithBPM />
     </>
   );
 };

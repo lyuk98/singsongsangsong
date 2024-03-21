@@ -1,20 +1,29 @@
 .container {
   padding: 5px 10px;
   justify-content: space-evenly;
-  width: 80%;
-  height: 30%;
+  width: 90%;
   border: 1px solid #22a2ff;
   border-radius: 15px;
+  overflow: hidden;
 }
 
 .album {
-  width: 30%;
+  width: 100px;
+  height: 100px;
 }
 
 .info {
-  width: 40%;
   min-width: 0;
   overflow: hidden;
+  white-space: nowrap;
+}
+
+.info h1,
+.info h3,
+.info p {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .indicator {
@@ -34,8 +43,5 @@
 @media screen and (max-width: 992px) {
   .indicator {
     display: none;
-  }
-  .info {
-    width: 60%;
   }
 }
