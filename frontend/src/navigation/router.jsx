@@ -9,6 +9,8 @@ import RegisterPage, {
 } from "../pages/root/RegisterPage";
 import LoginPage from "../pages/root/LoginPage";
 import AuthLayout from "../pages/layout/AuthLayout";
+import ArtistPage from "../pages/root/ArtistPage";
+import SongDetailPage from "../pages/root/SongDetailPage";
 
 export const router = createBrowserRouter([
   {
@@ -27,6 +29,14 @@ export const router = createBrowserRouter([
       {
         path: "discover",
         element: <DiscoverPage />,
+      },
+      {
+        path: "artist/:artistId",
+        element: <ArtistPage />,
+      },
+      {
+        path: "song/:songId",
+        element: <SongDetailPage />,
       },
     ],
   },
