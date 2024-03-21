@@ -14,25 +14,18 @@
 
 ### Python 환경 설정
 
-가상 환경을 생성합니다 (이 프로젝트는 Python 3.11을 사용하며 Windows 환경을 지원하지 않습니다)
+상위 프로젝트에서 사용하는 `pipenv`로 환경을 설정합니다
 
 ```sh
-python3.11 -m venv .venv/
+cd backend/python/singsongsangsong/
+pipenv install
 ```
 
-가상 환경을 활성화합니다
+아래 기능 별 가이드는 환경 설정을 완료하고 명령 실행 시 `pwd`가 이 모듈의 경로임을 가정합니다
 
 ```sh
-source .venv/bin/activate
+cd backend/python/singsongsangsong/s4dsp/
 ```
-
-`requirements.txt`에 명시된 필요한 라이브러리를 설치합니다
-
-```sh
-pip install -r requirements.txt
-```
-
-아래 기능 별 가이드는 위 단계를 진행하고 가상 환경이 활성화되어있다는 가정 하에 진행됩니다
 
 ### 박자 분석
 
@@ -46,7 +39,7 @@ pip install -r requirements.txt
 `tempo.py`를 실행합니다
 
 ```sh
-python tempo.py
+pipenv run python tempo.py
 ```
 
 ### 조성 분석
@@ -61,7 +54,7 @@ python tempo.py
 `key.py`를 실행합니다
 
 ```sh
-python key.py
+pipenv run python key.py
 ```
 
 ### 장르 분석
@@ -76,7 +69,7 @@ python key.py
 `genre.py`를 실행합니다
 
 ```sh
-python genre.py
+pipenv run python genre.py
 ```
 
 `genre.py`는 아래의 파일들을 필요로 하며 `data/` 내에 존재하지 않을 시 자동으로 다운로드를 진행합니다
@@ -97,7 +90,7 @@ python genre.py
 `mood.py`를 실행합니다
 
 ```sh
-python mood.py
+pipenv run python mood.py
 ```
 
 `mood.py`는 아래의 파일들을 필요로 하며 `data/` 내에 존재하지 않을 시 자동으로 다운로드를 진행합니다
