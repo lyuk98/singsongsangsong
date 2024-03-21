@@ -5,6 +5,7 @@ import testArtist from "./../../sources/testimg/artistProfile.jpg";
 import styles from "./SongDetailPage.module.css";
 import Album from "../../components/public/Album";
 import SongInfo from "../../components/pageComponents/songDetailpageComponent/SongInfo";
+import SongDetails from "../../components/pageComponents/songDetailpageComponent/SongDetails";
 
 const SongDetailPage = () => {
   const { songId } = useParams();
@@ -28,6 +29,7 @@ const SongDetailPage = () => {
         </div>
         <div className={styles.content}>
           <SongInfo />
+          <SongDetails />
         </div>
       </div>
     </>

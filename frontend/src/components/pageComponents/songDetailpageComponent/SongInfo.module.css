@@ -4,10 +4,15 @@
 }
 
 .container header {
-    width: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  font-size: 28px;
+  h2 {
     display: flex;
     justify-content: flex-start;
-    font-size: 28px;
+    align-items: center;
+  }
 }
 
 .explanationBox {
@@ -19,7 +24,7 @@
 }
 
 .tagBox {
-    display: flex;
-    width: 100%;
-    justify-content: flex-start;
+  display: flex;
+  width: 100%;
+  justify-content: flex-start;
 }
