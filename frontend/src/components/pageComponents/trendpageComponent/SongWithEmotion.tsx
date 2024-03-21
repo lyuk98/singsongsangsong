@@ -37,7 +37,8 @@ const EMOTIONS = [
 
 const SongWithEmotion = () => {
   return (
-    <div className={styles.container}>
+    <div className={`flex-col-center ${styles.container}`}>
+      <h1>감정 극대화 곡</h1>
       <div className={`flex-row-center ${styles.content}`}>
         {EMOTIONS.map((element, indenx) => {
           return (
@@ -46,7 +47,9 @@ const SongWithEmotion = () => {
                 <img src={element.emotion} alt="" />
                 <p>{element.count}</p>
               </div>
-              <Album />
+              <div style={{ width: "100px", height: "100px" }}>
+                <Album />
+              </div>
               <div className={`flex-col-center ${styles.info}`}>
                 <h2>무슨노래</h2>
                 <h3>김작곡</h3>

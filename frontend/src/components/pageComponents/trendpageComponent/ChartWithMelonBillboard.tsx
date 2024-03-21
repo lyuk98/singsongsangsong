@@ -75,7 +75,9 @@ const ChartWithMelonBillboard = ({ type }: PropsType) => {
                   songIndex === index ? styles.selected : ""
                 }`}
               >
-                <Album />
+                <div style={{ width: "100px", height: "100px" }}>
+                  <Album />
+                </div>
                 <div className={styles.info}>
                   <img src={medalImage} alt="" />
                   <p>{element.songAuthor}</p>

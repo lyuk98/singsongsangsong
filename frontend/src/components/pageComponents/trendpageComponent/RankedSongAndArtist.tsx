@@ -9,6 +9,7 @@ import Profile from "../../public/Profile";
 
 type PropsType = {
   type: string;
+  showIndicator?: boolean;
 };
 
 /**
@@ -17,7 +18,7 @@ type PropsType = {
  * @todo 곡 / 작곡가 클릭 시 상세 페이지로 이동하는 로직 작성
  * @todo 데이터 들어오면 info쪽 수정
  */
-const RankedSongAndArtist = ({ type }: PropsType) => {
+const RankedSongAndArtist = ({ type, showIndicator = true }: PropsType) => {
   return (
     <div className={`flex-row-center ${styles.container}`}>
       <div className={`flex-col-center ${styles.album}`}>
@@ -39,20 +40,22 @@ const RankedSongAndArtist = ({ type }: PropsType) => {
           </>
         )}
       </div>
-      <div className={`flex-col-center ${styles.indicator}`}>
-        <p>
-          <MdOutlineFileDownload size={"28px"} />
-          24
-        </p>
-        <p>
-          <LiaHeadsetSolid size={"28px"} />
-          24
-        </p>
-        <p>
-          <FaHeart size={"24px"} />
-          24
-        </p>
-      </div>
+      {showIndicator && (
+        <div className={`flex-col-center ${styles.indicator}`}>
+          <p>
+            <MdOutlineFileDownload size={"28px"} />
+            24
+          </p>
+          <p>
+            <LiaHeadsetSolid size={"28px"} />
+            24
+          </p>
+          <p>
+            <FaHeart size={"24px"} />
+            24
+          </p>
+        </div>
+      )}
     </div>
   );
 };
