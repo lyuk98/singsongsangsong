@@ -1,26 +1,25 @@
 package com.ssafy.singsongsangsong.entity;
 
-import java.util.List;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor
-public class Song extends BaseTimeEntity {
+public class Song {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -37,9 +36,6 @@ public class Song extends BaseTimeEntity {
 	@OneToOne
 	@JoinColumn(name = "albumImageId")
 	private Image albumImage;
-
-	@OneToMany(mappedBy = "song")
-	private List<Atmosphere> atmospheres;
 
 	private String title;
 	private String lyrics;
@@ -58,11 +54,11 @@ public class Song extends BaseTimeEntity {
 
 	private boolean isPublished;
 	private String musicLocation;
-	
+
 	private int movedEmotionCount;
 	private int likeEmotionCount;
 	private int excitedEmotionCount;
-	private int energizedEmotionCount;
+	private int cheerUpEmotionCount;
 	private int funnyEmotionCount;
-	private int sadEmotionCount;
+	private int sadEmotionFCount;
 }
