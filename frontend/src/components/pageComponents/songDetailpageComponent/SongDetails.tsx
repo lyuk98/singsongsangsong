@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styles from "./SongDetails.module.css";
 import RaderChart from "../../public/chart/raderChart/RaderChart";
+import MusicSectionIndicator from "../../public/MusicSectionIndicator";
 const TAB_CONTENT = ["가사", "분위기 / 장르", "유사곡", "구간분석"];
 
 const SongDetails = () => {
@@ -73,6 +74,10 @@ const SongDetails = () => {
             </div>
           </div>
         )}
+        {
+          // 응애
+        }
+        {focused === "구간분석" && <MusicSectionIndicator />}
       </div>
     </div>
   );
