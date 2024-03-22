@@ -19,6 +19,10 @@ type PropsType = {
  * @todo 데이터 들어오면 info쪽 수정
  */
 const RankedSongAndArtist = ({ type, showIndicator = true }: PropsType) => {
+  const checker = () => {
+    console.log('te')
+  }
+  
   return (
     <div className={`flex-row-center ${styles.container}`}>
       <div className={`flex-col-center ${styles.album}`}>
@@ -28,7 +32,7 @@ const RankedSongAndArtist = ({ type, showIndicator = true }: PropsType) => {
       <div className={`flex-col-center ${styles.info}`}>
         {type === "song" && (
           <>
-            <h1>무슨노래</h1>
+            <h2 onClick={checker}>무슨노래</h2>
             <h3>김작곡</h3>
             <p>태그1 태그2 태그3</p>
           </>

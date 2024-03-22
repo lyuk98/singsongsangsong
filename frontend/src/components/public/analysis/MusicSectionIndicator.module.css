@@ -27,6 +27,10 @@
 }
 
 .type {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
   padding: 10px;
   background-color: #c5e7ff;
   border-radius: 15px;

@@ -3,6 +3,10 @@ import { PiVinylRecord } from "react-icons/pi";
 import styles from "./SongInfo.module.css";
 import MoodTag from "../../moodTag/MoodTag";
 
+/**
+ * @todo 곡설명에 대한 정보와 tag에 관련된 props를 받아야함
+ * @returns 
+ */
 const SongInfo = () => {
   return (
     <div className={`flex-col-center ${styles.container}`}>

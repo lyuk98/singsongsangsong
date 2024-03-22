@@ -1,8 +1,16 @@
 import React, { useState } from "react";
 import styles from "./SongDetails.module.css";
 import RaderChart from "../../public/chart/raderChart/RaderChart";
-import MusicSectionIndicator from "../../public/MusicSectionIndicator";
+import MusicSectionIndicator from "../../public/analysis/MusicSectionIndicator";
+import SimilarSong from "../../public/analysis/SimilarSong";
+
 const TAB_CONTENT = ["가사", "분위기 / 장르", "유사곡", "구간분석"];
+
+/**
+ * 곡의 세부정보를 표현할 탭 컴포넌트
+ * @todo 곡 가사 정보 / 비교한 곡에대한 정보들 (래더차트에 데이터값 넣어줘야함) props로 받아야함
+ * 결과값은 받아온 데이터중 가장 높은값을 변수로 사용해서 와 결과다 위치에 넣어줘야함
+ */
 
 const SongDetails = () => {
   const [focused, setFocused] = useState<string>("가사");
@@ -74,9 +82,7 @@ const SongDetails = () => {
             </div>
           </div>
         )}
-        {
-          // 응애
-        }
+        {focused === "유사곡" && <SimilarSong />}
         {focused === "구간분석" && <MusicSectionIndicator />}
       </div>
     </div>
