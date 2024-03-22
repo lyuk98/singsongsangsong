@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """
 템포 측정
 ========
@@ -29,3 +31,10 @@ def get_tempo(y: np.ndarray, sr: float) -> float:
         음원에 대한 BPM 형식의 템포
     """
     return librosa.beat.beat_track(y=y, sr=sr)[0]
+
+if __name__ == "__main__":
+    FILENAME = "data/audio.wav"
+    audio, sample_rate = librosa.load(FILENAME)
+
+    tempo = librosa.beat.beat_track(y=audio, sr=sample_rate)[0]
+    print(f"Tempo: {tempo:.2f}")
