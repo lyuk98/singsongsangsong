@@ -1,5 +1,6 @@
 .container {
   width: 100%;
+  padding-bottom: 50px;
 }
 
 .artistCover {
@@ -23,4 +24,21 @@
 .content {
   width: 100%;
   padding: 0px 6rem;
+  gap: 15px;
+}
+
+.emotionBox {
+  margin-top: 15px;
+  width: 100%;
+  padding: 20px;
+  border-radius: 30px;
+  background-color: #f4f9fd;
+  font-size: 32px;
+  color: #006db0;
+  font-weight: 700;
+  font-family: "Pretandard-700";
+}
+
+.commentBox {
+  margin-top: 20px;
 }

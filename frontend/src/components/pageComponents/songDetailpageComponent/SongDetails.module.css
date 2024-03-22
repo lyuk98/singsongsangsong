@@ -45,6 +45,7 @@
   padding: 20px;
   background-color: #f4f9fd;
   font-size: 24px;
+  transition: all 1s ease-in-out;
 }
 
 .radderBox {

@@ -10,8 +10,10 @@ const AlbumWithInfo: React.FC<AlbumWithInfoProps> = ({ dir, ...props }) => {
   return (
     <>
       {dir === "row" && (
-        <div {...props} className={`flex-row-center ${styles.contienr}`}>
-          <Album />
+        <div {...props} className={`flex-row-center ${styles.container}`}>
+          <div className={styles.album}>
+            <Album />
+          </div>
           <div className={styles.dirRow}>
             <h2>노래제목</h2>
             <h3>김작곡</h3>
@@ -21,7 +23,9 @@ const AlbumWithInfo: React.FC<AlbumWithInfoProps> = ({ dir, ...props }) => {
       )}
       {dir === "col" && (
         <div {...props} className={`flex-col-center ${styles.contienr}`}>
-          <Album />
+          <div className={styles.album}>
+            <Album />
+          </div>
           <div className={styles.dirCol}>
             <h2>노래제목</h2>
             <h3>김작곡</h3>

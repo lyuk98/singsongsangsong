@@ -2,10 +2,12 @@ import React from "react";
 import { useParams } from "react-router";
 
 import testArtist from "./../../sources/testimg/artistProfile.jpg";
-import styles from "./SongDetailPage.module.css";
 import Album from "../../components/public/Album";
-import SongInfo from "../../components/pageComponents/songDetailpageComponent/SongInfo";
 import SongDetails from "../../components/pageComponents/songDetailpageComponent/SongDetails";
+import SongInfo from "../../components/public/analysis/SongInfo";
+import EmotionBox from "../../components/public/emotionBox/EmotionBox";
+import styles from "./SongDetailPage.module.css";
+import CommentForm from "../../components/public/comment/CommentForm";
 
 const SongDetailPage = () => {
   const { songId } = useParams();
@@ -30,6 +32,12 @@ const SongDetailPage = () => {
         <div className={styles.content}>
           <SongInfo />
           <SongDetails />
+          <div className={`flex-col-center ${styles.emotionBox}`}>
+            <p>사람들은 이 곡에서</p>
+            <p>이러한 느낌을 받았어요</p>
+            <EmotionBox />
+          </div>
+          <CommentForm />
         </div>
       </div>
     </>
