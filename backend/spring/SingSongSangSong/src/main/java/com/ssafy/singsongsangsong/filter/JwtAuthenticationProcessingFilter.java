@@ -55,7 +55,6 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
 
 		filterChain.doFilter(request, response);
 	}
-
 	public void saveAuthentication(Artist myUser) {
 		String password = myUser.getPassword();
 		if(password == null) {
