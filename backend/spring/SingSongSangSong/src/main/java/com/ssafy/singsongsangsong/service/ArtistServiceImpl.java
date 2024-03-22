@@ -48,10 +48,10 @@ public class ArtistServiceImpl implements ArtistService {
 			.orElseThrow(() -> new ArtistNotFoundException("해당 아티스트가 존재하지 않습니다."));
 
 		// 기존에 좋아요를 눌렀다면, 좋아요를 취소합니다.
-		followingRepository.getFollowingWhere(follower.getId(), followingId)
-			.ifPresentOrElse(
-				followingRepository::delete,
-				() -> followingRepository.save(Follower_Following.of(follower, following)));
+		// followingRepository.getFollowingWhere(follower.getId(), followingId)
+		// 	.ifPresentOrElse(
+		// 		followingRepository::delete,
+		// 		() -> followingRepository.save(Follower_Following.of(follower, following)));
 	}
 
 	@Override
@@ -59,10 +59,10 @@ public class ArtistServiceImpl implements ArtistService {
 		List<Song> publishedSongs = songRepository.getPublishedSongsByArtistId(artistId);
 		EmotionsDto result = new EmotionsDto();
 		for (Song song : publishedSongs) {
-			result.setEnergizedEmotionCount(result.getEnergizedEmotionCount() + song.getEnergizedEmotionCount());
+			// result.setEnergizedEmotionCount(result.getEnergizedEmotionCount() + song.getEnergizedEmotionCount());
 			result.setExcitedEmotionCount(result.getExcitedEmotionCount() + song.getExcitedEmotionCount());
 			result.setFunnyEmotionCount(result.getFunnyEmotionCount() + song.getFunnyEmotionCount());
-			result.setSadEmotionCount(result.getSadEmotionCount() + song.getSadEmotionCount());
+			// result.setSadEmotionCount(result.getSadEmotionCount() + song.getSadEmotionCount());
 			result.setMovedEmotionCount(result.getMovedEmotionCount() + song.getMovedEmotionCount());
 			result.setLikeEmotionCount(result.getLikeEmotionCount() + song.getLikeEmotionCount());
 		}
