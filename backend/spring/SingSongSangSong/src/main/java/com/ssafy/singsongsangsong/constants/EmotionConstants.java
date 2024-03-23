@@ -1,6 +1,6 @@
-package com.ssafy.singsongsangsong.constraints;
+package com.ssafy.singsongsangsong.constants;
 
-public enum EmotionConstraints {
+public enum EmotionConstants {
 	EMOTION1("moved"),
 	EMOTION2("like"),
 	EMOTION3("excited"),
@@ -9,7 +9,7 @@ public enum EmotionConstraints {
 	EMOTION6("sad");
 	private final String name;
 
-	EmotionConstraints(String emotionName) {
+	EmotionConstants(String emotionName) {
 		this.name = emotionName;
 	}
 

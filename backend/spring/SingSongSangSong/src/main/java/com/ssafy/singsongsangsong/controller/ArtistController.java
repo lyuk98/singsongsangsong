@@ -45,5 +45,4 @@ public class ArtistController {
 	public EmotionsDto getEmotions(@PathVariable Long id) {
 		return artistService.getEmotions(id);
 	}
-
 }
