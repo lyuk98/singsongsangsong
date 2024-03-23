@@ -21,7 +21,7 @@ type BarChartType = {
 
 const BarChart = ({ option }: BarChartType) => {
   return (
-    <div style={{ width: "100%", height: "500px", margin: "0 auto" }}>
+    <div style={{ width: "100%", height: "100%", margin: "0 auto" }}>
       <ResponsiveBar
         data={data}
         keys={["watched"]}
@@ -43,6 +43,7 @@ const BarChart = ({ option }: BarChartType) => {
           tickPadding: 5,
           tickRotation: 0,
           // 아래 부분에 선택된 tag값을 가져와서 표시해주어야함
+          // legend -> 아래 legend text
           legend: option,
           legendPosition: "middle",
           legendOffset: 32,

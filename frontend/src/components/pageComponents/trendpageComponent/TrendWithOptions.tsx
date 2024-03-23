@@ -86,7 +86,9 @@ const TrendWithOptions = () => {
                 ))}
               </ul>
             </div>
-            <BarChart option={option} />
+            <div style={{ width: "100%", height: "500px" }}>
+              <BarChart option={option} />
+            </div>
           </div>
           <div className={`flex-col-center ${styles.bottomRightContainer}`}>
             <h1>{option} 1등 곡은??</h1>

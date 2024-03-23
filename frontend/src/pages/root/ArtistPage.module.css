@@ -1,1 +1,18 @@
-/* 노래페이지 설계해놓고 아티스트페이지 만든 내 상태가 레전드 */
+.container {
+  width: 100%;
+}
+
+.headerSection {
+  width: 100%;
+}
+
+.content {
+  width: 100%;
+  margin-top: 15px;
+  padding: 0 6rem;
+}
+
+.emotionBox {
+  width: 100%;
+  padding: 15px;
+}

@@ -14,6 +14,12 @@ body {
   height: auto;
 }
 
+th,
+td {
+  padding: 10px;
+  text-align: center;
+}
+
 article,
 aside,
 details,
@@ -88,10 +94,65 @@ code {
   flex-direction: column;
 }
 
+.flex-col {
+  display: flex;
+  justify-content: center;
+}
+
 .flex-row-center {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.flex-row {
+  display: flex;
+  align-items: center;
+}
+
+.bg-box {
+  background-color: #f4f9fd;
+  border-radius: 15px;
+}
+
+.border-box {
+  border: 1px solid #0085e5;
+  border-radius: 15px;
+}
+
+.w-100 {
+  width: 100%;
+  padding: 15px;
+}
+
+.w-50 {
+  width: 50%;
+}
+
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.my-auto {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.ml-auto {
+  margin-left: auto;
+}
+
+.mr-auto {
+  margin-right: auto;
+}
+
+.mb-auto {
+  margin-bottom: auto;
+}
+
+.mt-auto {
+  margin-top: auto;
 }
 
 /* 폰트 영역  */
