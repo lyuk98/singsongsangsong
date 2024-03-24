@@ -26,12 +26,10 @@ export const router = createBrowserRouter([
       {
         path: "upload",
         element: <UploadPage />,
-        children: [
-          {
-            path: ":songName",
-            element: <AnalysisPage />,
-          },
-        ],
+      },
+      {
+        path: "upload/:songName",
+        element: <AnalysisPage />,
       },
       {
         path: "discover",

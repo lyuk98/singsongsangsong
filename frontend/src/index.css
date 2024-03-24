@@ -96,6 +96,7 @@ code {
 
 .flex-col {
   display: flex;
+  flex-direction: column;
   justify-content: center;
 }
 
@@ -122,7 +123,6 @@ code {
 
 .w-100 {
   width: 100%;
-  padding: 15px;
 }
 
 .w-50 {
@@ -131,6 +131,22 @@ code {
 
 .py-main {
   padding: 0px 6rem;
+}
+
+.p-15 {
+  padding: 15px;
+}
+
+.px-15 {
+  padding: 0px 15px;
+}
+
+.py-15 {
+  padding: 15px 0px;
+}
+
+.gap-15 {
+  gap: 15px;
 }
 
 .mx-auto {
