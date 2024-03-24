@@ -11,6 +11,7 @@ import LoginPage from "../pages/root/LoginPage";
 import AuthLayout from "../pages/layout/AuthLayout";
 import ArtistPage from "../pages/root/ArtistPage";
 import SongDetailPage from "../pages/root/SongDetailPage";
+import UploadPage from "../pages/root/UploadPage";
 
 export const router = createBrowserRouter([
   {
@@ -23,8 +24,14 @@ export const router = createBrowserRouter([
         element: <TrendPage />,
       },
       {
-        path: "analysis",
-        element: <AnalysisPage />,
+        path: "upload",
+        element: <UploadPage />,
+        children: [
+          {
+            path: ":songName",
+            element: <AnalysisPage />,
+          },
+        ],
       },
       {
         path: "discover",

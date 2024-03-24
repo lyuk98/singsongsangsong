@@ -26,7 +26,7 @@ const Sidebar = () => {
           <FaChartLine size="20px" /> <span>트렌드 확인</span>
         </NavLink>
         <NavLink
-          to="/analysis"
+          to="/upload"
           className={({ isActive }) => (isActive ? styles.active : undefined)}
         >
           <TbReportAnalytics size="20px" /> <span>분석하기</span>
