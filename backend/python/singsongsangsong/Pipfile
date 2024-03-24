@@ -10,7 +10,7 @@ python-dotenv = "~=1.0.1"
 gunicorn = "~=21.2.0"
 librosa = "~=0.10.1"
 essentia-tensorflow = "~=2.1b6.dev1110"
-voyager = "~=2.0.5"
+pymilvus = "~=2.4.0"
 
 [dev-packages]
 pylint = "*"
