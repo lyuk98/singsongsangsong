@@ -25,6 +25,7 @@ const SimilarSong = () => {
           {DUMMY.map((element, index) => {
             return (
               <div
+                key={index}
                 onClick={() => changeIndex(index)}
                 className={`${styles.box} ${
                   selectIndex === index ? styles.selceted : ""
