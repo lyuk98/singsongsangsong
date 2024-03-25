@@ -52,7 +52,9 @@ public class Song {
 	private int weeklyDownloadCount;
 	private int weeklyLikeCount;
 
+	@ColumnDefault("false")
 	private boolean isPublished;
+
 	private String musicLocation;
 
 	@ColumnDefault("0")
