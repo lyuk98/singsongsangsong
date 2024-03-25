@@ -12,8 +12,11 @@ Utility functions
     조성을 계산합니다
 `predict_genre`
     장르를 예측합니다
+`predict_mood`
+    분위기를 예측합니다
 """
 
 from s4dsp.tempo import *
 from s4dsp.key import *
 from s4dsp.genre import *
+from s4dsp.mood import *

@@ -1,63 +1,102 @@
-import requests
-import os.path
-import json
-from essentia.standard import MonoLoader, TensorflowPredictEffnetDiscogs, TensorflowPredict2D
-import numpy as np
+# -*- coding: utf-8 -*-
+
+"""
+분위기 예측
+==========
+
+`s4dsp.mood`는 음원에 대한 분위기 예측 기능을 제공합니다
+
+Utility functions
+-----------------
+`predict_mood`
+    분위기를 예측합니다
+"""
+
 from itertools import islice
+import json
+import numpy as np
+from essentia.standard import ( # pylint: disable=no-name-in-module
+    MonoLoader,
+    TensorflowPredictEffnetDiscogs,
+    TensorflowPredict2D
+)
+from _dependencies import require
 
 # 곡 분위기 분석에 필요한 파일 정보
-file_infos = [
-    {
-        "basepath": "https://essentia.upf.edu/models/music-style-classification/discogs-effnet/",
-        "filename": "discogs-effnet-bs64-1.pb"
-    },
-    {
-        "basepath": "https://essentia.upf.edu/models/classification-heads/mtg_jamendo_moodtheme/",
-        "filename": "mtg_jamendo_moodtheme-discogs-effnet-1.pb"
-    },
-    {
-        "basepath": "https://essentia.upf.edu/models/classification-heads/mtg_jamendo_moodtheme/",
-        "filename": "mtg_jamendo_moodtheme-discogs-effnet-1.json"
-    }
-]
+require(
+    "s4dsp/data/discogs-effnet-bs64-1.pb",
+    url="https://essentia.upf.edu/models/music-style-classification/discogs-effnet/"
+    "discogs-effnet-bs64-1.pb",
+    sha256sum="3ed9af50d5367c0b9c795b294b00e7599e4943244f4cbd376869f3bfc87721b1"
+)
+require(
+    "s4dsp/data/mtg_jamendo_moodtheme-discogs-effnet-1.pb",
+    url="https://essentia.upf.edu/models/classification-heads/mtg_jamendo_moodtheme/"
+    "mtg_jamendo_moodtheme-discogs-effnet-1.pb",
+    sha256sum="03f2b047020aee4ab39f8880da7bdae2a36d06a1508d656c6d424ad4d6de07a9"
+)
+require(
+    "s4dsp/data/mtg_jamendo_moodtheme-discogs-effnet-1.json",
+    url="https://essentia.upf.edu/models/classification-heads/mtg_jamendo_moodtheme/"
+    "mtg_jamendo_moodtheme-discogs-effnet-1.json",
+    sha256sum="d62cd90263e4d613fa7fcce7a831e339450394794af63685f96e065c1a896ab0"
+)
 
-# 필요한 파일 존재 확인 및 없을 시 다운로드
-for file_info in file_infos:
-    filepath = "s4dsp/data/{}".format(file_info.get("filename"))
-    
-    if not os.path.isfile(filepath):
-        print("Downloading {}".format(file_info.get("filename")))
-        response = requests.get(file_info.get("basepath") + file_info.get("filename"))
+# Metadata 파일에서 장르 이름 불러오기
+with open(
+    "s4dsp/data/mtg_jamendo_moodtheme-discogs-effnet-1.json",
+    encoding="utf-8"
+) as metadata_file:
+    _metadata = json.load(metadata_file)
+    _mood_names = _metadata.get("classes")
+    del _metadata
 
-        file = open(filepath, "wb")
-        file.write(response.content)
-        file.close()
-    else:
-        print("Using downloaded {}".format(file_info.get("filename")))
+def predict_mood(audio: np.ndarray) -> dict[str, float]:
+    """분위기를 예측합니다
 
-# Metadata 파일에서 분위기 이름 불러오기
-metadata_file = open("s4dsp/data/{}".format("mtg_jamendo_moodtheme-discogs-effnet-1.json"), encoding="utf-8")
-metadata = json.load(metadata_file)
-metadata_file.close()
-mood_names = metadata.get("classes")
+    Essentia의 MTG-Jamendo mood and theme 모델을 사용하여 장르를 예측합니다
 
-filename = "s4dsp/data/audio.wav"
+    Parameters
+    ----------
+    audio : np.ndarray
+        essentia.MonoLoader로 불러온 음원 데이터
 
-# 음원 파일을 16kHz 모노 형식으로 불러온 후 EffnetDiscogs 기반 모델로 embeddings 생성
-audio = MonoLoader(filename=filename, sampleRate=16000, resampleQuality=4)()
-embedding_model = TensorflowPredictEffnetDiscogs(graphFilename="s4dsp/data/discogs-effnet-bs64-1.pb", output="PartitionedCall:1")
-embeddings = embedding_model(audio)
+    Returns
+    -------
+    dict[str, float]
+        분위기 이름과 연관성이 연관성 내림차순으로 정렬된 dictionary
+    """
 
-# 다운로드 받은 모델로 분위기 예측 및 평균값 계산
-model = TensorflowPredict2D(graphFilename="s4dsp/data/mtg_jamendo_moodtheme-discogs-effnet-1.pb", output="model/Sigmoid")
-predictions = model(embeddings)
-predictions_mean = np.mean(predictions, axis=0)
+    # 분위기 분석에 필요한 모델 불러오기
+    embedding_model = TensorflowPredictEffnetDiscogs(
+        graphFilename="s4dsp/data/discogs-effnet-bs64-1.pb",
+        output="PartitionedCall:1"
+    )
+    prediction_model = TensorflowPredict2D(
+        graphFilename="s4dsp/data/mtg_jamendo_moodtheme-discogs-effnet-1.pb",
+        output="model/Sigmoid"
+    )
 
-# 높은 순으로 분위기 정렬
-moods = { mood_names[i]: predictions_mean[i] for i in range(len(mood_names)) }
-moods = dict(sorted(moods.items(), key=lambda item: item[1], reverse=True))
+    # Discogs-EffNet 기반 모델로 embeddings 생성
+    embeddings = embedding_model(audio)
 
-# 상위 5개의 분위기 출력
-print("Mood classification result")
-for mood, value in islice(moods.items(), 5):
-    print("  {}: {:.2f}".format(mood, value))
+    # MTG-Jamendo mood and theme 모델로 장르 예측 및 평균값 계산
+    predictions = prediction_model(embeddings)
+    predictions_mean = np.mean(predictions, axis=0)
+
+    # 높은 순으로 장르 예측 값 정렬
+    moods = { _mood_names[i]: predictions_mean[i] for i in range(len(_mood_names)) }
+    moods = dict(sorted(moods.items(), key=lambda item: item[1], reverse=True))
+
+    return moods
+
+if __name__ == "__main__":
+    FILENAME = "s4dsp/data/audio.wav"
+
+    reference_audio = MonoLoader(filename=FILENAME, sampleRate=16000, resampleQuality=4)()
+    predicted_moods = predict_mood(reference_audio)
+
+    # 상위 5개의 분위기 출력
+    print("Mood classification result")
+    for mood, value in islice(predicted_moods.items(), 5):
+        print(f"  {mood}: {value:.2f}")

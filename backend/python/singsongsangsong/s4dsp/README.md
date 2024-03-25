@@ -83,8 +83,8 @@ pipenv run python s4dsp/genre.py
 분위기 분석을 위해 기본적으로 `s4dsp/data/audio.wav`에서 음원을 불러오므로 음원을 기본 경로에 배치하거나 아래 예시와 같이 `mood.py`를 수정하여 다른 경로를 지정합니다
 
 ```diff
-- filename = "s4dsp/data/audio.wav"
-+ filename = "s4dsp/data/test-audio.flac"
+-    FILENAME = "s4dsp/data/audio.wav"
++    FILENAME = "s4dsp/data/test-audio.flac"
 ```
 
 `mood.py`를 실행합니다
