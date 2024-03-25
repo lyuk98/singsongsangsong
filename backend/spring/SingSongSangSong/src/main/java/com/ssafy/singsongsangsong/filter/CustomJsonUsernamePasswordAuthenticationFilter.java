@@ -21,8 +21,10 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Component
+@Slf4j
 public class CustomJsonUsernamePasswordAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
 	private static final String DEFAULT_LOGIN_REQUEST_URL = "/login"; // "/login"으로 오는 요청을 처리
@@ -51,8 +53,8 @@ public class CustomJsonUsernamePasswordAuthenticationFilter extends AbstractAuth
 		String messageBody = StreamUtils.copyToString(request.getInputStream(), StandardCharsets.UTF_8);
 
 		Map<String, String> usernamePasswordMap = objectMapper.readValue(messageBody, Map.class);
-		System.out.println(
-			"CustomJsonUsernamePasswordAuthenticationFilter" + "\n" + "usernamePasswordMap : " + usernamePasswordMap);
+		log.info(
+			"CustomJsonUsernamePasswordAuthenticationFilter" + "\n" + "usernamePasswordMap : {}" , usernamePasswordMap);
 		String email = usernamePasswordMap.get(USERNAME_KEY);
 		String password = usernamePasswordMap.get(PASSWORD_KEY);
 
