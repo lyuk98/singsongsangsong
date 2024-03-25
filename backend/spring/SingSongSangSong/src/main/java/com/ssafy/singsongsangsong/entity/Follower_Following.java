@@ -8,15 +8,13 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor
-public class Follower_Following extends BaseTimeEntity {
+public class Follower_Following {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -24,17 +22,7 @@ public class Follower_Following extends BaseTimeEntity {
 	@ManyToOne
 	@JoinColumn(name = "fromArtistId")
 	private Artist from;
-
 	@ManyToOne
 	@JoinColumn(name = "toArtistId")
 	private Artist to;
-
-	private Follower_Following(Artist from, Artist to) {
-		this.from = from;
-		this.to = to;
-	}
-
-	public static Follower_Following of(Artist follwer, Artist following) {
-		return new Follower_Following(follwer, following);
-	}
 }

@@ -1,7 +1,5 @@
 package com.ssafy.singsongsangsong.entity;
 
-import java.util.List;
-
 import org.hibernate.annotations.ColumnDefault;
 
 import jakarta.persistence.Entity;
@@ -10,7 +8,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,7 +19,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Song extends BaseTimeEntity {
+public class Song {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -39,9 +36,6 @@ public class Song extends BaseTimeEntity {
 	@OneToOne
 	@JoinColumn(name = "albumImageId")
 	private Image albumImage;
-
-	@OneToMany(mappedBy = "song")
-	private List<Atmosphere> atmospheres;
 
 	private String title;
 	private String lyrics;
@@ -67,6 +61,7 @@ public class Song extends BaseTimeEntity {
 	private int likeEmotionCount;
 	@ColumnDefault("0")
 	private int excitedEmotionCount;
+
 	@ColumnDefault("0")
 	private int energizedEmotionCount;
 	@ColumnDefault("0")
