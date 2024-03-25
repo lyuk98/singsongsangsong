@@ -1,35 +1,6 @@
 spring:
   application:
     name: SingSongSangSong
-
-  jpa:
-    show-sql: true
-    hibernate:
-      ddl-auto: create
-
-  datasource:
-    driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://stg-yswa-kr-practice-db-master.mariadb.database.azure.com:3306/S10P22E206?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8
-    username: S10P22E206
-    password: CuSfPXDNXr
-  data:
-    mongodb:
-      uri: mongodb+srv://S10P22E206:rui4ZhwEt1@ssafy.ngivl.mongodb.net/S10P22E206?authSource=admin
-
-  output:
-    ansi:
-      enabled: always
-  batch:
-    jdbc:
-      initialize-schema: always
-
-synology:
-  host: zip.udon.party
-  account: jinjoo021
-  passwd: 206s4nas!
-  baseDir: /ssafy
-
-
   security:
     oauth2:
       client:
@@ -67,6 +38,33 @@ synology:
             token-uri: https://kauth.kakao.com/oauth/token
             user-info-uri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create
+
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://stg-yswa-kr-practice-db-master.mariadb.database.azure.com:3306/S10P22E206?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8
+    username: S10P22E206
+    password: CuSfPXDNXr
+  data:
+    mongodb:
+      uri: mongodb+srv://S10P22E206:rui4ZhwEt1@ssafy.ngivl.mongodb.net/S10P22E206?authSource=admin
+
+  output:
+    ansi:
+      enabled: always
+  batch:
+    jdbc:
+      initialize-schema: always
+
+synology:
+  host: zip.udon.party
+  account: jinjoo021
+  passwd: 206s4nas!
+  baseDir: /ssafy
+
 jwt:
   secretKey: "QjaVCjBnUIWtzWt8erZbO2ZFApswkbVhSArPu6GshQ8jp2OLtRhhOVl3pv8DTxaBA6kEjeZPJz8Uhy66tpGVwBEWIdflSQcSwTNvnMM7FSL8hz8N4syBT9nWqT006unUVqIemV9L8jMtu2bPFRu8p6qO8RXySni4cliOF4Wd1dUWiAx7Io4ONcW3UHXwtD4QvDstZm4EWHGnXXaZ4um4Pj5BXwJJb7jmlGMXYM84ZBwyDA6I1XmpQlv19O0bnZjqMqbNo5ockscMYv1xOHQSiTXBf6YjD0y98ZgRZiRkz4cYjxvJDpWGN28DmArr2TZ0AvRLd78uvmJzybH137CIgGRzwtfR91MbG5Q3QAMytYPgdkxv2weeOFGcAlIUEIAXkn6pXRPrxWZBUL3NrzEyYJyK6xUbZM1T4ZgelQ650DK6RAdWgLaHA0sdw7lZltcZRoVjhgteMWpnvPWOaZ97xR25cNYdOLvFhrO9bev8QnZfHB7HKiPE3gCpN4539wNlQjaVCjBnUIWtzWt8erZbO2ZFApswkbVhSArPu6GshQ8jp2OLtRhhOVl3pv8DTxaBA6kEjeZPJz8Uhy66tpGVwBEWIdflSQcSwTNvnMM7FSL8hz8N4syBT9nWqT006unUVqIemV9L8jMtu2bPFRu8p6qO8RXySni4cliOF4Wd1dUWiAx7Io4ONcW3UHXwtD4QvDstZm4EWHGnXXaZ4um4Pj5BXwJJb7jmlGMXYM84ZBwyDA6I1XmpQlv19O0bnZjqMqbNo5ockscMYv1xOHQSiTXBf6YjD0y98ZgRZiRkz4cYjxvJDpWGN28DmArr2TZ0AvRLd78uvmJzybH137CIgGRzwtfR91MbG5Q3QAMytYPgdkxv2weeOFGcAlIUEIAXkn6pXRPrxWZBUL3NrzEyYJyK6xUbZM1T4ZgelQ650DK6RAdWgLaHA0sdw7lZltcZRoVjhgteMWpnvPWOaZ97xR25cNYdOLvFhrO9bev8QnZfHB7HKiPE3gCpN4539wNl"
 
