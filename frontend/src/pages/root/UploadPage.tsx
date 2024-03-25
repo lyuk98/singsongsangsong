@@ -8,6 +8,8 @@ import { current } from "@reduxjs/toolkit";
 import styles from "./UploadPage.module.css";
 import Button from "../../components/buttons/Button";
 import { useAxios } from "../../hooks/api/useAxios";
+import { AnalyzedStateType } from "../../utils/types";
+import { handleStartAnalyze } from "../../utils/api/api";
 
 // 참고해야할 사이트
 // https://hojung-testbench.tistory.com/entry/React-%ED%8C%8C%EC%9D%BC-%EC%97%85%EB%A1%9C%EB%93%9C-%EA%B8%B0%EB%8A%A5-%EA%B5%AC%ED%98%84
@@ -61,7 +63,7 @@ const UploadPage = () => {
     event.preventDefault();
     event.stopPropagation();
     const data = event.dataTransfer.files;
-    console.log(data);
+    console.log(data[0]);
     if (data && data[0].type.startsWith("audio/")) {
       const url = URL.createObjectURL(data[0]);
       setUploadFile({
@@ -116,7 +118,10 @@ const UploadPage = () => {
                 style={{ cursor: "pointer" }}
               />
             </h1>
-            <Button>분석하기</Button>
+            <Button disabled={!uploadFile}
+            onClick={() => {
+              handleStartAnalyze(uploadFile.file)
+            }}>분석하기</Button>
           </div>
         ) : (
           <label
@@ -157,8 +162,21 @@ const UploadPage = () => {
             <GrPowerReset size={24} />
           </button>
         </div>
-        <div className={`w-100 bg-box flex-col-center ${styles.checkBox}`}>
-          {analyzedData ? "" : <h2>현재 분석중인 음악이 없습니다.</h2>}
+        <div className={`w-100 bg-box flex-col-center p-15 ${styles.checkBox}`}>
+          {!analyzedData && <h2>현재 분석중인 음악이 없습니다.</h2>}
+          {analyzedData &&
+            analyzedData.map((element: AnalyzedStateType) => {
+              return (
+                <div>
+                  <h2>{element.title}</h2>
+                  {element.process === "in process" ? (
+                    <h2>분석중</h2>
+                  ) : (
+                    <h2>분석완료</h2>
+                  )}
+                </div>
+              );
+            })}
         </div>
       </div>
     </div>
