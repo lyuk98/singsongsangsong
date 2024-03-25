@@ -21,58 +21,58 @@ cd backend/python/singsongsangsong/
 pipenv install
 ```
 
-아래 기능 별 가이드는 환경 설정을 완료하고 명령 실행 시 `pwd`가 이 모듈의 경로임을 가정합니다
+아래 기능 별 가이드는 환경 설정을 완료하고 명령 실행 시 `pwd`가 상위 프로젝트의 경로임을 가정합니다
 
 ```sh
-cd backend/python/singsongsangsong/s4dsp/
+cd backend/python/singsongsangsong/
 ```
 
 ### 박자 분석
 
-박자 분석은 기본적으로 `data/audio.wav`에서 음원을 불러오므로 음원을 기본 경로에 배치하거나 아래 예시와 같이 `tempo.py`를 수정하여 다른 경로를 지정합니다
+박자 분석은 기본적으로 `s4dsp/data/audio.wav`에서 음원을 불러오므로 음원을 기본 경로에 배치하거나 아래 예시와 같이 `tempo.py`를 수정하여 다른 경로를 지정합니다
 
 ```diff
--    FILENAME = "data/audio.wav"
-+    FILENAME = "data/test-audio.flac"
+-    FILENAME = "s4dsp/data/audio.wav"
++    FILENAME = "s4dsp/data/test-audio.flac"
 ```
 
 `tempo.py`를 실행합니다
 
 ```sh
-pipenv run python tempo.py
+pipenv run python s4dsp/tempo.py
 ```
 
 ### 조성 분석
 
-박자 분석은 기본적으로 `data/audio.wav`에서 음원을 불러오므로 음원을 기본 경로에 배치하거나 아래 예시와 같이 `key.py`를 수정하여 다른 경로를 지정합니다
+박자 분석은 기본적으로 `s4dsp/data/audio.wav`에서 음원을 불러오므로 음원을 기본 경로에 배치하거나 아래 예시와 같이 `key.py`를 수정하여 다른 경로를 지정합니다
 
 ```diff
--    FILENAME = "data/audio.wav"
-+    FILENAME = "data/test-audio.flac"
+-    FILENAME = "s4dsp/data/audio.wav"
++    FILENAME = "s4dsp/data/test-audio.flac"
 ```
 
 `key.py`를 실행합니다
 
 ```sh
-pipenv run python key.py
+pipenv run python s4dsp/key.py
 ```
 
 ### 장르 분석
 
-장르 분석을 위해 기본적으로 `data/audio.wav`에서 음원을 불러오므로 음원을 기본 경로에 배치하거나 아래 예시와 같이 `mood.py`를 수정하여 다른 경로를 지정합니다
+장르 분석을 위해 기본적으로 `s4dsp/data/audio.wav`에서 음원을 불러오므로 음원을 기본 경로에 배치하거나 아래 예시와 같이 `mood.py`를 수정하여 다른 경로를 지정합니다
 
 ```diff
--    FILENAME = "data/audio.wav"
-+    FILENAME = "data/test-audio.flac"
+-    FILENAME = "s4dsp/data/audio.wav"
++    FILENAME = "s4dsp/data/test-audio.flac"
 ```
 
 `genre.py`를 실행합니다
 
 ```sh
-pipenv run python genre.py
+pipenv run python s4dsp/genre.py
 ```
 
-`genre.py`는 아래의 파일들을 필요로 하며 `data/` 내에 존재하지 않을 시 자동으로 다운로드를 진행합니다
+`genre.py`는 아래의 파일들을 필요로 하며 `s4dsp/data/` 내에 존재하지 않을 시 자동으로 다운로드를 진행합니다
 
 - [`discogs-effnet-bs64-1.pb`](https://essentia.upf.edu/models/music-style-classification/discogs-effnet/discogs-effnet-bs64-1.pb)
 - [`genre_discogs400-discogs-effnet-1.pb`](https://essentia.upf.edu/models/classification-heads/genre_discogs400/genre_discogs400-discogs-effnet-1.pb)
@@ -80,20 +80,20 @@ pipenv run python genre.py
 
 ### 분위기 분석
 
-분위기 분석을 위해 기본적으로 `data/audio.wav`에서 음원을 불러오므로 음원을 기본 경로에 배치하거나 아래 예시와 같이 `mood.py`를 수정하여 다른 경로를 지정합니다
+분위기 분석을 위해 기본적으로 `s4dsp/data/audio.wav`에서 음원을 불러오므로 음원을 기본 경로에 배치하거나 아래 예시와 같이 `mood.py`를 수정하여 다른 경로를 지정합니다
 
 ```diff
-- filename = "data/audio.wav"
-+ filename = "data/test-audio.flac"
+- filename = "s4dsp/data/audio.wav"
++ filename = "s4dsp/data/test-audio.flac"
 ```
 
 `mood.py`를 실행합니다
 
 ```sh
-pipenv run python mood.py
+pipenv run python s4dsp/mood.py
 ```
 
-`mood.py`는 아래의 파일들을 필요로 하며 `data/` 내에 존재하지 않을 시 자동으로 다운로드를 진행합니다
+`mood.py`는 아래의 파일들을 필요로 하며 `s4dsp/data/` 내에 존재하지 않을 시 자동으로 다운로드를 진행합니다
 
 - [`discogs-effnet-bs64-1.pb`](https://essentia.upf.edu/models/music-style-classification/discogs-effnet/discogs-effnet-bs64-1.pb)
 - [`mtg_jamendo_moodtheme-discogs-effnet-1.pb`](https://essentia.upf.edu/models/classification-heads/mtg_jamendo_moodtheme/mtg_jamendo_moodtheme-discogs-effnet-1.pb)

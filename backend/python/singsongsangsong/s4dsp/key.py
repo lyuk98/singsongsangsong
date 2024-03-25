@@ -93,7 +93,7 @@ def find_key(y: np.ndarray, sr: float):
     return key, alternative_key
 
 if __name__ == "__main__":
-    FILENAME = "data/audio.wav"
+    FILENAME = "s4dsp/data/audio.wav"
 
     audio, sample_rate = librosa.load(FILENAME)
     primary, alternative = find_key(audio, sample_rate)

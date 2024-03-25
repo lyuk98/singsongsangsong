@@ -23,7 +23,7 @@ file_infos = [
 
 # 필요한 파일 존재 확인 및 없을 시 다운로드
 for file_info in file_infos:
-    filepath = "data/{}".format(file_info.get("filename"))
+    filepath = "s4dsp/data/{}".format(file_info.get("filename"))
     
     if not os.path.isfile(filepath):
         print("Downloading {}".format(file_info.get("filename")))
@@ -36,20 +36,20 @@ for file_info in file_infos:
         print("Using downloaded {}".format(file_info.get("filename")))
 
 # Metadata 파일에서 분위기 이름 불러오기
-metadata_file = open("data/{}".format("mtg_jamendo_moodtheme-discogs-effnet-1.json"), encoding="utf-8")
+metadata_file = open("s4dsp/data/{}".format("mtg_jamendo_moodtheme-discogs-effnet-1.json"), encoding="utf-8")
 metadata = json.load(metadata_file)
 metadata_file.close()
 mood_names = metadata.get("classes")
 
-filename = "data/audio.wav"
+filename = "s4dsp/data/audio.wav"
 
 # 음원 파일을 16kHz 모노 형식으로 불러온 후 EffnetDiscogs 기반 모델로 embeddings 생성
 audio = MonoLoader(filename=filename, sampleRate=16000, resampleQuality=4)()
-embedding_model = TensorflowPredictEffnetDiscogs(graphFilename="data/discogs-effnet-bs64-1.pb", output="PartitionedCall:1")
+embedding_model = TensorflowPredictEffnetDiscogs(graphFilename="s4dsp/data/discogs-effnet-bs64-1.pb", output="PartitionedCall:1")
 embeddings = embedding_model(audio)
 
 # 다운로드 받은 모델로 분위기 예측 및 평균값 계산
-model = TensorflowPredict2D(graphFilename="data/mtg_jamendo_moodtheme-discogs-effnet-1.pb", output="model/Sigmoid")
+model = TensorflowPredict2D(graphFilename="s4dsp/data/mtg_jamendo_moodtheme-discogs-effnet-1.pb", output="model/Sigmoid")
 predictions = model(embeddings)
 predictions_mean = np.mean(predictions, axis=0)
 

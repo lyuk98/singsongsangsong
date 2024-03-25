@@ -33,7 +33,7 @@ def get_tempo(y: np.ndarray, sr: float) -> float:
     return librosa.beat.beat_track(y=y, sr=sr)[0]
 
 if __name__ == "__main__":
-    FILENAME = "data/audio.wav"
+    FILENAME = "s4dsp/data/audio.wav"
     audio, sample_rate = librosa.load(FILENAME)
 
     tempo = librosa.beat.beat_track(y=audio, sr=sample_rate)[0]

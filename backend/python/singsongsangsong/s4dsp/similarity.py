@@ -32,7 +32,7 @@ def get_mfcc(y: np.ndarray, sr: float) -> np.ndarray:
     return librosa.feature.mfcc(y=y, sr=sr, n_mfcc=1)[0]
 
 # Parameters
-REFERENCE_PATH = "data/train/"
+REFERENCE_PATH = "s4dsp/data/train/"
 
 SAMPLE_RATE = 22050
 SPLIT_SAMPLES = librosa.time_to_samples(10, sr=SAMPLE_RATE)
@@ -103,7 +103,7 @@ with os.scandir(REFERENCE_PATH) as it:
 
         print(f"Adding {entry.name} took {(add_end - add_start) // 1000000} milliseconds")
 
-FILENAME = "data/audio.wav"
+FILENAME = "s4dsp/data/audio.wav"
 
 audio = load_audio(path=FILENAME, sr=SAMPLE_RATE)
 
