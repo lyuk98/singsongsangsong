@@ -74,7 +74,7 @@ const UploadPage = () => {
     event.stopPropagation();
 
     const file = event.target.files;
-
+    console.log(file);
     if (file) {
       const url = URL.createObjectURL(file[0]);
       setUploadFile({
@@ -126,6 +126,7 @@ const UploadPage = () => {
               type="file"
               accept="audio/*"
               className={`${styles.file}`}
+              onChange={handleFileInput}
             />
             <MdLibraryMusic
               style={{ pointerEvents: "none" }}

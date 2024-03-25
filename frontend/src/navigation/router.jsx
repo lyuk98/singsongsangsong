@@ -12,6 +12,7 @@ import AuthLayout from "../pages/layout/AuthLayout";
 import ArtistPage from "../pages/root/ArtistPage";
 import SongDetailPage from "../pages/root/SongDetailPage";
 import UploadPage from "../pages/root/UploadPage";
+import PostPage from "../pages/root/PostPage";
 
 export const router = createBrowserRouter([
   {
@@ -30,6 +31,10 @@ export const router = createBrowserRouter([
       {
         path: "upload/:songName",
         element: <AnalysisPage />,
+      },
+      {
+        path: "upload/:songName/post",
+        element: <PostPage />,
       },
       {
         path: "discover",
