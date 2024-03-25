@@ -1,12 +1,13 @@
-package com.ssafy.singsongsangsong.constraints;
+package com.ssafy.singsongsangsong.constants;
 
 import lombok.Getter;
 
 @Getter
-public enum GenreConstraints {
+public enum GenreConstants {
 	BLUES("Boogie Woogie", "Chicago Blues", "Country Blues", "Delta Blues", "Electric Blues", "Harmonica Blues",
 		"Jump Blues", "Louisiana Blues", "Modern Electric Blues", "Piano Blues", "Rhythm & Blues",
-		"Texas Blues Brass & Military: Brass Band", "Marches", "Military"),
+		"Texas Blues"),
+	BRASSANDMilitary("Brass Band", "Marches", "Military"),
 	CHILDRENS("Educational", "Nursery Rhymes", "Story"),
 	CLASSICAL("Baroque", "Choral", "Classical", "Contemporary", "Impressionist", "Medieval", "Modern", "Neo-Classical",
 		"Neo-Romantic", "Opera", "Post-Modern", "Renaissance", "Romantic"),
@@ -26,7 +27,8 @@ public enum GenreConstraints {
 	FOLKWORLDANDCOUNTRY("African", "Bluegrass", "Cajun", "Canzone Napoletana", "Catalan Music", "Celtic", "Country",
 		"Fado", "Flamenco", "Folk", "Gospel", "Highlife", "Hillbilly", "Hindustani", "Honky Tonk", "Indian Classical",
 		"Laïkó", "Nordic", "Pacific", "Polka", "Raï", "Romani", "Soukous", "Séga", "Volksmusik", "Zouk",
-		"Éntekhno Funk / Soul: Afrobeat", "Boogie", "Contemporary R&B", "Disco", "Free Funk", "Funk", "Gospel",
+		"Éntekhno"),
+	FUNKANDSOUL("Afrobeat", "Boogie", "Contemporary R&B", "Disco", "Free Funk", "Funk", "Gospel",
 		"Neo Soul", "New Jack Swing", "P.Funk", "Psychedelic", "Rhythm & Blues", "Soul", "Swingbeat", "UK Street Soul"),
 	HIPHOP("Bass Music", "Boom Bap", "Bounce", "Britcore", "Cloud Rap", "Conscious", "Crunk", "Cut-up/DJ",
 		"DJ Battle Tool", "Electro", "G-Funk", "Gangsta", "Grime", "Hardcore Hip-Hop", "Horrorcore", "Instrumental",
@@ -62,7 +64,7 @@ public enum GenreConstraints {
 
 	private final String[] genreCategory;
 
-	GenreConstraints(String... extensions) {
+	GenreConstants(String... extensions) {
 		this.genreCategory = extensions;
 	}
 }

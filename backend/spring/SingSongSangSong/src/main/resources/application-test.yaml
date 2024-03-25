@@ -1,22 +1,12 @@
-# local phase에서는 h2-database를 사용합니다.
 spring:
   jpa:
     show-sql: true
     hibernate:
       ddl-auto: create-drop
 
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
-      settings:
-        trace: true
-        web-admin-password: 1234
-
-    datasource:
-      driver-class-name: org.h2.Driver
-      url: jdbc:h2:~/test
-      username: root
-      password: 1234
-      initialization-mode: always
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://localhost:3306/singsongsangsong?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8
+    username: root
+    password: 1234
 
