@@ -1,63 +1,100 @@
-import requests
-import os.path
-import json
-from essentia.standard import MonoLoader, TensorflowPredictEffnetDiscogs, TensorflowPredict2D
-import numpy as np
+# -*- coding: utf-8 -*-
+
+"""
+장르 예측
+========
+
+`s4dsp.genre`는 음원에 대한 장르 예측 기능을 제공합니다
+
+Utility functions
+-----------------
+`predict_genre`
+    장르를 예측합니다
+"""
+
 from itertools import islice
+import json
+import numpy as np
+from essentia.standard import ( # pylint: disable=no-name-in-module
+    MonoLoader,
+    TensorflowPredictEffnetDiscogs,
+    TensorflowPredict2D
+)
+from _dependencies import require
 
 # 장르 분석에 필요한 파일 정보
-file_infos = [
-    {
-        "basepath": "https://essentia.upf.edu/models/music-style-classification/discogs-effnet/",
-        "filename": "discogs-effnet-bs64-1.pb"
-    },
-    {
-        "basepath": "https://essentia.upf.edu/models/classification-heads/genre_discogs400/",
-        "filename": "genre_discogs400-discogs-effnet-1.pb"
-    },
-    {
-        "basepath": "https://essentia.upf.edu/models/classification-heads/genre_discogs400/",
-        "filename": "genre_discogs400-discogs-effnet-1.json"
-    }
-]
-
-# 필요한 파일 존재 확인 및 없을 시 다운로드
-for file_info in file_infos:
-    filepath = "data/{}".format(file_info.get("filename"))
-    
-    if not os.path.isfile(filepath):
-        print("Downloading {}".format(file_info.get("filename")))
-        response = requests.get(file_info.get("basepath") + file_info.get("filename"))
-
-        file = open(filepath, "wb")
-        file.write(response.content)
-        file.close()
-    else:
-        print("Using downloaded {}".format(file_info.get("filename")))
+require(
+    "data/discogs-effnet-bs64-1.pb",
+    url="https://essentia.upf.edu/models/music-style-classification/discogs-effnet/"
+    "discogs-effnet-bs64-1.pb",
+    sha256sum="3ed9af50d5367c0b9c795b294b00e7599e4943244f4cbd376869f3bfc87721b1"
+)
+require(
+    "data/genre_discogs400-discogs-effnet-1.pb",
+    url="https://essentia.upf.edu/models/classification-heads/genre_discogs400/"
+    "genre_discogs400-discogs-effnet-1.pb",
+    sha256sum="3885ba078a35249af94b8e5e4247689afac40deca4401a4bc888daf5a579c01c"
+)
+require(
+    "data/genre_discogs400-discogs-effnet-1.json",
+    url="https://essentia.upf.edu/models/classification-heads/genre_discogs400/"
+    "genre_discogs400-discogs-effnet-1.json",
+    sha256sum="2d367319d9b782ffa10f69abf0e805b3ac4e10899025e5bdbaceda3919b243e0"
+)
 
 # Metadata 파일에서 장르 이름 불러오기
-metadata_file = open("data/genre_discogs400-discogs-effnet-1.json", encoding="utf-8")
-metadata = json.load(metadata_file)
-metadata_file.close()
-genre_names = metadata.get("classes")
+with open("data/genre_discogs400-discogs-effnet-1.json", encoding="utf-8") as metadata_file:
+    _metadata = json.load(metadata_file)
+    _genre_names = _metadata.get("classes")
+    del _metadata
 
-filename = "data/audio.wav"
+def predict_genre(audio: np.ndarray) -> dict[str, float]:
+    """장르를 예측합니다
 
-# 음원 파일을 16kHz 모노 형식으로 불러온 후 EffnetDiscogs 기반 모델로 embeddings 생성
-audio = MonoLoader(filename=filename, sampleRate=16000, resampleQuality=4)()
-embedding_model = TensorflowPredictEffnetDiscogs(graphFilename="data/discogs-effnet-bs64-1.pb", output="PartitionedCall:1")
-embeddings = embedding_model(audio)
+    Essentia의 Discogs400 모델을 사용하여 장르를 예측합니다
 
-# 다운로드 받은 모델로 장르 예측 및 평균값 계산
-model = TensorflowPredict2D(graphFilename="data/genre_discogs400-discogs-effnet-1.pb", input="serving_default_model_Placeholder", output="PartitionedCall:0")
-predictions = model(embeddings)
-predictions_mean = np.mean(predictions, axis=0)
+    Parameters
+    ----------
+    audio : np.ndarray
+        essentia.MonoLoader로 불러온 음원 데이터
 
-# 높은 순으로 장르 예측 값 정렬
-genres = { genre_names[i]: predictions_mean[i] for i in range(len(genre_names)) }
-genres = dict(sorted(genres.items(), key=lambda item: item[1], reverse=True))
+    Returns
+    -------
+    dict[str, float]
+        장르 이름과 연관성이 연관성 내림차순으로 정렬된 dictionary
+    """
 
-# 상위 5개의 장르 출력
-print("Genre classification result")
-for genre, value in islice(genres.items(), 5):
-    print("  {}: {:.2f}".format(genre, value))
+    # 장르 분석에 필요한 모델 불러오기
+    embedding_model = TensorflowPredictEffnetDiscogs(
+        graphFilename="data/discogs-effnet-bs64-1.pb",
+        output="PartitionedCall:1"
+    )
+    prediction_model = TensorflowPredict2D(
+        graphFilename="data/genre_discogs400-discogs-effnet-1.pb",
+        input="serving_default_model_Placeholder",
+        output="PartitionedCall:0"
+    )
+
+    # Discogs-EffNet 기반 모델로 embeddings 생성
+    embeddings = embedding_model(audio)
+
+    # Genre Discogs400 모델로 장르 예측 및 평균값 계산
+    predictions = prediction_model(embeddings)
+    predictions_mean = np.mean(predictions, axis=0)
+
+    # 높은 순으로 장르 예측 값 정렬
+    genres = { _genre_names[i]: predictions_mean[i] for i in range(len(_genre_names)) }
+    genres = dict(sorted(genres.items(), key=lambda item: item[1], reverse=True))
+
+    return genres
+
+if __name__ == "__main__":
+    FILENAME = "data/audio.wav"
+
+    reference_audio = MonoLoader(filename=FILENAME, sampleRate=16000, resampleQuality=4)()
+    predicted_genres = predict_genre(reference_audio)
+
+    # 상위 5개의 장르 출력
+    print("Genre classification result")
+    for genre, value in islice(predicted_genres.items(), 5):
+        print(f"  {genre}: {value:.2f}")

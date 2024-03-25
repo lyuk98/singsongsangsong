@@ -62,8 +62,8 @@ pipenv run python key.py
 장르 분석을 위해 기본적으로 `data/audio.wav`에서 음원을 불러오므로 음원을 기본 경로에 배치하거나 아래 예시와 같이 `mood.py`를 수정하여 다른 경로를 지정합니다
 
 ```diff
-- filename = "data/audio.wav"
-+ filename = "data/test-audio.flac"
+-    FILENAME = "data/audio.wav"
++    FILENAME = "data/test-audio.flac"
 ```
 
 `genre.py`를 실행합니다

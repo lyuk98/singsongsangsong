@@ -14,3 +14,4 @@ Utility functions
 
 from s4dsp.tempo import *
 from s4dsp.key import *
+from s4dsp.genre import *
