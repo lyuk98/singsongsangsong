@@ -14,13 +14,11 @@ Utility functions
 
 import numpy as np
 import scipy.signal
+from scipy.spatial.distance import cdist
 import librosa
 from pychorus import create_chroma
 from pychorus.similarity_matrix import TimeTimeSimilarityMatrix, TimeLagSimilarityMatrix, Line
 import msaf
-
-# 하나의 chunk에서 고려할 샘플 수
-_N_FFT = 2**7
 
 # Denoising size (초 단위)
 _SMOOTHING_SIZE_SECONDS = 2.5
@@ -28,7 +26,7 @@ _SMOOTHING_SIZE_SECONDS = 2.5
 # Line 겹침 확인 시 허용하는 오차
 _LINE_OVERLAP_MARGIN = 0.2
 
-def local_maxima_rows(time_lag_similarity):
+def _local_maxima_rows(time_lag_similarity):
     """국부 최댓값인 열 확인"""
     row_sums = np.sum(time_lag_similarity, axis=1)
     divisor = np.arange(row_sums.shape[0], 0, -1)
@@ -38,7 +36,7 @@ def local_maxima_rows(time_lag_similarity):
     local_minima_rows = scipy.signal.argrelextrema(normalized_rows, np.greater)
     return local_minima_rows[0]
 
-def detect_lines_helper(time_lag_matrix, rows, threshold, min_length_samples):
+def _detect_lines_helper(time_lag_matrix, rows, threshold, min_length_samples):
     """min_length_samples가 threshold 이상인 line 인식"""
     num_samples = time_lag_matrix.shape[0]
     line_segments = []
@@ -58,7 +56,7 @@ def detect_lines_helper(time_lag_matrix, rows, threshold, min_length_samples):
                 segment_start = None
     return line_segments
 
-def detect_lines(time_lag_similarity, rows, min_length_samples):
+def _detect_lines(time_lag_similarity, rows, min_length_samples):
     """Time lag matrix에서 line 인식"""
     line_threshold = 0.15
     minimum_lines = 10
@@ -66,7 +64,7 @@ def detect_lines(time_lag_similarity, rows, min_length_samples):
 
     threshold = line_threshold
     for throwaway in range(iterations): # pylint: disable=unused-variable
-        line_segments = detect_lines_helper(
+        line_segments = _detect_lines_helper(
             time_lag_similarity,
             rows,
             threshold,
@@ -78,7 +76,7 @@ def detect_lines(time_lag_similarity, rows, min_length_samples):
 
     return line_segments
 
-def count_overlapping_lines(lines, margin, min_length_samples):
+def _count_overlapping_lines(lines, margin, min_length_samples):
     """모든 line 쌍을 확인하여 겹치는지 확인"""
     line_scores = {}
     for line in lines:
@@ -108,17 +106,55 @@ def count_overlapping_lines(lines, margin, min_length_samples):
 
     return line_scores
 
-def sort_segments(line_scores):
+def _sort_segments(line_scores):
     """Line을 chorus 및 길이로 정렬"""
     to_sort = [(line, line_scores[line], line.end - line.start) for line in line_scores]
     to_sort.sort(key=lambda x: (x[1], x[2]), reverse=True)
 
     return to_sort
 
-def find_structure(path: str, sr: float): # pylint: disable=too-many-locals
-    """구조를 분할하여 특성을 인식합니다"""
+def _dtw(x, y, dist, warp=1):
+    """MFCC를 기준으로 dynamic time warping을 사용하여 주어진 구간의 유사도 확인"""
+    assert len(x)
+    assert len(y)
+
+    if np.ndim(x) == 1:
+        x = x.reshape(-1, 1)
+    if np.ndim(y) == 1:
+        y = y.reshape(-1, 1)
+
+    r, c = len(x), len(y)
+
+    distance_0 = np.zeros((r + 1, c + 1))
+    distance_0[0, 1:] = np.inf
+    distance_0[1:, 0] = np.inf
+    distance_1 = distance_0[1:, 1:]
+    distance_0[1:, 1:] = cdist(x, y, dist)
+
+    for i in range(r):
+        for j in range(c):
+            min_list = [distance_0[i, j]]
+            for k in range(1, warp + 1):
+                min_list += [distance_0[min(i + k, r), j], distance_0[i, min(j + k, c)]]
+            distance_1[i, j] += min(min_list)
+
+    return distance_1[-1, -1] / sum(distance_1.shape)
+
+def find_structure(path: str) -> dict[tuple[float, float], str]: # pylint: disable=too-many-locals,too-many-branches,too-many-statements
+    """구조를 분할하여 특성을 인식합니다
+    
+    Parameters
+    ==========
+    path : str
+        음원 파일의 경로
+    
+    Returns
+    =======
+    dict[tuple[float, float], str]
+        분할된 구조의 시작과 종료 지점 및 label이 포함된 dictionary
+    """
     # Power spectrogram을 활용하여 chromagram 생성
-    chromagram, y, sr, duration = create_chroma(path, _N_FFT)
+    chromagram, y, sr, duration = create_chroma(path)
 
     # MSAF를 활용하여 구간 분할
     processed_boundaries, processed_labels = msaf.process(
@@ -160,20 +196,21 @@ def find_structure(path: str, sr: float): # pylint: disable=too-many-locals
 
     clip_length_samples = clip_length * chromagram_sr
 
-    candidate_rows = local_maxima_rows(time_lag_similarity.matrix)
+    candidate_rows = _local_maxima_rows(time_lag_similarity.matrix)
 
     # Time lag similarity matrix에서 line 인식
-    lines = detect_lines(time_lag_similarity.matrix, candidate_rows,
-                        clip_length_samples)
+    lines = _detect_lines(time_lag_similarity.matrix, candidate_rows, clip_length_samples)
 
     assert len(lines) != 0
 
     # 겹치는 line 정렬
-    line_scores = count_overlapping_lines(
-        lines, _LINE_OVERLAP_MARGIN * clip_length_samples,
-        clip_length_samples)
+    line_scores = _count_overlapping_lines(
+        lines,
+        _LINE_OVERLAP_MARGIN * clip_length_samples,
+        clip_length_samples
+    )
 
-    choruses = sort_segments(line_scores)
+    choruses = _sort_segments(line_scores)
 
     # 구간의 시작과 종점 계산
     chorus_times = [
@@ -206,66 +243,80 @@ def find_structure(path: str, sr: float): # pylint: disable=too-many-locals
 
     structure_labels = [""] * len(labels)
 
-    #calculate the dtw similarity between each segment and the detected chorus segment
-    #also detect the minimum and maximum distance values
+    # 각 구간과 chorus로 인식된 구간 사이의 dynamic time warping (DTW) 계산
     max_dist = 0
     min_dist = 100
     similarity_measures = []
-    euclidean_norm = lambda x, y: np.abs(x - y)
-    for x in range(len(new_boundaries)):
-        dist = fastdtw(mfccs[x], chorus_mfcc, dist=euclidean_norm)
+    def euclidean_norm(x, y):
+        return np.abs(x - y)
+
+    for x in range(len(boundaries)):
+        dist = _dtw(mfccs[x], chorus_mfcc, dist=euclidean_norm)
         similarity_measures.append(dist)
         if dist > max_dist:
             max_dist = dist
         if dist < min_dist:
             min_dist = dist
 
-    #normalize the similarity measures and sort
-    normalized = [float(i)/max(similarity_measures) for i in similarity_measures]
+    # Normalize 후 정렬
+    normalized = [float(i) / max(similarity_measures) for i in similarity_measures]
     sorted_norms = sorted(normalized)
 
-    #normalize the threshold; songs with larger ranges, take a lower threshold value,
-    #whereas for songs for a higher range, take a higher threshold
+    # Threshold normalization
     bottom = []
     if max_dist - min_dist <= 2:
-        bottom = sorted_norms[int(len(sorted_norms) * 0) : int(len(sorted_norms) * .5)]
+        bottom = sorted_norms[int(len(sorted_norms) * 0) : int(len(sorted_norms) * 0.5)]
     else:
-        bottom = sorted_norms[int(len(sorted_norms) * 0) : int(len(sorted_norms) * .40)]
+        bottom = sorted_norms[int(len(sorted_norms) * 0) : int(len(sorted_norms) * 0.40)]
 
-    #if the calculated dtw similarity value for a segment is below the normalized threshold,
-    #that segment is labeled the chorus
-    for x in range(len(structure_labels)):
+    # DTW 유사도가 normalize 된 threshold보다 작을 시 그 구간은 chorus
+    for x in range(len(structure_labels)): # pylint: disable=consider-using-enumerate
         if normalized[x] <= bottom[-1]:
             structure_labels[x] = "chorus"
 
-    #label the other segments -- repeating non chorus segments are considered verses,
-    #transitions are unique segments that appear in the middle of a song,
-    #and intros and outros are unique segments that appear at the beginning and ending
-    #of a song respectively
-    for x in range(len(structure_labels)):
+    # verse는 chorus가 아닌 반복되는 구간
+    # transition은 곡 중반에서 고유한 구간
+    # intro, outro는 각각 곡 처음과 끝 부분의 고유한 구간
+    for x in range(len(structure_labels)): # pylint: disable=consider-using-enumerate
         found_match = False
+
         for y in range(x + 1, len(structure_labels)):
-            if (new_labels[x] == new_labels[y]) and structure_labels[y] == ""  and structure_labels[x] == "":
+            if (
+                labels[x] == labels[y]
+            ) and (
+                structure_labels[y] == ""
+            ) and (
+                structure_labels[x] == ""
+            ):
                 found_match = True
                 structure_labels[x] = "verse"
                 structure_labels[y] = "verse"
-        if found_match == False and structure_labels[x] == "":
+
+        if not found_match and structure_labels[x] == "":
             if x == 0:
                 structure_labels[x] = "intro"
-            elif x == (len(new_boundaries) - 1):
+            elif x == (len(boundaries) - 1):
                 structure_labels[x] = "outro"
             else:
                 structure_labels[x] = "transition"
 
+    segments = {}
 
-    #write the labels to a text file, to be used in Audacity
-    frames = open("labels/" + file_name + "_labels.txt", "w")
-    for e in range(len(new_boundaries)):
-        if e < len(new_boundaries) - 1:
-            outer_bound = e+1
-            frames.write(str(round(new_boundaries[e])) + "\t" + str(round(new_boundaries[outer_bound])) + "\t" + structure_labels[e] + "\n")
+    for i, segment_start in enumerate(boundaries):
+        if i < len(boundaries) - 1:
+            segment_end = boundaries[i + 1]
         else:
-            frames.write(str(round(new_boundaries[e])) + "\t" + str(round(song_length_sec)) + "\t" + structure_labels[e] + "\n")
+            segment_end = duration
+
+        segments[(segment_start, segment_end)] = structure_labels[i]
+
+    return segments
 
 if __name__ == "__main__":
     FILENAME = "s4dsp/data/audio.wav"
+
+    structure = find_structure(FILENAME)
+
+    print("Structure detection result")
+    for boundary, label in structure.items():
+        print(f"  {boundary[0]:.2f}-{boundary[1]:.2f}: {label}")

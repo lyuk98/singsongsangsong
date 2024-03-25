@@ -14,9 +14,12 @@ Utility functions
     장르를 예측합니다
 `predict_mood`
     분위기를 예측합니다
+`find_structure`
+    구조를 분할하여 특성을 인식합니다
 """
 
 from s4dsp.tempo import get_tempo
 from s4dsp.key import find_key
 from s4dsp.genre import predict_genre
 from s4dsp.mood import predict_mood
+from s4dsp.structure import find_structure

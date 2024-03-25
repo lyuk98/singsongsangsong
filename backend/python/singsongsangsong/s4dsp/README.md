@@ -1,4 +1,4 @@
-# Librosa, Essentia를 활용한 음악 특성 분석
+# 음악 특성 분석
 
 이 README는 작성한 기능과 사용하는 방법을 문서화하는 데 도움이 될 수 있도록 작성되었습니다
 
@@ -8,6 +8,7 @@
 - [x] 조성 (다단조, 사장조) 분석 ([key.py](./key.py))
 - [x] 장르 분석 ([genre.py](./genre.py))
 - [x] 분위기 분석 ([mood.py](./mood.py))
+- [x] 구조 분석 ([structure.py](./structure.py))
 - [ ] 유사도 분석
 
 ## 사용방법
@@ -98,3 +99,18 @@ pipenv run python s4dsp/mood.py
 - [`discogs-effnet-bs64-1.pb`](https://essentia.upf.edu/models/music-style-classification/discogs-effnet/discogs-effnet-bs64-1.pb)
 - [`mtg_jamendo_moodtheme-discogs-effnet-1.pb`](https://essentia.upf.edu/models/classification-heads/mtg_jamendo_moodtheme/mtg_jamendo_moodtheme-discogs-effnet-1.pb)
 - [`mtg_jamendo_moodtheme-discogs-effnet-1.json`](https://essentia.upf.edu/models/classification-heads/mtg_jamendo_moodtheme/mtg_jamendo_moodtheme-discogs-effnet-1.json)
+
+### 구조 분석
+
+구조 분석 실행 시 기본적으로 `s4dsp/data/audio.wav`에서 음원을 불러오므로 음원을 기본 경로에 배치하거나 아래 예시와 같이 `structure.py`를 수정하여 다른 경로를 지정합니다
+
+```diff
+-    FILENAME = "s4dsp/data/audio.wav"
++    FILENAME = "s4dsp/data/test-audio.flac"
+```
+
+`structure.py`를 실행합니다
+
+```sh
+pipenv run python s4dsp/structure.py
+```
