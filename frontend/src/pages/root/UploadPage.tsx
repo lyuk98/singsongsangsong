@@ -6,8 +6,8 @@ import "react-h5-audio-player/lib/styles.css";
 import { current } from "@reduxjs/toolkit";
 
 import styles from "./UploadPage.module.css";
-import onDragImg from "./../../sources/imgs/inputimg.jpg";
 import Button from "../../components/buttons/Button";
+import { useAxios } from "../../hooks/api/useAxios";
 
 // 참고해야할 사이트
 // https://hojung-testbench.tistory.com/entry/React-%ED%8C%8C%EC%9D%BC-%EC%97%85%EB%A1%9C%EB%93%9C-%EA%B8%B0%EB%8A%A5-%EA%B5%AC%ED%98%84
@@ -24,6 +24,15 @@ const UploadPage = () => {
   const [uploadFile, setUploadFile] = useState<audioType | null>(null);
   const [isActive, setIsActive] = useState<boolean>(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const {
+    response: analyzedData,
+    isLoading: analyzedDataIsLoading,
+    handleLoad: loadAnalyzedData,
+  } = useAxios({
+    url: "/analyze",
+    method: "GET",
+  });
 
   const handleDragEnter = (event: React.DragEvent<HTMLLabelElement>) => {
     event.preventDefault();
@@ -138,9 +147,18 @@ const UploadPage = () => {
         )}
       </div>
       <div className={`${styles.checkSection}`}>
-        <h1>업로드 현황</h1>
+        <div className={`flex-row gap-15`}>
+          <h1>업로드 현황</h1>
+          <button
+            disabled={analyzedDataIsLoading}
+            onClick={loadAnalyzedData}
+            className={`flex-col-center ${styles.resetBtn}`}
+          >
+            <GrPowerReset size={24} />
+          </button>
+        </div>
         <div className={`w-100 bg-box flex-col-center ${styles.checkBox}`}>
-          여기에 업로드한 곡들의 현황이 표시됩니다
+          {analyzedData ? "" : <h2>현재 분석중인 음악이 없습니다.</h2>}
         </div>
       </div>
     </div>
