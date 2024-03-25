@@ -11,6 +11,9 @@ gunicorn = "~=21.2.0"
 librosa = "~=0.10.1"
 essentia-tensorflow = "~=2.1b6.dev1110"
 pymilvus = "~=2.4.0"
+matplotlib = "~=3.8.3"
+pychorus = "~=0.1"
+msaf = "~=0.1.80"
 
 [dev-packages]
 pylint = "*"
