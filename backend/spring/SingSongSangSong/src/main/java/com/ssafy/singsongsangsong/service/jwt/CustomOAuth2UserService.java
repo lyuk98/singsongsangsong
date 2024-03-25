@@ -75,7 +75,9 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
 	private Artist saveUser(SocialType socialType, OAuthAttributes oAuthAttributes){
 		Artist user = oAuthAttributes.toEntity(socialType,oAuthAttributes.getOAuth2UserInfo());
-		return userRepository.save(user);
+		System.out.println("유저 저장, save user");
+		userRepository.save(user);
+		return user;
 	}
 
 

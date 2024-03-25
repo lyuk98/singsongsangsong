@@ -70,7 +70,6 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
 		Authentication authentication =
 			new UsernamePasswordAuthenticationToken(userDetails.getUsername(),null,
 				authoritiesMapper.mapAuthorities(userDetails.getAuthorities()));
-
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 	}
 }

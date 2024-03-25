@@ -30,7 +30,7 @@ public class SimpleSongDto {
 				.songId(song.getId())
 				.title(song.getTitle())
 				.genre(song.getCustomGenre())
-				.atmosphere(song.getAtmospheres().getFirst().getAtmosphere())
+				// .atmosphere(song.getAtmospheres().getFirst().getAtmosphere())
 				.playCount(song.getPlayCount())
 				.artistId(song.getArtist().getId())
 				.artistName(song.getArtist().getNickname())

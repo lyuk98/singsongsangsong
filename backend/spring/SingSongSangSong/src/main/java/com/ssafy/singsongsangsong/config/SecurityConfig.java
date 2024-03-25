@@ -43,8 +43,7 @@ public class SecurityConfig {
 			.httpBasic(auth->auth.disable())
 			.sessionManagement(auth -> auth.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 			.authorizeHttpRequests(req ->
-				req.requestMatchers("/","error").permitAll()
-					.requestMatchers("/sign-up").hasRole("GUEST")
+				req.requestMatchers("/**").permitAll()
 					// .requestMatchers("/join").hasRole("GUEST")
 					.anyRequest().authenticated()
 					// .anyRequest().permitAll())
