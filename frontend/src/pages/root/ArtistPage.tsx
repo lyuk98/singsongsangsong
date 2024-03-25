@@ -8,9 +8,15 @@ import styles from "./ArtistPage.module.css";
 import EmotionBox from "../../components/public/emotionBox/EmotionBox";
 import BarChart from "../../components/public/chart/barChart/BarChart";
 import MusicTable from "../../components/public/music/MusicTable";
+import { useAxios } from "../../hooks/api/useAxios";
 
 const ArtistPage = () => {
   const { artistId } = useParams();
+
+  const { response, isLoading, handleLoad, error } = useAxios({
+    url: `/artist/${`userId`}`,
+    method: "GET",
+  });
 
   return (
     <div className={styles.container}>
@@ -38,12 +44,12 @@ const ArtistPage = () => {
             </div>
           </div>
         </div>
-        <div className={`flex-col-center bg-box ${styles.emotionBox}`}>
+        <div className={`flex-col-center bg-box py-15 ${styles.emotionBox}`}>
           <h1>사람들은 {artistId} 님에게서</h1>
           <h1>이런 느낌을 받았어요</h1>
           <EmotionBox />
         </div>
-        <div className={`w-100`}>
+        <div className={`w-100 py-15`}>
           <MusicTable />
         </div>
       </div>
