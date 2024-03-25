@@ -19,7 +19,7 @@ public class SearchResponseDto {
 	List<ArtistInfoDto> artistInfoDtoList;
 	List<SongBriefDto> songBriefDtoList;
 
-	public SearchResponseDto from (List<Artist> artistList, List<Song> songList ){
+	public static SearchResponseDto from (List<Artist> artistList, List<Song> songList ){
 		List<ArtistInfoDto> artistInfoList = new ArrayList<>();
 		List<SongBriefDto> songBriefList = new ArrayList<>();
 

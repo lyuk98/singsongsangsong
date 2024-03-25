@@ -80,6 +80,7 @@ public class SongRepositoryCustomImpl implements SongRepositoryCustom {
 			songResult = jpaQueryFactory
 				.selectFrom(song)
 				.where(song.title.contains(requestKeyword).and(song.bpm.between(startBpm,endBpm)))
+				.orderBy(song.id.desc())
 				.fetch();
 		}
 		if(requestGenre != null) {
@@ -87,6 +88,7 @@ public class SongRepositoryCustomImpl implements SongRepositoryCustom {
 				.select(genre.song)
 				.from(genre)
 				.where(genre.mainCategory.eq(requestGenre).and(genre.correlation.goe(60)))
+				.orderBy(song.id.desc())
 				.fetch();
 			songResult.retainAll(songListByGenre);
 			for(Song song : songResult) {
@@ -100,6 +102,7 @@ public class SongRepositoryCustomImpl implements SongRepositoryCustom {
 				.select(atmosphere1.song)
 				.from(atmosphere1)
 				.where(atmosphere1.atmosphere.eq(requestAtmosphere))
+				.orderBy(song.id.desc())
 				.fetch();
 			songResult.retainAll(songListByAtmosphere);
 		}

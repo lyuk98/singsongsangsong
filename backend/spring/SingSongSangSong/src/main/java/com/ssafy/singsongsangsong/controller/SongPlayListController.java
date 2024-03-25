@@ -38,10 +38,10 @@ public class SongPlayListController {
 	@GetMapping("/atmosphere-hitsong/{atmosphere}")
 	public List<SongBriefDto> getAtmosphereHitSongList(@PathVariable String atmosphere) { return songPlayListService.getAtmosphereHitSongList(atmosphere);}
 
-	@GetMapping("/hot-artist")
-	public List<ArtistInfoDto> getHotArtist(@AuthenticationPrincipal String username) {
-
-	}
+	// @GetMapping("/hot-artist")
+	// public List<ArtistInfoDto> getHotArtist(@AuthenticationPrincipal String username) {
+	//
+	// }
 
 	@GetMapping("/search")
 	public SearchResponseDto SearchArtistAndSong(@RequestParam String keyword,
@@ -49,6 +49,6 @@ public class SongPlayListController {
 												@RequestParam String atmosphere,
 												@RequestParam int bpm,
 												@RequestParam String sort) {
-
+		return songPlayListService.searchArtistAndSong(keyword, genre, atmosphere, bpm, sort);
 	}
 }

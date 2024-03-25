@@ -101,7 +101,7 @@ public class SongPlayListServiceImpl implements SongPlayListService{
 		String sort) {
 		List<Song> songList = songRepository.findSongBySearchParam(keyword, genre, atmosphere, bpm, sort);
 		List<Artist> artistList = artistRepository.findArtistBySearchParam(keyword);
-		return null;
+		return SearchResponseDto.from(artistList,songList);
 	}
 
 }
