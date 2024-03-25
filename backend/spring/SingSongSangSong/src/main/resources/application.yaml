@@ -23,13 +23,6 @@ spring:
     jdbc:
       initialize-schema: always
 
-synology:
-  host: zip.udon.party
-  account: jinjoo021
-  passwd: 206s4nas!
-  baseDir: /ssafy
-
-
   security:
     oauth2:
       client:
@@ -73,3 +66,15 @@ jwt:
   access:
     expiration: 3600000 # 1??(60?) (1000L(ms -> s) * 60L(s -> m) * 60L(m -> h))
     header: Authorization
+
+synology:
+  host: zip.udon.party
+  account: jinjoo021
+  passwd: 206s4nas!
+  baseDir: /ssafy
+
+minio:
+  endpoint: http://zip.udon.party:40001
+  accessKey: mtppqpRtSxArNq81phwB
+  secretKey: pqjrczK0C5JsFDnociyril8CqCbB5Mtfybkhl8p5
+  serviceName: s3

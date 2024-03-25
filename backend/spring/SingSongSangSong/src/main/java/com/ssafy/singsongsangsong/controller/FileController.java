@@ -14,6 +14,7 @@ import com.ssafy.singsongsangsong.dto.UploadFileDto;
 import com.ssafy.singsongsangsong.security.ArtistAuthenticationToken;
 import com.ssafy.singsongsangsong.service.FileService;
 
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -32,7 +33,7 @@ public class FileController {
 	}
 
 	@GetMapping("/download/{fileType}/{fileName}")
-	public void downloadFile(@AuthenticationPrincipal ArtistAuthenticationToken artist,
+	public void downloadFile(@AuthenticationPrincipal ArtistAuthenticationToken artist, HttpServletResponse response,
 		@PathVariable String fileType, @PathVariable String fileName) throws IOException {
 		FileType type = FileType.valueOf(fileType);
 		fileService.getFile(artist.getId(), type, fileName);
