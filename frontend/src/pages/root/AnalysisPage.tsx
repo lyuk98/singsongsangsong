@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { FaQuestionCircle } from "react-icons/fa";
 
 import styles from "./AnalysisPage.module.css";
@@ -7,10 +7,29 @@ import MusicSectionIndicator from "../../components/public/analysis/MusicSection
 import MoodAndGenre from "../../components/public/analysis/MoodAndGenre";
 import SimilarSong from "../../components/public/analysis/SimilarSong";
 import Button from "../../components/buttons/Button";
+import { useAxios } from "../../hooks/api/useAxios";
+import axios from "axios";
+
+import { AnalyzedResultType } from "../../utils/types";
 
 const AnalysisPage = () => {
-  const handleUpload = () => {
-    console.log("업로드 되나요");
+  const { response, isLoading, error } = useAxios({
+    url: `/anayze/${`songId`}`,
+    method: "GET",
+  });
+
+  const [result, setResult] = useState<AnalyzedResultType | null>(null);
+
+  const handleUpload = async () => {
+    try {
+      const response = await axios({
+        method: "PUT",
+        url: `${process.env.REACT_APP_API_URL}/analyze/publish/${"songid"}`,
+      });
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
