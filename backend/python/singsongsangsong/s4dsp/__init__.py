@@ -16,7 +16,7 @@ Utility functions
     분위기를 예측합니다
 """
 
-from s4dsp.tempo import *
-from s4dsp.key import *
-from s4dsp.genre import *
-from s4dsp.mood import *
+from s4dsp.tempo import get_tempo
+from s4dsp.key import find_key
+from s4dsp.genre import predict_genre
+from s4dsp.mood import predict_mood
