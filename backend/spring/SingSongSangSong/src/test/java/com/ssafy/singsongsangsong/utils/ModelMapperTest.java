@@ -1,8 +1,7 @@
-package com.ssafy.singsongsangsong;
+package com.ssafy.singsongsangsong.utils;
 
 import static org.assertj.core.api.Assertions.*;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
@@ -43,6 +42,5 @@ public class ModelMapperTest {
 		}
 
 	}
-
 
 }

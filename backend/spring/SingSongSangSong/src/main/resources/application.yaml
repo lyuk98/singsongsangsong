@@ -5,14 +5,13 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: create
 
   datasource:
-    mariadb:
-      driver-class-name: org.mariadb.jdbc.Driver
-      url: jdbc:mariadb://stg-yswa-kr-practice-db-master.mariadb.database.azure.com:3306/S10P22E206?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8
-      username: S10P22E206
-      password: CuSfPXDNXr
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://stg-yswa-kr-practice-db-master.mariadb.database.azure.com:3306/S10P22E206?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8
+    username: S10P22E206
+    password: CuSfPXDNXr
   data:
     mongodb:
       uri: mongodb+srv://S10P22E206:rui4ZhwEt1@ssafy.ngivl.mongodb.net/S10P22E206?authSource=admin
@@ -20,10 +19,16 @@ spring:
   output:
     ansi:
       enabled: always
-  
   batch:
     jdbc:
       initialize-schema: always
+
+synology:
+  host: zip.udon.party
+  account: jinjoo021
+  passwd: 206s4nas!
+  baseDir: /ssafy
+
 
   security:
     oauth2:
