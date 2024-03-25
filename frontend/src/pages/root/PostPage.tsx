@@ -49,7 +49,7 @@ const PostPage = () => {
     event.preventDefault();
     event.stopPropagation();
     const data = event.dataTransfer.files;
-    if (data) {
+    if (data && data[0].type.startsWith("image/")) {
       const url = URL.createObjectURL(data[0]);
       console.log(url);
       setAlbumImg({
@@ -75,7 +75,7 @@ const PostPage = () => {
   const handleFileUpload = (event: ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
     console.log(files);
-    if (files && files[0]) {
+    if (files && files[0] && files[0].type.startsWith("image/")) {
       const url = URL.createObjectURL(files[0]);
       setAlbumImg({
         file: files[0],

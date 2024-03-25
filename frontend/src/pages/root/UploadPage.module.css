@@ -59,3 +59,9 @@
 .player {
   width: 50%;
 }
+
+.resetBtn {
+  cursor: pointer;
+  border: none;
+  background-color: #ffffff;
+}
