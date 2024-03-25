@@ -10,6 +10,8 @@ Utility functions
     템포를 측정합니다
 `find_key`
     조성을 계산합니다
+`predict_genre`
+    장르를 예측합니다
 """
 
 from s4dsp.tempo import *
