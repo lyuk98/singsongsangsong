@@ -1,6 +1,8 @@
 package com.ssafy.singsongsangsong.exception.emotion;
 
-public class NotSupportedEmotionException extends RuntimeException {
+import java.util.NoSuchElementException;
+
+public class NotSupportedEmotionException extends NoSuchElementException {
 	public NotSupportedEmotionException(String msg) {
 		super(msg);
 	}

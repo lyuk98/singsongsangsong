@@ -26,15 +26,15 @@ public class SimpleSongDto {
 	private int duration;
 
 	public static SimpleSongDto from(Song song) {
+		// atmosphere는 추후, setter로 설정해줍니다.
 		return SimpleSongDto.builder()
-				.songId(song.getId())
-				.title(song.getTitle())
-				.genre(song.getCustomGenre())
-				.atmosphere(song.getAtmospheres().getFirst().getAtmosphere())
-				.playCount(song.getPlayCount())
-				.artistId(song.getArtist().getId())
-				.artistName(song.getArtist().getNickname())
-				.duration(song.getDuration())
-				.build();
+			.songId(song.getId())
+			.title(song.getTitle())
+			.genre(song.getCustomGenre())
+			.playCount(song.getPlayCount())
+			.artistId(song.getArtist().getId())
+			.artistName(song.getArtist().getNickname())
+			.duration(song.getDuration())
+			.build();
 	}
 }

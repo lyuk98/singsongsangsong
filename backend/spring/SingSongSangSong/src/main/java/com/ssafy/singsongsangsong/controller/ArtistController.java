@@ -34,6 +34,7 @@ public class ArtistController {
 	}
 
 	// todo: 아래 메소드는 security 구현이 끝난 이 후, 처리할 예정입니다.
+	// todo: refactor this. Principal 정보 수정 및 target Id는 String username으로 변경
 	@PostMapping("/follow/{id}")
 	public void followArtist(@AuthenticationPrincipal User loginUser, @PathVariable Long id) {
 		String username = loginUser.getUsername();
