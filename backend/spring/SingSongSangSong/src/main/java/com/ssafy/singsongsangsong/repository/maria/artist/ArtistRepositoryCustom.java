@@ -2,7 +2,9 @@ package com.ssafy.singsongsangsong.repository.maria.artist;
 
 import java.util.List;
 
-import com.ssafy.singsongsangsong.dto.SimpleSongDto;
+import com.querydsl.core.Tuple;
+import com.ssafy.singsongsangsong.dto.HotArtistDto;
+import com.ssafy.singsongsangsong.dto.HotArtistResponseDto;
 import com.ssafy.singsongsangsong.entity.Artist;
 import com.ssafy.singsongsangsong.entity.Song;
 
@@ -17,4 +19,5 @@ public interface ArtistRepositoryCustom {
 
 	List<Artist> getFollowArtistByArtistId(Long artistId);
 	List<Artist> findArtistBySearchParam(String keyword);
+	List<HotArtistDto> findHotArtist();
 }

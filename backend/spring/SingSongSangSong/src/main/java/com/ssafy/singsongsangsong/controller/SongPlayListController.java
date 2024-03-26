@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.singsongsangsong.dto.ArtistInfoDto;
+import com.ssafy.singsongsangsong.dto.HotArtistResponseDto;
 import com.ssafy.singsongsangsong.dto.LikedPageResponseDto;
 import com.ssafy.singsongsangsong.dto.SearchResponseDto;
 import com.ssafy.singsongsangsong.dto.SongBriefDto;
@@ -38,17 +39,17 @@ public class SongPlayListController {
 	@GetMapping("/atmosphere-hitsong/{atmosphere}")
 	public List<SongBriefDto> getAtmosphereHitSongList(@PathVariable String atmosphere) { return songPlayListService.getAtmosphereHitSongList(atmosphere);}
 
-	// @GetMapping("/hot-artist")
-	// public List<ArtistInfoDto> getHotArtist(@AuthenticationPrincipal String username) {
-	//
-	// }
-
-	@GetMapping("/search")
-	public SearchResponseDto SearchArtistAndSong(@RequestParam String keyword,
-												@RequestParam String genre,
-												@RequestParam String atmosphere,
-												@RequestParam int bpm,
-												@RequestParam String sort) {
-		return songPlayListService.searchArtistAndSong(keyword, genre, atmosphere, bpm, sort);
+	@GetMapping("/hot-artist")
+	public List<HotArtistResponseDto> getHotArtist() {
+		return songPlayListService.getHotArtist();
 	}
+
+	// @GetMapping("/search/{pageNo}")
+	// public SearchResponseDto SearchArtistAndSong(@RequestParam(required = false) String keyword,
+	// 											@RequestParam(required = false) String genre,
+	// 											@RequestParam(required = false) String atmosphere,
+	// 											@RequestParam(required = false) Integer bpm,
+	// 											@RequestParam(required = false) String sort) {
+	// 	return songPlayListService.searchArtistAndSong(keyword, genre, atmosphere, bpm, sort);
+	// }
 }

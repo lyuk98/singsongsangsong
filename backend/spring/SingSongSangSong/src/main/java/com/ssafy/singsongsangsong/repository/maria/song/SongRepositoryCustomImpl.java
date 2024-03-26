@@ -1,20 +1,26 @@
 package com.ssafy.singsongsangsong.repository.maria.song;
 
+import static com.querydsl.jpa.JPAExpressions.*;
+import static com.ssafy.singsongsangsong.entity.QAtmosphere.*;
 import static com.ssafy.singsongsangsong.entity.QGenre.*;
 import static com.ssafy.singsongsangsong.entity.QSong.*;
-import static com.ssafy.singsongsangsong.entity.QArtist.*;
-import static com.ssafy.singsongsangsong.entity.QAtmosphere.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.Order;
+import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.ssafy.singsongsangsong.entity.Artist;
+import com.ssafy.singsongsangsong.dto.SongBriefDto;
 import com.ssafy.singsongsangsong.entity.Atmosphere;
 import com.ssafy.singsongsangsong.entity.Genre;
+import com.ssafy.singsongsangsong.entity.QGenre;
 import com.ssafy.singsongsangsong.entity.Song;
 
 import lombok.RequiredArgsConstructor;
@@ -67,46 +73,22 @@ public class SongRepositoryCustomImpl implements SongRepositoryCustom {
 	}
 
 	@Override
-	public List<Song> findSongBySearchParam(String requestKeyword, String requestGenre, String requestAtmosphere, int requestBpm, String sort) {
-		List<Song> songResult = new ArrayList<>();
-		int startBpm = 0;
-		int endBpm = 40;
+	public List<Song> findSongByBpmAndKeyword(String keyword, int startBpm, int endBpm,List<OrderSpecifier> orderSpecifiers) {
+		BooleanBuilder builder = new BooleanBuilder();
+		builder.and(song.bpm.between(startBpm,endBpm));
+		if(keyword != null) {
+			builder.and(song.title.contains(keyword));
+		}
 
-		if(requestBpm != 0) {
-			startBpm = requestBpm;
-			endBpm = requestBpm + 20;
-		}
-		if(requestKeyword != null) {
-			songResult = jpaQueryFactory
-				.selectFrom(song)
-				.where(song.title.contains(requestKeyword).and(song.bpm.between(startBpm,endBpm)))
-				.orderBy(song.id.desc())
-				.fetch();
-		}
-		if(requestGenre != null) {
-			List<Song> songListByGenre = jpaQueryFactory
-				.select(genre.song)
-				.from(genre)
-				.where(genre.mainCategory.eq(requestGenre).and(genre.correlation.goe(60)))
-				.orderBy(song.id.desc())
-				.fetch();
-			songResult.retainAll(songListByGenre);
-			for(Song song : songResult) {
-				if(!song.getCustomGenre().equals(requestGenre)) {
-					songListByGenre.remove(song);
-				}
-			}
-		}
-		if(requestAtmosphere != null) {
-			List<Song> songListByAtmosphere = jpaQueryFactory
-				.select(atmosphere1.song)
-				.from(atmosphere1)
-				.where(atmosphere1.atmosphere.eq(requestAtmosphere))
-				.orderBy(song.id.desc())
-				.fetch();
-			songResult.retainAll(songListByAtmosphere);
-		}
-		return songResult;
+		return jpaQueryFactory
+			.select(song).distinct().from(song)
+			.where(builder)
+			.fetch();
+	}
+
+	@Override
+	public List<Song> genreFilter(String requestGenre, List<Song> songListFrom) {
+		return null;
 	}
 
 }
