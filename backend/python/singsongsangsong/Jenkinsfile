@@ -64,8 +64,10 @@ pipeline {
         stage('Deploy') {
             steps {
                 sshagent (credentials: ['PYTHON_EC2_SSH_KEY']) { 
-                    sh "docker -H ${dockerHost} stop fastapi-service || true"
-                    sh "docker -H ${dockerHost} rm fastapi-service || true"
+                    sh 'docker ps -f name=fastapi-service -q \
+                    | xargs --no-run-if-empty docker container stop'
+                    sh 'docker container ls -a -f name=fastapi-service -q \
+                    | xargs -r docker container rm'
                     sh "docker -H ${dockerHost} run -d --name fastapi-service -p 8000:8000 ${dockerHubRegistry}:latest"
                 }
             }
