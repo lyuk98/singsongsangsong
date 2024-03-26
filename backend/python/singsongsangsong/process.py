@@ -85,7 +85,7 @@ def analyse(song_id: int, audio_path: str):
                         [genre, subgenre] = genre_str.split("---")
 
                         # song_id, main_category, sub_category, correlation
-                        genre_data.append((song_id, genre, subgenre, correlation))
+                        genre_data.append((song_id, genre, subgenre, correlation * 100.0))
 
                     # 분위기 데이터 준비
                     mood_data = [
@@ -93,7 +93,7 @@ def analyse(song_id: int, audio_path: str):
                         (
                             song_id,
                             mood,
-                            correlation
+                            correlation * 100.0
                         ) for mood, correlation in islice(moods.items(), 5)
                     ]
 
