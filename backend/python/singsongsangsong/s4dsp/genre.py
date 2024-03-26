@@ -20,7 +20,7 @@ from essentia.standard import ( # pylint: disable=no-name-in-module
     TensorflowPredictEffnetDiscogs,
     TensorflowPredict2D
 )
-from _dependencies import require
+from s4dsp._dependencies import require
 
 # 장르 분석에 필요한 파일 정보
 require(
