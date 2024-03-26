@@ -70,15 +70,16 @@ def draw_spectrum(y, sr, file_name, label_timestamp):
     # 파일 확인
     # plt.show()
 
-# 입력값 모음
-SAMPLE_RATE = 22050
-y, _ = librosa.load("s4dsp/data/audio.wav", sr=SAMPLE_RATE, mono=True)
-DESTINATION = "savefig_default.png"
-label_timestamp = [
-    {"start": 5, "end": 10, "label": "outro"},
-    {"start": 15, "end": 20, "label": "transition"},
-    {"start": 20, "end": 30, "label": "chorus"},
-    {"start": 30, "end": 50, "label": "verse"},
-    {"start": 60, "end": 120, "label": "intro"}
-]
-draw_spectrum(y, SAMPLE_RATE, DESTINATION, label_timestamp)
+if __name__ == "__main__":
+    # 입력값 모음
+    SAMPLE_RATE = 22050
+    y, _ = librosa.load("s4dsp/data/audio.wav", sr=SAMPLE_RATE, mono=True)
+    DESTINATION = "savefig_default.png"
+    label_timestamp = [
+        {"start": 5, "end": 10, "label": "outro"},
+        {"start": 15, "end": 20, "label": "transition"},
+        {"start": 20, "end": 30, "label": "chorus"},
+        {"start": 30, "end": 50, "label": "verse"},
+        {"start": 60, "end": 120, "label": "intro"}
+    ]
+    draw_spectrum(y, SAMPLE_RATE, DESTINATION, label_timestamp)

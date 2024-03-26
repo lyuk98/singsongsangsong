@@ -16,11 +16,12 @@ def plot_mfcc(mfccs, file_name):
     # 파일 확인
     # plt.show()
 
-# 입력값
-FILENAME = "s4dsp/data/audio.wav"
-SAMPLE_RATE = 22050
-DESTINATION = "savefig_default.png"
-y, _ = librosa.load(FILENAME, sr=SAMPLE_RATE, mono=True)
-mfccs = librosa.feature.mfcc(y=y, sr=SAMPLE_RATE, n_mfcc=20)
+if __name__ == "__main__":
+    # 입력값
+    FILENAME = "s4dsp/data/audio.wav"
+    SAMPLE_RATE = 22050
+    DESTINATION = "savefig_default.png"
+    y, _ = librosa.load(FILENAME, sr=SAMPLE_RATE, mono=True)
+    mfccs = librosa.feature.mfcc(y=y, sr=SAMPLE_RATE, n_mfcc=20)
 
-plot_mfcc(mfccs, DESTINATION)
+    plot_mfcc(mfccs, DESTINATION)
