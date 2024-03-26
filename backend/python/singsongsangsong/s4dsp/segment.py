@@ -38,21 +38,21 @@ def draw_spectrum(y, sr, file_name, label_timestamp):
         plt.fill_between(range(start_index, end_index), y[start_index:end_index], color=color, alpha=1.0)
 
     # 스펙트럼 값 입력
-    plt.plot(y, color='midnightblue', alpha=0.2)
+    plt.plot(y, color="midnightblue", alpha=0.2)
 
     # 시간 레이블 지정
-    plt.xticks(np.arange(0, len(y), sr*time_interval), [dt.strftime('%M:%S') for dt in datetimes], rotation=0)
+    plt.xticks(np.arange(0, len(y), sr*time_interval), [dt.strftime("%M:%S") for dt in datetimes], rotation=0)
 
     # 색상 설명 추가
     plt.legend(handles=[
-        plt.Rectangle((0, 0), 1, 1, fc='wheat', edgecolor='none'),
-        plt.Rectangle((0, 0), 1, 1, fc='lightgreen', edgecolor='none'),
-        plt.Rectangle((0, 0), 1, 1, fc='lightcoral', edgecolor='none'),
-        plt.Rectangle((0, 0), 1, 1, fc='thistle', edgecolor='none'),
-        plt.Rectangle((0, 0), 1, 1, fc='lightblue', edgecolor='none')
+        plt.Rectangle((0, 0), 1, 1, fc="wheat", edgecolor="none"),
+        plt.Rectangle((0, 0), 1, 1, fc="lightgreen", edgecolor="none"),
+        plt.Rectangle((0, 0), 1, 1, fc="lightcoral", edgecolor="none"),
+        plt.Rectangle((0, 0), 1, 1, fc="thistle", edgecolor="none"),
+        plt.Rectangle((0, 0), 1, 1, fc="lightblue", edgecolor="none")
         ],
-        labels=['intro', 'verse', 'chorus', 'transition', 'outro'],
-        loc='center left', bbox_to_anchor=(1, 0.5))
+        labels=["intro", "verse", "chorus", "transition", "outro"],
+        loc="center left", bbox_to_anchor=(1, 0.5))
 
     # 파일 저장
     plt.savefig(file_name)
@@ -61,7 +61,7 @@ def draw_spectrum(y, sr, file_name, label_timestamp):
 
 # 입력값 모음
 sample_rate = 22050
-y, _ = librosa.load('s4dsp/data/audio.wav', sr=sample_rate, mono=True)
+y, _ = librosa.load("s4dsp/data/audio.wav", sr=sample_rate, mono=True)
 file_name = "savefig_default.png"
 label_timestamp = [
     {"start": 5, "end": 10, "label": "outro"},
