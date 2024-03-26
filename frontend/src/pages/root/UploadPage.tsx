@@ -53,7 +53,7 @@ const UploadPage = () => {
     event.preventDefault();
     event.stopPropagation();
     if (!event.currentTarget.contains(event.relatedTarget as Node)) {
-      // 마우스가 자식 요소에서 떠나면만 이벤트 처리
+      // 마우스가 자식 요소에서 떠나면 이벤트 처리
       setIsActive(false);
       console.log("handleDragLeave");
     }

@@ -6,7 +6,6 @@ export const handleStartAnalyze = async (inputFile: File) => {
   const formData = new FormData();
   console.log(inputFile);
   formData.append("file", inputFile);
-  console.log(formData);
 
   try {
     const result = await axios({
@@ -20,4 +19,12 @@ export const handleStartAnalyze = async (inputFile: File) => {
   } catch (error) {
     return error;
   }
+};
+
+export const getSearchResult = async () => {
+  const response = axiosInstance.request({
+    method: "GET",
+    url: "",
+    data: {},
+  });
 };

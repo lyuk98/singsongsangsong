@@ -51,7 +51,7 @@ const TrendPage = () => {
   };
 
   return (
-    <>
+    <div className={`flex-col w-100 gap-15`}>
       <Modal open={isModalOpen} onClose={handleCalendarClose}>
         <div className={styles.calanderContent}>
           <ModalCalendar
@@ -72,7 +72,7 @@ const TrendPage = () => {
       <CompareWithAnotherSite />
       <SongWithEmotion />
       <SongWithBPM />
-    </>
+    </div>
   );
 };
 

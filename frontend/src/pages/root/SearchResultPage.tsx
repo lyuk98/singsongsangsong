@@ -1,16 +1,27 @@
 import React from "react";
-import { useSearchParams } from "react-router-dom";
+import axios from "axios";
+import { defer, useLoaderData, useSearchParams } from "react-router-dom";
 
-import styles from "./SearchResultPage.module.css";
+import { SearchType, SearchParmasType } from "../../utils/types";
 import MusicTable from "../../components/public/music/MusicTable";
+import styles from "./SearchResultPage.module.css";
 
 const SearchResultPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const title = searchParams.get("title");
-  const gender = searchParams.get("gender");
+  const keyword = searchParams.get("keyword");
+  const genre = searchParams.get("genre");
+  const bpm = searchParams.get("bpm");
   const atmosphere = searchParams.get("atmosphere");
-  const sort = searchParams.get("sort");
+  const order = searchParams.get("order");
+
+  const userSearchParams: SearchParmasType = {
+    keyword,
+    genre,
+    bpm,
+    atmosphere,
+    order,
+  };
 
   return (
     <div className={`w-100 flex-col px-main my-main gap-15`}>
