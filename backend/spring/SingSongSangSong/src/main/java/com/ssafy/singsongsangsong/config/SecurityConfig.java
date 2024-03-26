@@ -45,7 +45,7 @@ public class SecurityConfig {
 			.authorizeHttpRequests(req ->
 				req.requestMatchers("/**").permitAll()
 					// .requestMatchers("/join").hasRole("GUEST")
-					.anyRequest().authenticated()
+					.anyRequest().permitAll()
 					// .anyRequest().permitAll())
 					)
 			.oauth2Login(oauth2 ->

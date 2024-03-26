@@ -84,6 +84,7 @@ public class ArtistRepositoryCustomImpl implements ArtistRepositoryCustom {
 				song.artist))
 			.from(song)
 			.groupBy(song.artist.id)
+			.orderBy(song.weeklyPlayCount.sum().desc())
 			.limit(10)
 			.fetch();
 	}

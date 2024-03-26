@@ -14,7 +14,7 @@ public interface SongPlayListService {
 	public List<SongBriefDto> getGenreHitSongList(String genre);
 	public List<SongBriefDto> getAtmosphereHitSongList(String genre);
 	public List<ArtistInfoDto> getFollowArtistList(String username);
-	// public SearchResponseDto searchArtistAndSong(String keyword, String genre, String atmosphere, Integer bpm, String sort);
+	public SearchResponseDto searchArtistAndSong(String keyword, String genre, String atmosphere, Integer bpm, String sort);
 
 	public List<HotArtistResponseDto> getHotArtist();
 }

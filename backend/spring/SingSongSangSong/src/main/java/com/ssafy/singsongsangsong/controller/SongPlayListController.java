@@ -44,12 +44,12 @@ public class SongPlayListController {
 		return songPlayListService.getHotArtist();
 	}
 
-	// @GetMapping("/search/{pageNo}")
-	// public SearchResponseDto SearchArtistAndSong(@RequestParam(required = false) String keyword,
-	// 											@RequestParam(required = false) String genre,
-	// 											@RequestParam(required = false) String atmosphere,
-	// 											@RequestParam(required = false) Integer bpm,
-	// 											@RequestParam(required = false) String sort) {
-	// 	return songPlayListService.searchArtistAndSong(keyword, genre, atmosphere, bpm, sort);
-	// }
+	@GetMapping("/search")
+	public SearchResponseDto SearchArtistAndSong(@RequestParam(required = false) String keyword,
+												@RequestParam(required = false) String genre,
+												@RequestParam(required = false) String atmosphere,
+												@RequestParam(required = false, defaultValue = "0") Integer bpm,
+												@RequestParam(required = false) String sort) {
+		return songPlayListService.searchArtistAndSong(keyword, genre, atmosphere, bpm, sort);
+	}
 }
