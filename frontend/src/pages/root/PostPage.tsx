@@ -104,7 +104,7 @@ const PostPage = () => {
   }, [albumImg]);
 
   return (
-    <div className={`w-100 py-main flex-col gap-15 ${styles.container}`}>
+    <div className={`w-100 px-main flex-col gap-15 ${styles.container}`}>
       <div className={`flex-col ${styles.header}`}>
         <h1>곡 게시</h1>
         <h3>곡 정보 설정</h3>

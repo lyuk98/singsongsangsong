@@ -33,7 +33,7 @@ const AnalysisPage = () => {
   };
 
   return (
-    <div className={`w-100 py-main ${styles.container}`}>
+    <div className={`w-100 px-main ${styles.container}`}>
       <div className={`${styles.header}`}>
         <h1>분석 결과</h1>
       </div>

@@ -13,6 +13,7 @@ import ArtistPage from "../pages/root/ArtistPage";
 import SongDetailPage from "../pages/root/SongDetailPage";
 import UploadPage from "../pages/root/UploadPage";
 import PostPage from "../pages/root/PostPage";
+import ErrorPage from "../pages/Error/ErrorPage";
 
 export const router = createBrowserRouter([
   {

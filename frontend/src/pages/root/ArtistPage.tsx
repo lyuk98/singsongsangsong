@@ -1,5 +1,6 @@
 import React from "react";
 import { useParams } from "react-router";
+import { json } from "react-router-dom";
 import { RiMusic2Fill } from "react-icons/ri";
 import { TbMoodNerd } from "react-icons/tb";
 
@@ -14,14 +15,20 @@ const ArtistPage = () => {
   const { artistId } = useParams();
 
   const { response, isLoading, handleLoad, error } = useAxios({
-    url: `/artist/${`userId`}`,
+    url: `/artist/${artistId}`,
     method: "GET",
   });
+
 
   return (
     <div className={styles.container}>
       <div className={styles.headerSection}>
-        <ArtistHeader />
+        <ArtistHeader
+          // artistId={response.artistId}
+          // nickName={response.nickname}
+          // profileImg={response.profileImageUrl}
+          // introduction={response.introduction}
+        />
       </div>
       <div className={styles.content}>
         <div className={`flex-row-center w-100`}>

@@ -129,8 +129,12 @@ code {
   width: 50%;
 }
 
-.py-main {
+.px-main {
   padding: 0px 6rem;
+}
+
+.my-main {
+  margin: 3rem 0;
 }
 
 .p-15 {
