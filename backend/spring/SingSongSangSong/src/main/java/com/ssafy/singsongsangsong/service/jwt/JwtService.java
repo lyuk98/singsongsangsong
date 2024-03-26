@@ -33,11 +33,11 @@ public class JwtService {
 
 	private static final String ACCESS_TOKEN_SUBJECT = "AccessToken";
 	private static final String EMAIL_CLAIM = "email";
-	private static final String BEARER = "Bearer_";
+	private static final String BEARER = "Bearer ";
 
 	private final ArtistRepository artistRepository;
 	public String createAccessToken(String email) {
-		System.out.println("accessToken을 만듭니다.");
+		log.info("accessToken create");
 		Date now = new Date();
 		return JWT.create()
 			.withSubject(ACCESS_TOKEN_SUBJECT)
@@ -54,19 +54,13 @@ public class JwtService {
 	}
 
 	public Optional<String> extractAccessToken(HttpServletRequest request) {
-		Cookie[] cookies = request.getCookies();
-		String accessCookie = null;
-		for(int i = 0; cookies!=null&&i<cookies.length; i++) {
-			if(cookies[i].getName().equals("accessToken")) {
-				accessCookie = cookies[i].getValue();
-			}
-		}
-		return Optional.ofNullable(accessCookie);
+		return Optional.ofNullable(request.getHeader(accessHeader))
+			.filter(refreshToken -> refreshToken.startsWith(BEARER))
+			.map(refreshToken -> refreshToken.replace(BEARER, ""));
 	}
 
 	public Optional<String> extractEmail(String accessToken) {
 		try {
-			System.out.println(accessToken);
 			return Optional.ofNullable(JWT.require(Algorithm.HMAC256(secretKey))
 				.build()
 				.verify(accessToken)
@@ -80,7 +74,7 @@ public class JwtService {
 
 	public boolean isTokenValid(String token) {
 		try {
-			System.out.println(token);
+			log.info("accessToken : {}", token);
 			JWT.require(Algorithm.HMAC256(secretKey)).build().verify(token);
 			return true;
 		} catch (Exception e) {

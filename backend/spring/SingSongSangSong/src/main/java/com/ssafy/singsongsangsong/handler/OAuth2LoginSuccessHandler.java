@@ -38,8 +38,8 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 				// jwtService.sendAccessTokenAndRefreshToken(response,"Bearer " +  accessToken, null);
 				//
 				// response.sendRedirect("/sign-up");
-				response.addCookie(createCookie("accessToken", accessToken,"/"));
-				response.sendRedirect("/sign-up");
+				response.addCookie(createCookie("accessToken", accessToken,"/",60*60*60*60));
+				response.addCookie(createCookie("sendRedirect", "/sign-up","/",5));
 			} else {
 				loginSuccess(response, oAuth2User);
 				response.sendRedirect("/");
@@ -55,13 +55,13 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
 		String accessToken = jwtService.createAccessToken(oAuth2User.getEmail());
 
-		response.addCookie(createCookie("accessToken", accessToken,"/"));
+		response.addCookie(createCookie("accessToken", accessToken,"/",60*60*60*60));
 		// jwtService.updateRefreshToken(oAuth2User.getEmail(),refreshToken);
 	}
 
-	public Cookie createCookie(String key, String value,String path) {
+	public Cookie createCookie(String key, String value,String path,int time) {
 		Cookie cookie = new Cookie(key,value);
-		cookie.setMaxAge(60*60*60*60);
+		cookie.setMaxAge(time);
 		cookie.setPath(path);
 		// cookie.setHttpOnly(true);
 
