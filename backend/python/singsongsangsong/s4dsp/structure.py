@@ -144,12 +144,12 @@ def find_structure(path: str) -> dict[tuple[float, float], str]: # pylint: disab
     """구조를 분할하여 특성을 인식합니다
     
     Parameters
-    ==========
+    ----------
     path : str
         음원 파일의 경로
     
     Returns
-    =======
+    -------
     dict[tuple[float, float], str]
         분할된 구조의 시작과 종료 지점 및 label이 포함된 dictionary
     """
