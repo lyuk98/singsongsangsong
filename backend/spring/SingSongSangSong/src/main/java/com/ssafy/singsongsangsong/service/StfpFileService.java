@@ -30,7 +30,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class FileServiceImpl implements FileService {
+public class StfpFileService implements FileService {
 
 	private final SynologyFileStationConfig synologyFileStationConfig;
 	private final FileRepository fileRepository;
