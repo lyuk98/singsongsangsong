@@ -1,7 +1,7 @@
 import librosa
 import librosa.display
 import matplotlib.pyplot as plt
- 
+
 def plot_mfcc(mfccs, file_name):
     # MFCC 그리기
     plt.figure(figsize=(12, 2))
@@ -15,12 +15,12 @@ def plot_mfcc(mfccs, file_name):
     plt.savefig(file_name)
     # 파일 확인
     # plt.show()
- 
-# 입력값
-audio_file_path = "s4dsp/data/audio.wav"
-sample_rate = 22050
-file_name = "savefig_default.png"
-y, _ = librosa.load(audio_file_path, sr=sample_rate, mono=True)
-mfccs = librosa.feature.mfcc(y=y, sr=sample_rate, n_mfcc=20)
 
-plot_mfcc(mfccs, file_name)
+# 입력값
+FILENAME = "s4dsp/data/audio.wav"
+SAMPLE_RATE = 22050
+DESTINATION = "savefig_default.png"
+y, _ = librosa.load(FILENAME, sr=SAMPLE_RATE, mono=True)
+mfccs = librosa.feature.mfcc(y=y, sr=SAMPLE_RATE, n_mfcc=20)
+
+plot_mfcc(mfccs, DESTINATION)
