@@ -23,6 +23,8 @@ public class UploadMainPageDto {
 		ANALYZING, COMPLETED
 	}
 
+	private Long songId;
+
 	@Getter
 	@Setter
 	@Builder
@@ -31,10 +33,11 @@ public class UploadMainPageDto {
 	public static class UploadProcess {
 		public String title;
 		public Process process;
+		public Long songId;
 
 		public static UploadProcess from(Song song) {
 			Process process = song.isAnalyzed() ? Process.COMPLETED : Process.ANALYZING;
-			return UploadProcess.builder().title(song.getTitle()).process(process).build();
+			return UploadProcess.builder().title(song.getTitle()).process(process).songId(song.getId()).build();
 		}
 	}
 }
