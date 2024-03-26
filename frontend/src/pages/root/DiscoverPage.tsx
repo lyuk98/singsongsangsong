@@ -1,6 +1,7 @@
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import styles from "./DiscoverPage.module.css";
 import Button from "../../components/buttons/Button";
+import { useNavigate } from "react-router-dom";
 
 const SEARCH_OPTION = [
   { type: "장르", option: ["발라드", "락", "힙합"] },
@@ -12,11 +13,54 @@ const SEARCH_OPTION = [
 const DiscoverPage = () => {
   const [searchKeyword, setSearchKeyword] = useState<string>("");
 
+  const navigate = useNavigate();
+
+  const [option, setOption] = useState({
+    genre: "",
+    thema: "",
+    bpm: "",
+    sort: "",
+  });
+
   const handleKeywordChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchKeyword(event.target.value);
   };
 
-  const handleSubmit = () => {};
+  const handleSearchOption = (
+    event: ChangeEvent<HTMLSelectElement>,
+    type: string | number
+  ) => {
+    setOption((prev) => {
+      switch (type) {
+        case "장르":
+          type = "genre";
+          break;
+        case "테마":
+          type = "thema";
+          break;
+        case "BPM":
+          type = "bpm";
+          break;
+        case "정렬":
+          type = "sort";
+          break;
+      }
+      return {
+        ...prev,
+        [type]: event.target.value,
+      };
+    });
+  };
+
+  useEffect(() => {
+    console.log(option);
+  }, [option]);
+
+  const handleSubmit = () => {
+    navigate(
+      `result/?keyword=${searchKeyword}&?genre=${option.genre}&bpm=${option.bpm}&atomposhpere=${option.thema}&sort=${option.sort}`
+    );
+  };
 
   return (
     <div className={`px-main my-main w-100 flex-col `}>
@@ -35,34 +79,34 @@ const DiscoverPage = () => {
           className={`w-100 p-15 border-box ${styles.searchBar}`}
         />
         <div className={`flex-row gap-15 ${styles.optionBox}`}>
-          {SEARCH_OPTION.map((options) => (
+          {SEARCH_OPTION.map((element) => (
             <select
-              key={options.type}
-              name={options.type}
-              id={options.type}
+              key={element.type}
               className={`${styles.selector}`}
+              onChange={(event) => handleSearchOption(event, element.type)}
             >
-              <option value="">{options.type}</option>
-              {options.option.map((value) => (
-                <option key={value} value={value}>
-                  {value}
+              <option value="">{element.type}</option>
+              {element.option.map((options) => (
+                <option key={options} value={options}>
+                  {options}
                 </option>
               ))}
             </select>
           ))}
+
           <Button id="search" onClick={handleSubmit}>
             검색
           </Button>
         </div>
       </div>
-      <div className={`w-100 py-15 flex-col gap-15 `}>
+      <div className={`w-100 py-15 flex-col gap-15`}>
         <h1>인기 플레이 리스트</h1>
         <div className={`flex-row gap-30 ${styles.musicSection}`}>
           <div className={`${styles.musicBox}`}></div>
           <div className={`${styles.musicBox}`}></div>
         </div>
       </div>
-      <div className={`w-100 py-15 flex-col gap-15 `}>
+      <div className={`w-100 py-15 flex-col gap-15`}>
         <h1>인기 아티스트</h1>
         <div className={`flex-row gap-30 ${styles.musicSection}`}>
           <div className={`${styles.musicBox}`}></div>
