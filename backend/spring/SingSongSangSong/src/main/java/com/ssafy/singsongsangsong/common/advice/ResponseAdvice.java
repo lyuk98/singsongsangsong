@@ -1,6 +1,7 @@
 package com.ssafy.singsongsangsong.common.advice;
 
 import org.springframework.core.MethodParameter;
+import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.server.ServerHttpRequest;
@@ -24,7 +25,9 @@ public class ResponseAdvice implements ResponseBodyAdvice<Object> {
 		Class<? extends HttpMessageConverter<?>> selectedConverterType, ServerHttpRequest request,
 		ServerHttpResponse response) {
 		if (body instanceof ErrorEntity) {
-			return ResponseUtil.error((ErrorEntity) body);
+			return ResponseUtil.error((ErrorEntity)body);
+		} else if (body instanceof Resource) {
+			return body;
 		} else {
 			return ResponseUtil.ok(body);
 		}

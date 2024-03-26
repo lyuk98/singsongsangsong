@@ -1,9 +1,7 @@
 package com.ssafy.singsongsangsong.entity;
 
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.ColumnDefault;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -54,13 +52,25 @@ public class Song extends BaseTimeEntity{
 	private int weeklyDownloadCount;
 	private int weeklyLikeCount;
 
+	@ColumnDefault("false")
 	private boolean isPublished;
+
 	private String musicLocation;
 
+	@ColumnDefault("0")
 	private int movedEmotionCount;
+	@ColumnDefault("0")
 	private int likeEmotionCount;
+	@ColumnDefault("0")
 	private int excitedEmotionCount;
-	private int cheerUpEmotionCount;
+
+	@ColumnDefault("0")
+	private int energizedEmotionCount;
+	@ColumnDefault("0")
 	private int funnyEmotionCount;
-	private int sadEmotionFCount;
+	@ColumnDefault("0")
+	private int sadEmotionCount;
+
+	@ColumnDefault("false")
+	private boolean isAnalyzed;
 }
