@@ -73,7 +73,7 @@ def draw_spectrum(y, sr, file_name, label_timestamp):
 if __name__ == "__main__":
     # 입력값 모음
     audio, sample_rate = librosa.load("s4dsp/data/audio.wav", mono=True)
-    DESTINATION = "savefig_default.png"
+    DESTINATION = "s4dsp/data/savefig_default.png"
     timestamp_labels = [
         {"start": 5, "end": 10, "label": "outro"},
         {"start": 15, "end": 20, "label": "transition"},

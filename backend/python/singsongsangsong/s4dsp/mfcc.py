@@ -19,7 +19,7 @@ def plot_mfcc(mfccs, file_name):
 if __name__ == "__main__":
     # 입력값
     FILENAME = "s4dsp/data/audio.wav"
-    DESTINATION = "savefig_default.png"
+    DESTINATION = "s4dsp/data/savefig_default.png"
     audio, sample_rate = librosa.load(FILENAME, mono=True)
     mfcc = librosa.feature.mfcc(y=audio, sr=sample_rate, n_mfcc=20)
 
