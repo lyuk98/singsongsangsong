@@ -1,13 +1,22 @@
 package com.ssafy.singsongsangsong.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.singsongsangsong.constants.EmotionsConstants;
+import com.ssafy.singsongsangsong.dto.CommentsResponseDto;
+import com.ssafy.singsongsangsong.dto.CommentsResponseDto.CommentsResponse;
+import com.ssafy.singsongsangsong.entity.Artist;
+import com.ssafy.singsongsangsong.entity.Comments;
 import com.ssafy.singsongsangsong.entity.Emotions;
 import com.ssafy.singsongsangsong.entity.Song;
+import com.ssafy.singsongsangsong.exception.artist.ArtistNotFoundException;
+import com.ssafy.singsongsangsong.exception.song.NotFoundSongException;
+import com.ssafy.singsongsangsong.repository.maria.artist.ArtistRepository;
+import com.ssafy.singsongsangsong.repository.maria.comments.CommentsRepository;
 import com.ssafy.singsongsangsong.repository.maria.song.EmotionRepository;
 import com.ssafy.singsongsangsong.repository.maria.song.SongRepository;
 
@@ -20,6 +29,10 @@ public class SongServiceImpl implements SongService {
 	private final SongRepository songRepository;
 
 	private final EmotionRepository emotionRepository;
+
+	private final ArtistRepository artistRepository;
+
+	private final CommentsRepository commentsRepository;
 
 	@Override
 	@Transactional
@@ -47,4 +60,25 @@ public class SongServiceImpl implements SongService {
 			songRepository.incrementEmotionCount(song.getId(), artistId, emotionType.getName());
 		}
 	}
+
+	@Override
+	@Transactional
+	public void postComment(Long artistId, Long songId, String content) {
+		// 댓글을 남긴다
+		Artist artist = artistRepository.findById(artistId).orElseThrow(ArtistNotFoundException::new);
+		Song song = songRepository.findById(songId).orElseThrow(NotFoundSongException::new);
+		commentsRepository.save(Comments.builder().artist(artist).song(song).content(content).build());
+	}
+
+	@Override
+	public CommentsResponseDto getComments(Long songId) {
+		List<CommentsResponse> comments = commentsRepository.findBySongId(songId)
+			.stream()
+			.map(CommentsResponse::from)
+			.toList();
+		return CommentsResponseDto.builder()
+			.comments(comments)
+			.build();
+	}
+
 }
