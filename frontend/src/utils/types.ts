@@ -76,5 +76,5 @@ export type SearchParmasType = {
   genre: string | null;
   atmosphere: string | null;
   bpm: string | null;
-  order: string | null;
+  sort: string | null;
 };

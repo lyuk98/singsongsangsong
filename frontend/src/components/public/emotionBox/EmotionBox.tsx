@@ -46,6 +46,7 @@ const EMOTIONS = [
  * @todo 해당 곡에 대한 정보를 받아오며 각 emotion별로 숫자 입력 받아와야함
  */
 const EmotionBox = () => {
+  // 해당 음악의 id
   return (
     <div className={`flex-col-center ${styles.container}`}>
       {EMOTIONS.map((element, index) => (

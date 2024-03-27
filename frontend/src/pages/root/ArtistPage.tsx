@@ -19,15 +19,14 @@ const ArtistPage = () => {
     method: "GET",
   });
 
-
   return (
     <div className={styles.container}>
       <div className={styles.headerSection}>
         <ArtistHeader
-          // artistId={response.artistId}
-          // nickName={response.nickname}
-          // profileImg={response.profileImageUrl}
-          // introduction={response.introduction}
+        // artistId={response.artistId}
+        // nickName={response.nickname}
+        // profileImg={response.profileImageUrl}
+        // introduction={response.introduction}
         />
       </div>
       <div className={styles.content}>
