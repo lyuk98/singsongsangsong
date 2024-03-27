@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import librosa
 import librosa.display
 import matplotlib.pyplot as plt
