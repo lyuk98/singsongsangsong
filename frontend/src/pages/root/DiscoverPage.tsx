@@ -1,7 +1,13 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
+
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+
 import styles from "./DiscoverPage.module.css";
 import Button from "../../components/buttons/Button";
 import { useNavigate } from "react-router-dom";
+import StyledSlider from "../../components/public/StyledSlider";
 
 const SEARCH_OPTION = [
   { type: "장르", option: ["발라드", "락", "힙합"] },
@@ -11,16 +17,22 @@ const SEARCH_OPTION = [
 ];
 
 const DiscoverPage = () => {
-  const [searchKeyword, setSearchKeyword] = useState<string>("");
-
   const navigate = useNavigate();
-
+  const [searchKeyword, setSearchKeyword] = useState<string>("");
   const [option, setOption] = useState({
     genre: "",
     thema: "",
     bpm: "",
     sort: "",
   });
+
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 3,
+    slidesToScroll: 3,
+  };
 
   const handleKeywordChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchKeyword(event.target.value);
@@ -56,14 +68,16 @@ const DiscoverPage = () => {
     console.log(option);
   }, [option]);
 
-  const handleSubmit = () => {
+  const handleSearch = () => {
     navigate(
       `result/?keyword=${searchKeyword}&?genre=${option.genre}&bpm=${option.bpm}&atomposhpere=${option.thema}&sort=${option.sort}`
     );
   };
 
+  const handleNavigate = () => {};
+
   return (
-    <div className={`px-main my-main w-100 flex-col `}>
+    <div className={`px-main my-main w-100 flex-col gap-30`}>
       <h1 style={{ borderBottom: "2px solid black", paddingBottom: "10px" }}>
         둘러보기
       </h1>
@@ -94,23 +108,67 @@ const DiscoverPage = () => {
             </select>
           ))}
 
-          <Button id="search" onClick={handleSubmit}>
+          <Button id="search" onClick={handleSearch}>
             검색
           </Button>
         </div>
       </div>
-      <div className={`w-100 py-15 flex-col gap-15`}>
-        <h1>인기 플레이 리스트</h1>
-        <div className={`flex-row gap-30 ${styles.musicSection}`}>
-          <div className={`${styles.musicBox}`}></div>
-          <div className={`${styles.musicBox}`}></div>
+      <div className={`flex-col gap-60`}>
+        <div>
+          <h1 style={{ paddingBottom: "10px" }}>인기 플레이 리스트</h1>
+          <StyledSlider>
+            <div>
+              <div className={`${styles.musicBox}`}>1</div>
+            </div>
+            <div>
+              <div className={`${styles.musicBox}`}>2</div>
+            </div>
+            <div>
+              <div className={`${styles.musicBox}`}>3</div>
+            </div>
+          </StyledSlider>
         </div>
-      </div>
-      <div className={`w-100 py-15 flex-col gap-15`}>
-        <h1>인기 아티스트</h1>
-        <div className={`flex-row gap-30 ${styles.musicSection}`}>
-          <div className={`${styles.musicBox}`}></div>
-          <div className={`${styles.musicBox}`}></div>
+        <div>
+          <h1 style={{ paddingBottom: "10px" }}>추천 분위기 리스트</h1>
+          <StyledSlider>
+            <div>
+              <div className={`${styles.musicBox}`}>1</div>
+            </div>
+            <div>
+              <div className={`${styles.musicBox}`}>2</div>
+            </div>
+            <div>
+              <div className={`${styles.musicBox}`}>3</div>
+            </div>
+          </StyledSlider>
+        </div>
+        <div>
+          <h1 style={{ paddingBottom: "10px" }}>추천 장르 리스트</h1>
+          <StyledSlider>
+            <div>
+              <div className={`${styles.musicBox}`}>1</div>
+            </div>
+            <div>
+              <div className={`${styles.musicBox}`}>2</div>
+            </div>
+            <div>
+              <div className={`${styles.musicBox}`}>3</div>
+            </div>
+          </StyledSlider>
+        </div>
+        <div className={`w-100 flex-col`}>
+          <h1 style={{ paddingBottom: "10px" }}>추천 아티스트</h1>
+          <StyledSlider>
+            <div>
+              <div className={`${styles.musicBox}`}>1</div>
+            </div>
+            <div>
+              <div className={`${styles.musicBox}`}>2</div>
+            </div>
+            <div>
+              <div className={`${styles.musicBox}`}>3</div>
+            </div>
+          </StyledSlider>
         </div>
       </div>
     </div>

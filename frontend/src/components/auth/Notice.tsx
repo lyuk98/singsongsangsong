@@ -18,7 +18,7 @@ const Notice: React.FC<NoticeProps> = ({ pathname }): JSX.Element => {
       break;
     case "/login":
       authInfo.index = "LOGIN";
-      authInfo.notice = "Welecome back!!";
+      authInfo.notice = "Welcome back!!";
       break;
   }
   return (
