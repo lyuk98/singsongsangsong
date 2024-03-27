@@ -9,4 +9,3 @@ spring:
     url: jdbc:mariadb://localhost:3306/singsongsangsong?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8
     username: root
     password: 1234
-

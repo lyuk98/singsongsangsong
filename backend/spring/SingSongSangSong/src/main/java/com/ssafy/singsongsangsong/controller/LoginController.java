@@ -16,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 public class LoginController {
 	private JoinService joinService;
 	private ArtistRepository artistRepository;
-	@GetMapping("/")
+	@GetMapping("/login")
 	public SimpleSongDto main(@AuthenticationPrincipal String username) {
 		return SimpleSongDto.builder().genre("test").build();
 	}
