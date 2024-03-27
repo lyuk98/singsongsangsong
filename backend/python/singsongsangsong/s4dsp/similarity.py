@@ -17,6 +17,14 @@ import numpy as np
 import librosa
 from panns_inference import AudioTagging
 from pymilvus import MilvusClient, DataType
+from s4dsp._dependencies import require
+
+# 유사도 분석에 필요한 파일 정보
+require(
+    "s4dsp/data/models/Cnn14_mAP=0.431.pth",
+    url="https://zenodo.org/record/3987831/files/Cnn14_mAP%3D0.431.pth?download=1",
+    sha256sum="0dc499e40e9761ef5ea061ffc77697697f277f6a960894903df3ada000e34b31"
+)
 
 def get_embedding(y: np.ndarray) -> list[float]:
     """PANNs를 사용하여 음원의 패턴을 확인합니다
