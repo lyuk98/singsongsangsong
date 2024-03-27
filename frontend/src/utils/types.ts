@@ -18,6 +18,7 @@ export interface commentType {
 export type AnalyzedStateType = {
   title: string;
   process: string;
+  songId: number;
 };
 
 type GenreType = {
@@ -46,4 +47,34 @@ export type AnalyzedResultType = {
   genre: GenreType[];
   atmosphere: AtmosphereType[];
   similarities: SimilaritiesType[];
+};
+
+type MusicType = {
+  musicId: number;
+  title: string;
+  genre: string;
+  atmosphere: number;
+  playCount: number;
+  artistId: number;
+  artistName: string;
+  duration: number;
+};
+
+type ArtistType = {
+  id: number;
+  name: string;
+  profileImagePath: string;
+};
+
+export type SearchType = {
+  musics: MusicType[];
+  artist: ArtistType[];
+};
+
+export type SearchParmasType = {
+  keyword: string | null;
+  genre: string | null;
+  atmosphere: string | null;
+  bpm: string | null;
+  sort: string | null;
 };

@@ -4,14 +4,16 @@ import styles from "./MusicSectionIndicator.module.css";
 import SectionButton from "./SectionButton";
 
 /**
- * 구간분석용 지표가 나오는 컴포넌트. 
+ * 구간분석용 지표가 나오는 컴포넌트.
  * 곡상세 페이지 및, 분석결과 페이지에서 사용할 예정
- * 
+ *
  * memo : 잘려진 구간들을 반복문을 사용해서(아직 적용 안함) 반복 출력해야함
  * 데이터 넣어줘야하는건 구간에대한 타입과 start,end point
  */
 
 const MusicSectionIndicator = () => {
+  // songSpectrum
+
   return (
     <div className={`flex-col-center ${styles.content}`}>
       <h2>각 구간은 이런 특징을 가져요</h2>

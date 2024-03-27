@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { NavLink } from "react-router-dom";
 
 import { FaChartLine, FaMusic, FaRegQuestionCircle } from "react-icons/fa";
@@ -9,7 +10,11 @@ import { GiPoisonGas } from "react-icons/gi";
 import styles from "./Sidebar.module.css";
 
 const Sidebar = () => {
-  const isLogin: boolean = false;
+  const [isLogin, setIsLogin] = useState<boolean>(true);
+
+  const handleLogout = () => {
+    setIsLogin(!isLogin);
+  };
 
   return (
     <div className={styles.mainContainer}>
@@ -43,14 +48,14 @@ const Sidebar = () => {
         {isLogin && (
           <>
             <NavLink
-              to="/"
+              to={`/artist/${"userName"}`}
               className={({ isActive }) =>
                 isActive ? styles.active : undefined
               }
             >
               <RxPerson size="20px" /> <span>Profile</span>
             </NavLink>
-            <NavLink to="/discover">
+            <NavLink onClick={handleLogout} to="/">
               <MdOutlineLogout size="20px" /> <span>Logout</span>
             </NavLink>
           </>

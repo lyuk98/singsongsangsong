@@ -46,8 +46,8 @@ const WeeklySingsongChart = () => {
   };
 
   return (
-    <div className={`flex-col-center ${styles.container}`}>
-      <div className={styles.headerContainer}>
+    <div className={`flex-col-center w-100 gap-15 ${styles.container}`}>
+      <div className={`flex-row-center ${styles.headerContainer}`}>
         <h2>금주의 싱송차트</h2>
       </div>
       <div className={styles.chartContainer}>

@@ -56,7 +56,7 @@ const RegisterPage = () => {
           name="id"
           hasError={!idIsValid && "아이디는 4-16글자 사이입니다"}
           type="text"
-          placeholder="input your id"
+          placeholder="아이디"
           value={idValue}
           onChange={handleIdChange}
           required
@@ -67,7 +67,7 @@ const RegisterPage = () => {
           name="password"
           hasError={!passwordIsValid && "비밀번호는 4-16글자 사이입니다"}
           type="password"
-          placeholder="input your password"
+          placeholder="비밀번호"
           value={passwordValue}
           onChange={handlePasswordChange}
           required
@@ -78,7 +78,7 @@ const RegisterPage = () => {
           name="passwordConfirm"
           hasError={!passwordConfirmIsValid && "비밀번호가 일치하지 않습니다"}
           type="password"
-          placeholder="confirm your password"
+          placeholder="비밀번호 확인"
           value={passwordConfirmValue}
           onChange={handlePasswordConfirmChange}
           required

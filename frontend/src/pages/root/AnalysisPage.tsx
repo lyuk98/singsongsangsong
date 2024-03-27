@@ -11,8 +11,11 @@ import { useAxios } from "../../hooks/api/useAxios";
 import axios from "axios";
 
 import { AnalyzedResultType } from "../../utils/types";
+import { useNavigate } from "react-router";
 
 const AnalysisPage = () => {
+  const navigate = useNavigate()
+
   const { response, isLoading, error } = useAxios({
     url: `/anayze/${`songId`}`,
     method: "GET",
@@ -32,18 +35,23 @@ const AnalysisPage = () => {
     }
   };
 
+  const navigatePostPage = () => {
+    navigate('post')
+  }
+
   return (
-    <div className={`w-100 py-main ${styles.container}`}>
+    <div className={`w-100 px-main ${styles.container}`}>
       <div className={`${styles.header}`}>
         <h1>분석 결과</h1>
       </div>
       <div className={`flex-row-center border-box py-15`}>
-        <h2>{"mp3"}</h2>
+        <h2>{`songTitle`}</h2>
       </div>
       <div className={`flex-col gap-15}`}>
         <h2 className={`flex-row gap-15`}>
           MFCC 결과 <FaQuestionCircle />
         </h2>
+        {/* songMfcc */}
         <div className={`border-box bg-box flex-col-center ${styles.imgBox}`}>
           <img src={testimg} alt="mfccimg" />
         </div>
@@ -62,9 +70,9 @@ const AnalysisPage = () => {
       <div className={"border-box bg-box py-15"}>
         <SimilarSong />
       </div>
-      <div className={"border-box bg-box py-15 flex-col-center"}>
+      <div className={"border-box bg-box py-15 gap-15 flex-col-center"}>
         <h2>곡을 게시하고, 트랜드에 참여하세요!</h2>
-        <Button onClick={handleUpload}>게시하기</Button>
+        <Button onClick={navigatePostPage}>게시하기</Button>
       </div>
     </div>
   );

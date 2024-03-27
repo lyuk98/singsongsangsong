@@ -13,6 +13,8 @@ import ArtistPage from "../pages/root/ArtistPage";
 import SongDetailPage from "../pages/root/SongDetailPage";
 import UploadPage from "../pages/root/UploadPage";
 import PostPage from "../pages/root/PostPage";
+import ErrorPage from "../pages/Error/ErrorPage";
+import SearchResultPage from "../pages/root/SearchResultPage";
 
 export const router = createBrowserRouter([
   {
@@ -39,6 +41,10 @@ export const router = createBrowserRouter([
       {
         path: "discover",
         element: <DiscoverPage />,
+      },
+      {
+        path: "discover/:search",
+        element: <SearchResultPage />,
       },
       {
         path: "artist/:artistId",

@@ -53,7 +53,7 @@ const UploadPage = () => {
     event.preventDefault();
     event.stopPropagation();
     if (!event.currentTarget.contains(event.relatedTarget as Node)) {
-      // 마우스가 자식 요소에서 떠나면만 이벤트 처리
+      // 마우스가 자식 요소에서 떠나면 이벤트 처리
       setIsActive(false);
       console.log("handleDragLeave");
     }
@@ -99,7 +99,7 @@ const UploadPage = () => {
   };
 
   return (
-    <div className={`w-100 py-main ${styles.container}`}>
+    <div className={`w-100 px-main ${styles.container}`}>
       <div className={`${styles.header}`}>
         <h1>곡 분석하기</h1>
         <p>곡을 업로드하고 자세한 정보를 얻어보세요</p>
@@ -118,10 +118,14 @@ const UploadPage = () => {
                 style={{ cursor: "pointer" }}
               />
             </h1>
-            <Button disabled={!uploadFile}
-            onClick={() => {
-              handleStartAnalyze(uploadFile.file)
-            }}>분석하기</Button>
+            <Button
+              disabled={!uploadFile}
+              onClick={() => {
+                handleStartAnalyze(uploadFile.file);
+              }}
+            >
+              분석하기
+            </Button>
           </div>
         ) : (
           <label
