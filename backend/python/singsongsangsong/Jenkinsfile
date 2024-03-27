@@ -64,11 +64,15 @@ pipeline {
         stage('Deploy') {
             steps {
                 sshagent (credentials: ['PYTHON_EC2_SSH_KEY']) { 
-                    sh 'docker ps -f name=fastapi-service -q \
-                    | xargs --no-run-if-empty docker container stop'
-                    sh 'docker container ls -a -f name=fastapi-service -q \
-                    | xargs -r docker container rm'
-                    sh "docker run -d --name fastapi-service -p 8000:8000 ${dockerHubRegistry}:latest"
+
+                    sh """
+                        ssh -o StrictHostKeyChecking=no ubuntu@j10e206a.p.ssafy.io
+                        docker ps -f name=fastapi-service -q \
+                        | xargs --no-run-if-empty docker container stop
+                        docker container ls -a -f name=fastapi-service -q \
+                        | xargs -r docker container rm
+                        docker run -d --name fastapi-service -p 8000:8000 ${dockerHubRegistry}:latest 
+                    """
                 }
             }
             post {
