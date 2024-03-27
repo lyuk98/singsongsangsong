@@ -36,12 +36,17 @@ def create_schema() -> CollectionSchema:
     """
 
     schema = MilvusClient.create_schema(
+        auto_id=False,
         enable_dynamic_field=False
     )
     schema.add_field(
         field_name="id",
         datatype=DataType.INT64,
         is_primary=True
+    )
+    schema.add_field(
+        field_name="is_published",
+        datatype=DataType.BOOL
     )
     schema.add_field(
         field_name="vector",
@@ -108,3 +113,62 @@ def create_collection(
         schema=schema,
         index_params=index_params
     )
+
+def insert_embedding(
+    song_id: int,
+    embedding: list[float],
+    client: Union[MilvusClient, None]=None
+) -> dict:
+    """유사도 분석을 위한 embedding을 데이터베이스에 삽입합니다
+
+    Parameters
+    ----------
+    song_id : int
+        삽입할 곡의 ID
+    embedding : list[float]
+        곡의 정보를 담고 있는 embedding
+    client : MilvusClient | None
+        Milvus client; `None`일 시 새로 생성
+    
+    Returns
+    -------
+    dict
+        삽입 결과 정보
+    """
+
+    if client is None:
+        client = get_client()
+
+    return client.insert(
+        collection_name="embeddings",
+        data=[
+            {
+                "id": song_id,
+                "is_published": False,
+                "vector": embedding
+            }
+        ]
+    )
+
+def get_record(song_id: int, client: Union[MilvusClient, None]=None) -> Union[dict, None]:
+    """주어진 ID를 가진 곡 정보를 반환합니다
+
+    결과가 존재하지 않을 시 `None`을 반환합니다
+
+    Parameters
+    ----------
+    song_id : int
+        검색할 곡의 ID
+    client : MilvusClient | None
+        Milvus client; `None`일 시 새로 생성
+    """
+
+    if client is None:
+        client = get_client()
+
+    result = client.get(collection_name="embeddings", ids=song_id)
+
+    if result:
+        return result[0]
+
+    return None

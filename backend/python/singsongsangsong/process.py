@@ -16,6 +16,7 @@ import librosa
 from essentia.standard import MonoLoader # pylint: disable=no-name-in-module
 import file_server
 import database
+import vector_database
 import s4dsp
 
 def analyse(song_id: int, audio_path: str): # pylint: disable=too-many-locals
@@ -170,6 +171,9 @@ def analyse(song_id: int, audio_path: str): # pylint: disable=too-many-locals
                             song_id
                         )
                     )
+
+                    # 유사도 비교 데이터 삽입
+                    vector_database.insert_embedding(song_id, s4dsp.get_embedding(y))
 
                     connection.commit()
         except Exception as exception:
