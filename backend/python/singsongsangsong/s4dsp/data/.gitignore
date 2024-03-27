@@ -1,13 +1,5 @@
 *
 !.gitignore
+
 !train/
-
-!.gitattributes
-
-# Track model files
-!discogs-effnet-bs64-1.pb
-!mtg_jamendo_moodtheme-discogs-effnet-1.pb
-!mtg_jamendo_moodtheme-discogs-effnet-1.json
-!genre_discogs400-discogs-effnet-1.pb
-!genre_discogs400-discogs-effnet-1.json
-!Cnn14_mAP=0.431.pth
+!models

@@ -24,26 +24,29 @@ from s4dsp._dependencies import require
 
 # 장르 분석에 필요한 파일 정보
 require(
-    "s4dsp/data/discogs-effnet-bs64-1.pb",
+    "s4dsp/data/models/discogs-effnet-bs64-1.pb",
     url="https://essentia.upf.edu/models/music-style-classification/discogs-effnet/"
     "discogs-effnet-bs64-1.pb",
     sha256sum="3ed9af50d5367c0b9c795b294b00e7599e4943244f4cbd376869f3bfc87721b1"
 )
 require(
-    "s4dsp/data/genre_discogs400-discogs-effnet-1.pb",
+    "s4dsp/data/models/genre_discogs400-discogs-effnet-1.pb",
     url="https://essentia.upf.edu/models/classification-heads/genre_discogs400/"
     "genre_discogs400-discogs-effnet-1.pb",
     sha256sum="3885ba078a35249af94b8e5e4247689afac40deca4401a4bc888daf5a579c01c"
 )
 require(
-    "s4dsp/data/genre_discogs400-discogs-effnet-1.json",
+    "s4dsp/data/models/genre_discogs400-discogs-effnet-1.json",
     url="https://essentia.upf.edu/models/classification-heads/genre_discogs400/"
     "genre_discogs400-discogs-effnet-1.json",
     sha256sum="2d367319d9b782ffa10f69abf0e805b3ac4e10899025e5bdbaceda3919b243e0"
 )
 
 # Metadata 파일에서 장르 이름 불러오기
-with open("s4dsp/data/genre_discogs400-discogs-effnet-1.json", encoding="utf-8") as metadata_file:
+with open(
+    "s4dsp/data/models/genre_discogs400-discogs-effnet-1.json",
+    encoding="utf-8"
+) as metadata_file:
     _metadata = json.load(metadata_file)
     _genre_names = _metadata.get("classes")
     del _metadata
@@ -66,11 +69,11 @@ def predict_genre(audio: np.ndarray) -> dict[str, float]:
 
     # 장르 분석에 필요한 모델 불러오기
     embedding_model = TensorflowPredictEffnetDiscogs(
-        graphFilename="s4dsp/data/discogs-effnet-bs64-1.pb",
+        graphFilename="s4dsp/data/models/discogs-effnet-bs64-1.pb",
         output="PartitionedCall:1"
     )
     prediction_model = TensorflowPredict2D(
-        graphFilename="s4dsp/data/genre_discogs400-discogs-effnet-1.pb",
+        graphFilename="s4dsp/data/models/genre_discogs400-discogs-effnet-1.pb",
         input="serving_default_model_Placeholder",
         output="PartitionedCall:0"
     )

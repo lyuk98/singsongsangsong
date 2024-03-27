@@ -73,7 +73,7 @@ pipenv run python s4dsp/key.py
 pipenv run python s4dsp/genre.py
 ```
 
-`genre.py`는 아래의 파일들을 필요로 하며 `s4dsp/data/` 내에 존재하지 않을 시 자동으로 다운로드를 진행합니다
+`genre.py`는 아래의 파일들을 필요로 하며 `s4dsp/data/models/` 내에 존재하지 않을 시 자동으로 다운로드를 진행합니다
 
 - [`discogs-effnet-bs64-1.pb`](https://essentia.upf.edu/models/music-style-classification/discogs-effnet/discogs-effnet-bs64-1.pb)
 - [`genre_discogs400-discogs-effnet-1.pb`](https://essentia.upf.edu/models/classification-heads/genre_discogs400/genre_discogs400-discogs-effnet-1.pb)
@@ -94,7 +94,7 @@ pipenv run python s4dsp/genre.py
 pipenv run python s4dsp/mood.py
 ```
 
-`mood.py`는 아래의 파일들을 필요로 하며 `s4dsp/data/` 내에 존재하지 않을 시 자동으로 다운로드를 진행합니다
+`mood.py`는 아래의 파일들을 필요로 하며 `s4dsp/data/models/` 내에 존재하지 않을 시 자동으로 다운로드를 진행합니다
 
 - [`discogs-effnet-bs64-1.pb`](https://essentia.upf.edu/models/music-style-classification/discogs-effnet/discogs-effnet-bs64-1.pb)
 - [`mtg_jamendo_moodtheme-discogs-effnet-1.pb`](https://essentia.upf.edu/models/classification-heads/mtg_jamendo_moodtheme/mtg_jamendo_moodtheme-discogs-effnet-1.pb)
