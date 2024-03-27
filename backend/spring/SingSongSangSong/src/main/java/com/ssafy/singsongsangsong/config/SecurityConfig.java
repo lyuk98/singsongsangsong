@@ -45,7 +45,8 @@ public class SecurityConfig {
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http
-			.cors(auth -> auth.disable())
+			// .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+			.cors(cors -> cors.disable())
 			.formLogin(auth -> auth.disable())
 			.csrf(auth -> auth.disable())
 			.httpBasic(auth -> auth.disable())
@@ -88,7 +89,7 @@ public class SecurityConfig {
 	public CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration configuration = new CorsConfiguration();
 		configuration.setAllowedOrigins(
-			List.of("http://localhost:5173", "http://i10e102.p.ssafy.io:5173", "https://i10e102.p.ssafy.io:5173", "http://localhost:5173"));
+			List.of("/**"));
 		configuration.addAllowedMethod("*");
 		configuration.addAllowedHeader("*");
 		configuration.setAllowCredentials(true);
