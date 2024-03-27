@@ -18,6 +18,6 @@ public class TrendSongDto {
 	private String artistName;
 	private String lyrics;
 	private Map<String, Integer> emotions;
-	private Map<String, Integer> atmospheres;
+	private Map<String, Double> atmospheres;
 
 }

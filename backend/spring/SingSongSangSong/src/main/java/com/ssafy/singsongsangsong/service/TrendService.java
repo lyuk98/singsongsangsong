@@ -3,7 +3,7 @@ package com.ssafy.singsongsangsong.service;
 import java.util.List;
 
 import com.ssafy.singsongsangsong.dto.ArtistInfoDto;
-import com.ssafy.singsongsangsong.dto.SimpleSongDto;
+import com.ssafy.singsongsangsong.dto.EmotionSongsDto;
 import com.ssafy.singsongsangsong.dto.TrendChartDto;
 
 public interface TrendService {
@@ -11,9 +11,11 @@ public interface TrendService {
 	public TrendChartDto getWeeklyChart();
 	public TrendChartDto getGenreSongLank(String genre);
 	public List<ArtistInfoDto> getGenreArtistLank();
-	public List<SimpleSongDto> getAtmosphereSongLank();
+	public TrendChartDto getAtmosphereSongLank(String atmosphere);
 	public List<ArtistInfoDto> getAtmosphereArtistLank();
-	public List<SimpleSongDto> getWorldChart();
-	public List<ArtistInfoDto> getKoreanChart();
+	public TrendChartDto getWorldChart();
+	public TrendChartDto getKoreanChart();
+	public EmotionSongsDto getEmotionSongs();
+	public TrendChartDto getBpmLank(int bpm);
 
 }

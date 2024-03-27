@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.singsongsangsong.dto.ArtistInfoDto;
-import com.ssafy.singsongsangsong.dto.SimpleSongDto;
+import com.ssafy.singsongsangsong.dto.EmotionSongsDto;
 import com.ssafy.singsongsangsong.dto.TrendChartDto;
 import com.ssafy.singsongsangsong.repository.mongo.trend.TrendRepository;
 
@@ -34,9 +34,8 @@ public class TrendServiceImpl implements TrendService {
 	}
 
 	@Override
-	public List<SimpleSongDto> getAtmosphereSongLank() {
-		// TODO Auto-generated method stub
-		return null;
+	public TrendChartDto getAtmosphereSongLank(String atmosphere) {
+		return trendRepository.getAtmosphereSongLank(atmosphere);
 	}
 
 	@Override
@@ -46,15 +45,23 @@ public class TrendServiceImpl implements TrendService {
 	}
 
 	@Override
-	public List<SimpleSongDto> getWorldChart() {
-		// TODO Auto-generated method stub
-		return null;
+	public TrendChartDto getWorldChart() {
+		return trendRepository.getWorldChart();
 	}
 
 	@Override
-	public List<ArtistInfoDto> getKoreanChart() {
-		// TODO Auto-generated method stub
-		return null;
+	public TrendChartDto getKoreanChart() {
+		return trendRepository.getKoreanChart();
+	}
+
+	@Override
+	public EmotionSongsDto getEmotionSongs() {
+		return trendRepository.getEmotionSongs();
+	}
+
+	@Override
+	public TrendChartDto getBpmLank(int bpm) {
+		return trendRepository.getBpmLank(bpm);
 	}
 
 }
