@@ -1,5 +1,7 @@
 package com.ssafy.singsongsangsong.config;
 
+import java.util.List;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -12,6 +14,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.singsongsangsong.filter.CustomJsonUsernamePasswordAuthenticationFilter;
@@ -40,6 +45,7 @@ public class SecurityConfig {
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http
+			.cors(auth -> auth.disable())
 			.formLogin(auth -> auth.disable())
 			.csrf(auth -> auth.disable())
 			.httpBasic(auth -> auth.disable())
@@ -59,7 +65,6 @@ public class SecurityConfig {
 						.userService(customOAuth2UserService)))
 			.addFilterAfter(customJsonUsernamePasswordAuthenticationFilter(), LogoutFilter.class)
 			.addFilterBefore(jwtAuthenticationProcessingFilter, CustomJsonUsernamePasswordAuthenticationFilter.class);
-		// .addFilterBefore(authenticationProcessingFilter(), LogoutFilter.class);
 
 		return http.build();
 	}
@@ -71,30 +76,25 @@ public class SecurityConfig {
 		// provider.setUserDetailsService(loginService);
 		return new ProviderManager(provider);
 	}
-
-	//
-	// @Bean
-	// public LoginSuccessHandler loginSuccessHandler() {
-	// 	return new LoginSuccessHandler(jwtService,artistRepository);
-	// }
-	//
-	// @Bean
-	// public LoginFailureHandler loginFailureHandler() {
-	// 	return new LoginFailureHandler();
-	// }
 	@Bean
 	public CustomJsonUsernamePasswordAuthenticationFilter customJsonUsernamePasswordAuthenticationFilter() {
 		CustomJsonUsernamePasswordAuthenticationFilter customJsonUsernamePasswordLoginFilter
 			= new CustomJsonUsernamePasswordAuthenticationFilter(objectMapper);
 		customJsonUsernamePasswordLoginFilter.setAuthenticationManager(authenticationManager());
-		// customJsonUsernamePasswordLoginFilter.setAuthenticationSuccessHandler(loginSuccessHandler());
-		// customJsonUsernamePasswordLoginFilter.setAuthenticationFailureHandler(loginFailureHandler());
 		return customJsonUsernamePasswordLoginFilter;
 	}
 
-	// @Bean
-	// public JwtAuthenticationProcessingFilter authenticationProcessingFilter() {
-	// 	JwtAuthenticationProcessingFilter jwtAuthenticationFilter = new JwtAuthenticationProcessingFilter(jwtService,artistRepository);
-	// 	return jwtAuthenticationFilter;
-	// }
+	@Bean
+	public CorsConfigurationSource corsConfigurationSource() {
+		CorsConfiguration configuration = new CorsConfiguration();
+		configuration.setAllowedOrigins(
+			List.of("http://localhost:5173", "http://i10e102.p.ssafy.io:5173", "https://i10e102.p.ssafy.io:5173", "http://localhost:5173"));
+		configuration.addAllowedMethod("*");
+		configuration.addAllowedHeader("*");
+		configuration.setAllowCredentials(true);
+
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", configuration);
+		return source;
+	}
 }
