@@ -157,6 +157,10 @@ code {
   gap: 30px;
 }
 
+.gap-60 {
+  gap: 150px;
+}
+
 .mx-auto {
   margin-left: auto;
   margin-right: auto;

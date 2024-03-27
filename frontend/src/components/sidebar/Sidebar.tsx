@@ -1,6 +1,8 @@
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
+import titleIcon from "./../../sources/imgs/title/logo_small_투명.png";
+import title from "./../../sources/imgs/title/logo_투명.png";
 import { FaChartLine, FaMusic, FaRegQuestionCircle } from "react-icons/fa";
 import { TbReportAnalytics } from "react-icons/tb";
 import { RxPerson } from "react-icons/rx";
@@ -10,17 +12,24 @@ import { GiPoisonGas } from "react-icons/gi";
 import styles from "./Sidebar.module.css";
 
 const Sidebar = () => {
+  const navigate = useNavigate()
   const [isLogin, setIsLogin] = useState<boolean>(true);
 
   const handleLogout = () => {
     setIsLogin(!isLogin);
   };
+  
+  const navigateMain = () => {
+    navigate('/')
+  }
 
   return (
     <div className={styles.mainContainer}>
-      <div className={styles.title}>
-        <GiPoisonGas size="20px" className={styles.titleIcon} />
-        <span>싱송생송</span>
+      <div className={styles.title} onClick={navigateMain}>
+        <img src={titleIcon} className={styles.titleIcon} />
+        <div className={`p-15 ${styles.titleImg}`}>
+          <img src={title} alt="title" />
+        </div>
       </div>
       <div className={styles.sidebarLinksSection}>
         <label htmlFor="sidebarLinks">Menu</label>

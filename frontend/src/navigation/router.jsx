@@ -15,6 +15,8 @@ import UploadPage from "../pages/root/UploadPage";
 import PostPage from "../pages/root/PostPage";
 import ErrorPage from "../pages/Error/ErrorPage";
 import SearchResultPage from "../pages/root/SearchResultPage";
+import TopRankSongPage from "../pages/root/TopRankSongPage";
+import TopRankArtistPage from "../pages/root/TopRankArtistPage";
 
 export const router = createBrowserRouter([
   {
@@ -45,6 +47,14 @@ export const router = createBrowserRouter([
       {
         path: "discover/:search",
         element: <SearchResultPage />,
+      },
+      {
+        path: "discover/playlist/:type",
+        element: <TopRankSongPage />,
+      },
+      {
+        path: "discover/artist/:type",
+        element: <TopRankArtistPage />,
       },
       {
         path: "artist/:artistId",

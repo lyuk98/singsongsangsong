@@ -4,9 +4,6 @@
 
 .linkBox {
   width: 400px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   margin-top: 20px;
 }
 
@@ -16,4 +13,22 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.socialBox {
+  margin-top: 20px;
+}
+
+.socialButton {
+  padding: 0px;
+  width: 200px;
+  height: 50px;
+  border-radius: 15px;
+  overflow: hidden;
+  cursor: pointer;
+  border: none;
+  img {
+    width: 100%;
+    height: 100%;
+  }
 }
