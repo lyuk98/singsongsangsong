@@ -8,6 +8,7 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
@@ -34,21 +35,22 @@ public class SecurityConfig {
 	private final OAuth2LoginFailureHandler oAuth2LoginFailureHandler;
 	private final CustomOAuth2UserService customOAuth2UserService;
 	private final JwtAuthenticationProcessingFilter jwtAuthenticationProcessingFilter;
-	private final PasswordEncoder passwordEncoder;
+	private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http
 			.formLogin(auth -> auth.disable())
 			.csrf(auth -> auth.disable())
-			.httpBasic(auth->auth.disable())
+			.httpBasic(auth -> auth.disable())
 			.sessionManagement(auth -> auth.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 			.authorizeHttpRequests(req ->
-				req.requestMatchers("/","error").permitAll()
-					.requestMatchers("/sign-up").hasRole("GUEST")
-					// .requestMatchers("/join").hasRole("GUEST")
-					.anyRequest().authenticated()
-					// .anyRequest().permitAll())
-					)
+					req.requestMatchers("/", "error").permitAll()
+						.requestMatchers("/sign-up").hasRole("GUEST")
+						// .requestMatchers("/join").hasRole("GUEST")
+						.anyRequest().authenticated()
+				// .anyRequest().permitAll())
+			)
 			.oauth2Login(oauth2 ->
 				oauth2
 					.successHandler(oAuth2LoginSuccessHandler)
@@ -57,7 +59,7 @@ public class SecurityConfig {
 						.userService(customOAuth2UserService)))
 			.addFilterAfter(customJsonUsernamePasswordAuthenticationFilter(), LogoutFilter.class)
 			.addFilterBefore(jwtAuthenticationProcessingFilter, CustomJsonUsernamePasswordAuthenticationFilter.class);
-			// .addFilterBefore(authenticationProcessingFilter(), LogoutFilter.class);
+		// .addFilterBefore(authenticationProcessingFilter(), LogoutFilter.class);
 
 		return http.build();
 	}
@@ -69,6 +71,7 @@ public class SecurityConfig {
 		// provider.setUserDetailsService(loginService);
 		return new ProviderManager(provider);
 	}
+
 	//
 	// @Bean
 	// public LoginSuccessHandler loginSuccessHandler() {
