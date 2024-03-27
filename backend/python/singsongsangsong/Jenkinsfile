@@ -9,9 +9,17 @@ pipeline {
     stages {
         stage('Checkout Application Git Branch') {
             steps {
-                git credentialsId: 'GITLAB_TOKEN',
-                    url: 'https://lab.ssafy.com/s10-bigdata-dist-sub2/S10P22E206.git',
-                    branch: 'fastapi'
+                script {
+                    def gitLFSInstalled = sh(script: 'git lfs version', returnStatus: true) == 0
+                    if (!gitLFSInstalled) {
+                        sh 'sudo apt-get install git-lfs'
+                        sh 'git lfs install'
+                    }
+
+                    git credentialsId: 'GITLAB_TOKEN',
+                        url: 'https://lab.ssafy.com/s10-bigdata-dist-sub2/S10P22E206.git',
+                        branch: 'fastapi'
+                }
             }
             post {
                 failure {
