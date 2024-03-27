@@ -15,7 +15,6 @@ Utility functions
 import os.path
 import hashlib
 from hmac import compare_digest
-import logging
 import requests
 
 def require(path: str, url: str=None, sha256sum: str=None):
@@ -44,13 +43,10 @@ def require(path: str, url: str=None, sha256sum: str=None):
         if url is None:
             raise FileNotFoundError(f"File {path} does not exist")
 
-        logging.info("Downloading %s", path)
-
         response = requests.get(url, timeout=(10, 82))
 
         with open(path, "wb") as file:
             file.write(response.content)
-        logging.info("Finished downloading %s", path)
 
     if sha256sum is not None:
         with open(path, "rb") as file:
