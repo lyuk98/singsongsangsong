@@ -57,3 +57,27 @@ def get_song_path(song_id: int, cursor: MySQLCursorAbstract=None) -> Union[str, 
             return music_location
 
     return None
+
+def get_song_artist(song_id: int, cursor: MySQLCursorAbstract=None) -> Union[str, None]:
+    """지정한 `song_id`의 ID를 가진 곡의 아티스트 ID를 반환합니다
+
+    Returns
+    -------
+    int | None
+        아티스트 ID; 없을 시 `None`
+    """
+
+    if cursor is None:
+        connection = get_connection()
+        cursor = connection.cursor()
+
+    cursor.execute(
+        "select id, artist_id from song where id = %s",
+        (song_id,)
+    )
+
+    for (selected_id, artist_id) in cursor:
+        if song_id == selected_id:
+            return artist_id
+
+    return None

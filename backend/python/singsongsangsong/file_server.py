@@ -63,3 +63,20 @@ def upload(source: str, bucket: str, destination: str, client: Minio=None):
     if client is None:
         client = get_client()
     client.fput_object(bucket, destination, source)
+
+def delete(bucket: str, object_name: str, client: Minio=None):
+    """MinIO client로 지정한 파일을 삭제합니다
+
+    Parameters
+    ----------
+    bucket : str
+        삭제할 파일이 존재하는 bucket 이름
+    object_name : str
+        삭제할 파일 이름
+    client : Minio
+        MinIO client (미지정 시 생성)
+    """
+
+    if client is None:
+        client = get_client()
+    client.remove_object(bucket, object_name)
