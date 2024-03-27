@@ -1,11 +1,13 @@
 import React from "react";
 import styles from "./TopRankSongPage.module.css";
 import MusicTable from "../../components/public/music/MusicTable";
+import { useParams } from "react-router";
 
 /**
  * 분위기 / 장르별 상위 10개의 음악들을 보여줄 페이지.
  */
 const TopRankSongPage = () => {
+  const { type } = useParams();
   const randNum = Math.floor(Math.random() * 5) + 1;
   const header = require(`./../../sources/imgs/header/headerimg${randNum}.jpg`);
 
@@ -16,8 +18,7 @@ const TopRankSongPage = () => {
           <img src={header} alt="headerImg" />
         </div>
         <div className={` mt-auto mr-auto ${styles.content}`}>
-          <h1>금주의 인기곡 Top 10</h1>
-          <h1>asgkas gkljieagneionio</h1>
+          <h1>금주의 {type} Top 10</h1>
         </div>
       </div>
       <MusicTable />

@@ -1,19 +1,54 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
 
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-
 import styles from "./DiscoverPage.module.css";
 import Button from "../../components/buttons/Button";
 import { useNavigate } from "react-router-dom";
 import StyledSlider from "../../components/public/StyledSlider";
+
+import rockImg from "./../../sources/imgs/playList/락.png";
+import balladeImg from "./../../sources/imgs/playList/발라드.png";
+import electImg from "./../../sources/imgs/playList/일렉트로닉.png";
+import jazzImg from "./../../sources/imgs/playList/재즈.png";
+import classicImg from "./../../sources/imgs/playList/클래식.png";
+import popImg from "./../../sources/imgs/playList/팝.png";
+import hiphopImg from "./../../sources/imgs/playList/힙합.png";
 
 const SEARCH_OPTION = [
   { type: "장르", option: ["발라드", "락", "힙합"] },
   { type: "테마", option: ["신나는", "슬픈"] },
   { type: "BPM", option: [40, 60, 80, 100, 120, 140, 160, 180, 200] },
   { type: "정렬", option: ["최신순", "오래된 순"] },
+];
+
+const GENRE = [
+  {
+    params: "electronic",
+    img: electImg,
+  },
+  {
+    params: "rock",
+    img: rockImg,
+  },
+  {
+    params: "hiphop",
+    img: hiphopImg,
+  },
+  {
+    params: "pop",
+    img: popImg,
+  },
+  {
+    params: "jazz",
+    img: jazzImg,
+  },
+  {
+    params: "classic",
+    img: classicImg,
+  },
+  {
+    paras: "ballade",
+    img: balladeImg,
+  },
 ];
 
 const DiscoverPage = () => {
@@ -72,6 +107,10 @@ const DiscoverPage = () => {
     navigate(
       `result/?keyword=${searchKeyword}&?genre=${option.genre}&bpm=${option.bpm}&atomposhpere=${option.thema}&sort=${option.sort}`
     );
+  };
+
+  const handleNavigatePlaylist = (type: string) => {
+    navigate(`/discover/playlist/${type}`);
   };
 
   const handleNavigate = () => {};
@@ -145,15 +184,20 @@ const DiscoverPage = () => {
         <div>
           <h1 style={{ paddingBottom: "10px" }}>추천 장르 리스트</h1>
           <StyledSlider>
-            <div>
-              <div className={`${styles.musicBox}`}>1</div>
-            </div>
-            <div>
-              <div className={`${styles.musicBox}`}>2</div>
-            </div>
-            <div>
-              <div className={`${styles.musicBox}`}>3</div>
-            </div>
+            {GENRE.map((element) => {
+              return (
+                <div
+                key={element.params}
+                  onClick={() =>
+                    handleNavigatePlaylist(element.params as string)
+                  }
+                >
+                  <div className={`${styles.musicBox}`}>
+                    <img src={element.img} alt="rockImg" />
+                  </div>
+                </div>
+              );
+            })}
           </StyledSlider>
         </div>
         <div className={`w-100 flex-col`}>
