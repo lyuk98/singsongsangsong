@@ -16,6 +16,10 @@ Utility functions
     분위기를 예측합니다
 `find_structure`
     구조를 분할하여 특성을 인식합니다
+`plot_mfcc`
+    음원에서 생성한 MFCC 그래프를 저장합니다
+`draw_spectrum`
+    음원의 waveform과 분할된 구조를 그린 그래프를 저장합니다
 """
 
 from s4dsp.tempo import get_tempo
@@ -23,3 +27,5 @@ from s4dsp.key import find_key
 from s4dsp.genre import predict_genre
 from s4dsp.mood import predict_mood
 from s4dsp.structure import find_structure
+from s4dsp.mfcc import plot_mfcc
+from s4dsp.segment import draw_spectrum
