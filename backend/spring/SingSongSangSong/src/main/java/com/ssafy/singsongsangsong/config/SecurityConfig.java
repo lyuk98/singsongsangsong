@@ -14,11 +14,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
+import org.springframework.security.web.session.SessionManagementFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ssafy.singsongsangsong.filter.CorsFilter;
 import com.ssafy.singsongsangsong.filter.CustomJsonUsernamePasswordAuthenticationFilter;
 import com.ssafy.singsongsangsong.filter.JwtAuthenticationProcessingFilter;
 import com.ssafy.singsongsangsong.handler.OAuth2LoginFailureHandler;
@@ -40,6 +42,7 @@ public class SecurityConfig {
 	private final OAuth2LoginFailureHandler oAuth2LoginFailureHandler;
 	private final CustomOAuth2UserService customOAuth2UserService;
 	private final JwtAuthenticationProcessingFilter jwtAuthenticationProcessingFilter;
+	private final CorsFilter corsFilter;
 	private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
 	@Bean
@@ -55,7 +58,7 @@ public class SecurityConfig {
 					req.requestMatchers("/", "error").permitAll()
 						.requestMatchers("/sign-up").hasRole("GUEST")
 						// .requestMatchers("/join").hasRole("GUEST")
-						.anyRequest().authenticated()
+						.anyRequest().permitAll()
 				// .anyRequest().permitAll())
 			)
 			.oauth2Login(oauth2 ->
@@ -65,7 +68,8 @@ public class SecurityConfig {
 					.userInfoEndpoint(userInfo -> userInfo
 						.userService(customOAuth2UserService)))
 			.addFilterAfter(customJsonUsernamePasswordAuthenticationFilter(), LogoutFilter.class)
-			.addFilterBefore(jwtAuthenticationProcessingFilter, CustomJsonUsernamePasswordAuthenticationFilter.class);
+			.addFilterBefore(jwtAuthenticationProcessingFilter, CustomJsonUsernamePasswordAuthenticationFilter.class)
+			.addFilterBefore(corsFilter, SessionManagementFilter.class);
 
 		return http.build();
 	}
