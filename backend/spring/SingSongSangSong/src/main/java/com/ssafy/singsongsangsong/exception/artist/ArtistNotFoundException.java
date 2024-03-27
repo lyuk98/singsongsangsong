@@ -5,4 +5,7 @@ public class ArtistNotFoundException extends RuntimeException {
 		super(message);
 	}
 
+	public ArtistNotFoundException() {
+		super("Artist Not Found");
+	}
 }

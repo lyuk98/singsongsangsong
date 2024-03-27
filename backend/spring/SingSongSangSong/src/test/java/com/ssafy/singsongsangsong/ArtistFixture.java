@@ -2,6 +2,7 @@ package com.ssafy.singsongsangsong;
 
 import com.ssafy.singsongsangsong.entity.Artist;
 import com.ssafy.singsongsangsong.entity.Image;
+import com.ssafy.singsongsangsong.util.Role;
 
 public enum ArtistFixture {
 
@@ -29,7 +30,7 @@ public enum ArtistFixture {
 	}
 
 	public Artist getArtist() {
-		return new Artist(999L, "validUser", "id999", "password1", null, 27, 'M', "안녕 난 fixture라고 해!");
+		return new Artist(999L, "validUser", "id999", "password1", null, 27, 'M', "안녕 난 fixture라고 해!", Role.USER);
 	}
 
 	public Image getProfileImage() {

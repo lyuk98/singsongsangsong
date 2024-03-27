@@ -1,6 +1,7 @@
 package com.ssafy.singsongsangsong.repository.maria.song;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,5 +17,9 @@ public interface SongRepositoryCustom {
 	public List<Song> findSongForGenreOrderByWeeklyCountDesc(String requestGenre);
 	public List<Song> findSongForAtmosphereOrderByWeeklyCountDesc(String requestAtmosphere);
 	public List<Song> findSongByBpmAndKeyword(String keyword, int startBpm, int endBpm, List<OrderSpecifier> orderSpecifier);
-	public List<Song> genreFilter(String requestGenre,List<Song> songListFrom);
+	public Optional<Song> getSongByArtistIdAndSongId(Long songId, Long artistId);
+
+	void decrementEmotionCount(Long songId, Long artistId, String emotionName) throws NoSuchFieldException;
+
+	void incrementEmotionCount(Long songId, Long artistId, String emotionName);
 }
