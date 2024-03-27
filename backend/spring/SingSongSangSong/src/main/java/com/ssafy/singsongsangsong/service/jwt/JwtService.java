@@ -36,7 +36,7 @@ public class JwtService {
 	private static final String BEARER = "Bearer ";
 
 	private final ArtistRepository artistRepository;
-	public String createAccessToken(String email) {
+	public String 	createAccessToken(String email) {
 		log.info("accessToken create");
 		Date now = new Date();
 		return JWT.create()

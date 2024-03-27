@@ -1,21 +1,20 @@
 package com.ssafy.singsongsangsong.repository.maria.artist;
 
+import static com.ssafy.singsongsangsong.entity.QArtist.*;
 import static com.ssafy.singsongsangsong.entity.QFollower_Following.*;
 import static com.ssafy.singsongsangsong.entity.QLikes.*;
 import static com.ssafy.singsongsangsong.entity.QSong.*;
-import static com.ssafy.singsongsangsong.entity.QArtist.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.expression.spel.ast.Projection;
+
+
 import org.springframework.stereotype.Repository;
 
-import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.singsongsangsong.dto.HotArtistDto;
-import com.ssafy.singsongsangsong.dto.HotArtistResponseDto;
 import com.ssafy.singsongsangsong.entity.Artist;
 import com.ssafy.singsongsangsong.entity.Song;
 

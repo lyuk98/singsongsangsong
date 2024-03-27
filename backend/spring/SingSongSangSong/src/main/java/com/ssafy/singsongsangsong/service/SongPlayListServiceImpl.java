@@ -42,7 +42,7 @@ public class SongPlayListServiceImpl implements SongPlayListService{
 	private final AtmosphereRepository atmosphereRepository;
 	@Override
 	public LikedPageResponseDto getLikedPagination(String username, int pageNo) {
-		Artist artist = artistRepository.findByUsername(username).orElse(null);
+		Artist artist = artistRepository.findByUsername(username).orElseThrow(() -> new ArtistNotFoundException("존재하지 않는 유저입니다."));
 		PageRequest pageRequest = PageRequest.of(pageNo-1,10);
 		log.info("artistId : {}", artist.getId());
 		List<SongBriefDto> likedSongList = songsFromLikes(likedRepository.getLikedSongsByArtistId(artist.getId()));
