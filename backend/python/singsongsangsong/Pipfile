@@ -17,6 +17,8 @@ msaf = "~=0.1.80"
 scipy = "<1.12.0"
 mysql-connector-python = "*"
 minio = "*"
+panns-inference = "~=0.1.1"
+torch = "~=2.2.1"
 
 [dev-packages]
 pylint = "*"
