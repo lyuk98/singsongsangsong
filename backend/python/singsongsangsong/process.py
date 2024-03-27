@@ -113,21 +113,35 @@ def analyse(song_id: int, audio_path: str): # pylint: disable=too-many-locals
 
                     # 장르, 분위기 삽입
                     cursor.executemany(
-                        "insert into genre (song_id, main_category, sub_category, correlation)"
+                        "insert into genre (song_id, main_category, sub_category, correlation) "
                         "values (%s, %s, %s, %s)",
                         genre_data
                     )
                     cursor.executemany(
-                        "insert into atmosphere (song_id, atmosphere, correlation)"
+                        "insert into atmosphere (song_id, atmosphere, correlation) "
                         "values (%s, %s, %s)",
                         mood_data
+                    )
+
+                    # 곡 구조 삽입
+                    cursor.executemany(
+                        "insert into structure (song_id, start_time, end_time, label) "
+                        "values (%s, %s, %s, %s)",
+                        [
+                            (
+                                song_id,
+                                entry["start"],
+                                entry["end"],
+                                entry["label"]
+                            ) for entry in structure
+                        ]
                     )
 
                     # 파일 데이터 업로드
                     file_server.upload(mfcc_path, "image", mfcc_filename, client)
                     saved_files.append(mfcc_filename)
                     cursor.execute(
-                        "insert into file (owner_id, file_name, original_file_name)"
+                        "insert into file (owner_id, file_name, original_file_name) "
                         "values (%s, %s, %s)",
                         (artist_id, mfcc_filename, f"mfcc-{song_id}.svg")
                     )
@@ -135,7 +149,7 @@ def analyse(song_id: int, audio_path: str): # pylint: disable=too-many-locals
 
                     file_server.upload(waveform_path, "image", waveform_filename, client)
                     cursor.execute(
-                        "insert into file (owner_id, file_name, original_file_name)"
+                        "insert into file (owner_id, file_name, original_file_name) "
                         "values (%s, %s, %s)",
                         (artist_id, waveform_filename, f"spectrum-{song_id}.svg")
                     )
@@ -145,7 +159,7 @@ def analyse(song_id: int, audio_path: str): # pylint: disable=too-many-locals
                     cursor.execute(
                         "update song"
                         "set duration = %s, bpm = %s, chord = %s, "
-                        "mfcc_image_id = %s, spectrum_image_id = %s"
+                        "mfcc_image_id = %s, spectrum_image_id = %s "
                         "where id = %s",
                         (
                             duration,
