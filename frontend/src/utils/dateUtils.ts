@@ -20,3 +20,25 @@ export const getWeekNumber = (date: DateType) => {
 
   return Math.ceil((currentDate + firstDay) / 7);
 };
+
+export const getLastSunday = () => {
+  const today = new Date();
+
+  const todayDayOfWeek = today.getDay();
+
+  const lastMonday = new Date(today);
+  lastMonday.setDate(today.getDate() - todayDayOfWeek - 6); // -6을 더하여 저번 주 월요일로 설정
+
+  const lastSunday = new Date(today);
+  lastSunday.setDate(today.getDate() - todayDayOfWeek);
+
+  const year: number = lastSunday.getFullYear();
+  const month: number = lastSunday.getMonth() + 1;
+  const day: number = lastSunday.getDate();
+  const date = {
+    year,
+    month,
+    day,
+  };
+  return date;
+};

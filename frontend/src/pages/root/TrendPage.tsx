@@ -5,7 +5,7 @@ import Modal from "../../components/modal/Modal";
 import Header from "../../components/pageComponents/trendpageComponent/Header";
 import Button from "../../components/buttons/Button";
 import ModalCalendar from "../../components/pageComponents/trendpageComponent/ModalCalendar";
-import { getToday, getWeekNumber } from "./../../utils/dateUtils";
+import { getLastSunday, getToday, getWeekNumber } from "./../../utils/dateUtils";
 import { DateType } from "../../utils/types";
 import WeeklySingsongChart from "../../components/pageComponents/trendpageComponent/WeeklySingsongChart";
 import TrendWithOptions from "../../components/pageComponents/trendpageComponent/TrendWithOptions";
@@ -15,7 +15,7 @@ import SongWithEmotion from "../../components/pageComponents/trendpageComponent/
 import SongWithBPM from "../../components/pageComponents/trendpageComponent/SongWithBPM";
 
 const TrendPage = () => {
-  const { year, month, day } = getToday();
+  const { year, month, day } = getLastSunday();
   const [selectedDate, setSelectedDate] = useState<DateType>({
     year: year,
     month: month,

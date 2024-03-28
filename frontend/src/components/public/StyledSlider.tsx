@@ -61,11 +61,10 @@ const StyledSlider = ({ children }: ComponentProps) => {
     speed: 500,
     slidesToShow: 3,
     slidesToScroll: 1,
-    rows: 1,
-    centerMode: true,
-    centerPadding: "100px",
+    initialSlide: 1,
     autoplay: true,
     autoplaySpeed: 2000,
+    useTransform: false,
   };
   return (
     <div className={`${styles.container}`}>

@@ -1,4 +1,6 @@
 import { Link, Outlet, useLocation } from "react-router-dom";
+
+import titleImg from "./../../sources/imgs/title/logo_투명.png";
 import styles from "./AuthLayout.module.css";
 import Notice from "../../components/auth/Notice";
 
@@ -9,7 +11,9 @@ const AuthLayout = () => {
     <>
       <div className={styles.container}>
         <div className={styles.title}>
-          <Link to="/">싱송생송</Link>
+          <Link to="/">
+            <img src={titleImg} alt="" />
+          </Link>
         </div>
         <Notice pathname={pathname} />
         <Outlet />
