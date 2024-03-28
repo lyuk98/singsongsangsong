@@ -69,8 +69,8 @@ public class SecurityConfig {
 					.userInfoEndpoint(userInfo -> userInfo
 						.userService(customOAuth2UserService)))
 			.addFilterAfter(customJsonUsernamePasswordAuthenticationFilter(), LogoutFilter.class)
-			.addFilterBefore(jwtAuthenticationProcessingFilter, CustomJsonUsernamePasswordAuthenticationFilter.class)
-			.addFilterBefore(corsFilter, SessionManagementFilter.class);
+			.addFilterBefore(jwtAuthenticationProcessingFilter, CustomJsonUsernamePasswordAuthenticationFilter.class);
+			// .addFilterBefore(corsFilter, SessionManagementFilter.class);
 
 		return http.build();
 	}
