@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.ssafy.singsongsangsong.ArtistFixture;
 import com.ssafy.singsongsangsong.constants.EmotionsConstants;
+import com.ssafy.singsongsangsong.dto.CommentsResponseDto;
 import com.ssafy.singsongsangsong.entity.Artist;
 import com.ssafy.singsongsangsong.entity.Emotions;
 import com.ssafy.singsongsangsong.entity.Song;
@@ -91,6 +92,28 @@ class SongServiceImplTest {
 					.getEmotionType()
 					.getName()).isEqualTo(
 					EmotionsConstants.EXCITED.getName());
+			}
+		}
+	}
+
+	@Nested
+	class postComment_메소드는 {
+		@Nested
+		class 사용자가_댓글을_남긴_경우 {
+			Artist artist = artistRepository.save(ArtistFixture.NO_PROFILE_USER.getArtist());
+			Song song = songRepository.save(Song.builder()
+				.id(1L)
+				.artist(artist)
+				.build());
+
+			@Test
+			void 댓글을_추가한다() {
+				assertThatCode(() -> {
+					songService.postComment(artist.getId(), song.getId(), "댓글입니다.");
+				}).doesNotThrowAnyException();
+
+				CommentsResponseDto comments = songService.getComments(song.getId());
+				assertThat(comments.getComments().size()).isEqualTo(1);
 			}
 		}
 
