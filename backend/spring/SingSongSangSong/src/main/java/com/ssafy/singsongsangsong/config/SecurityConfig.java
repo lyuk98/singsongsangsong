@@ -95,7 +95,7 @@ public class SecurityConfig {
 		CorsConfiguration config = new CorsConfiguration();
 
 		config.setAllowCredentials(true);
-		config.setAllowedOriginPatterns(Arrays.asList("http://localhost:3000"));
+		config.setAllowedOriginPatterns(Arrays.asList("http://localhost:3000","https://api.singsongsangsong.com","https://www.singsongsangsong.com"));
 		config.setAllowedMethods(Arrays.asList("HEAD","POST","GET","DELETE","PUT"));
 		config.setAllowedHeaders(Arrays.asList("*"));
 
