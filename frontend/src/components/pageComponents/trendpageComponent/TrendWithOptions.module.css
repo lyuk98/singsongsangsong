@@ -1,24 +1,17 @@
 .container {
   margin-top: 60px;
-  width: 100%;
   padding: 15px 60px;
 }
 
 .content {
-  width: 100%;
   height: 670px;
-  padding : 10px;
-  background-color: #f4f9fd;
-  border: 1px solid #22a2ff;
-  border-radius: 15px;
-  box-shadow: 7px 7px 7px #71c3ff;
+  padding: 10px;
 }
 
 .topSection {
   position: relative;
   display: flex;
   align-items: center;
-  width: 100%;
   height: 50px;
 }
 
@@ -36,12 +29,8 @@
 }
 
 .toggleButton {
-  display: flex;
-  justify-content: center;
-  align-items: center;
   width: 40px;
   height: 30px;
-  border-radius: 15px;
   transition: 0.3s all ease-in-out;
 }
 

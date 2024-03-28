@@ -30,7 +30,7 @@ const RankWithOption = () => {
   }, [contentOption]);
 
   return (
-    <div className={`flex-col-center ${styles.container}`}>
+    <div className={`flex-col-center gap-15 ${styles.container}`}>
       <div className={styles.header}>
         <button
           className={styles.headerButton}
@@ -48,7 +48,7 @@ const RankWithOption = () => {
           <h1>분위기별 랭킹</h1>
         </button>
       </div>
-      <div className={styles.content}>
+      <div className={`w-100 shadow-box b-15 bg-box`}>
         <Marquee pauseOnHover={true} autoFill={true} className={styles.marquee}>
           <p>슬픔 분위기의 곡이 많이 나왔어요.</p>
           <p>180-190BPM 의 곡이 많이 발매되었어요.</p>

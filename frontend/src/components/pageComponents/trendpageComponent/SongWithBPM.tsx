@@ -13,7 +13,9 @@ const SongWithBPM = () => {
   };
   return (
     <div className={`flex-col-center ${styles.container}`}>
-      <div className={`flex-col-center ${styles.content}`}>
+      <div
+        className={`flex-col-center w-100 bg-box shadow-box b-15  ${styles.content}`}
+      >
         <ReactSlider
           className={`flex-row-center ${styles.slider}`}
           thumbClassName={styles.sliderHead}
@@ -40,15 +42,15 @@ const SongWithBPM = () => {
           </p>
         </div>
         <div className={`flex-row-center ${styles.songs}`}>
-          <div className={`flex-col-center ${styles.song}`}>
+          <div className={`flex-col-center gap-15`}>
             <h2>bpm</h2>
             <RankedSongAndArtist type="song" showIndicator={false} />
           </div>
-          <div className={`flex-col-center ${styles.song}`}>
+          <div className={`flex-col-center gap-15`}>
             <h2>bpm</h2>
             <RankedSongAndArtist type="song" showIndicator={false} />
           </div>
-          <div className={`flex-col-center ${styles.song}`}>
+          <div className={`flex-col-center gap-15`}>
             <h2>bpm</h2>
             <RankedSongAndArtist type="song" showIndicator={false} />
           </div>

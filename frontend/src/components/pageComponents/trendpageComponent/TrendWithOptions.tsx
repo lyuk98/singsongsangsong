@@ -47,28 +47,34 @@ const TrendWithOptions = () => {
   useEffect(() => {}, []);
 
   return (
-    <div className={`flex-col-center ${styles.container}`}>
+    <div className={`flex-col-center gap-15 ${styles.container}`}>
       <h1>성별과 연령으로 알아보는 트렌드</h1>
-      <div className={styles.content}>
-        <div className={styles.topSection}>
+      <div className={`shadow-box b-15 w-100 bg-box ${styles.content}`}>
+        <div className={`w-100 ${styles.topSection}`}>
           <div className={styles.genderSelector} onClick={handleChangeGender}>
             <div
-              className={`${styles.toggleButton} 
+              className={`flex-row-center b-15 ${styles.toggleButton} 
               ${gender === false ? styles.active : ""}`}
             >
               남성
             </div>
             <div
-              className={`${styles.toggleButton}
+              className={`flex-row-center b-15 ${styles.toggleButton}
              ${gender === true ? styles.active : ""}`}
             >
               여성
             </div>
           </div>
           <div className={styles.ageSelector}>
-            <FaArrowLeft onClick={handleAgeDecrease} />
+            <FaArrowLeft
+              style={{ cursor: "pointer" }}
+              onClick={handleAgeDecrease}
+            />
             <p>{age}대</p>
-            <FaArrowRight onClick={handleAgeIncrease} />
+            <FaArrowRight
+              style={{ cursor: "pointer" }}
+              onClick={handleAgeIncrease}
+            />
           </div>
         </div>
         <div className={styles.bottomSection}>

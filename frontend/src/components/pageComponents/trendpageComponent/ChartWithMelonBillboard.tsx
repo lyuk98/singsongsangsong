@@ -71,7 +71,7 @@ const ChartWithMelonBillboard = ({ type }: PropsType) => {
               <div
                 onClick={() => handleSongIndex(index)}
                 key={element.songTitle}
-                className={`flex-row-center ${styles.song} ${
+                className={`flex-row-center gap-15 p-15 b-15 ${styles.song} ${
                   songIndex === index ? styles.selected : ""
                 }`}
               >
