@@ -158,7 +158,7 @@ def analyse(song_id: int, audio_path: str): # pylint: disable=too-many-locals
 
                     # 나머지 분석 데이터 삽입
                     cursor.execute(
-                        "update song"
+                        "update song "
                         "set duration = %s, bpm = %s, chord = %s, "
                         "mfcc_image_id = %s, spectrum_image_id = %s "
                         "where id = %s",
