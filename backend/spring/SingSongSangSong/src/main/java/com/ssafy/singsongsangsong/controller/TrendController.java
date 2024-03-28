@@ -46,12 +46,12 @@ public class TrendController {
 		return trendService.getKoreanChart().getRank();
 	}
 	
-	@GetMapping("emotion")
+	@GetMapping("/emotion")
 	public EmotionSongsDto getEmotionSongs() {
 		return trendService.getEmotionSongs();
 	}
 	
-	@GetMapping("bpm")
+	@GetMapping("/bpm")
 	public TrendChartDto getBpmLank(@RequestParam int bpm) {
 		return trendService.getBpmLank(bpm);
 	}
