@@ -1,5 +1,6 @@
 package com.ssafy.singsongsangsong.config;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.context.annotation.Bean;
@@ -48,8 +49,8 @@ public class SecurityConfig {
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http
-			// .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-			.cors(cors -> cors.disable())
+			.cors(cors -> cors.configurationSource(corsConfigurationSource()))
+			// .cors(cors -> cors.disable())
 			.formLogin(auth -> auth.disable())
 			.csrf(auth -> auth.disable())
 			.httpBasic(auth -> auth.disable())
@@ -91,15 +92,15 @@ public class SecurityConfig {
 
 	@Bean
 	public CorsConfigurationSource corsConfigurationSource() {
-		CorsConfiguration configuration = new CorsConfiguration();
-		configuration.setAllowedOrigins(
-			List.of("/**"));
-		configuration.addAllowedMethod("*");
-		configuration.addAllowedHeader("*");
-		configuration.setAllowCredentials(true);
+		CorsConfiguration config = new CorsConfiguration();
+
+		config.setAllowCredentials(true);
+		config.setAllowedOriginPatterns(Arrays.asList("http://localhost:3000"));
+		config.setAllowedMethods(Arrays.asList("HEAD","POST","GET","DELETE","PUT"));
+		config.setAllowedHeaders(Arrays.asList("*"));
 
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-		source.registerCorsConfiguration("/**", configuration);
+		source.registerCorsConfiguration("/**", config);
 		return source;
 	}
 }
