@@ -64,4 +64,12 @@ public class SongRepositoryCustomImpl implements SongRepositoryCustom {
 			.where(song.id.eq(songId).and(song.artist.id.eq(artistId)))
 			.execute();
 	}
+
+	@Override
+	public List<Song> findByThemeName(String themeName, int size) {
+		return jpaQueryFactory.selectFrom(song)
+			.where(song.themes.eq(themeName))
+			.limit(size)
+			.fetch();
+	}
 }
