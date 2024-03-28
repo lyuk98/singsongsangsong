@@ -23,7 +23,12 @@ pipeline {
         stage('React Build') {
             steps {
                 dir('./frontend') {
-                    sh 'npm install'
+                    withCredentials([file(credentialsId: 'REACT_ENVIRONMENT', variable: 'reactEnvFile')]) {
+                        script {
+                            sh 'npm install'
+                            sh 'cp $reactEnvFile ./.env'
+                        }
+                    }
                 }
             }
             post {
