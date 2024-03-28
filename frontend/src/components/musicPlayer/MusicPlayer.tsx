@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
@@ -10,21 +10,30 @@ import { RootState } from "../../store";
 const MusicPlayer = () => {
   const trackList = useSelector((state: RootState) => state.music);
   const player = useRef<any>();
+  const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const [currentMusic, setCurrentMusic] = useState();
 
   useEffect(() => {
+    console.log(player.current.audio);
     player.current.audio.current.addEventListener("ended", (event: any) => {
       console.log("ended");
+      setIsPlaying(false);
+    });
+    player.current.audio.current.addEventListener("play", (event: any) => {
+      console.log("playing");
+      setIsPlaying(true);
     });
   }, []);
 
+  useEffect(() => {
+    console.log("changing music");
+  }, [trackList.musicList]);
+
   return (
-    <div className={`w-100 ${styles.container}`}>
-      <AudioPlayer
-        src={trackList.musicList[0]}
-        ref={player}
-        volume={0.5}
-        autoPlay={false}
-      />
+    <div
+      className={`w-100 ${styles.container} ${isPlaying ? styles.show : ""}`}
+    >
+      <AudioPlayer src={trackList.musicList} ref={player} volume={0.5} />
     </div>
   );
 };

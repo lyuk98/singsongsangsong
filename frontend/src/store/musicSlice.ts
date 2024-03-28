@@ -3,21 +3,21 @@ import { isoParse } from "d3-time-format";
 
 interface MusicState {
   isPlaying: boolean;
-  musicList: any[];
+  musicList: any;
 }
 
 const musicSlice = createSlice({
   name: "music",
   initialState: {
     isPlaying: false,
-    musicList: [],
+    musicList: null,
   } as MusicState,
   reducers: {
     changeState: (state) => {
       state.isPlaying = !state.isPlaying;
     },
     addMusicList: (state, action) => {
-      state.musicList.push(action.payload);
+      state.musicList = action.payload
     },
   },
 });

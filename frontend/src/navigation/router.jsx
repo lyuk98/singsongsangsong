@@ -49,7 +49,7 @@ export const router = createBrowserRouter([
         element: <SearchResultPage />,
       },
       {
-        path: "discover/playlist/:type",
+        path: "discover/playlist/:type/:keyword",
         element: <TopRankSongPage />,
       },
       {
