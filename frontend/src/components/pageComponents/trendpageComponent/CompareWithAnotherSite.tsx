@@ -8,8 +8,10 @@ import ChartWithMelonBillboard from "./ChartWithMelonBillboard";
  */
 const CompareWithAnotherSite = () => {
   return (
-    <div className={styles.container}>
-      <div className={`flex-row-center ${styles.content}`}>
+    <div className={`w-100 ${styles.container}`}>
+      <div
+        className={`flex-row-center w-100 bg-box b-15 shadow-box ${styles.content}`}
+      >
         <div className={`flex-row-center ${styles.billboard}`}>
           <ChartWithMelonBillboard type="billboard" />
         </div>

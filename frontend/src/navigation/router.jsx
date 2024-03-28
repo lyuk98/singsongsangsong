@@ -22,6 +22,7 @@ export const router = createBrowserRouter([
   {
     path: "/",
     element: <MainLayout />,
+    errorElement : <ErrorPage/>,
     children: [
       { index: true, element: <Navigate to="/trend" replace /> },
       {

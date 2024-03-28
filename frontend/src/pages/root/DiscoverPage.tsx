@@ -79,12 +79,8 @@ const DiscoverPage = () => {
     sort: "",
   });
 
-  const settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 3,
-    slidesToScroll: 3,
+  const handleMoveToArtistPage = (artistId: string) => {
+    navigate(`/artist/${artistId}`);
   };
 
   const handleKeywordChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -172,18 +168,21 @@ const DiscoverPage = () => {
       </div>
       <div className={`flex-col gap-60`}>
         <div>
-          <h1 style={{ paddingBottom: "10px" }}>인기 플레이 리스트</h1>
-          <StyledSlider>
+          <h1 style={{ paddingBottom: "10px" }}>싱송생송 추천</h1>
+          <div className={`w-100 flex-row gap-15 space-between`}>
             <div>
-              <div className={`${styles.musicBox}`}>1</div>
+              <div className={`${styles.musicBox}`}>좋아요한 노래들</div>
             </div>
             <div>
-              <div className={`${styles.musicBox}`}>2</div>
+              <div className={`${styles.musicBox}`}>싱송생송 탑10 노래</div>
             </div>
             <div>
-              <div className={`${styles.musicBox}`}>3</div>
+              <div className={`${styles.musicBox}`}>좋아요한 아티스트</div>
             </div>
-          </StyledSlider>
+            <div>
+              <div className={`${styles.musicBox}`}>싱송생송 탑10 아티스트</div>
+            </div>
+          </div>
         </div>
         <div>
           <h1 style={{ paddingBottom: "10px" }}>추천 분위기 리스트</h1>
@@ -222,7 +221,7 @@ const DiscoverPage = () => {
           </StyledSlider>
         </div>
         <div className={`w-100 flex-col`}>
-          <h1 style={{ paddingBottom: "10px" }}>추천 아티스트</h1>
+          <h1 style={{ paddingBottom: "10px" }}>이번 주 인기 아티스트</h1>
           <StyledSlider>
             <div>
               <div className={`${styles.musicBox}`}>1</div>

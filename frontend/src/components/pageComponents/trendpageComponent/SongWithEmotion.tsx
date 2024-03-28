@@ -39,7 +39,9 @@ const SongWithEmotion = () => {
   return (
     <div className={`flex-col-center ${styles.container}`}>
       <h1>감정 극대화 곡</h1>
-      <div className={`flex-row-center ${styles.content}`}>
+      <div
+        className={`flex-row-center p-15 w-100 bg-box b-15 shadow-box ${styles.content}`}
+      >
         {EMOTIONS.map((element, indenx) => {
           return (
             <div className={`flex-col-center ${styles.songBox}`}>

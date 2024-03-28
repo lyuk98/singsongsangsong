@@ -5,7 +5,11 @@ import Modal from "../../components/modal/Modal";
 import Header from "../../components/pageComponents/trendpageComponent/Header";
 import Button from "../../components/buttons/Button";
 import ModalCalendar from "../../components/pageComponents/trendpageComponent/ModalCalendar";
-import { getToday, getWeekNumber } from "./../../utils/dateUtils";
+import {
+  getLastSunday,
+  getToday,
+  getWeekNumber,
+} from "./../../utils/dateUtils";
 import { DateType } from "../../utils/types";
 import WeeklySingsongChart from "../../components/pageComponents/trendpageComponent/WeeklySingsongChart";
 import TrendWithOptions from "../../components/pageComponents/trendpageComponent/TrendWithOptions";
@@ -13,9 +17,10 @@ import RankWithOption from "../../components/pageComponents/trendpageComponent/R
 import CompareWithAnotherSite from "../../components/pageComponents/trendpageComponent/CompareWithAnotherSite";
 import SongWithEmotion from "../../components/pageComponents/trendpageComponent/SongWithEmotion";
 import SongWithBPM from "../../components/pageComponents/trendpageComponent/SongWithBPM";
+import TestWeeklySingsongChart from "../../components/pageComponents/trendpageComponent/testComponent/TestWeeklySingsongChart";
 
 const TrendPage = () => {
-  const { year, month, day } = getToday();
+  const { year, month, day } = getLastSunday();
   const [selectedDate, setSelectedDate] = useState<DateType>({
     year: year,
     month: month,
@@ -51,7 +56,7 @@ const TrendPage = () => {
   };
 
   return (
-    <div className={`flex-col w-100 gap-15`}>
+    <div style={{ paddingBottom: "6rem" }} className={`flex-col w-100 gap-15`}>
       <Modal open={isModalOpen} onClose={handleCalendarClose}>
         <div className={styles.calanderContent}>
           <ModalCalendar
@@ -66,7 +71,7 @@ const TrendPage = () => {
         selectedWeek={weekNumber}
         onOpen={handleCalendarOpen}
       />
-      <WeeklySingsongChart />
+      <TestWeeklySingsongChart />
       <TrendWithOptions />
       <RankWithOption />
       <CompareWithAnotherSite />

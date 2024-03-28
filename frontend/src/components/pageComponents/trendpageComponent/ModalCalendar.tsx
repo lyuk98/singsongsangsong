@@ -74,21 +74,31 @@ interface CalendarType {
 }
 
 /**
- * @todo 나중에 스타일 손봐야함, 주차별 disable 값도 조정해야함 
+ * @todo 나중에 스타일 손봐야함, 주차별 disable 값도 조정해야함
  */
 
 const ModalCalendar = ({ selectedDate, handleDateChange }: CalendarType) => {
   const date = new Date(
     `${selectedDate.year}-${selectedDate.month}-${selectedDate.day}`
   );
+  const today = new Date();
+
+  const todayDayOfWeek = today.getDay();
+
+  const lastMonday = new Date(today);
+  lastMonday.setDate(today.getDate() - todayDayOfWeek - 6); // -6을 더하여 저번 주 월요일로 설정
+
+  const lastSunday = new Date(today);
+  lastSunday.setDate(today.getDate() - todayDayOfWeek);
+
   return (
     <StyledCalendarWrapper>
       <StyledCalendar
-        value={date}
+        value={lastSunday}
         onChange={handleDateChange}
         formatDay={(locale, date) => dayjs(date).format("DD")}
         showNeighboringMonth={false}
-        maxDate={new Date()}
+        maxDate={lastSunday}
         next2Label={null}
         prev2Label={null}
       />

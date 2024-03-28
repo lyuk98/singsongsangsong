@@ -26,13 +26,7 @@
 }
 
 /* 아래쪽 랭킹을 표시할 div의 큰 틀 */
-.content {
-  width: 100%;
-  background-color: #f4f9fd;
-  border: 1px solid #22a2ff;
-  border-radius: 15px;
-  box-shadow: 7px 7px 7px #71c3ff;
-}
+
 
 /* marquee 관련 스타일링 */
 /* https://www.npmjs.com/package/react-fast-marquee */
