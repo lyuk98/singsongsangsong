@@ -21,6 +21,7 @@ const LoginPage = () => {
         method: "GET",
         url: `/oauth2/authorization/${props}`,
       });
+      console.log(response);
     } catch (error) {
       console.log(error);
     }

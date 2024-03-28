@@ -13,6 +13,14 @@ import classicImg from "./../../sources/imgs/playList/클래식.png";
 import popImg from "./../../sources/imgs/playList/팝.png";
 import hiphopImg from "./../../sources/imgs/playList/힙합.png";
 
+import calmImg from "./../../sources/imgs/playList/calm.png";
+import excitingImg from "./../../sources/imgs/playList/exciting.png";
+import happyImg from "./../../sources/imgs/playList/happy.png";
+import inspiringImg from "./../../sources/imgs/playList/inspiring.png";
+import loveImg from "./../../sources/imgs/playList/love.png";
+import nosstalgiaImg from "./../../sources/imgs/playList/nosstalgia.png";
+import sadImg from "./../../sources/imgs/playList/sad.png";
+
 const SEARCH_OPTION = [
   { type: "장르", option: ["발라드", "락", "힙합"] },
   { type: "테마", option: ["신나는", "슬픈"] },
@@ -46,9 +54,19 @@ const GENRE = [
     img: classicImg,
   },
   {
-    paras: "ballade",
+    params: "ballade",
     img: balladeImg,
   },
+];
+
+const MOOD = [
+  { params: "happy", img: happyImg },
+  { params: "sad", img: sadImg },
+  { params: "calm", img: calmImg },
+  { params: "exciting", img: excitingImg },
+  { params: "love", img: loveImg },
+  { params: "inspiring", img: inspiringImg },
+  { params: "nostalgia", img: nosstalgiaImg },
 ];
 
 const DiscoverPage = () => {
@@ -109,8 +127,8 @@ const DiscoverPage = () => {
     );
   };
 
-  const handleNavigatePlaylist = (type: string) => {
-    navigate(`/discover/playlist/${type}`);
+  const handleNavigatePlaylist = (type: string, keyword: string) => {
+    navigate(`/discover/playlist/${type}/${keyword}`);
   };
 
   const handleNavigate = () => {};
@@ -170,15 +188,18 @@ const DiscoverPage = () => {
         <div>
           <h1 style={{ paddingBottom: "10px" }}>추천 분위기 리스트</h1>
           <StyledSlider>
-            <div>
-              <div className={`${styles.musicBox}`}>1</div>
-            </div>
-            <div>
-              <div className={`${styles.musicBox}`}>2</div>
-            </div>
-            <div>
-              <div className={`${styles.musicBox}`}>3</div>
-            </div>
+            {MOOD.map((element) => (
+              <div
+                key={element.params}
+                onClick={() =>
+                  handleNavigatePlaylist("mood", element.params as string)
+                }
+              >
+                <div className={`${styles.musicBox}`}>
+                  <img src={element.img} alt={element.params} />
+                </div>
+              </div>
+            ))}
           </StyledSlider>
         </div>
         <div>
@@ -187,13 +208,13 @@ const DiscoverPage = () => {
             {GENRE.map((element) => {
               return (
                 <div
-                key={element.params}
+                  key={element.params}
                   onClick={() =>
-                    handleNavigatePlaylist(element.params as string)
+                    handleNavigatePlaylist("genre", element.params as string)
                   }
                 >
                   <div className={`${styles.musicBox}`}>
-                    <img src={element.img} alt="rockImg" />
+                    <img src={element.img} alt={element.params} />
                   </div>
                 </div>
               );
