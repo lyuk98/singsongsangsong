@@ -97,7 +97,7 @@ public class SecurityConfig {
 		config.setAllowCredentials(true);
 		config.setAllowedOriginPatterns(Arrays.asList("http://localhost:3000","https://api.singsongsangsong.com","https://www.singsongsangsong.com"));
 		config.setAllowedMethods(Arrays.asList("HEAD","POST","GET","DELETE","PUT","OPTIONS"));
-		config.setAllowedHeaders(Arrays.asList("DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization"));
+		config.setAllowedHeaders(Arrays.asList("*"));
 
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		source.registerCorsConfiguration("/**", config);
