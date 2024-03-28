@@ -25,7 +25,7 @@ public class ArtistInfoDto {
 
 	public static ArtistInfoDto from(Artist artist) {
 		Image profileImage = Optional.ofNullable(artist.getProfileImage()).orElseGet(() -> null);
-		String profileImageUrl = Optional.ofNullable(profileImage).map(Image::getImageLocation).orElseGet(() -> null);
+		String profileImageUrl = Optional.ofNullable(profileImage).map(Image::getSavedFileName).orElseGet(() -> null);
 		return ArtistInfoDto.builder()
 			.artistId(artist.getId())
 			.nickname(artist.getNickname())

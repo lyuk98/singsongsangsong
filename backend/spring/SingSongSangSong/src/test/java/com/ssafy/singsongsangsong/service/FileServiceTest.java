@@ -52,6 +52,7 @@ public class FileServiceTest {
 			String savedFileName = fileService.saveFile(artist.getId(), FileType.IMAGE, mockImageFile);
 			System.out.println("savedFileName = " + savedFileName);
 
+			// byte stream으로 받아온 Resource는 fileName이 기본적으로 null이다.
 			Resource file = fileService.getFile(artist.getId(), FileType.IMAGE, mockImageFile.getOriginalFilename());
 
 			assertThat(file).isNotNull();

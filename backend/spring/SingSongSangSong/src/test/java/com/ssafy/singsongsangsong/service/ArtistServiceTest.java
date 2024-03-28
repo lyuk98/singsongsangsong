@@ -64,7 +64,7 @@ public class ArtistServiceTest {
 		Artist saved = artistRepository.save(validArtist1);
 
 		Image profileImage = Optional.ofNullable(saved.getProfileImage()).orElseGet(() -> null);
-		String profileImageUrl = Optional.ofNullable(profileImage).map(Image::getImageLocation).orElseGet(() -> null);
+		String profileImageUrl = Optional.ofNullable(profileImage).map(Image::getSavedFileName).orElseGet(() -> null);
 
 		ArtistInfoDto artistInfo = artistService.getArtistInfo(saved.getId());
 		assertThat(artistInfo.getArtistId()).isEqualTo(saved.getId());
