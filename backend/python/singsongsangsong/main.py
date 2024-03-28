@@ -6,9 +6,13 @@
 """
 
 from typing import Annotated
+import os
+from dotenv import load_dotenv
+from pydantic import BaseModel
 from fastapi import (
     BackgroundTasks,
     FastAPI,
+    Path,
     Query,
     Response,
     status
@@ -16,7 +20,24 @@ from fastapi import (
 from minio.error import S3Error
 import uvicorn
 import file_server
+import vector_database
 from process import analyse
+
+class SimilarityResult(BaseModel):
+    """유사도 검색 결과 model입니다
+    
+    Attributes
+    ----------
+    id : int
+        곡 ID
+    distance : float
+        데이터베이스 내 거리 계산 결과
+    """
+
+    id: int
+    distance: float
+
+load_dotenv()
 
 app = FastAPI(
     title="싱송생송 DSP API"
@@ -27,7 +48,10 @@ app = FastAPI(
     summary="곡 분석 요청",
     response_model=None,
     responses={
-        202: { "description": "요청 확인, 분석 진행 예정" },
+        202: {
+            "description": "요청 확인, 분석 진행 예정",
+            "content": None
+        },
         404: { "description": "올바르지 않은 `path` 제공" },
         422: { "description": "올바르지 않은 형태의 `id` 제공" },
         500: { "description": "예상치 못한 오류 발생" }
@@ -51,20 +75,9 @@ def request_song_analysis(
     ],
     background_tasks: BackgroundTasks
 ):
-    """
-    곡 분석 요청
-    -----------
-
-    지정한 `id`를 가진 곡에 대한 분석을 진행합니다
+    """지정한 `id`를 가진 곡에 대한 분석을 진행합니다
 
     분석 완료 후 데이터베이스에 분석 결과를 저장한 뒤 API 서버의 callback endpoint에 분석 완료를 알립니다
-
-    Parameters
-    ----------
-    song_id : int
-        분석할 곡 ID
-    audio_path : str
-        음원 파일 경로
     """
 
     # 음원이 파일 서버에 존재하는지 확인
@@ -78,18 +91,68 @@ def request_song_analysis(
     background_tasks.add_task(analyse, song_id, audio_path)
     return Response(status_code=status.HTTP_202_ACCEPTED)
 
-@app.post("/similarity")
+@app.post(
+    "/similarity",
+    summary="곡 유사도 정보 저장",
+    response_model=None,
+    responses={
+        204: { "description": "데이터베이스 삽입 완료" },
+        404: { "description": "존재하지 않는 `id` 제공" },
+        422: { "description": "올바르지 않은 형태의 `id` 제공" },
+        500: { "description": "예상치 못한 오류 발생" }
+    },
+    status_code=204
+)
 def save_similarity_data(
-    song_id: Annotated[int, Query(alias="id")],
-    audio_path: Annotated[str, Query(alias="path")]
+    song_id: Annotated[
+        int,
+        Query(
+            alias="id",
+            description="유사도 비교를 위한 곡 ID"
+        )
+    ]
 ):
-    return Response(status_code=status.HTTP_501_NOT_IMPLEMENTED)
+    """지정한 `id`를 가진 곡의 정보를 유사도 비교를 위한 데이터베이스에 저장합니다"""
 
-@app.get("/similarity")
+    try:
+        vector_database.set_searchable(song_id)
+    except ValueError:
+        return Response(status_code=status.HTTP_404_NOT_FOUND)
+
+    return Response(
+        status_code=status.HTTP_204_NO_CONTENT,
+        headers={
+            "Location": f"{os.environ.get('BASE_URI')}/similarity/{song_id}"
+        }
+    )
+
+@app.get(
+    "/similarity/{id}",
+    summary="곡 유사도 조회",
+    response_model=list[SimilarityResult],
+    responses={
+        200: { "description": "유사도 조회 완료" },
+        404: { "description": "존재하지 않는 `id` 제공" },
+        422: { "description": "올바르지 않은 형태의 `id` 제공" },
+        500: { "description": "예상치 못한 오류 발생" }
+    },
+    status_code=200
+)
 def check_similarity(
-    audio_path: Annotated[str, Query(alias="path")]
+    song_id: Annotated[
+        int,
+        Path(
+            alias="id",
+            description="조회할 곡 ID"
+        )
+    ]
 ):
-    return Response(status_code=status.HTTP_501_NOT_IMPLEMENTED)
+    """지정한 id의 곡에 대한 유사도 정보를 조회합니다"""
+
+    try:
+        return vector_database.search_similarity(song_id)
+    except ValueError:
+        return Response(status_code=status.HTTP_404_NOT_FOUND)
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)

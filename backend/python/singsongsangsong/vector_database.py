@@ -13,6 +13,8 @@ from dotenv import load_dotenv
 from pymilvus import MilvusClient, DataType, CollectionSchema
 from pymilvus.milvus_client import IndexParams
 
+_COLLECTION_NAME = "embeddings"
+
 load_dotenv()
 
 def get_client() -> MilvusClient:
@@ -109,15 +111,32 @@ def create_collection(
         index_params = create_index_params(client)
 
     client.create_collection(
-        collection_name="embeddings",
+        collection_name=_COLLECTION_NAME,
         schema=schema,
         index_params=index_params
     )
 
+def prepare_client() -> MilvusClient:
+    """Milvus client를 생성하고 collection을 준비합니다
+
+    Returns
+    -------
+    MilvusClient
+        Milvus client
+    """
+
+    client = get_client()
+    create_collection(client)
+
+    return client
+
 def insert_embedding(
     song_id: int,
     embedding: list[float],
-    client: Union[MilvusClient, None]=None
+    client: Union[MilvusClient, None]=None,
+    *,
+    is_published: bool=False,
+    upsert: bool=False
 ) -> dict:
     """유사도 분석을 위한 embedding을 데이터베이스에 삽입합니다
 
@@ -129,6 +148,10 @@ def insert_embedding(
         곡의 정보를 담고 있는 embedding
     client : MilvusClient | None
         Milvus client; `None`일 시 새로 생성
+    is_published : bool
+        곡 게시 여부
+    upsert : bool
+        `True`일 시 `insert` 대신 `upsert` 진행
     
     Returns
     -------
@@ -137,14 +160,19 @@ def insert_embedding(
     """
 
     if client is None:
-        client = get_client()
+        client = prepare_client()
 
-    return client.insert(
-        collection_name="embeddings",
+    if upsert:
+        inserter = client.upsert
+    else:
+        inserter = client.insert
+
+    return inserter(
+        collection_name=_COLLECTION_NAME,
         data=[
             {
                 "id": song_id,
-                "is_published": False,
+                "is_published": is_published,
                 "vector": embedding
             }
         ]
@@ -164,11 +192,91 @@ def get_record(song_id: int, client: Union[MilvusClient, None]=None) -> Union[di
     """
 
     if client is None:
-        client = get_client()
+        client = prepare_client()
 
-    result = client.get(collection_name="embeddings", ids=song_id)
+    result = client.get(collection_name=_COLLECTION_NAME, ids=song_id)
 
     if result:
         return result[0]
 
     return None
+
+def set_searchable(song_id: int, client: Union[MilvusClient, None]=None, searchable: bool=True):
+    """곡의 `is_published` 설정을 변경하여 유사도 검색 결과에 포함되도록 합니다
+
+    Parameters
+    ----------
+    song_id : int
+        곡 ID
+    client : MilvusClient | None
+        Milvus client; `None`일 시 새로 생성
+    searchable : bool
+        곡의 검색 가능 여부
+
+    Raises
+    ------
+    ValueError
+        올바르지 않은 `song_id` 제공
+    """
+
+    if client is None:
+        client = prepare_client()
+
+    record = get_record(song_id, client)
+
+    if record is None:
+        raise ValueError("Invalid song_id")
+
+    # 이미 의도한 값으로 설정이 되어 있으면 upsert 생략
+    if record["is_published"] != searchable:
+        insert_embedding(
+            song_id,
+            record["vector"],
+            client,
+            is_published=searchable,
+            upsert=True
+        )
+
+def search_similarity(
+    song_id: int,
+    client: Union[MilvusClient, None]=None,
+    *,
+    limit: int=5
+) -> list[int]:
+    """특정한 곡과 유사한 곡을 검색합니다
+
+    Parameters
+    ----------
+    song_id : int
+        곡 ID
+    client : MilvusClient | None
+        Milvus client; `None`일 시 새로 생성
+    limit : int
+        검색 결과 개수
+
+    Returns
+    -------
+    list[int]
+        _description_
+
+    Raises
+    ------
+    ValueError
+        올바르지 않은 `song_id` 제공
+    """
+
+    if client is None:
+        client = prepare_client()
+
+    record = get_record(song_id, client)
+
+    if record is None:
+        raise ValueError("Invalid song_id")
+
+    return client.search(
+        collection_name=_COLLECTION_NAME,
+        data=[record["vector"]],
+        limit=limit,
+        search_params={ "nprobe": 32 },
+        filter="(is_published)"
+    )[0]
