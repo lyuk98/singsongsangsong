@@ -69,8 +69,8 @@ public class SecurityConfig {
 					.userInfoEndpoint(userInfo -> userInfo
 						.userService(customOAuth2UserService)))
 			.addFilterAfter(customJsonUsernamePasswordAuthenticationFilter(), LogoutFilter.class)
-			.addFilterBefore(jwtAuthenticationProcessingFilter, CustomJsonUsernamePasswordAuthenticationFilter.class)
-			.addFilterBefore(corsFilter, SessionManagementFilter.class);
+			.addFilterBefore(jwtAuthenticationProcessingFilter, CustomJsonUsernamePasswordAuthenticationFilter.class);
+			// .addFilterBefore(corsFilter, SessionManagementFilter.class);
 
 		return http.build();
 	}
@@ -97,7 +97,7 @@ public class SecurityConfig {
 		config.setAllowCredentials(true);
 		config.setAllowedOriginPatterns(Arrays.asList("http://localhost:3000","https://api.singsongsangsong.com","https://www.singsongsangsong.com"));
 		config.setAllowedMethods(Arrays.asList("HEAD","POST","GET","DELETE","PUT","OPTIONS"));
-		config.setAllowedHeaders(Arrays.asList("*"));
+		config.setAllowedHeaders(Arrays.asList("DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization"));
 
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		source.registerCorsConfiguration("/**", config);
