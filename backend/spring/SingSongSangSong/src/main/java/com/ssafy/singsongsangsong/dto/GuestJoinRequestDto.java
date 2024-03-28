@@ -1,7 +1,6 @@
 package com.ssafy.singsongsangsong.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,4 +14,5 @@ public class GuestJoinRequestDto {
 	private int age;
 	private String introduction;
 	private char sex;
+	private String profileImageFileName;
 }
