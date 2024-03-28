@@ -1,5 +1,6 @@
 package com.ssafy.singsongsangsong.controller;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,6 +13,7 @@ import com.ssafy.singsongsangsong.constants.EmotionsConstants;
 import com.ssafy.singsongsangsong.dto.CommentsResponseDto;
 import com.ssafy.singsongsangsong.dto.PostCommentsDto;
 import com.ssafy.singsongsangsong.security.ArtistAuthenticationToken;
+import com.ssafy.singsongsangsong.security.ArtistPrincipal;
 import com.ssafy.singsongsangsong.service.SongService;
 
 import lombok.RequiredArgsConstructor;
@@ -24,7 +26,8 @@ public class SongController {
 	private final SongService songService;
 
 	@PutMapping("/{songId}/{emotionType}")
-	public void updateEmotion(@AuthenticationPrincipal ArtistAuthenticationToken user, @PathVariable Long songId,
+	@PreAuthorize("hasRole('USER')")
+	public void updateEmotion(@AuthenticationPrincipal ArtistPrincipal user, @PathVariable Long songId,
 		@PathVariable EmotionsConstants emotionType) throws
 		NoSuchFieldException {
 		// 기존 사용자가 해당 노래에 대해서 emotion을 남긴 경우, 해당 노래의 emotion을 삭제하고 count down 시킨 다음,
@@ -33,6 +36,7 @@ public class SongController {
 	}
 
 	@PostMapping("/comments")
+	@PreAuthorize("hasRole('USER')")
 	public void postComment(@AuthenticationPrincipal ArtistAuthenticationToken user,
 		PostCommentsDto dto) {
 		// 댓글을 남긴다.

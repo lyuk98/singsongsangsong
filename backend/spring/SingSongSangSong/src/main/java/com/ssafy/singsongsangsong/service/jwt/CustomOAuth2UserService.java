@@ -29,21 +29,25 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
 	private static final String NAVER = "naver";
 	private static final String KAKAO = "kakao";
+
 	@Override
 	public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-		log.info("CustomOAuth2UserService.loadUser() 실행 - OAuth2 로그인 요청 진입");
+		log.info("CustomOAuth2UserService.loadUser() 실행");
 
 		OAuth2UserService<OAuth2UserRequest, OAuth2User> delegate = new DefaultOAuth2UserService();
 		OAuth2User oAuth2User = delegate.loadUser(userRequest);
 
 		String registrationId = userRequest.getClientRegistration().getRegistrationId();
 		SocialType socialType = getSocialType(registrationId);
-		String userNameAttributeName = userRequest.getClientRegistration().getProviderDetails().getUserInfoEndpoint().getUserNameAttributeName();
+		String userNameAttributeName = userRequest.getClientRegistration()
+			.getProviderDetails()
+			.getUserInfoEndpoint()
+			.getUserNameAttributeName();
 		Map<String, Object> attributes = oAuth2User.getAttributes();
 
 		OAuthAttributes extractAttributes = OAuthAttributes.of(socialType, userNameAttributeName, attributes);
 
-		Artist createdUser = getUser(socialType,extractAttributes);
+		Artist createdUser = getUser(socialType, extractAttributes);
 		return new CustomOAuth2User(
 			Collections.singleton(new SimpleGrantedAuthority(createdUser.getRole().getKey())),
 			attributes,
@@ -54,29 +58,29 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 	}
 
 	private SocialType getSocialType(String registrationId) {
-		if(NAVER.equals(registrationId)){
+		if (NAVER.equals(registrationId)) {
 			return SocialType.NAVER;
 		}
-		if(KAKAO.equals(registrationId)){
+		if (KAKAO.equals(registrationId)) {
 			return SocialType.KAKAO;
 		}
 		return SocialType.GOOGLE;
 	}
 
 	private Artist getUser(SocialType socialType, OAuthAttributes oAuthAttributes) {
-		Artist user = userRepository.findByUsername(socialType.toString() + "_" + oAuthAttributes.getOAuth2UserInfo().getId())
+		Artist user = userRepository.findByUsername(
+				socialType.toString() + "_" + oAuthAttributes.getOAuth2UserInfo().getId())
 			.orElse(null);
 
-		if(user == null) {
-			user = saveUser(socialType,oAuthAttributes);
+		if (user == null) {
+			user = saveUser(socialType, oAuthAttributes);
 		}
 		return user;
 	}
 
-	private Artist saveUser(SocialType socialType, OAuthAttributes oAuthAttributes){
-		Artist user = oAuthAttributes.toEntity(socialType,oAuthAttributes.getOAuth2UserInfo());
+	private Artist saveUser(SocialType socialType, OAuthAttributes oAuthAttributes) {
+		Artist user = oAuthAttributes.toEntity(socialType, oAuthAttributes.getOAuth2UserInfo());
 		return userRepository.save(user);
 	}
-
 
 }

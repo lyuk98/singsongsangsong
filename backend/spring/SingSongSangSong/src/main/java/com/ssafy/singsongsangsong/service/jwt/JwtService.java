@@ -11,9 +11,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.ssafy.singsongsangsong.repository.maria.artist.ArtistRepository;
 
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,27 +35,21 @@ public class JwtService {
 	private static final String BEARER = "Bearer ";
 
 	private final ArtistRepository artistRepository;
+
 	public String createAccessToken(String email) {
 		log.info("accessToken create");
 		Date now = new Date();
 		return JWT.create()
 			.withSubject(ACCESS_TOKEN_SUBJECT)
 			.withExpiresAt(new Date(now.getTime() + accessTokenExpirationPeriod))
-			.withClaim(EMAIL_CLAIM,email)
+			.withClaim(EMAIL_CLAIM, email)
 			.sign(Algorithm.HMAC256(secretKey));
-	}
-
-	public void sendAccessToken(HttpServletResponse response, String accessToken) {
-		response.setStatus(HttpServletResponse.SC_OK);
-
-		response.setHeader(accessHeader, accessToken);
-		log.info("재발급된 Access Token : {}", accessToken);
 	}
 
 	public Optional<String> extractAccessToken(HttpServletRequest request) {
 		return Optional.ofNullable(request.getHeader(accessHeader))
-			.filter(refreshToken -> refreshToken.startsWith(BEARER))
-			.map(refreshToken -> refreshToken.replace(BEARER, ""));
+			.filter(accessToken -> accessToken.startsWith(BEARER))
+			.map(accessToken -> accessToken.replace(BEARER, ""));
 	}
 
 	public Optional<String> extractEmail(String accessToken) {
