@@ -21,37 +21,37 @@ public class TrendController {
 	
 	private final TrendService trendService;
 
-	@GetMapping
+	@GetMapping("/weekly")
 	public List<TrendSongDto> getWeeklyChart() {
 		return trendService.getWeeklyChart().getRank();
 	}
 	
-	@GetMapping
+	@GetMapping("/genre")
 	public List<TrendSongDto> getGenreSongLank(@RequestParam String genre) {
 		return trendService.getGenreSongLank(genre).getRank();
 	}
 	
-	@GetMapping
+	@GetMapping("/atmos")
 	public List<TrendSongDto> getAtmosphereSongLank(@RequestParam String atmosphere) {
 		return trendService.getAtmosphereSongLank(atmosphere).getRank();
 	}
 	
-	@GetMapping
+	@GetMapping("/world")
 	public List<TrendSongDto> getWorldChart() {
 		return trendService.getWorldChart().getRank();
 	}
 	
-	@GetMapping
+	@GetMapping("/korean")
 	public List<TrendSongDto> getKoreanChart() {
 		return trendService.getKoreanChart().getRank();
 	}
 	
-	@GetMapping
+	@GetMapping("emotion")
 	public EmotionSongsDto getEmotionSongs() {
 		return trendService.getEmotionSongs();
 	}
 	
-	@GetMapping
+	@GetMapping("bpm")
 	public TrendChartDto getBpmLank(@RequestParam int bpm) {
 		return trendService.getBpmLank(bpm);
 	}
