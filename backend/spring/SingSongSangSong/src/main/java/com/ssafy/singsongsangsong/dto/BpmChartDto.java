@@ -1,6 +1,7 @@
 package com.ssafy.singsongsangsong.dto;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -14,11 +15,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Document(collection = "trend")
-public class TrendChartDto {
+public class BpmChartDto {
 	
-	private List<Integer> weekly;
-	private List<TrendSongDto> world;
-	private List<TrendSongDto> korean;
-	private EmotionSongsDto emotions;
-	
+	private Map<String, List<TrendSongDto>> bpms;
+
 }

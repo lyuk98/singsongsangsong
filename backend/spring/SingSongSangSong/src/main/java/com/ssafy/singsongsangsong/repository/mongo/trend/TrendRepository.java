@@ -1,16 +1,16 @@
 package com.ssafy.singsongsangsong.repository.mongo.trend;
 
-import com.ssafy.singsongsangsong.dto.EmotionSongsDto;
+import java.time.LocalDate;
+
+import com.ssafy.singsongsangsong.dto.BpmChartDto;
+import com.ssafy.singsongsangsong.dto.SongArtistDto;
 import com.ssafy.singsongsangsong.dto.TrendChartDto;
 
 public interface TrendRepository {
 	
-	TrendChartDto getWeeklyChart();
-	TrendChartDto getGenreSongLank(String genre);
-	TrendChartDto getAtmosphereSongLank(String atmosphere);
-	TrendChartDto getWorldChart();
-	TrendChartDto getKoreanChart();
-	EmotionSongsDto getEmotionSongs();
-	TrendChartDto getBpmLank(int bpm);
+	TrendChartDto getAllChart(LocalDate date);
+	SongArtistDto getGenreChart(LocalDate date, String genre);
+	SongArtistDto getAtmosphereChart(LocalDate date, String atmosphere);
+	BpmChartDto getBpmChart(LocalDate date, String bpm);
 	
 }

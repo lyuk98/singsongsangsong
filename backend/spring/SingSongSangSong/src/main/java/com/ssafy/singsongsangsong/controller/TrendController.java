@@ -1,15 +1,16 @@
 package com.ssafy.singsongsangsong.controller;
 
-import java.util.List;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ssafy.singsongsangsong.dto.EmotionSongsDto;
+import com.ssafy.singsongsangsong.dto.BpmChartDto;
+import com.ssafy.singsongsangsong.dto.SongArtistDto;
 import com.ssafy.singsongsangsong.dto.TrendChartDto;
-import com.ssafy.singsongsangsong.dto.TrendSongDto;
 import com.ssafy.singsongsangsong.service.TrendService;
 
 import lombok.RequiredArgsConstructor;
@@ -21,39 +22,24 @@ public class TrendController {
 	
 	private final TrendService trendService;
 
-	@GetMapping("/weekly")
-	public List<TrendSongDto> getWeeklyChart() {
-		return trendService.getWeeklyChart().getRank();
+	@GetMapping("/all")
+	public TrendChartDto getAllChart(@RequestParam("date") String date) {
+		return trendService.getAllChart(LocalDate.parse(date, DateTimeFormatter.ISO_DATE));
 	}
 	
 	@GetMapping("/genre")
-	public List<TrendSongDto> getGenreSongLank(@RequestParam String genre) {
-		return trendService.getGenreSongLank(genre).getRank();
+	public SongArtistDto getGenreChart(@RequestParam("date") String date, @RequestParam("genre") String genre) {
+		return trendService.getGenreChart(LocalDate.parse(date, DateTimeFormatter.ISO_DATE), genre);
 	}
 	
-	@GetMapping("/atmos")
-	public List<TrendSongDto> getAtmosphereSongLank(@RequestParam String atmosphere) {
-		return trendService.getAtmosphereSongLank(atmosphere).getRank();
-	}
-	
-	@GetMapping("/world")
-	public List<TrendSongDto> getWorldChart() {
-		return trendService.getWorldChart().getRank();
-	}
-	
-	@GetMapping("/korean")
-	public List<TrendSongDto> getKoreanChart() {
-		return trendService.getKoreanChart().getRank();
-	}
-	
-	@GetMapping("/emotion")
-	public EmotionSongsDto getEmotionSongs() {
-		return trendService.getEmotionSongs();
+	@GetMapping("/atmosphere")
+	public SongArtistDto getAtmosphereChart(@RequestParam("date") String date, @RequestParam("atmosphere") String atmosphere) {
+		return trendService.getAtmosphereChart(LocalDate.parse(date, DateTimeFormatter.ISO_DATE), atmosphere);
 	}
 	
 	@GetMapping("/bpm")
-	public TrendChartDto getBpmLank(@RequestParam int bpm) {
-		return trendService.getBpmLank(bpm);
+	public BpmChartDto getBpmChart(@RequestParam("date") String date, @RequestParam("bpm") String bpm) {
+		return trendService.getBpmChart(LocalDate.parse(date, DateTimeFormatter.ISO_DATE), bpm);
 	}
 
 }

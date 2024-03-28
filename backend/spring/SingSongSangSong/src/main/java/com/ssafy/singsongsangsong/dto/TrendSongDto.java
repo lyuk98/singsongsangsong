@@ -13,6 +13,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class TrendSongDto {
 	
+	private long songId;
 	private String title;
 	private long artistId;
 	private String artistName;

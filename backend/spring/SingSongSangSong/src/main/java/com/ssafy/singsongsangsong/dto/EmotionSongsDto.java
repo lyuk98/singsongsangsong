@@ -14,7 +14,6 @@ import lombok.Setter;
 @Document(collection = "trend")
 public class EmotionSongsDto {
 	
-	private String part;
 	private TrendSongDto moved;
 	private TrendSongDto like;
 	private TrendSongDto excited;
