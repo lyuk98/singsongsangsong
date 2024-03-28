@@ -16,7 +16,7 @@ import lombok.Setter;
 @Document(collection = "trend")
 public class TrendChartDto {
 	
-	private List<Integer> weekly;
+	private List<TrendSongDto> weekly;
 	private List<TrendSongDto> world;
 	private List<TrendSongDto> korean;
 	private EmotionSongsDto emotions;
