@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ssafy.singsongsangsong.constants.EmotionsConstants;
 import com.ssafy.singsongsangsong.dto.CommentsResponseDto;
 import com.ssafy.singsongsangsong.dto.PostCommentsDto;
+import com.ssafy.singsongsangsong.dto.SongInfoResponse;
 import com.ssafy.singsongsangsong.dto.SongListByThemeResponseDto;
 import com.ssafy.singsongsangsong.security.ArtistAuthenticationToken;
 import com.ssafy.singsongsangsong.security.ArtistPrincipal;
@@ -58,4 +59,10 @@ public class SongController {
 		@RequestParam(defaultValue = "10") int size) {
 		return songService.getSongListByTheme(themeName, size);
 	}
+
+	@GetMapping("/{songId}")
+	public SongInfoResponse getSong(@PathVariable Long songId) {
+		return songService.getSong(songId);
+	}
+
 }

@@ -40,6 +40,7 @@ public class Song {
 	private Image albumImage;
 
 	private String title;
+	private String songDescription;
 	private String lyrics;
 
 	private String customGenre; // 사용자가 직접 지정할 수 있고, 지정하지 않는 경우 분석 결과를 기반으로 자동으로 결정됩니다
@@ -60,7 +61,7 @@ public class Song {
 	@ColumnDefault("false")
 	private boolean isPublished;
 
-	private String musicLocation;
+	private String musicFileName;
 
 	@ColumnDefault("0")
 	private int movedEmotionCount;

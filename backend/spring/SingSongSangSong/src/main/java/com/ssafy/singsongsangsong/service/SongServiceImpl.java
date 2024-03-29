@@ -7,9 +7,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.singsongsangsong.constants.EmotionsConstants;
+import com.ssafy.singsongsangsong.dto.ArtistInfoDto;
+import com.ssafy.singsongsangsong.dto.CommentsInfoDto;
 import com.ssafy.singsongsangsong.dto.CommentsResponseDto;
 import com.ssafy.singsongsangsong.dto.CommentsResponseDto.CommentsResponse;
 import com.ssafy.singsongsangsong.dto.SimpleSongDto;
+import com.ssafy.singsongsangsong.dto.SongInfoResponse;
+import com.ssafy.singsongsangsong.dto.SongInfoResponse.SongInfoResponseBuilder;
 import com.ssafy.singsongsangsong.dto.SongListByThemeResponseDto;
 import com.ssafy.singsongsangsong.entity.Artist;
 import com.ssafy.singsongsangsong.entity.Comments;
@@ -90,6 +94,36 @@ public class SongServiceImpl implements SongService {
 			.size(songs.size())
 			.songList(songs.stream().map(SimpleSongDto::from).toList())
 			.build();
+	}
+
+	@Override
+	public SongInfoResponse getSong(Long songId) {
+		Song song = songRepository.findById(songId).orElseThrow(NotFoundSongException::new);
+		Artist artist = song.getArtist();
+		List<Comments> commentsList = commentsRepository.findBySongId(songId);
+
+		SongInfoResponseBuilder builder = SongInfoResponse.builder();
+
+		builder = builder.songTitle(song.getTitle()).artist(ArtistInfoDto.from(artist))
+			.lyrics(song.getLyrics()).chord(song.getChord()).bpm(song.getBpm())
+			.songFileName(song.getMusicFileName()).albumImageFileName(song.getAlbumImage().getOriginalFileName())
+			.songDescription(song.getSongDescription());
+
+		builder = builder.movedEmotionCount(song.getMovedEmotionCount())
+			.likeEmotionCount(song.getLikeEmotionCount()).energizedEmotionCount(song.getEnergizedEmotionCount())
+			.excitedEmotionCount(song.getExcitedEmotionCount())
+			.funnyEmotionCount(song.getFunnyEmotionCount()).sadEmotionCount(song.getSadEmotionCount());
+
+		List<CommentsInfoDto> comments = commentsList.stream()
+			.map(CommentsInfoDto::from)
+			.toList();
+
+		builder = builder.likeCount(song.getLikeCount())
+			.downloadCount(song.getDownloadCount())
+			.playCount(song.getPlayCount());
+		builder = builder.comments(comments);
+
+		return builder.build();
 	}
 
 }
