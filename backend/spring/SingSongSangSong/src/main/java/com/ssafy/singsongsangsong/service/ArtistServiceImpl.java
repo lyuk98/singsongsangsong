@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.ssafy.singsongsangsong.dto.ArtistInfoDto;
 import com.ssafy.singsongsangsong.dto.EmotionsDto;
+import com.ssafy.singsongsangsong.dto.FollowerCountResponse;
 import com.ssafy.singsongsangsong.dto.SimpleSongDto;
 import com.ssafy.singsongsangsong.entity.Artist;
 import com.ssafy.singsongsangsong.entity.Follower_Following;
@@ -68,5 +69,14 @@ public class ArtistServiceImpl implements ArtistService {
 			result.setLikeEmotionCount(result.getLikeEmotionCount() + song.getLikeEmotionCount());
 		}
 		return result;
+	}
+
+	@Override
+	public FollowerCountResponse getFollowerCount(Long artistId) {
+		int followerCount = artistRepository.getFollowerCountByArtistId(artistId);
+		return FollowerCountResponse.builder()
+			.artistId(artistId)
+			.followerCount(followerCount)
+			.build();
 	}
 }
