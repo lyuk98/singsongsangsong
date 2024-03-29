@@ -14,7 +14,7 @@ import file_server
 
 # 시험 목적으로 실행합니다
 # (완료 시 실행 내용을 되돌립니다)
-DRY_RUN = False
+DRY_RUN = True
 
 def download(url: str, path: str):
     """URL로부터 지정한 파일을 `path`에 저장합니다
@@ -110,7 +110,6 @@ for index, row in artists.iterrows():
             file_insert.append(
                 {
                     "id": file_id,
-                    "owner_id": row["artist_id"],
                     "file_name": str(uuid.uuid4()),
                     "original_file_name": filename,
                     "file_path": download_path
@@ -125,6 +124,7 @@ for index, row in artists.iterrows():
     insert.append(
         {
             "id": row["artist_id"],
+            "profile_image_id": file_id,
             "introduction": str(row["artist_bio"])[:255],
             "nickname": str(row["artist_name"]),
             "username": str(row["artist_handle"]),
@@ -149,13 +149,12 @@ try:
 
             # 이미지 파일 정보를 삽입합니다
             cursor.executemany(
-                "insert into file "
-                "(id, owner_id, file_name, original_file_name) "
-                "values (%s, %s, %s, %s)",
+                "insert into image "
+                "(id, saved_file_name, original_file_name) "
+                "values (%s, %s, %s)",
                 [
                     (
                         row["id"],
-                        row["owner_id"],
                         row["file_name"],
                         row["original_file_name"]
                     ) for row in file_insert
@@ -167,11 +166,12 @@ try:
             # 아티스트 정보를 삽입합니다
             cursor.executemany(
                 "insert into artist "
-                "(id, age, sex, introduction, nickname, username, role) "
-                "values (%s, 20, 'F', %s, %s, %s, 'GUEST')",
+                "(id, age, sex, profile_image_id, introduction, nickname, username, role) "
+                "values (%s, 20, 'F', %s, %s, %s, %s, 'GUEST')",
                 [
                     (
                         row["id"],
+                        row["profile_image_id"],
                         row["introduction"],
                         row["nickname"],
                         row["username"]
