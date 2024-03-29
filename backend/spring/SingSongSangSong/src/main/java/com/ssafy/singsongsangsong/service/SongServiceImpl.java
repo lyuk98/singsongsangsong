@@ -9,6 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ssafy.singsongsangsong.constants.EmotionsConstants;
 import com.ssafy.singsongsangsong.dto.CommentsResponseDto;
 import com.ssafy.singsongsangsong.dto.CommentsResponseDto.CommentsResponse;
+import com.ssafy.singsongsangsong.dto.SimpleSongDto;
+import com.ssafy.singsongsangsong.dto.SongListByThemeResponseDto;
 import com.ssafy.singsongsangsong.entity.Artist;
 import com.ssafy.singsongsangsong.entity.Comments;
 import com.ssafy.singsongsangsong.entity.Emotions;
@@ -78,6 +80,15 @@ public class SongServiceImpl implements SongService {
 			.toList();
 		return CommentsResponseDto.builder()
 			.comments(comments)
+			.build();
+	}
+
+	@Override
+	public SongListByThemeResponseDto getSongListByTheme(String themeName, int size) {
+		List<Song> songs = songRepository.findByThemeName(themeName, size);
+		return SongListByThemeResponseDto.builder()
+			.size(songs.size())
+			.songList(songs.stream().map(SimpleSongDto::from).toList())
 			.build();
 	}
 

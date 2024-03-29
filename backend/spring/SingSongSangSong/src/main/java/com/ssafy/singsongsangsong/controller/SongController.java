@@ -7,11 +7,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.singsongsangsong.constants.EmotionsConstants;
 import com.ssafy.singsongsangsong.dto.CommentsResponseDto;
 import com.ssafy.singsongsangsong.dto.PostCommentsDto;
+import com.ssafy.singsongsangsong.dto.SongListByThemeResponseDto;
 import com.ssafy.singsongsangsong.security.ArtistAuthenticationToken;
 import com.ssafy.singsongsangsong.security.ArtistPrincipal;
 import com.ssafy.singsongsangsong.service.SongService;
@@ -48,4 +50,12 @@ public class SongController {
 		return songService.getComments(songId);
 	}
 
+	/**
+	 * 특정 테마에 해당하는 곡 리스트 반환
+	 */
+	@GetMapping("/theme/{themeName}")
+	public SongListByThemeResponseDto getSongListByTheme(@PathVariable String themeName,
+		@RequestParam(defaultValue = "10") int size) {
+		return songService.getSongListByTheme(themeName, size);
+	}
 }
