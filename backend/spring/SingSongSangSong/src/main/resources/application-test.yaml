@@ -15,7 +15,7 @@ spring:
             client-id: 813928593657-9v2bpcp9p2l3i3j5ri6vrdnu0dd1sif5.apps.googleusercontent.com
             client-secret: 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
             scope: profile, email
-            redirect-uri: http://api.singsongsangsong.com/login/oauth2/code/google
+            redirect-uri: http://localhost:8080/login/oauth2/code/google
           naver:
             client-id: t8m3plQmDMt1BM58c5g6
             client-secret: VbWntwUdPR
