@@ -1,6 +1,7 @@
 package com.ssafy.singsongsangsong.filter;
 
 import java.io.IOException;
+import java.util.Optional;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -9,6 +10,7 @@ import org.springframework.security.core.authority.mapping.NullAuthoritiesMapper
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.jwt.JwtException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -47,11 +49,23 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
 	public void checkAccessTokenAndAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 	throws ServletException, IOException{
 		log.info("checkAccessTokenAndAuthentication() 호출");
-		jwtService.extractAccessToken(request)
-			.filter(jwtService::isTokenValid)
-			.ifPresent(accessToken -> jwtService.extractEmail(accessToken)
-				.ifPresent(email -> artistRepository.findByUsername(email)
-					.ifPresent(this::saveAuthentication)));
+
+		Optional<String> accessToken = jwtService.extractAccessToken(request)
+			.filter(jwtService::isTokenValid);
+
+		// 회원이 access token을 가지고 요청을 보낸 상황
+		if (accessToken.isPresent()) {
+			log.info("access token이 존재합니다");
+			String token = accessToken.get();
+			String email = jwtService.extractEmail(token)
+				.orElseThrow(() -> new JwtException("can't extract email"));
+
+			Artist loadedUser = artistRepository.findByUsername(email)
+				.orElseThrow(() -> new JwtException("can't find user with email"));
+			saveAuthentication(loadedUser);
+		} else {
+			log.info("access token이 존재하지 않습니다");
+		}
 
 		filterChain.doFilter(request, response);
 	}
