@@ -10,6 +10,7 @@ import RaderChart from "../../public/chart/raderChart/RaderChart";
 import styles from "./ChartWithMelonBillboard.module.css";
 import Album from "../../public/Album";
 import MoodTag from "../../moodTag/MoodTag";
+import { useNavigate } from "react-router-dom";
 
 const DUMMY_DATA = [
   {
@@ -29,19 +30,34 @@ const DUMMY_DATA = [
   },
 ];
 
+type dataType = {
+  artistId: number;
+  songId: number;
+  artistName: string;
+  atomospheres: any;
+  download: number;
+  emotions: any;
+  like: number;
+  lyrics: string;
+  play: number;
+  title: string;
+};
+
 type PropsType = {
   type: string;
+  data: dataType[];
 };
 /**
  * melon / billboard 두개의 상태에 따라서 보여줄 곡들을 다르게할 로직 추가 필요
  * @returns
  */
-const ChartWithMelonBillboard = ({ type }: PropsType) => {
+const ChartWithMelonBillboard = ({ type, data }: PropsType) => {
+  const navigate = useNavigate();
   const [songIndex, setSongIndex] = useState<number>(0);
   const handleSongIndex = (index: number) => {
     setSongIndex(index);
   };
-
+  console.log(data);
   return (
     <div className={`${styles.container}`}>
       <div className={`flex-row-center ${styles.header}`}>
@@ -64,13 +80,13 @@ const ChartWithMelonBillboard = ({ type }: PropsType) => {
         <div className={`flex-col-center ${styles.songs}`}>
           {/* 아래쪽 코드는 반복문으로 받아온 데이터 출력해야함 */}
           {/* 또한 데이터받아오고 그거맞춰서 입력 해줘야함 */}
-          {DUMMY_DATA.map((element, index) => {
+          {data.map((element, index) => {
             const medalImage =
               index === 0 ? medal0 : index === 1 ? medal1 : medal2;
             return (
               <div
                 onClick={() => handleSongIndex(index)}
-                key={element.songTitle}
+                key={element.title}
                 className={`flex-row-center gap-15 p-15 b-15 ${styles.song} ${
                   songIndex === index ? styles.selected : ""
                 }`}
@@ -80,8 +96,12 @@ const ChartWithMelonBillboard = ({ type }: PropsType) => {
                 </div>
                 <div className={styles.info}>
                   <img src={medalImage} alt="" />
-                  <p>{element.songAuthor}</p>
-                  <h2>{element.songTitle}</h2>
+                  <p onClick={() => navigate(`/artist/${element.artistId}`)}>
+                    {element.artistName}
+                  </p>
+                  <h2 onClick={() => navigate(`/song/${element.songId}`)}>
+                    {element.title}
+                  </h2>
                 </div>
               </div>
             );

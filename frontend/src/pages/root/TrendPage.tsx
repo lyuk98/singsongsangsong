@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { json } from "react-router-dom";
+import axios from "axios";
 
 import styles from "./TrendPage.module.css";
 import Modal from "../../components/modal/Modal";
@@ -6,6 +8,7 @@ import Header from "../../components/pageComponents/trendpageComponent/Header";
 import Button from "../../components/buttons/Button";
 import ModalCalendar from "../../components/pageComponents/trendpageComponent/ModalCalendar";
 import {
+  addZero,
   getLastSunday,
   getToday,
   getWeekNumber,
@@ -19,8 +22,6 @@ import SongWithEmotion from "../../components/pageComponents/trendpageComponent/
 import SongWithBPM from "../../components/pageComponents/trendpageComponent/SongWithBPM";
 import TestWeeklySingsongChart from "../../components/pageComponents/trendpageComponent/testComponent/TestWeeklySingsongChart";
 import { useAxios } from "../../hooks/api/useAxios";
-import { json } from "react-router-dom";
-import axios from "axios";
 
 const TrendPage = () => {
   const { year, month, day } = getLastSunday();
@@ -36,7 +37,7 @@ const TrendPage = () => {
     method: "GET",
     url: "trend/all",
     params: {
-      date: `${selectedDate.year}-${"03"}-${"17"}`,
+      date: `${selectedDate.year}-${selectedDate.month}-${selectedDate.day}`,
     },
   });
 
@@ -44,6 +45,7 @@ const TrendPage = () => {
 
   useEffect(() => {
     setWeekNumber(getWeekNumber(selectedDate));
+    refetch()
   }, [selectedDate]);
 
   // useEffect(() => {
@@ -75,7 +77,7 @@ const TrendPage = () => {
   const handleDateChange = (newDate: any) => {
     setSelectedDate(() => {
       const newYear: number = newDate.getFullYear();
-      const newMonth: number = newDate.getMonth() + 1;
+      let newMonth: string = addZero(newDate.getMonth() + 1);
       const newDay: number = newDate.getDate();
       return {
         year: newYear,
@@ -85,6 +87,7 @@ const TrendPage = () => {
     });
     setIsModalOpen(false);
   };
+
   if (isLoading) {
     return <p>loading</p>;
   }
@@ -105,12 +108,20 @@ const TrendPage = () => {
         selectedWeek={weekNumber}
         onOpen={handleCalendarOpen}
       />
-      <TestWeeklySingsongChart />
-      <TrendWithOptions />
-      <RankWithOption />
-      <CompareWithAnotherSite />
-      <SongWithEmotion emotions={response.emotions} />
-      <SongWithBPM />
+      {!response && <p>해당 날짜에 대한 데이터가 존재하지 않습니다</p>}
+      {response && (
+        <>
+          <TestWeeklySingsongChart weekly={response.weekly} />
+          <TrendWithOptions />
+          <RankWithOption />
+          <CompareWithAnotherSite
+            korean={response.korean}
+            world={response.world}
+          />
+          <SongWithEmotion emotions={response.emotions} />
+          <SongWithBPM />
+        </>
+      )}
     </div>
   );
 };

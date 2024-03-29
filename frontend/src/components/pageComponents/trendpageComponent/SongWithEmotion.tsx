@@ -24,33 +24,6 @@ type Song = {
 
 type EmotionMap = Record<string, Song>;
 
-const EMOTIONS = [
-  {
-    emotion: emotion1,
-    count: "41",
-  },
-  {
-    emotion: emotion2,
-    count: "141",
-  },
-  {
-    emotion: emotion3,
-    count: "462",
-  },
-  {
-    emotion: emotion4,
-    count: "22",
-  },
-  {
-    emotion: emotion5,
-    count: "253",
-  },
-  {
-    emotion: emotion6,
-    count: "223",
-  },
-];
-
 const SongWithEmotion = ({ emotions }: EmotionMap) => {
   const navigate = useNavigate();
 
@@ -61,9 +34,12 @@ const SongWithEmotion = ({ emotions }: EmotionMap) => {
         className={`flex-row-center p-15 w-100 bg-box b-15 shadow-box ${styles.content}`}
       >
         {Object.entries(emotions).map((element: any) => {
-          console.log(element);
+          // console.log(element);
           return (
-            <div className={`flex-col-center ${styles.songBox}`}>
+            <div
+              key={element[0]}
+              className={`flex-col-center ${styles.songBox}`}
+            >
               <div className={`flex-row-center ${styles.emotions}`}>
                 {/* <img src={element.emotion} alt="" /> */}
                 <p>{element[1].count}</p>

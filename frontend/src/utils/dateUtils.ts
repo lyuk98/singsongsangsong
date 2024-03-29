@@ -21,6 +21,13 @@ export const getWeekNumber = (date: DateType) => {
   return Math.ceil((currentDate + firstDay) / 7);
 };
 
+export const addZero = (number: number): string => {
+  if (number < 10) {
+    return "0" + number;
+  }
+  return "" + number;
+};
+
 export const getLastSunday = () => {
   const today = new Date();
 
@@ -33,7 +40,7 @@ export const getLastSunday = () => {
   lastSunday.setDate(today.getDate() - todayDayOfWeek);
 
   const year: number = lastSunday.getFullYear();
-  const month: number = lastSunday.getMonth() + 1;
+  const month: string = addZero(lastSunday.getMonth() + 1);
   const day: number = lastSunday.getDate();
   const date = {
     year,

@@ -2,7 +2,7 @@ import { Url } from "url";
 
 export interface DateType {
   year: number;
-  month: number;
+  month: string;
   day: number;
 }
 
@@ -77,4 +77,13 @@ export type SearchParmasType = {
   atmosphere: string | null;
   bpm: string | null;
   sort: string | null;
+};
+
+export type EmotionType = {
+  moved: number;
+  like: number;
+  excited: number;
+  energized: number;
+  funny: number;
+  sad: number;
 };
