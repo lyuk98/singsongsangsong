@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.singsongsangsong.constants.EmotionsConstants;
+import com.ssafy.singsongsangsong.dto.AnalyzeGenreAndAtmosphereResponse;
 import com.ssafy.singsongsangsong.dto.CommentsResponseDto;
 import com.ssafy.singsongsangsong.dto.PostCommentsDto;
 import com.ssafy.singsongsangsong.dto.SongInfoResponse;
@@ -63,6 +64,13 @@ public class SongController {
 	@GetMapping("/{songId}")
 	public SongInfoResponse getSong(@PathVariable Long songId) {
 		return songService.getSong(songId);
+	}
+
+	// 해당 노래에 해당하는 분위기와 장르의 correlation을 가져옵니다.
+	@GetMapping("/analyze/{songId}")
+	public AnalyzeGenreAndAtmosphereResponse getAnalyzeGenreAndAtmosphere(@PathVariable Long songId,
+		@RequestParam("defaultValue = 5") int size) {
+		return songService.getAnalyzeGenreAndAtmosphere(songId, size);
 	}
 
 }

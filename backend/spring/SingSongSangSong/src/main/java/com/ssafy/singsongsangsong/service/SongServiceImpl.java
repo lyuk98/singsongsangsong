@@ -7,6 +7,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.singsongsangsong.constants.EmotionsConstants;
+import com.ssafy.singsongsangsong.dto.AnalyzeGenreAndAtmosphereResponse;
+import com.ssafy.singsongsangsong.dto.AnalyzeGenreAndAtmosphereResponse.AnalyzeAtmosphereDto;
+import com.ssafy.singsongsangsong.dto.AnalyzeGenreAndAtmosphereResponse.AnalyzeGenreDto;
 import com.ssafy.singsongsangsong.dto.ArtistInfoDto;
 import com.ssafy.singsongsangsong.dto.CommentsInfoDto;
 import com.ssafy.singsongsangsong.dto.CommentsResponseDto;
@@ -16,12 +19,16 @@ import com.ssafy.singsongsangsong.dto.SongInfoResponse;
 import com.ssafy.singsongsangsong.dto.SongInfoResponse.SongInfoResponseBuilder;
 import com.ssafy.singsongsangsong.dto.SongListByThemeResponseDto;
 import com.ssafy.singsongsangsong.entity.Artist;
+import com.ssafy.singsongsangsong.entity.Atmosphere;
 import com.ssafy.singsongsangsong.entity.Comments;
 import com.ssafy.singsongsangsong.entity.Emotions;
+import com.ssafy.singsongsangsong.entity.Genre;
 import com.ssafy.singsongsangsong.entity.Song;
 import com.ssafy.singsongsangsong.exception.artist.ArtistNotFoundException;
 import com.ssafy.singsongsangsong.exception.song.NotFoundSongException;
+import com.ssafy.singsongsangsong.repository.GenreRepository;
 import com.ssafy.singsongsangsong.repository.maria.artist.ArtistRepository;
+import com.ssafy.singsongsangsong.repository.maria.atmosphere.AtmosphereRepository;
 import com.ssafy.singsongsangsong.repository.maria.comments.CommentsRepository;
 import com.ssafy.singsongsangsong.repository.maria.song.EmotionRepository;
 import com.ssafy.singsongsangsong.repository.maria.song.SongRepository;
@@ -39,6 +46,10 @@ public class SongServiceImpl implements SongService {
 	private final ArtistRepository artistRepository;
 
 	private final CommentsRepository commentsRepository;
+
+	private final GenreRepository genreRepository;
+
+	private final AtmosphereRepository atmosphereRepository;
 
 	@Override
 	@Transactional
@@ -124,6 +135,19 @@ public class SongServiceImpl implements SongService {
 		builder = builder.comments(comments);
 
 		return builder.build();
+	}
+
+	@Override
+	public AnalyzeGenreAndAtmosphereResponse getAnalyzeGenreAndAtmosphere(Long songId, int size) {
+		List<Genre> genres = genreRepository.findBySongId(songId, size);
+		List<Atmosphere> atmospheres = atmosphereRepository.findBySongId(songId, size);
+
+		return AnalyzeGenreAndAtmosphereResponse.builder()
+			.genreLength(genres.size())
+			.atmosphereLength(atmospheres.size())
+			.genres(genres.stream().map(AnalyzeGenreDto::from).toList())
+			.atmospheres(atmospheres.stream().map(AnalyzeAtmosphereDto::from).toList())
+			.build();
 	}
 
 }
