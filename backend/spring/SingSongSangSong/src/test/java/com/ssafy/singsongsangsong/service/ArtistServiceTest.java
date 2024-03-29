@@ -70,7 +70,7 @@ public class ArtistServiceTest {
 		assertThat(artistInfo.getArtistId()).isEqualTo(saved.getId());
 		assertThat(artistInfo.getIntroduction()).isEqualTo(saved.getIntroduction());
 		assertThat(artistInfo.getNickname()).isEqualTo(saved.getNickname());
-		assertThat(artistInfo.getProfileImageUrl()).isEqualTo(profileImageUrl);
+		assertThat(artistInfo.getProfileImageFileName()).isEqualTo(profileImageUrl);
 		assertThat(artistInfo.getUsername()).isEqualTo(saved.getUsername());
 	}
 

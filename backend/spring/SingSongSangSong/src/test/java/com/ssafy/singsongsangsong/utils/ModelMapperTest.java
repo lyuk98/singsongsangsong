@@ -38,7 +38,7 @@ public class ModelMapperTest {
 			assertThat(result.getNickname()).isEqualTo(artist.getNickname());
 			assertThat(result.getUsername()).isEqualTo(artist.getUsername());
 			assertThat(result.getIntroduction()).isEqualTo(artist.getIntroduction());
-			assertThat(result.getProfileImageUrl()).isEqualTo(artist.getProfileImage().getSavedFileName());
+			assertThat(result.getProfileImageFileName()).isEqualTo(artist.getProfileImage().getSavedFileName());
 		}
 
 	}
