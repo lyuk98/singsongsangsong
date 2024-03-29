@@ -13,10 +13,14 @@ import lombok.Setter;
 @AllArgsConstructor
 public class TrendSongDto {
 	
+	private long songId;
 	private String title;
 	private long artistId;
 	private String artistName;
 	private String lyrics;
+	private long play;
+	private long download;
+	private long like;
 	private Map<String, Integer> emotions;
 	private Map<String, Double> atmospheres;
 
