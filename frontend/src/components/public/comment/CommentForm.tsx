@@ -26,7 +26,7 @@ const CommentForm = () => {
   const {
     response,
     isLoading,
-    handleLoad: reloadComment,
+    refetch: reloadComment,
   } = useAxios({
     method: "GET",
     url: "/song/comment/{id}",

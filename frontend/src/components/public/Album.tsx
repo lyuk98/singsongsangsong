@@ -11,6 +11,7 @@ import { RootState } from "../../store";
 const Album = () => {
   const music = useSelector((state: RootState) => state.music);
   const dispatch = useDispatch();
+  // const currentMusic = ("https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3");
   const currentMusic = require("./../../sources/mp3/badday.m4a");
   return (
     <div
