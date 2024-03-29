@@ -1,9 +1,9 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, redirect } from "react-router-dom";
 
 import styles from "./LoginPage.module.css";
 
-import googleIcon from "./../../sources/imgs/auth/googleIcon.png";
+import googleIcon from "./../../sources/imgs/auth/googleSymbol.png";
 import naverIcon from "./../../sources/imgs/auth/naverIcon.png";
 import kakoIcon from "./../../sources/imgs/auth/kakaoIcon.png";
 
@@ -12,6 +12,7 @@ import Button from "../../components/buttons/Button";
 import { useInput } from "../../hooks/useInput";
 import { idValidator, passwordValidator } from "../../utils/validator";
 import { axiosInstance } from "../../hooks/api";
+import LoginButton from "../../components/buttons/LoginButton";
 
 const LoginPage = () => {
   const handleLogin = async (props: string) => {
@@ -30,26 +31,10 @@ const LoginPage = () => {
   return (
     <>
       <div className={styles.conatiner}>
-        <div className={`flex-col-center gap-15 w-100 ${styles.socialBox}`}>
-          <button
-            className={`${styles.socialButton}`}
-            onClick={() => handleLogin("kakao")}
-          >
-            <img src={kakoIcon} alt="" />
-          </button>
-          <button
-            className={`${styles.socialButton}`}
-            onClick={() => handleLogin("google")}
-          >
-            <img src={googleIcon} alt="" />
-          </button>
-          <button
-            className={`${styles.socialButton}`}
-            disabled={true}
-            onClick={() => handleLogin("naver")}
-          >
-            <img src={naverIcon} alt="" />
-          </button>
+        <div className={`flex-row-center gap-30 w-100 ${styles.socialBox}`}>
+          <LoginButton name="kakao" url="kakao" img={kakoIcon} />
+          <LoginButton name="google" url="google" img={googleIcon} />
+          <LoginButton name="naver" url="naver" img={naverIcon} />
         </div>
 
         {/* <AuthInput

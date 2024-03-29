@@ -17,12 +17,14 @@ import ErrorPage from "../pages/Error/ErrorPage";
 import SearchResultPage from "../pages/root/SearchResultPage";
 import TopRankSongPage from "../pages/root/TopRankSongPage";
 import TopRankArtistPage from "../pages/root/TopRankArtistPage";
+import FavoriteArtistPage from "../pages/root/FavoriteArtistPage";
+import FavoriteSongPage from "../pages/root/FavoriteSongPage";
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <MainLayout />,
-    errorElement : <ErrorPage/>,
+    errorElement: <ErrorPage />,
     children: [
       { index: true, element: <Navigate to="/trend" replace /> },
       {
@@ -64,6 +66,14 @@ export const router = createBrowserRouter([
       {
         path: "song/:songId",
         element: <SongDetailPage />,
+      },
+      {
+        path: "favorite/artist",
+        element: <FavoriteArtistPage />,
+      },
+      {
+        path: "favorite/song",
+        element: <FavoriteSongPage />,
       },
     ],
   },
