@@ -18,6 +18,9 @@ import CompareWithAnotherSite from "../../components/pageComponents/trendpageCom
 import SongWithEmotion from "../../components/pageComponents/trendpageComponent/SongWithEmotion";
 import SongWithBPM from "../../components/pageComponents/trendpageComponent/SongWithBPM";
 import TestWeeklySingsongChart from "../../components/pageComponents/trendpageComponent/testComponent/TestWeeklySingsongChart";
+import { useAxios } from "../../hooks/api/useAxios";
+import { json } from "react-router-dom";
+import axios from "axios";
 
 const TrendPage = () => {
   const { year, month, day } = getLastSunday();
@@ -29,9 +32,37 @@ const TrendPage = () => {
   const [weekNumber, setWeekNumber] = useState<number>(1);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
+  const { response, isLoading, refetch } = useAxios({
+    method: "GET",
+    url: "trend/all",
+    params: {
+      date: `${selectedDate.year}-${"03"}-${"17"}`,
+    },
+  });
+
+  console.log(response);
+
   useEffect(() => {
     setWeekNumber(getWeekNumber(selectedDate));
   }, [selectedDate]);
+
+  // useEffect(() => {
+  //   const getdata = async () => {
+  //     try {
+  //       const response = await axios({
+  //         method: "GET",
+  //         url: `${process.env.REACT_APP_API_URL}trend/all`,
+  //         params: {
+  //           date: `${selectedDate.year}-${"03"}-${"17"}`,
+  //         },
+  //       });
+  //       console.log(response.data.data.emotions);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+  //   getdata();
+  // }, []);
 
   const handleCalendarOpen = (): void => {
     setIsModalOpen(true);
@@ -54,6 +85,9 @@ const TrendPage = () => {
     });
     setIsModalOpen(false);
   };
+  if (isLoading) {
+    return <p>loading</p>;
+  }
 
   return (
     <div style={{ paddingBottom: "6rem" }} className={`flex-col w-100 gap-15`}>
@@ -75,7 +109,7 @@ const TrendPage = () => {
       <TrendWithOptions />
       <RankWithOption />
       <CompareWithAnotherSite />
-      <SongWithEmotion />
+      <SongWithEmotion emotions={response.emotions} />
       <SongWithBPM />
     </div>
   );

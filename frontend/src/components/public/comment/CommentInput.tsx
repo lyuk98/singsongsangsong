@@ -27,7 +27,7 @@ const CommentInput = ({ reloadComment }: PropsType): JSX.Element => {
     try {
       const response = await axiosInstance({
         method: "POST",
-        url: "/somg/comment",
+        url: "/song/comment",
         data: { songId: "songid", contents: comment },
       });
       console.log(response);

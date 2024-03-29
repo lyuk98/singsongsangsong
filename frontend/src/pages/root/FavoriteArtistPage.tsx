@@ -20,8 +20,8 @@ const FavoriteArtistPage = () => {
       <div className={`flex-col p-15 w-100`}>
         <div className={"flex-col-center gap-15"}>
           <div
-            className={`b-15`}
             style={{
+              borderRadius: "50%",
               width: "200px",
               height: "200px",
               backgroundColor: "black",

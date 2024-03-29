@@ -16,6 +16,7 @@ import { axiosInstance } from ".";
 
 export const useAxios = <D = any>(axiosParams: AxiosRequestConfig<D>) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [trigger, setTrigger] = useState(0);
   const [response, setResponse] = useState<AxiosResponse | null | any>(null);
   const [error, setError] = useState<AxiosError | null | any>(null);
 
@@ -33,14 +34,14 @@ export const useAxios = <D = any>(axiosParams: AxiosRequestConfig<D>) => {
     }
   };
 
-  const handleLoad = () => {
-    console.log(response);
-    axiosData(axiosParams);
+  const refetch = () => {
+    setIsLoading(true);
+    setTrigger(Date.now());
   };
 
   useEffect(() => {
-    handleLoad();
-  }, []);
+    axiosData(axiosParams);
+  }, [trigger]);
 
-  return { isLoading, response, error, handleLoad };
+  return { isLoading, response, error, refetch };
 };

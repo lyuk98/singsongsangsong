@@ -12,9 +12,10 @@ import MusicTable from "../../components/public/music/MusicTable";
 import { useAxios } from "../../hooks/api/useAxios";
 
 const ArtistPage = () => {
-  const { artistId } = useParams();
+  // const { artistId } = useParams();
+  const artistId = 1;
 
-  const { response, isLoading, handleLoad, error } = useAxios({
+  const { response, isLoading, refetch, error } = useAxios({
     url: `/artist/${artistId}`,
     method: "GET",
   });
