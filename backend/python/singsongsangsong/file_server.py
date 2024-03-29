@@ -8,6 +8,7 @@ MinIO 객체 저장소와 관련된 기능을 제공합니다
 """
 
 import os
+import mimetypes
 from dotenv import load_dotenv
 from minio import Minio
 
@@ -62,7 +63,12 @@ def upload(source: str, bucket: str, destination: str, client: Minio=None):
     """
     if client is None:
         client = get_client()
-    client.fput_object(bucket, destination, source)
+    client.fput_object(
+        bucket,
+        destination,
+        source,
+        mimetypes.guess_type(source)[0]
+    )
 
 def delete(bucket: str, object_name: str, client: Minio=None):
     """MinIO client로 지정한 파일을 삭제합니다

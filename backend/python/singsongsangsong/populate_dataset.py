@@ -1,18 +1,20 @@
 # -*- coding: utf-8 -*-
 
-from typing import Union
 import itertools
 import os
+import mimetypes
 import shutil
 import uuid
 import requests
 from requests.exceptions import HTTPError
 from dotenv import load_dotenv
 import pandas as pd
-from mysql import connector
-from mysql.connector.abstracts import MySQLConnectionAbstract
-from mysql.connector.pooling import PooledMySQLConnection
-from minio import Minio
+import database
+import file_server
+
+# 시험 목적으로 실행합니다
+# (완료 시 실행 내용을 되돌립니다)
+DRY_RUN = False
 
 def download(url: str, path: str):
     """URL로부터 지정한 파일을 `path`에 저장합니다
@@ -25,7 +27,7 @@ def download(url: str, path: str):
         저장할 파일의 경로
     """
 
-    request = requests.get(url, stream=True, timeout=5)
+    request = requests.get(url, stream=True, timeout=8)
     request.raise_for_status()
 
     with open(path, "wb") as file:
@@ -53,38 +55,6 @@ def update_image_url(url: str) -> str:
     assert url.startswith(old_prefix)
 
     return f"{new_prefix}{url[len(old_prefix):]}{new_suffix}"
-
-def get_database_connection() -> Union[PooledMySQLConnection, MySQLConnectionAbstract]:
-    """MySQL (MariaDB)에 연결합니다
-
-    Returns
-    -------
-    PooledMySQLConnection | MySQLConnectionAbstract
-        데이터베이스 연결 객체
-    """
-
-    return connector.connect(
-        host=os.environ.get("MYSQL_HOST"),
-        port=os.environ.get("MYSQL_PORT"),
-        user=os.environ.get("MYSQL_USER"),
-        password=os.environ.get("MYSQL_PASSWORD"),
-        database=os.environ.get("MYSQL_DATABASE")
-    )
-
-def get_minio_client() -> Minio:
-    """MinIO client를 생성합니다
-    
-    Returns
-    -------
-    Minio
-        MinIO client
-    """
-    return Minio(
-        os.environ.get("MINIO_ENDPOINT"),
-        access_key=os.environ.get("MINIO_ACCESS_KEY"),
-        secret_key=os.environ.get("MINIO_SECRET_KEY"),
-        secure=False
-    )
 
 # .env를 읽습니다
 load_dotenv()
@@ -133,11 +103,14 @@ for index, row in artists.iterrows():
             else:
                 print(f"Using downloaded {filename}")
 
+            assert mimetypes.guess_type(download_path)[0].startswith("image/")
+
             # file entity에 삽입할 데이터를 준비합니다
             file_id = next(insert_id)
             file_insert.append(
                 {
                     "id": file_id,
+                    "owner_id": row["artist_id"],
                     "file_name": str(uuid.uuid4()),
                     "original_file_name": filename,
                     "file_path": download_path
@@ -152,12 +125,85 @@ for index, row in artists.iterrows():
     insert.append(
         {
             "id": row["artist_id"],
-            "age": 20,
-            "sex": "F",
-            "profile_image_id": file_id,
-            "introduction": row["artist_bio"],
-            "nickname": row["artist_name"],
-            "username": row["artist_handle"],
-            "role": "GUEST"
+            "introduction": str(row["artist_bio"])[:255],
+            "nickname": str(row["artist_name"]),
+            "username": str(row["artist_handle"]),
         }
     )
+
+    # 시험 목적으로 실행 시 일부 데이터만 가져옵니다
+    if DRY_RUN and index > 3:
+        break
+
+# MinIO client를 준비합니다
+minio_client = file_server.get_client()
+saved_files = []
+
+# MySQL (MariaDB) 데이터베이스에 연결합니다
+try:
+    with database.get_connection() as connection:
+        with connection.cursor() as cursor:
+            connection.autocommit = False
+
+            print("Inserting image records")
+
+            # 이미지 파일 정보를 삽입합니다
+            cursor.executemany(
+                "insert into file "
+                "(id, owner_id, file_name, original_file_name) "
+                "values (%s, %s, %s, %s)",
+                [
+                    (
+                        row["id"],
+                        row["owner_id"],
+                        row["file_name"],
+                        row["original_file_name"]
+                    ) for row in file_insert
+                ]
+            )
+
+            print("Inserting artist records")
+
+            # 아티스트 정보를 삽입합니다
+            cursor.executemany(
+                "insert into artist "
+                "(id, age, sex, introduction, nickname, username, role) "
+                "values (%s, 20, 'F', %s, %s, %s, 'GUEST')",
+                [
+                    (
+                        row["id"],
+                        row["introduction"],
+                        row["nickname"],
+                        row["username"]
+                    ) for row in insert
+                ]
+            )
+
+            print("Updating artists' profile images")
+
+            # 이미지 파일을 client에 업로드합니다
+            for image_file in file_insert:
+                print(f"Uploading {image_file['original_file_name']} ({image_file['file_name']})")
+
+                file_server.upload(
+                    image_file["file_path"],
+                    "image",
+                    image_file["file_name"],
+                    minio_client
+                )
+                saved_files.append(image_file["file_name"])
+
+            # 시험 목적으로 사용 시 commit을 하지 않습니다
+            if not DRY_RUN:
+                connection.commit()
+
+except Exception as exception: # pylint: disable=broad-exception-caught
+    for image_file in saved_files:
+        file_server.delete("image", image_file, minio_client)
+
+    raise exception
+
+# 시험 목적으로 사용 시 업로드한 이미지를 삭제합니다
+if DRY_RUN:
+    for image_file in saved_files:
+        file_server.delete("image", image_file, minio_client)
