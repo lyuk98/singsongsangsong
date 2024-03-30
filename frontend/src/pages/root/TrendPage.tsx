@@ -14,14 +14,15 @@ import {
   getWeekNumber,
 } from "./../../utils/dateUtils";
 import { DateType } from "../../utils/types";
-import WeeklySingsongChart from "../../components/pageComponents/trendpageComponent/WeeklySingsongChart";
+import { useAxios } from "../../hooks/api/useAxios";
+// import WeeklySingsongChart from "../../components/pageComponents/trendpageComponent/WeeklySingsongChart";
 import TrendWithOptions from "../../components/pageComponents/trendpageComponent/TrendWithOptions";
 import RankWithOption from "../../components/pageComponents/trendpageComponent/RankWithOption";
 import CompareWithAnotherSite from "../../components/pageComponents/trendpageComponent/CompareWithAnotherSite";
 import SongWithEmotion from "../../components/pageComponents/trendpageComponent/SongWithEmotion";
 import SongWithBPM from "../../components/pageComponents/trendpageComponent/SongWithBPM";
 import TestWeeklySingsongChart from "../../components/pageComponents/trendpageComponent/testComponent/TestWeeklySingsongChart";
-import { useAxios } from "../../hooks/api/useAxios";
+import noneImg from "./../../sources/imgs/nodataimg.webp";
 
 const TrendPage = () => {
   const { year, month, day } = getLastSunday();
@@ -41,11 +42,12 @@ const TrendPage = () => {
     },
   });
 
-  console.log(response);
+  // console.log(response);
 
   useEffect(() => {
     setWeekNumber(getWeekNumber(selectedDate));
-    refetch()
+    refetch();
+    console.log("selected date", selectedDate);
   }, [selectedDate]);
 
   // useEffect(() => {
@@ -108,7 +110,12 @@ const TrendPage = () => {
         selectedWeek={weekNumber}
         onOpen={handleCalendarOpen}
       />
-      {!response && <p>해당 날짜에 대한 데이터가 존재하지 않습니다</p>}
+      {!response && (
+        <div className={`w-100 flex-col-center ${styles.nonePage}`}>
+          <img src={noneImg} alt="" />
+          <h1>해당 주차에 대한 데이터가 존재하지 않습니다</h1>
+        </div>
+      )}
       {response && (
         <>
           <TestWeeklySingsongChart weekly={response.weekly} />

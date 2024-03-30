@@ -5,6 +5,8 @@ import React, {
   useRef,
   useEffect,
 } from "react";
+
+import { addProfileImage } from "../../utils/api/artistApi";
 import { GrPowerReset } from "react-icons/gr";
 
 import styles from "./PostPage.module.css";
@@ -97,7 +99,9 @@ const PostPage = () => {
     setAlbumImg(null);
   };
 
-  const handleSubmit = () => {};
+  const handleSubmit = () => {
+
+  };
 
   useEffect(() => {
     console.log(albumImg);

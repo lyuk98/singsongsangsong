@@ -86,7 +86,7 @@ const UploadPage = () => {
 
     const file = event.target.files;
     console.log(file);
-    if (file) {
+    if (file && file[0].type.startsWith("audio/")) {
       const url = URL.createObjectURL(file[0]);
       setUploadFile({
         file: file[0],

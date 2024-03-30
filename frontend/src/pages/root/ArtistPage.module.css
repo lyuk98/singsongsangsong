@@ -16,3 +16,8 @@
   width: 100%;
   padding: 15px;
 }
+
+.nonePage {
+  height: 100vh;
+  font-size: 32px;
+}
