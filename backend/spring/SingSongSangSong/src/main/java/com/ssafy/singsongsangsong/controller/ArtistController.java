@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.singsongsangsong.dto.ArtistInfoDto;
 import com.ssafy.singsongsangsong.dto.EmotionsDto;
+import com.ssafy.singsongsangsong.dto.FollowerCountResponse;
 import com.ssafy.singsongsangsong.dto.SimpleSongDto;
 import com.ssafy.singsongsangsong.service.ArtistService;
 
@@ -45,5 +46,10 @@ public class ArtistController {
 	@GetMapping("/emotions/{id}")
 	public EmotionsDto getEmotions(@PathVariable Long id) {
 		return artistService.getEmotions(id);
+	}
+
+	@GetMapping("/followers/{artistId}/count")
+	public FollowerCountResponse getFollowerCount(@PathVariable Long artistId) {
+		return artistService.getFollowerCount(artistId);
 	}
 }

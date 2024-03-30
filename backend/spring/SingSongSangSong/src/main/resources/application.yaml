@@ -81,3 +81,8 @@ minio:
   accessKey: mtppqpRtSxArNq81phwB
   secretKey: pqjrczK0C5JsFDnociyril8CqCbB5Mtfybkhl8p5
   serviceName: s3
+
+csv:
+  file:
+    dir:
+      "./csv/"

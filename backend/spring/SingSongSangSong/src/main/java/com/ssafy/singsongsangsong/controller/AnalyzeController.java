@@ -2,9 +2,6 @@ package com.ssafy.singsongsangsong.controller;
 
 import java.io.IOException;
 
-import org.springframework.core.io.Resource;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -23,7 +20,6 @@ import com.ssafy.singsongsangsong.entity.Artist;
 import com.ssafy.singsongsangsong.exception.artist.ArtistNotFoundException;
 import com.ssafy.singsongsangsong.exception.song.AlreadyCompletedException;
 import com.ssafy.singsongsangsong.repository.maria.artist.ArtistRepository;
-import com.ssafy.singsongsangsong.security.ArtistAuthenticationToken;
 import com.ssafy.singsongsangsong.service.AnalyzeService;
 import com.ssafy.singsongsangsong.service.FileService;
 
@@ -47,24 +43,18 @@ public class AnalyzeController {
 	@GetMapping("/")
 	public UploadMainPageDto getUploadMainPage(
 		@AuthenticationPrincipal String username) {
-		Artist artist = artistRepository.findByUsername(username).orElseThrow(() -> new ArtistNotFoundException("유효하지 않은 유저입니다."));
+		Artist artist = artistRepository.findByUsername(username)
+			.orElseThrow(() -> new ArtistNotFoundException("유효하지 않은 유저입니다."));
 		return analyzeService.getUploadStatus(artist.getId());
 	}
 
 	@PostMapping("/upload")
 	public void uploadMusic(@AuthenticationPrincipal String username,
 		@RequestBody MultipartFile fileData) throws IOException {
-		Artist artist = artistRepository.findByUsername(username).orElseThrow(() -> new ArtistNotFoundException("유효하지 않은 유저입니다."));
+		Artist artist = artistRepository.findByUsername(username)
+			.orElseThrow(() -> new ArtistNotFoundException("유효하지 않은 유저입니다."));
 		// check if MEDIA_TYPE is valid
 		fileService.saveFile(artist.getId(), FileType.AUDIO, fileData);
-	}
-
-	@GetMapping("/test")
-	public ResponseEntity<Resource> getImage(@AuthenticationPrincipal String username) throws
-		IOException {
-		Artist artist = artistRepository.findByUsername(username).orElseThrow(() -> new ArtistNotFoundException("유효하지 않은 유저입니다."));
-		Resource body = fileService.getFile(artist.getId(), FileType.IMAGE, "profile.jpg");
-		return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(body);
 	}
 
 	@PutMapping("/publish/{songId}")
