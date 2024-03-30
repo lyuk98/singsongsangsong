@@ -26,7 +26,7 @@ spring:
           kakao:
             client-id: d3ace32d6368823829feba818d7ff6d3
             client-secret: LF49xe2E8pAoMeQaRtskgi5hIvzX4CbK
-            redirect-uri: https://api.singsongsangsong.com/login/oauth2/authorization/kakao
+            redirect-uri: http://api.singsongsangsong.com/login/oauth2/code/kakao
             scope:
               - account_email
             client-authentication-method: client_secret_post
