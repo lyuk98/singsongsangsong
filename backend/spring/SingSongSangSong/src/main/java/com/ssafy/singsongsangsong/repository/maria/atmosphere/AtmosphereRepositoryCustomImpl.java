@@ -27,6 +27,14 @@ public class AtmosphereRepositoryCustomImpl
 	}
 
 	@Override
+	public List<Atmosphere> findBySongId(Long songId, int limit) {
+		return queryFactory.selectFrom(atmosphere1)
+			.where(atmosphere1.song.id.eq(songId))
+			.limit(limit)
+			.fetch();
+	}
+
+	@Override
 	public Optional<Atmosphere> getFirstAtmosphereBySongId(Long songId) {
 		return Optional.ofNullable(queryFactory.selectFrom(atmosphere1)
 			.where(atmosphere1.song.id.eq(songId))
