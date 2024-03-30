@@ -50,7 +50,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 				// response.sendRedirect("/sign-up");
 				response.addCookie(createCookie("accessToken", accessToken,"/",60*60*60*60));
 				response.addCookie(createCookie("sendRedirect", "/sign-up","/",5));
-				response.sendRedirect	(REDIRECT_URL);
+				response.sendRedirect(REDIRECT_URL);
 			} else {
 				loginSuccess(response, oAuth2User);
 				response.sendRedirect(REDIRECT_URL);
