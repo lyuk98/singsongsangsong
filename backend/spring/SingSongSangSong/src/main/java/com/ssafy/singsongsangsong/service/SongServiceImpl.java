@@ -28,10 +28,10 @@ import com.ssafy.singsongsangsong.entity.Genre;
 import com.ssafy.singsongsangsong.entity.Song;
 import com.ssafy.singsongsangsong.exception.artist.ArtistNotFoundException;
 import com.ssafy.singsongsangsong.exception.song.NotFoundSongException;
-import com.ssafy.singsongsangsong.repository.GenreRepository;
 import com.ssafy.singsongsangsong.repository.maria.artist.ArtistRepository;
 import com.ssafy.singsongsangsong.repository.maria.atmosphere.AtmosphereRepository;
 import com.ssafy.singsongsangsong.repository.maria.comments.CommentsRepository;
+import com.ssafy.singsongsangsong.repository.maria.genre.GenreRepository;
 import com.ssafy.singsongsangsong.repository.maria.song.EmotionRepository;
 import com.ssafy.singsongsangsong.repository.maria.song.SongRepository;
 

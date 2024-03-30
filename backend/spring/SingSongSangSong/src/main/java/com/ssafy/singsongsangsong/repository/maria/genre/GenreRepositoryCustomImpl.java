@@ -1,4 +1,4 @@
-package com.ssafy.singsongsangsong.repository;
+package com.ssafy.singsongsangsong.repository.maria.genre;
 
 import static com.ssafy.singsongsangsong.entity.QGenre.*;
 

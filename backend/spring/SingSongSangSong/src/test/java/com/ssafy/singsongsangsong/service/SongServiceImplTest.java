@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import com.ssafy.singsongsangsong.ArtistFixture;
 import com.ssafy.singsongsangsong.constants.EmotionsConstants;
@@ -18,6 +19,7 @@ import com.ssafy.singsongsangsong.repository.maria.song.EmotionRepository;
 import com.ssafy.singsongsangsong.repository.maria.song.SongRepository;
 
 @SpringBootTest
+@ActiveProfiles("test")
 class SongServiceImplTest {
 
 	@Autowired
