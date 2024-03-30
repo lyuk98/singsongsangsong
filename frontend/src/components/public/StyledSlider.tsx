@@ -7,6 +7,9 @@ import "slick-carousel/slick/slick-theme.css";
 import styles from "./StyledSlider.module.css";
 
 const MySlider = styled(Slider)`
+  .slick-cloned.slick-center {
+    transform: scale(1) !important;
+  }
   .slick-slide {
     height: 200px !important;
     width: 200px !important;

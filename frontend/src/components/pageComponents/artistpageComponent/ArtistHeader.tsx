@@ -2,8 +2,10 @@ import React from "react";
 import { FaRegHeart, FaShareAlt, FaHeart } from "react-icons/fa";
 import { BsBookmarkPlusFill, BsFillBookmarkDashFill } from "react-icons/bs";
 
+import { followArtist } from "../../../utils/api/artistApi";
 import img from "./../../../sources/testimg/artistProfile.jpg";
 import styles from "./ArtistHeader.module.css";
+import { useLocation, useNavigate } from "react-router-dom";
 
 type PropsType = {
   artistId: number;
@@ -24,6 +26,16 @@ const ArtistHeader = () =>
   //   profileImg,
   // }: PropsType
   {
+    const handleShare = () => {
+      const currentUrl = window.location.href;
+      navigator.clipboard.writeText(currentUrl);
+      alert("주소가 복사되었습니다");
+    };
+
+    const handleFollow = () => {
+      // followArtist(1, 2);
+    };
+
     return (
       <div className={`flex-row-center ${styles.container}`}>
         <div className={`${styles.background}`}>
@@ -36,13 +48,13 @@ const ArtistHeader = () =>
             <div className={styles.artistIntroduce}>
               <p>{`introduction`}</p>
               <div className={styles.contactButton}>
-                <p>
+                <p onClick={handleFollow}>
                   <BsBookmarkPlusFill /> Follow
                 </p>
                 <p>
                   <FaRegHeart /> Like
                 </p>
-                <p>
+                <p onClick={handleShare}>
                   <FaShareAlt /> Share
                 </p>
               </div>

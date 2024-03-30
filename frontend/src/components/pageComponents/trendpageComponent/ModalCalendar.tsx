@@ -94,7 +94,7 @@ const ModalCalendar = ({ selectedDate, handleDateChange }: CalendarType) => {
   return (
     <StyledCalendarWrapper>
       <StyledCalendar
-        value={lastSunday}
+        value={date}
         onChange={handleDateChange}
         formatDay={(locale, date) => dayjs(date).format("DD")}
         showNeighboringMonth={false}

@@ -21,6 +21,11 @@ import loveImg from "./../../sources/imgs/playList/love.png";
 import nosstalgiaImg from "./../../sources/imgs/playList/nosstalgia.png";
 import sadImg from "./../../sources/imgs/playList/sad.png";
 
+import singsongArtist from "./../../sources/imgs/playList/싱송아티스트.png";
+import likeArtist from "./../../sources/imgs/playList/좋아아티스트.png";
+import singsongSong from "./../../sources/imgs/playList/싱송음악.png";
+import likeSong from "./../../sources/imgs/playList/좋아곡.png";
+
 const SEARCH_OPTION = [
   { type: "장르", option: ["발라드", "락", "힙합"] },
   { type: "테마", option: ["신나는", "슬픈"] },
@@ -171,16 +176,24 @@ const DiscoverPage = () => {
           <h1 style={{ paddingBottom: "10px" }}>싱송생송 추천</h1>
           <div className={`w-100 flex-row gap-15 space-between`}>
             <div>
-              <div className={`${styles.musicBox}`}>좋아요한 노래들</div>
+              <div className={`${styles.musicBox}`}>
+                <img src={likeSong} alt="좋아요 한 곡" />
+              </div>
             </div>
             <div>
-              <div className={`${styles.musicBox}`}>싱송생송 탑10 노래</div>
+              <div className={`${styles.musicBox}`}>
+                <img src={singsongSong} alt="싱송음악 top 10" />
+              </div>
             </div>
             <div>
-              <div className={`${styles.musicBox}`}>좋아요한 아티스트</div>
+              <div className={`${styles.musicBox}`}>
+                <img src={likeArtist} alt="좋아요한 아티스트" />
+              </div>
             </div>
             <div>
-              <div className={`${styles.musicBox}`}>싱송생송 탑10 아티스트</div>
+              <div className={`${styles.musicBox}`}>
+                <img src={singsongArtist} alt="싱송 아티스트" />
+              </div>
             </div>
           </div>
         </div>

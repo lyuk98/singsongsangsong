@@ -8,3 +8,7 @@
 .calanderContent > button {
   margin-top: 15px;
 }
+
+.nonePage {
+  height: 100vh;
+}
