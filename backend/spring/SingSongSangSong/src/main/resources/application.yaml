@@ -85,3 +85,11 @@ csv:
   file:
     dir:
       "./csv/"
+
+logging:
+  level:
+    org:
+      springframework:
+        test:
+          context:
+            cache: DEBUG

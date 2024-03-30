@@ -1,4 +1,4 @@
-package com.ssafy.singsongsangsong.repository;
+package com.ssafy.singsongsangsong.repository.maria.genre;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
