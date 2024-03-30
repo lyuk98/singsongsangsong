@@ -9,9 +9,18 @@ import EmotionBox from "../../components/public/emotionBox/EmotionBox";
 import styles from "./SongDetailPage.module.css";
 import CommentForm from "../../components/public/comment/CommentForm";
 import SongHeader from "../../components/pageComponents/songDetailpageComponent/SongHeader";
+import { useAxios } from "../../hooks/api/useAxios";
 
 const SongDetailPage = () => {
   const { songId } = useParams();
+
+  // getSong -> 아래로 내려줄 기본적인 페이지 로드 시 실행할 요청
+  // response =>
+  const { response, isLoading, refetch } = useAxios({
+    method: "GET",
+    url: `/song/${songId}`,
+  });
+
   return (
     <div className={`w-100 flex-col-center gap-30 ${styles.container}`}>
       <SongHeader />

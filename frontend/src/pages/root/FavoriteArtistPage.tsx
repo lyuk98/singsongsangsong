@@ -13,8 +13,8 @@ const FavoriteArtistPage = () => {
           <img src={header} alt="headerImg" />
         </div>
         <div className={`mt-auto mr-auto flex-col gap-15 ${styles.comment}`}>
-          <h1>나의 뮤직</h1>
-          <h1>스테이션</h1>
+          <h1>내가 좋아하는</h1>
+          <h1>아티스트</h1>
         </div>
       </div>
       <div className={`flex-col p-15 w-100`}>
