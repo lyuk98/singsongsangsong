@@ -5,7 +5,7 @@ import MoodTag from "../../moodTag/MoodTag";
 
 /**
  * @todo 곡설명에 대한 정보와 tag에 관련된 props를 받아야함
- * @returns 
+ * @returns
  */
 const SongInfo = () => {
   return (

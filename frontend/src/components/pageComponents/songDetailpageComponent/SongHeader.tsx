@@ -3,6 +3,12 @@ import React from "react";
 import styles from "./SongHeader.module.css";
 import coverimg from "./../../../sources/testimg/cover.png";
 import Album from "../../public/Album";
+
+type PropsType = {
+  songTitle: string;
+  artist: any;
+};
+
 const SongHeader = () => {
   return (
     <div className={`flex-col-center ${styles.container}`}>

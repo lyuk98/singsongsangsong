@@ -5,6 +5,7 @@ import CommentInput from "./CommentInput";
 import Comments from "./Comments";
 import styles from "./CommentForm.module.css";
 import { useAxios } from "../../../hooks/api/useAxios";
+import { useParams } from "react-router-dom";
 
 const DUMMY = [
   {
@@ -22,6 +23,7 @@ const DUMMY = [
  */
 const CommentForm = () => {
   const [trigger, setTrigger] = useState<number>(1);
+  const { songId } = useParams();
 
   const {
     response,
@@ -29,9 +31,9 @@ const CommentForm = () => {
     refetch: reloadComment,
   } = useAxios({
     method: "GET",
-    url: "/song/comment/{id}",
+    url: `/song/comments/${songId}`,
   });
-  
+
   return (
     <div className={styles.container}>
       <header>
