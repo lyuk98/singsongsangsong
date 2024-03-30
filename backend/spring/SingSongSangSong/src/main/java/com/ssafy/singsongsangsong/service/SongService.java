@@ -19,4 +19,9 @@ public interface SongService {
 	SongInfoResponse getSong(Long songId);
 
 	AnalyzeGenreAndAtmosphereResponse getAnalyzeGenreAndAtmosphere(Long songId, int size);
+
+	void playSong(Long artistId, Long songId);
+
+	void downloadSong(Long artistId, Long songId);
+
 }

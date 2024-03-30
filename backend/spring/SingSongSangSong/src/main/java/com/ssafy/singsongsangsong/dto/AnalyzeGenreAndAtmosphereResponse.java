@@ -28,7 +28,7 @@ public class AnalyzeGenreAndAtmosphereResponse {
 	@AllArgsConstructor
 	@NoArgsConstructor
 	@Builder
-	public class AnalyzeGenreDto {
+	public static class AnalyzeGenreDto {
 		private String genre;
 		private double correlation;
 
@@ -45,7 +45,7 @@ public class AnalyzeGenreAndAtmosphereResponse {
 	@AllArgsConstructor
 	@NoArgsConstructor
 	@Builder
-	public class AnalyzeAtmosphereDto {
+	public static class AnalyzeAtmosphereDto {
 		private String atmosphere;
 		private double correlation;
 

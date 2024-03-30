@@ -73,4 +73,14 @@ public class SongController {
 		return songService.getAnalyzeGenreAndAtmosphere(songId, size);
 	}
 
+	@PostMapping("/play/{songId}")
+	public void playSong(@PathVariable Long songId, @AuthenticationPrincipal ArtistPrincipal user) {
+		songService.playSong(user.getId(), songId);
+	}
+
+	@PostMapping("/download/{songId}")
+	public void downloadSong(@PathVariable Long songId, @AuthenticationPrincipal ArtistPrincipal user) {
+		songService.downloadSong(user.getId(), songId);
+	}
+
 }

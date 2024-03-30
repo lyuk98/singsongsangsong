@@ -72,4 +72,20 @@ public class SongRepositoryCustomImpl implements SongRepositoryCustom {
 			.limit(size)
 			.fetch();
 	}
+
+	@Override
+	public void incrementPlayCount(Long songId) {
+		jpaQueryFactory.update(song)
+			.set(song.playCount, song.playCount.add(1))
+			.where(song.id.eq(songId))
+			.execute();
+	}
+
+	@Override
+	public void incrementDownloadCount(Long songId) {
+		jpaQueryFactory.update(song)
+			.set(song.downloadCount, song.downloadCount.add(1))
+			.where(song.id.eq(songId))
+			.execute();
+	}
 }

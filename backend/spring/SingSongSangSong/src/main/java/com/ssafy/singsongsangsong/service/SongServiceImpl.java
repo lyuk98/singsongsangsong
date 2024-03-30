@@ -6,6 +6,8 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ssafy.singsongsangsong.annotation.CsvFileContents;
+import com.ssafy.singsongsangsong.annotation.ExportCsvFile;
 import com.ssafy.singsongsangsong.constants.EmotionsConstants;
 import com.ssafy.singsongsangsong.dto.AnalyzeGenreAndAtmosphereResponse;
 import com.ssafy.singsongsangsong.dto.AnalyzeGenreAndAtmosphereResponse.AnalyzeAtmosphereDto;
@@ -148,6 +150,24 @@ public class SongServiceImpl implements SongService {
 			.genres(genres.stream().map(AnalyzeGenreDto::from).toList())
 			.atmospheres(atmospheres.stream().map(AnalyzeAtmosphereDto::from).toList())
 			.build();
+	}
+
+	@Transactional
+	@ExportCsvFile(format = CsvFileContents.ARTIST_SONG_RECORD)
+	public void playSong(Long artistId, Long songId) {
+		// 노래 재생 횟수 증가 및 CSV파일로 로그 저장 (통계적 분석 위함)
+		Song song = songRepository.findById(songId).orElseThrow(NotFoundSongException::new);
+		Artist artist = artistRepository.findById(artistId).orElseThrow(ArtistNotFoundException::new);
+		songRepository.incrementPlayCount(songId);
+	}
+
+	@Override
+	@Transactional
+	@ExportCsvFile(format = CsvFileContents.ARTIST_SONG_RECORD)
+	public void downloadSong(Long artistId, Long songId) {
+		// 노래 다운로드 횟수 증가 및 CSV파일로 로그 저장 (통계적 분석 위함)
+		Song song = songRepository.findById(songId).orElseThrow(NotFoundSongException::new);
+		songRepository.incrementDownloadCount(songId);
 	}
 
 }
