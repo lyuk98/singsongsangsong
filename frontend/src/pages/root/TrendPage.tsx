@@ -71,9 +71,7 @@ const TrendPage = () => {
 
   useEffect(() => {
     const reDirectToken = getCookie("accessToken");
-    if (reDirectToken) {
-      console.log("hello");
-    }
+    console.log(reDirectToken);
   }, []);
 
   const handleCalendarOpen = (): void => {
