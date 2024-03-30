@@ -70,7 +70,7 @@ const TrendPage = () => {
   // }, []);
 
   useEffect(() => {
-    const reDirectToken = getCookie("sendRedirect");
+    const reDirectToken = getCookie("accessToken");
     if (reDirectToken) {
       console.log("hello");
     }
