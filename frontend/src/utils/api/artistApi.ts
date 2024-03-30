@@ -40,7 +40,7 @@ export const getSongList = (artistId: number) => {
 };
 
 /**
- * 아티스느의 모든 곡들에 대한 emotions을 가져옴
+ * 아티스트의 모든 곡들에 대한 emotions을 가져옴
  * @param artistId
  * @returns emotion 배열
  */

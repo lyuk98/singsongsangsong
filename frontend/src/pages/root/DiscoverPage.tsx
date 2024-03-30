@@ -176,7 +176,10 @@ const DiscoverPage = () => {
           <h1 style={{ paddingBottom: "10px" }}>싱송생송 추천</h1>
           <div className={`w-100 flex-row gap-15 space-between`}>
             <div>
-              <div className={`${styles.musicBox}`}>
+              <div
+                onClick={() => navigate("/favorite/song")}
+                className={`${styles.musicBox}`}
+              >
                 <img src={likeSong} alt="좋아요 한 곡" />
               </div>
             </div>
@@ -186,7 +189,10 @@ const DiscoverPage = () => {
               </div>
             </div>
             <div>
-              <div className={`${styles.musicBox}`}>
+              <div
+                onClick={() => navigate("/favorite/artist")}
+                className={`${styles.musicBox}`}
+              >
                 <img src={likeArtist} alt="좋아요한 아티스트" />
               </div>
             </div>

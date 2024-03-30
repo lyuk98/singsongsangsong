@@ -7,7 +7,7 @@ import { axiosInstance } from "../../hooks/api";
  * @param songId
  * @param emotion
  */
-export const updateEmotion = (songId: number, emotion: string) => {
+export const updateEmotion = (songId: string | undefined, emotion: string) => {
   try {
     const response = axiosInstance.request({
       method: "PUT",
@@ -28,6 +28,10 @@ export const updateEmotion = (songId: number, emotion: string) => {
  * @param contents 댓글 내용
  */
 export const postComment = (songId: string | undefined, contents: string) => {
+  if (!songId) {
+    console.log("존재하지 않는 id입니다");
+    return;
+  }
   try {
     const response = axiosInstance.request({
       method: "POST",
@@ -42,7 +46,12 @@ export const postComment = (songId: string | undefined, contents: string) => {
   }
 };
 
-export const getAnalyzeResult = (songId: number) => {
+/**
+ * 해당 장르에 해당하는 곡과 가장 높은 연관성을 가진 분위기와 장르를 가져옴
+ * @param songId
+ * @returns
+ */
+export const getAnalyzeResult = (songId: string | undefined) => {
   try {
     const response = axiosInstance.request({
       method: "GET",
@@ -54,7 +63,7 @@ export const getAnalyzeResult = (songId: number) => {
   }
 };
 
-export const getSongSimilarity = (songId: number) => {
+export const getSongSimilarity = (songId: string | undefined) => {
   try {
     const response = axiosInstance.request({
       method: "GET",
@@ -66,13 +75,35 @@ export const getSongSimilarity = (songId: number) => {
   }
 };
 
-export const getSongComment = (songId: number) => {
+export const getSongComment = (songId: string | undefined) => {
   try {
     const response = axiosInstance.request({
       method: "GET",
       url: `/song/comment/${songId}`,
     });
     return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const downloadSong = (songId: string | undefined) => {
+  try {
+    const response = axiosInstance.request({
+      method: "POST",
+      url: `/song/download/${songId}`,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const playSong = (songId: string | undefined) => {
+  try {
+    const response = axiosInstance.request({
+      method: "POST",
+      url: `/song/play/${songId}`,
+    });
   } catch (error) {
     console.log(error);
   }
