@@ -156,10 +156,18 @@ public class SongServiceImpl implements SongService {
 	@ExportCsvFile(format = CsvFileContents.ARTIST_SONG_RECORD)
 	public void playSong(Long artistId, Long songId) {
 		// 노래 재생 횟수 증가 및 CSV파일로 로그 저장 (통계적 분석 위함)
-
 		Song song = songRepository.findById(songId).orElseThrow(NotFoundSongException::new);
 		Artist artist = artistRepository.findById(artistId).orElseThrow(ArtistNotFoundException::new);
 		songRepository.incrementPlayCount(songId);
+	}
+
+	@Override
+	@Transactional
+	@ExportCsvFile(format = CsvFileContents.ARTIST_SONG_RECORD)
+	public void downloadSong(Long artistId, Long songId) {
+		// 노래 다운로드 횟수 증가 및 CSV파일로 로그 저장 (통계적 분석 위함)
+		Song song = songRepository.findById(songId).orElseThrow(NotFoundSongException::new);
+		songRepository.incrementDownloadCount(songId);
 	}
 
 }

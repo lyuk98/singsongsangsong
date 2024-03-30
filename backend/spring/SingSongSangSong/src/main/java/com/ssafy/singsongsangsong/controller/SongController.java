@@ -78,4 +78,9 @@ public class SongController {
 		songService.playSong(user.getId(), songId);
 	}
 
+	@PostMapping("/download/{songId}")
+	public void downloadSong(@PathVariable Long songId, @AuthenticationPrincipal ArtistPrincipal user) {
+		songService.downloadSong(user.getId(), songId);
+	}
+
 }

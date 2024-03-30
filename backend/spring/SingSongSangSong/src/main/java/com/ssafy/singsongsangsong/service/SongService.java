@@ -22,4 +22,6 @@ public interface SongService {
 
 	void playSong(Long artistId, Long songId);
 
+	void downloadSong(Long artistId, Long songId);
+
 }
