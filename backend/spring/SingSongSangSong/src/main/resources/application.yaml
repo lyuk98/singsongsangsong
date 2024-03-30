@@ -85,9 +85,8 @@ minio:
 server.servlet.session.cookie:
   http-only: true
   path: /
-  domain: singsongsangsong.com
   secure: true
-#  sameSite: None
+  sameSite: None
 csv:
   file:
     dir:
