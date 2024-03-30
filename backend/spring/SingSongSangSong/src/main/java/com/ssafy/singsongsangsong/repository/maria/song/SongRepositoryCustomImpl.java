@@ -64,4 +64,28 @@ public class SongRepositoryCustomImpl implements SongRepositoryCustom {
 			.where(song.id.eq(songId).and(song.artist.id.eq(artistId)))
 			.execute();
 	}
+
+	@Override
+	public List<Song> findByThemeName(String themeName, int size) {
+		return jpaQueryFactory.selectFrom(song)
+			.where(song.themes.eq(themeName))
+			.limit(size)
+			.fetch();
+	}
+
+	@Override
+	public void incrementPlayCount(Long songId) {
+		jpaQueryFactory.update(song)
+			.set(song.playCount, song.playCount.add(1))
+			.where(song.id.eq(songId))
+			.execute();
+	}
+
+	@Override
+	public void incrementDownloadCount(Long songId) {
+		jpaQueryFactory.update(song)
+			.set(song.downloadCount, song.downloadCount.add(1))
+			.where(song.id.eq(songId))
+			.execute();
+	}
 }

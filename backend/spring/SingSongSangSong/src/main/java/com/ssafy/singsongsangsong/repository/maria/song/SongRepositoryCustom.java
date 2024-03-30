@@ -13,4 +13,10 @@ public interface SongRepositoryCustom {
 	void decrementEmotionCount(Long songId, Long artistId, String emotionName) throws NoSuchFieldException;
 
 	void incrementEmotionCount(Long songId, Long artistId, String emotionName);
+
+	List<Song> findByThemeName(String themeName, int size);
+
+	void incrementPlayCount(Long songId);
+
+	void incrementDownloadCount(Long songId);
 }

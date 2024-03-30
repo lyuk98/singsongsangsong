@@ -88,3 +88,7 @@ server.servlet.session.cookie:
   domain: singsongsangsong.com
   secure: true
 #  sameSite: None
+csv:
+  file:
+    dir:
+      "./csv/"

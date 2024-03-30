@@ -16,6 +16,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.ssafy.singsongsangsong.entity.Artist;
 import com.ssafy.singsongsangsong.repository.maria.artist.ArtistRepository;
+import com.ssafy.singsongsangsong.security.ArtistPrincipal;
 import com.ssafy.singsongsangsong.service.jwt.JwtService;
 import com.ssafy.singsongsangsong.util.PasswordUtil;
 
@@ -36,18 +37,20 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
 	private final ArtistRepository artistRepository;
 
 	private GrantedAuthoritiesMapper authoritiesMapper = new NullAuthoritiesMapper();
+
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
 		FilterChain filterChain) throws ServletException, IOException {
-		if(request.getRequestURI().equals(NO_CHECK_URL)) {
-			filterChain.doFilter(request,response);
+		if (request.getRequestURI().equals(NO_CHECK_URL)) {
+			filterChain.doFilter(request, response);
 			return;
 		}
-		checkAccessTokenAndAuthentication(request,response,filterChain);
+		checkAccessTokenAndAuthentication(request, response, filterChain);
 	}
 
-	public void checkAccessTokenAndAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-	throws ServletException, IOException{
+	public void checkAccessTokenAndAuthentication(HttpServletRequest request, HttpServletResponse response,
+		FilterChain filterChain)
+		throws ServletException, IOException {
 		log.info("checkAccessTokenAndAuthentication() 호출");
 
 		Optional<String> accessToken = jwtService.extractAccessToken(request)
@@ -69,9 +72,10 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
 
 		filterChain.doFilter(request, response);
 	}
+
 	public void saveAuthentication(Artist myUser) {
 		String password = myUser.getPassword();
-		if(password == null) {
+		if (password == null) {
 			password = PasswordUtil.generateRandomPassword();
 		}
 		UserDetails userDetails = User.builder()
@@ -80,9 +84,13 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
 			.roles(myUser.getRole().name())
 			.build();
 
-		Authentication authentication =
-			new UsernamePasswordAuthenticationToken(userDetails.getUsername(),null,
-				authoritiesMapper.mapAuthorities(userDetails.getAuthorities()));
+		ArtistPrincipal principal = ArtistPrincipal.builder().id(myUser.getId())
+			.username(myUser.getUsername())
+			.nickname(myUser.getNickname())
+			.build();
+
+		Authentication authentication = new UsernamePasswordAuthenticationToken(principal, null,
+			authoritiesMapper.mapAuthorities(userDetails.getAuthorities()));
 
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 	}
