@@ -37,7 +37,7 @@ def analyse(song_id: int, audio_path: str): # pylint: disable=too-many-locals
 
     # 분석 작업을 위한 임시 directory 생성
     with TemporaryDirectory() as pwd:
-        path: str = pwd.name + "/{}"
+        path: str = pwd + "/{}"
 
         # MinIO client 생성
         client = file_server.get_client()
