@@ -150,7 +150,7 @@ def analyse(song_id: int, audio_path: str): # pylint: disable=too-many-locals
 
                     file_server.upload(waveform_path, "image", waveform_filename, client)
                     cursor.execute(
-                        "insert into file (saved_file_name, original_file_name) "
+                        "insert into image (saved_file_name, original_file_name) "
                         "values (%s, %s)",
                         (waveform_filename, f"spectrum-{song_id}.svg")
                     )
