@@ -55,10 +55,10 @@ def analyse(song_id: int, audio_path: str): # pylint: disable=too-many-locals
         duration = int(y.shape[0] / sr)
 
         # 음원 분석 1 - tempo
-        tempo = s4dsp.get_tempo(y, sr)
+        tempo = int(s4dsp.get_tempo(y, sr))
 
         # 음원 분석 2 - key
-        key = s4dsp.find_key(y, sr)[0]
+        key = s4dsp.find_key(y, sr)[0]["key"]
 
         # 음원 분석 3 - genre
         genres = s4dsp.predict_genre(reference_audio)
@@ -91,9 +91,6 @@ def analyse(song_id: int, audio_path: str): # pylint: disable=too-many-locals
                 connection.autocommit = False
 
                 with connection.cursor() as cursor:
-                    # 아티스트 ID 받아오기
-                    artist_id = database.get_song_artist(song_id, cursor)
-
                     # 장르 데이터 준비
                     genre_data = []
                     for genre_str, correlation in islice(genres.items(), 5):
