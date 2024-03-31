@@ -84,6 +84,9 @@ def analyse(song_id: int, audio_path: str): # pylint: disable=too-many-locals
         s4dsp.plot_mfcc(librosa.feature.mfcc(y=y, sr=sr, n_mfcc=20), mfcc_path)
         s4dsp.draw_spectrum(y, sr, waveform_path, structure)
 
+        # 음원 분석 7 - 유사도 분석을 위한 embedding 생성
+        embedding = s4dsp.get_embedding(y)
+
         # 음원 분석 완료 - 분석 결과 저장 시도
         saved_files = []
         try:
@@ -170,7 +173,7 @@ def analyse(song_id: int, audio_path: str): # pylint: disable=too-many-locals
                     )
 
                     # 유사도 비교 데이터 삽입
-                    vector_database.insert_embedding(song_id, s4dsp.get_embedding(y))
+                    vector_database.insert_embedding(song_id, embedding)
 
                     connection.commit()
         except Exception as exception:
