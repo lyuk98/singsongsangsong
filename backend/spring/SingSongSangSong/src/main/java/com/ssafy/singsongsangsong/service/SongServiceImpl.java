@@ -2,6 +2,7 @@ package com.ssafy.singsongsangsong.service;
 
 import static com.ssafy.singsongsangsong.webclient.WebClientRequestService.SimilarityResponse.*;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -180,10 +181,14 @@ public class SongServiceImpl implements SongService {
 	@Override
 	public SongSimilarityByRanksResponse getSongsSimilarityByRanks(Long songId, int size) {
 
-		Song song = songRepository.findById(songId).orElseThrow(NotFoundSongException::new);
+		if (size <= 0) {
+			throw new IllegalArgumentException("size는 0보다 커야합니다.");
+		}
 
+		Song song = songRepository.findById(songId).orElseThrow(NotFoundSongException::new);
 		List<SimilarityInfo> retrieved = webClientRequestService.requestSelectSimilarity(
 			songId);
+		Collections.sort(retrieved);
 
 		List<Comparison> comparison = retrieved.stream().map(similarityInfo -> {
 			Long targetId = similarityInfo.getSimilarSongId();
@@ -203,7 +208,7 @@ public class SongServiceImpl implements SongService {
 			.albumImageFileName(song.getAlbumImage().getOriginalFileName())
 			.title(song.getTitle())
 			.createdDate(song.getCreatedDate())
-			.comparison(comparison)
+			.comparison(comparison.subList(0, size - 1))
 			.build();
 	}
 

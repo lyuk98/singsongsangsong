@@ -3,6 +3,7 @@ package com.ssafy.singsongsangsong.webclient;
 import java.util.List;
 import java.util.Objects;
 
+import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -60,9 +61,14 @@ public class WebClientRequestService {
 		@Builder
 		@Getter
 		@Setter
-		public static class SimilarityInfo {
+		public static class SimilarityInfo implements Comparable<SimilarityInfo> {
 			private Long similarSongId;
 			private Float distance;
+
+			@Override
+			public int compareTo(@NotNull SimilarityInfo o) {
+				return Float.compare(o.distance, this.distance);
+			}
 		}
 
 		List<SimilarityInfo> data;
