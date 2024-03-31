@@ -28,15 +28,15 @@ public class SchedulerConfig {
 	
 	private void cronScheduler() throws SchedulerException {
 		JobDetail job = JobBuilder
-				.newJob(MyJob.class)
-				.withIdentity("myJob", "myGroup")
+				.newJob(AnalyzeJob.class)
+				.withIdentity("analyzeJob", "analyzeGroup")
 				.build();
 		
 		CronTrigger cronTrigger = TriggerBuilder
 				.newTrigger()
-				.withIdentity("myTrigger", "triggerGroup")
+				.withIdentity("analyzeTrigger", "triggerGroup")
 				.startNow()
-				.withSchedule(CronScheduleBuilder.cronSchedule("0 35 11 * * ?"))
+				.withSchedule(CronScheduleBuilder.cronSchedule("0 0 3 ? * MON"))
 				.build();
 		
 		scheduler = new StdSchedulerFactory().getScheduler();
