@@ -15,6 +15,7 @@ import file_server
 # 시험 목적으로 실행합니다
 # (완료 시 실행 내용을 되돌립니다)
 DRY_RUN = True
+DRY_RUN_SIZE = 256
 
 def download(url: str, path: str):
     """URL로부터 지정한 파일을 `path`에 저장합니다
@@ -133,7 +134,7 @@ for index, row in artists.iterrows():
     )
 
     # 시험 목적으로 실행 시 일부 데이터만 가져옵니다
-    if DRY_RUN and index > 3:
+    if DRY_RUN and index >= DRY_RUN_SIZE:
         break
 
 # MinIO client를 준비합니다
