@@ -23,7 +23,7 @@ import SongWithEmotion from "../../components/pageComponents/trendpageComponent/
 import SongWithBPM from "../../components/pageComponents/trendpageComponent/SongWithBPM";
 import TestWeeklySingsongChart from "../../components/pageComponents/trendpageComponent/testComponent/TestWeeklySingsongChart";
 import noneImg from "./../../sources/imgs/nodataimg.webp";
-import { getCookie } from "../../utils/cookie";
+import { getCookie, setCookie } from "../../utils/cookie";
 
 const TrendPage = () => {
   const { year, month, day } = getLastSunday();
@@ -70,8 +70,15 @@ const TrendPage = () => {
   // }, []);
 
   useEffect(() => {
-    const reDirectToken = getCookie("JSESSIONID");
-    console.log(reDirectToken);
+    const accessToken = getCookie("accessToken");
+    console.log(document.cookie);
+    setCookie("testCookie", "test", {
+      path: "/",
+      secure: true,
+      sameSite: "none",
+    });
+    console.log(getCookie("testCookie"));
+    console.log(accessToken);
   }, []);
 
   const handleCalendarOpen = (): void => {

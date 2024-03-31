@@ -5,18 +5,14 @@ const cookies = new Cookies();
 
 export const setCookie = (
   name: string,
-  value: Cookies,
+  value: string,
   options?: CookieSetOptions
 ) => {
   return cookies.set(name, value, { ...options });
 };
 
-export const getCookie = (name: string) => {
-  try {
-    return cookies.get(name);
-  } catch (error) {
-    console.log(error);
-  }
+export const getCookie = (name: any) => {
+  return cookies.get(name);
 };
 
 export const removeCookie = (name: string, options?: CookieSetOptions) => {
