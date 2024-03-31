@@ -149,6 +149,7 @@ def analyse(song_id: int, audio_path: str): # pylint: disable=too-many-locals
                     mfcc_insert_id = cursor.lastrowid
 
                     file_server.upload(waveform_path, "image", waveform_filename, client)
+                    saved_files.append(waveform_filename)
                     cursor.execute(
                         "insert into image (saved_file_name, original_file_name) "
                         "values (%s, %s)",
