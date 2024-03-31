@@ -195,6 +195,12 @@ try:
                 )
                 saved_files.append(image_file["file_name"])
 
+            # NaN 값을 NULL로 변경합니다
+            # (더 좋은 방법이 있을 것 같으나 시간 문제로 진행하지 않습니다)
+            cursor.execute(
+                "update artist set introduction = null where introduction = 'nan'"
+            )
+
             # 시험 목적으로 사용 시 commit을 하지 않습니다
             if not DRY_RUN:
                 connection.commit()
