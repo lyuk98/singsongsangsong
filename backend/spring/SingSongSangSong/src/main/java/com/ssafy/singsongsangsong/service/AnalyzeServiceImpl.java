@@ -8,12 +8,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.singsongsangsong.dto.SimpleSongDto;
 import com.ssafy.singsongsangsong.dto.UploadMainPageDto;
+import com.ssafy.singsongsangsong.entity.Atmosphere;
 import com.ssafy.singsongsangsong.entity.Song;
 import com.ssafy.singsongsangsong.exception.NotYetAnalyzedException;
 import com.ssafy.singsongsangsong.exception.song.AlreadyCompletedException;
 import com.ssafy.singsongsangsong.exception.song.NotFoundSongException;
 import com.ssafy.singsongsangsong.repository.maria.atmosphere.AtmosphereRepository;
 import com.ssafy.singsongsangsong.repository.maria.song.SongRepository;
+import com.ssafy.singsongsangsong.utils.ThemesClassifier;
 
 import lombok.RequiredArgsConstructor;
 
@@ -23,15 +25,22 @@ public class AnalyzeServiceImpl implements AnalyzeService {
 
 	private final SongRepository songRepository;
 	private final AtmosphereRepository atmosphereRepository;
+	private final ThemesClassifier themesClassifier;
 
 	@Override
 	@Transactional
 	public void completeAnalyze(Long songId) throws AlreadyCompletedException {
 		Song song = songRepository.findById(songId).orElseThrow(() -> new NotFoundSongException("해당 곡을 찾을 수 없습니다."));
-
 		if (song.isAnalyzed()) {
 			throw new AlreadyCompletedException("이미 분석이 완료된 곡입니다.");
 		}
+
+		// 분석된 분위기를 기반으로, theme 컬럼을 초기화해줍니다.
+		Atmosphere topRatedAtmosphere = atmosphereRepository.getFirstAtmosphereBySongId(songId)
+			.orElseThrow(NotYetAnalyzedException::new);
+		String themeName = themesClassifier.getTheme(topRatedAtmosphere.getAtmosphere());
+
+		song.setThemes(themeName);
 		song.setAnalyzed(true);
 	}
 

@@ -1,7 +1,6 @@
 package com.ssafy.singsongsangsong.config;
 
 import java.util.Arrays;
-import java.util.List;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,7 +20,6 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ssafy.singsongsangsong.filter.CorsFilter;
 import com.ssafy.singsongsangsong.filter.CustomJsonUsernamePasswordAuthenticationFilter;
 import com.ssafy.singsongsangsong.filter.JwtAuthenticationProcessingFilter;
 import com.ssafy.singsongsangsong.handler.OAuth2LoginFailureHandler;
@@ -43,24 +41,24 @@ public class SecurityConfig {
 	private final OAuth2LoginFailureHandler oAuth2LoginFailureHandler;
 	private final CustomOAuth2UserService customOAuth2UserService;
 	private final JwtAuthenticationProcessingFilter jwtAuthenticationProcessingFilter;
-	private final CorsFilter corsFilter;
+	// private final CorsFilter corsFilter;
 	private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http
-			.cors(cors -> cors.configurationSource(corsConfigurationSource()))
 			// .cors(cors -> cors.disable())
+			.cors(cors -> corsConfigurationSource())
 			.formLogin(auth -> auth.disable())
 			.csrf(auth -> auth.disable())
 			.httpBasic(auth -> auth.disable())
 			.sessionManagement(auth -> auth.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 			.authorizeHttpRequests(req ->
-				req.requestMatchers("/**").permitAll()
-					// .requestMatchers("/join").hasRole("GUEST")
-					.anyRequest().permitAll()
-					// .anyRequest().permitAll())
-					)
+					req.requestMatchers("/", "error","/sign-up").permitAll()
+						// .requestMatchers("/join").hasRole("GUEST")
+						.anyRequest().permitAll()
+				// .anyRequest().permitAll())
+			)
 			.oauth2Login(oauth2 ->
 				oauth2
 					.successHandler(oAuth2LoginSuccessHandler)
@@ -68,8 +66,8 @@ public class SecurityConfig {
 					.userInfoEndpoint(userInfo -> userInfo
 						.userService(customOAuth2UserService)))
 			.addFilterAfter(customJsonUsernamePasswordAuthenticationFilter(), LogoutFilter.class)
-			.addFilterBefore(jwtAuthenticationProcessingFilter, CustomJsonUsernamePasswordAuthenticationFilter.class)
-			.addFilterBefore(corsFilter, SessionManagementFilter.class);
+			.addFilterBefore(jwtAuthenticationProcessingFilter, CustomJsonUsernamePasswordAuthenticationFilter.class);
+			// .addFilterBefore(corsFilter, SessionManagementFilter.class);
 
 		return http.build();
 	}
@@ -95,9 +93,10 @@ public class SecurityConfig {
 
 		config.setAllowCredentials(true);
 		config.setAllowedOriginPatterns(Arrays.asList("http://localhost:3000","https://api.singsongsangsong.com","https://www.singsongsangsong.com"));
-		config.setAllowedMethods(Arrays.asList("HEAD","POST","GET","DELETE","PUT"));
-		config.setAllowedHeaders(Arrays.asList("*"));
-
+		// config.setAllowedOriginPatterns(Arrays.asList("https://www.singsongsangsong.com"));
+		config.setAllowedMethods(Arrays.asList("HEAD","POST","GET","DELETE","PUT","OPTIONS"));
+		config.setAllowedHeaders(Arrays.asList("DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization"));
+		config.setMaxAge(1000L);
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		source.registerCorsConfiguration("/**", config);
 		return source;

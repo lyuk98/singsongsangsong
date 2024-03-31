@@ -20,7 +20,7 @@ public class ArtistInfoDto {
 	private Long artistId;
 	private String nickname;
 	private String username;
-	private String profileImageUrl;
+	private String profileImageFileName;
 	private String introduction;
 
 	public static ArtistInfoDto from(Artist artist) {
@@ -30,7 +30,7 @@ public class ArtistInfoDto {
 			.artistId(artist.getId())
 			.nickname(artist.getNickname())
 			.username(artist.getUsername())
-			.profileImageUrl(profileImageUrl)
+			.profileImageFileName(profileImageUrl)
 			.introduction(artist.getIntroduction())
 			.build();
 	}

@@ -6,17 +6,32 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ssafy.singsongsangsong.annotation.CsvFileContents;
+import com.ssafy.singsongsangsong.annotation.ExportCsvFile;
 import com.ssafy.singsongsangsong.constants.EmotionsConstants;
+import com.ssafy.singsongsangsong.dto.AnalyzeGenreAndAtmosphereResponse;
+import com.ssafy.singsongsangsong.dto.AnalyzeGenreAndAtmosphereResponse.AnalyzeAtmosphereDto;
+import com.ssafy.singsongsangsong.dto.AnalyzeGenreAndAtmosphereResponse.AnalyzeGenreDto;
+import com.ssafy.singsongsangsong.dto.ArtistInfoDto;
+import com.ssafy.singsongsangsong.dto.CommentsInfoDto;
 import com.ssafy.singsongsangsong.dto.CommentsResponseDto;
 import com.ssafy.singsongsangsong.dto.CommentsResponseDto.CommentsResponse;
+import com.ssafy.singsongsangsong.dto.SimpleSongDto;
+import com.ssafy.singsongsangsong.dto.SongInfoResponse;
+import com.ssafy.singsongsangsong.dto.SongInfoResponse.SongInfoResponseBuilder;
+import com.ssafy.singsongsangsong.dto.SongListByThemeResponseDto;
 import com.ssafy.singsongsangsong.entity.Artist;
+import com.ssafy.singsongsangsong.entity.Atmosphere;
 import com.ssafy.singsongsangsong.entity.Comments;
 import com.ssafy.singsongsangsong.entity.Emotions;
+import com.ssafy.singsongsangsong.entity.Genre;
 import com.ssafy.singsongsangsong.entity.Song;
 import com.ssafy.singsongsangsong.exception.artist.ArtistNotFoundException;
 import com.ssafy.singsongsangsong.exception.song.NotFoundSongException;
 import com.ssafy.singsongsangsong.repository.maria.artist.ArtistRepository;
+import com.ssafy.singsongsangsong.repository.maria.atmosphere.AtmosphereRepository;
 import com.ssafy.singsongsangsong.repository.maria.comments.CommentsRepository;
+import com.ssafy.singsongsangsong.repository.maria.genre.GenreRepository;
 import com.ssafy.singsongsangsong.repository.maria.song.EmotionRepository;
 import com.ssafy.singsongsangsong.repository.maria.song.SongRepository;
 
@@ -33,6 +48,10 @@ public class SongServiceImpl implements SongService {
 	private final ArtistRepository artistRepository;
 
 	private final CommentsRepository commentsRepository;
+
+	private final GenreRepository genreRepository;
+
+	private final AtmosphereRepository atmosphereRepository;
 
 	@Override
 	@Transactional
@@ -79,6 +98,76 @@ public class SongServiceImpl implements SongService {
 		return CommentsResponseDto.builder()
 			.comments(comments)
 			.build();
+	}
+
+	@Override
+	public SongListByThemeResponseDto getSongListByTheme(String themeName, int size) {
+		List<Song> songs = songRepository.findByThemeName(themeName, size);
+		return SongListByThemeResponseDto.builder()
+			.size(songs.size())
+			.songList(songs.stream().map(SimpleSongDto::from).toList())
+			.build();
+	}
+
+	@Override
+	public SongInfoResponse getSong(Long songId) {
+		Song song = songRepository.findById(songId).orElseThrow(NotFoundSongException::new);
+		Artist artist = song.getArtist();
+		List<Comments> commentsList = commentsRepository.findBySongId(songId);
+
+		SongInfoResponseBuilder builder = SongInfoResponse.builder();
+
+		builder = builder.songTitle(song.getTitle()).artist(ArtistInfoDto.from(artist))
+			.lyrics(song.getLyrics()).chord(song.getChord()).bpm(song.getBpm())
+			.songFileName(song.getMusicFileName()).albumImageFileName(song.getAlbumImage().getOriginalFileName())
+			.songDescription(song.getSongDescription());
+
+		builder = builder.movedEmotionCount(song.getMovedEmotionCount())
+			.likeEmotionCount(song.getLikeEmotionCount()).energizedEmotionCount(song.getEnergizedEmotionCount())
+			.excitedEmotionCount(song.getExcitedEmotionCount())
+			.funnyEmotionCount(song.getFunnyEmotionCount()).sadEmotionCount(song.getSadEmotionCount());
+
+		List<CommentsInfoDto> comments = commentsList.stream()
+			.map(CommentsInfoDto::from)
+			.toList();
+
+		builder = builder.likeCount(song.getLikeCount())
+			.downloadCount(song.getDownloadCount())
+			.playCount(song.getPlayCount());
+		builder = builder.comments(comments);
+
+		return builder.build();
+	}
+
+	@Override
+	public AnalyzeGenreAndAtmosphereResponse getAnalyzeGenreAndAtmosphere(Long songId, int size) {
+		List<Genre> genres = genreRepository.findBySongId(songId, size);
+		List<Atmosphere> atmospheres = atmosphereRepository.findBySongId(songId, size);
+
+		return AnalyzeGenreAndAtmosphereResponse.builder()
+			.genreLength(genres.size())
+			.atmosphereLength(atmospheres.size())
+			.genres(genres.stream().map(AnalyzeGenreDto::from).toList())
+			.atmospheres(atmospheres.stream().map(AnalyzeAtmosphereDto::from).toList())
+			.build();
+	}
+
+	@Transactional
+	@ExportCsvFile(format = CsvFileContents.ARTIST_SONG_RECORD)
+	public void playSong(Long artistId, Long songId) {
+		// 노래 재생 횟수 증가 및 CSV파일로 로그 저장 (통계적 분석 위함)
+		Song song = songRepository.findById(songId).orElseThrow(NotFoundSongException::new);
+		Artist artist = artistRepository.findById(artistId).orElseThrow(ArtistNotFoundException::new);
+		songRepository.incrementPlayCount(songId);
+	}
+
+	@Override
+	@Transactional
+	@ExportCsvFile(format = CsvFileContents.ARTIST_SONG_RECORD)
+	public void downloadSong(Long artistId, Long songId) {
+		// 노래 다운로드 횟수 증가 및 CSV파일로 로그 저장 (통계적 분석 위함)
+		Song song = songRepository.findById(songId).orElseThrow(NotFoundSongException::new);
+		songRepository.incrementDownloadCount(songId);
 	}
 
 }

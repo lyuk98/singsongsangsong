@@ -1,7 +1,12 @@
 spring:
   application:
     name: SingSongSangSong
-
+  servlet:
+    session:
+      cookie:
+        same-site: none
+        secure: true
+        domain: singsongsangsong.com
   jpa:
     show-sql: true
     hibernate:
@@ -44,6 +49,10 @@ spring:
             token-uri: https://kauth.kakao.com/oauth/token
             user-info-uri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id
+    singsongsangsong:
+      redirect-uri: http://localhost:3000/
+      # TODO : url temp용으로 localhost
+      # redirect-uri: https://www.singsongsangsong.com/
 
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
@@ -79,3 +88,16 @@ minio:
   accessKey: mtppqpRtSxArNq81phwB
   secretKey: pqjrczK0C5JsFDnociyril8CqCbB5Mtfybkhl8p5
   serviceName: s3
+
+csv:
+  file:
+    dir:
+      "./csv/"
+
+logging:
+  level:
+    org:
+      springframework:
+        test:
+          context:
+            cache: DEBUG
