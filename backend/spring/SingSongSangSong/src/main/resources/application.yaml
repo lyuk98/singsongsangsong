@@ -4,8 +4,9 @@ spring:
   servlet:
     session:
       cookie:
-        same-site: None
+        same-site: none
         secure: true
+        domain: singsongsangsong.com
   jpa:
     show-sql: true
     hibernate:
