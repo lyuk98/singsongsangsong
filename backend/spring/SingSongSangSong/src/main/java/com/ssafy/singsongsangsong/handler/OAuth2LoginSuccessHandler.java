@@ -3,6 +3,7 @@ package com.ssafy.singsongsangsong.handler;
 import java.io.IOException;
 
 import org.springframework.core.env.Environment;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -44,12 +45,14 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 			CustomOAuth2User oAuth2User = (CustomOAuth2User) authentication.getPrincipal();
 			if(oAuth2User.getRole() == Role.GUEST) {
 				String accessToken = jwtService.createAccessToken(oAuth2User.getEmail());
-				// response.addHeader(jwtService.getAccessHeader(), "Bearer " + accessToken);
-				// jwtService.sendAccessTokenAndRefreshToken(response,"Bearer " +  accessToken, null);
-				//
-				// response.sendRedirect("/sign-up");
-				response.addCookie(createCookie("accessToken", accessToken,"/",60*60*60*60));
-				response.sendRedirect(REDIRECT_URL+"/sign-up");
+				ResponseCookie cookie = ResponseCookie.from("accessToken",accessToken)
+					.sameSite("None")
+					.secure(true)
+					.path("/")
+					.build();
+				response.addHeader("Set-Cookie",cookie.toString()+";HttpOnly");
+				// response.addCookie(createCookie("accessToken", accessToken,"/",60*60*60*60));
+				response.sendRedirect(REDIRECT_URL+"sign-up");
 			} else {
 				loginSuccess(response, oAuth2User);
 				response.sendRedirect(REDIRECT_URL);
@@ -65,8 +68,13 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
 		String accessToken = jwtService.createAccessToken(oAuth2User.getEmail());
 
-		response.addCookie(createCookie("accessToken", accessToken,"/",60*60*60*60));
-		// jwtService.updateRefreshToken(oAuth2User.getEmail(),refreshToken);
+		// response.addCookie(createCookie("accessToken", accessToken,"/",60*60*60*60));
+		ResponseCookie cookie = ResponseCookie.from("accessToken",accessToken)
+			.sameSite("None")
+			.secure(true)
+			.path("/")
+			.build();
+		response.addHeader("Set-Cookie",cookie.toString()+";HttpOnly");
 	}
 
 	public Cookie createCookie(String key, String value,String path,int time) {
