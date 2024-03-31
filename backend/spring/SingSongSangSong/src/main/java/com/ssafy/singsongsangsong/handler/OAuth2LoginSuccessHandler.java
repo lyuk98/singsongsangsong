@@ -2,6 +2,7 @@ package com.ssafy.singsongsangsong.handler;
 
 import java.io.IOException;
 
+import org.checkerframework.checker.units.qual.C;
 import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.Authentication;
@@ -46,11 +47,22 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 			if(oAuth2User.getRole() == Role.GUEST) {
 				String accessToken = jwtService.createAccessToken(oAuth2User.getEmail());
 				ResponseCookie cookie = ResponseCookie.from("accessToken",accessToken)
+					.domain(".singsongsangsong.com")
 					.sameSite("None")
+					.maxAge(-1)
+					.httpOnly(true)
 					.secure(true)
 					.path("/")
 					.build();
-				response.addHeader("Set-Cookie",cookie.toString()+";HttpOnly");
+				// Cookie cookie = new Cookie("accessToken",accessToken);
+				// cookie.setHttpOnly(true);
+				// cookie.setMaxAge(60*60*60*60);
+				// cookie.setPath("/");
+				// cookie.setSecure(true);
+				// cookie.setDomain("singsongsangsong.com");
+				// response.addCookie(cookie);
+				response.addHeader("Set-Cookie",cookie.toString());
+				log.info("cookie : {}" ,  cookie.toString());
 				// response.addCookie(createCookie("accessToken", accessToken,"/",60*60*60*60));
 				response.sendRedirect(REDIRECT_URL+"sign-up");
 			} else {
@@ -70,11 +82,14 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
 		// response.addCookie(createCookie("accessToken", accessToken,"/",60*60*60*60));
 		ResponseCookie cookie = ResponseCookie.from("accessToken",accessToken)
+			.domain(".singsongsangsong.com")
 			.sameSite("None")
+			.maxAge(-1)
+			.httpOnly(true)
 			.secure(true)
 			.path("/")
 			.build();
-		response.addHeader("Set-Cookie",cookie.toString()+";HttpOnly");
+		response.addHeader("Set-Cookie",cookie.toString());
 	}
 
 	public Cookie createCookie(String key, String value,String path,int time) {
