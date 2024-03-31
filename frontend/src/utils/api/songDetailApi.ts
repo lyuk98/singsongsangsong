@@ -7,9 +7,12 @@ import { axiosInstance } from "../../hooks/api";
  * @param songId
  * @param emotion
  */
-export const updateEmotion = (songId: string | undefined, emotion: string) => {
+export const updateEmotion = async (
+  songId: string | undefined,
+  emotion: string
+) => {
   try {
-    const response = axiosInstance.request({
+    const response = await axiosInstance.request({
       method: "PUT",
       url: `/song/${songId}/${emotion}`,
       data: {
@@ -27,13 +30,16 @@ export const updateEmotion = (songId: string | undefined, emotion: string) => {
  * @param songId 댓글을 달 노래의 id
  * @param contents 댓글 내용
  */
-export const postComment = (songId: string | undefined, contents: string) => {
+export const postComment = async (
+  songId: string | undefined,
+  contents: string
+) => {
   if (!songId) {
     console.log("존재하지 않는 id입니다");
     return;
   }
   try {
-    const response = axiosInstance.request({
+    const response = await axiosInstance.request({
       method: "POST",
       url: "/song/comments",
       data: {
@@ -51,9 +57,9 @@ export const postComment = (songId: string | undefined, contents: string) => {
  * @param songId
  * @returns
  */
-export const getAnalyzeResult = (songId: string | undefined) => {
+export const getAnalyzeResult = async (songId: string | undefined) => {
   try {
-    const response = axiosInstance.request({
+    const response = await axiosInstance.request({
       method: "GET",
       url: `/song/analyze/${songId}`,
     });
@@ -63,9 +69,9 @@ export const getAnalyzeResult = (songId: string | undefined) => {
   }
 };
 
-export const getSongSimilarity = (songId: string | undefined) => {
+export const getSongSimilarity = async (songId: string | undefined) => {
   try {
-    const response = axiosInstance.request({
+    const response = await axiosInstance.request({
       method: "GET",
       url: `/song/similarity/${songId}`,
     });
@@ -80,9 +86,9 @@ export const getSongSimilarity = (songId: string | undefined) => {
  * @param songId
  * @returns
  */
-export const getSongComment = (songId: string | undefined) => {
+export const getSongComment = async (songId: string | undefined) => {
   try {
-    const response = axiosInstance.request({
+    const response = await axiosInstance.request({
       method: "GET",
       url: `/song/comment/${songId}`,
     });
@@ -96,9 +102,9 @@ export const getSongComment = (songId: string | undefined) => {
  * 해당 곡에 대한 다운로드 수를 증가 시키는 함수
  * @param songId
  */
-export const downloadSong = (songId: string | undefined) => {
+export const downloadSong = async (songId: string | undefined) => {
   try {
-    const response = axiosInstance.request({
+    const response = await axiosInstance.request({
       method: "POST",
       url: `/song/download/${songId}`,
     });
@@ -111,9 +117,9 @@ export const downloadSong = (songId: string | undefined) => {
  * 해당 곡에 대한 재생 수를 증가시키는 함수
  * @param songId
  */
-export const playSong = (songId: string | undefined) => {
+export const playSong = async (songId: string | undefined) => {
   try {
-    const response = axiosInstance.request({
+    const response = await axiosInstance.request({
       method: "POST",
       url: `/song/play/${songId}`,
     });

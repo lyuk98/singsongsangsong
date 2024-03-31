@@ -7,9 +7,12 @@ import { getCookie } from "../cookie";
  * @param artistId 팔로우할 아티스트 아이디
  * @param followingArtistId 팔로워 아티스트 아이디
  */
-export const followArtist = (artistId: number, followingArtistId: number) => {
+export const followArtist = async (
+  artistId: number,
+  followingArtistId: number
+) => {
   try {
-    const reponse = axiosInstance.request({
+    const reponse = await axiosInstance.request({
       method: "POST",
       url: "/artist/follow",
       params: {
@@ -27,9 +30,9 @@ export const followArtist = (artistId: number, followingArtistId: number) => {
  * @param artistId
  * @returns 곡 배열
  */
-export const getSongList = (artistId: number) => {
+export const getSongList = async (artistId: number) => {
   try {
-    const response = axiosInstance.request({
+    const response = await axiosInstance.request({
       method: "GET",
       url: `/artist/song/${artistId}`,
     });
@@ -44,9 +47,9 @@ export const getSongList = (artistId: number) => {
  * @param artistId
  * @returns emotion 배열
  */
-export const getEmotions = (artistId: number) => {
+export const getEmotions = async (artistId: number) => {
   try {
-    const response = axiosInstance.request({
+    const response = await axiosInstance.request({
       method: "GET",
       url: `/artist/emotions/${artistId}`,
     });
@@ -61,14 +64,14 @@ export const getEmotions = (artistId: number) => {
  * 사용자 프로필 변경 요청 axios
  * @param file 프로필 이미지를 설정할 이미지 파일
  */
-export const addProfileImage = (file: File) => {
+export const addProfileImage = async (file: File) => {
   const accessToken = getCookie("accessToken");
   const formData = new FormData();
   console.log(file);
   formData.append("file", file);
 
   try {
-    const response = axios({
+    const response = await axios({
       method: "POST",
       url: "/upload/image",
       data: formData,
@@ -88,9 +91,9 @@ export const addProfileImage = (file: File) => {
  * @param artistId 아티스트 아이디
  * @returns 팔로워 수
  */
-export const getFollowerCount = (artistId: number) => {
+export const getFollowerCount = async (artistId: number) => {
   try {
-    const response = axiosInstance.request({
+    const response = await axiosInstance.request({
       method: "GET",
       url: `/followers/${artistId}/count`,
     });

@@ -3,13 +3,13 @@ import { AxiosInstance } from "axios";
 import { useAxios } from "../../hooks/api/useAxios";
 import { axiosInstance } from "../../hooks/api";
 
-export const getLikeSong = (
+export const getLikeSong = async (
   artistId: number,
   offset: number,
   limit: number
 ) => {
   try {
-    const response = axiosInstance.request({
+    const response = await axiosInstance.request({
       method: "GET",
       url: "",
       data: {
@@ -23,9 +23,9 @@ export const getLikeSong = (
   }
 };
 
-export const getFollowerNumber = (artistId: string) => {
+export const getFollowerNumber = async (artistId: string) => {
   try {
-    const response = axiosInstance.request({
+    const response = await axiosInstance.request({
       method: "GET",
       url: `/artist/followers/${artistId}/count`,
     });

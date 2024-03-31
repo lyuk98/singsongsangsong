@@ -9,8 +9,7 @@ import styles from "./UploadPage.module.css";
 import Button from "../../components/buttons/Button";
 import { useAxios } from "../../hooks/api/useAxios";
 import { AnalyzedStateType } from "../../utils/types";
-import { handleStartAnalyze } from "../../utils/api/api";
-
+import { handleStartAnalyze } from "../../utils/api/analyzeApi";
 // 참고해야할 사이트
 // https://hojung-testbench.tistory.com/entry/React-%ED%8C%8C%EC%9D%BC-%EC%97%85%EB%A1%9C%EB%93%9C-%EA%B8%B0%EB%8A%A5-%EA%B5%AC%ED%98%84
 // https://guiyomi.tistory.com/148

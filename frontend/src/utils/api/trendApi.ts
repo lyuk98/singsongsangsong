@@ -1,20 +1,21 @@
 import axios from "axios";
 import { axiosInstance } from "../../hooks/api";
 
-export const getGenreTrend = () => {
+export const getGenreTrend = async () => {
   try {
-    const response = axiosInstance.request({
+    const response = await axiosInstance.request({
       method: "GET",
       url: `/trend/genre/`,
     });
+    return response;
   } catch (error) {
     console.log(error);
   }
 };
 
-export const getAtmosphereTrend = () => {
+export const getAtmosphereTrend = async () => {
   try {
-    const response = axiosInstance.request({
+    const response = await axiosInstance.request({
       method: "GET",
       url: `/trend/atmosphere`,
     });
@@ -24,9 +25,9 @@ export const getAtmosphereTrend = () => {
   }
 };
 
-export const getBpmTrend = () => {
+export const getBpmTrend = async () => {
   try {
-    const reponse = axiosInstance.request({
+    const reponse = await axiosInstance.request({
       method: "GET",
       url: `/trend/bpm`,
     });
