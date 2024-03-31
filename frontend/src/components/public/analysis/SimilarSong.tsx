@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./SimilarSong.module.css";
 import RankedSongAndArtist from "../../pageComponents/trendpageComponent/RankedSongAndArtist";
 import Album from "../Album";
+import { getSongSimilarity } from "../../../utils/api/songDetailApi";
+import { useParams } from "react-router-dom";
 
 const DUMMY = [
   { artist: "test1", song: "testmusic1" },
@@ -11,11 +13,16 @@ const DUMMY = [
 ];
 
 const SimilarSong = () => {
+  const { songId } = useParams();
   const [selectIndex, setSelectIndex] = useState<number>(0);
 
   const changeIndex = (index: number) => {
     setSelectIndex(index);
   };
+
+  useEffect(() => {
+    // const response = getSongSimilarity(songId);
+  }, []);
 
   return (
     <div className={`flex-col-center ${styles.container}`}>
@@ -51,8 +58,8 @@ const SimilarSong = () => {
               <div style={{ width: "100px", height: "100px" }}>
                 <Album />
               </div>
-              <p>{`현재 페이지의 노래 이름`}</p>
-              <p>{"현재 페이지의 노래 작곡가"}</p>
+              <p>{`노래 이름`}</p>
+              <p>{"노래 작곡가"}</p>
             </div>
           </div>
         </div>

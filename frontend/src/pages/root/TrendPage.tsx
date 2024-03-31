@@ -25,6 +25,8 @@ import TestWeeklySingsongChart from "../../components/pageComponents/trendpageCo
 import noneImg from "./../../sources/imgs/nodataimg.webp";
 import { getCookie, setCookie } from "../../utils/cookie";
 
+
+
 const TrendPage = () => {
   const { year, month, day } = getLastSunday();
   const [selectedDate, setSelectedDate] = useState<DateType>({

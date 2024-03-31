@@ -20,8 +20,8 @@ const SongHeader = () => {
           <Album />
         </div>
         <div className={`flex-col gap-15`}>
-          <h1>곡 제목</h1>
-          <h2>김작곡</h2>
+          <h1>{"songTItle"}</h1>
+          <h2>{"artist"}</h2>
           <h3>러닝타임</h3>
         </div>
       </div>

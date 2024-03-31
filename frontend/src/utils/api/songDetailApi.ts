@@ -55,7 +55,7 @@ export const getAnalyzeResult = (songId: string | undefined) => {
   try {
     const response = axiosInstance.request({
       method: "GET",
-      url: `/song/analyze/${songId}?size=5`,
+      url: `/song/analyze/${songId}`,
     });
     return response;
   } catch (error) {
