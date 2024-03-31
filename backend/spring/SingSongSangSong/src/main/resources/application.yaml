@@ -99,3 +99,8 @@ logging:
         test:
           context:
             cache: DEBUG
+
+webclient:
+  baseUrl: https://dsp.singsongsangsong.com
+  contentType: application/json
+

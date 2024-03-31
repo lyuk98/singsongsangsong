@@ -1,5 +1,7 @@
 package com.ssafy.singsongsangsong.service;
 
+import static com.ssafy.singsongsangsong.webclient.WebClientRequestService.SimilarityResponse.*;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -20,6 +22,8 @@ import com.ssafy.singsongsangsong.dto.SimpleSongDto;
 import com.ssafy.singsongsangsong.dto.SongInfoResponse;
 import com.ssafy.singsongsangsong.dto.SongInfoResponse.SongInfoResponseBuilder;
 import com.ssafy.singsongsangsong.dto.SongListByThemeResponseDto;
+import com.ssafy.singsongsangsong.dto.SongSimilarityByRanksResponse;
+import com.ssafy.singsongsangsong.dto.SongSimilarityByRanksResponse.Comparison;
 import com.ssafy.singsongsangsong.entity.Artist;
 import com.ssafy.singsongsangsong.entity.Atmosphere;
 import com.ssafy.singsongsangsong.entity.Comments;
@@ -34,6 +38,7 @@ import com.ssafy.singsongsangsong.repository.maria.comments.CommentsRepository;
 import com.ssafy.singsongsangsong.repository.maria.genre.GenreRepository;
 import com.ssafy.singsongsangsong.repository.maria.song.EmotionRepository;
 import com.ssafy.singsongsangsong.repository.maria.song.SongRepository;
+import com.ssafy.singsongsangsong.webclient.WebClientRequestService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -52,6 +57,8 @@ public class SongServiceImpl implements SongService {
 	private final GenreRepository genreRepository;
 
 	private final AtmosphereRepository atmosphereRepository;
+
+	private final WebClientRequestService webClientRequestService;
 
 	@Override
 	@Transactional
@@ -156,8 +163,8 @@ public class SongServiceImpl implements SongService {
 	@ExportCsvFile(format = CsvFileContents.ARTIST_SONG_RECORD)
 	public void playSong(Long artistId, Long songId) {
 		// 노래 재생 횟수 증가 및 CSV파일로 로그 저장 (통계적 분석 위함)
-		Song song = songRepository.findById(songId).orElseThrow(NotFoundSongException::new);
-		Artist artist = artistRepository.findById(artistId).orElseThrow(ArtistNotFoundException::new);
+		songRepository.findById(songId).orElseThrow(NotFoundSongException::new);
+		artistRepository.findById(artistId).orElseThrow(ArtistNotFoundException::new);
 		songRepository.incrementPlayCount(songId);
 	}
 
@@ -166,8 +173,38 @@ public class SongServiceImpl implements SongService {
 	@ExportCsvFile(format = CsvFileContents.ARTIST_SONG_RECORD)
 	public void downloadSong(Long artistId, Long songId) {
 		// 노래 다운로드 횟수 증가 및 CSV파일로 로그 저장 (통계적 분석 위함)
-		Song song = songRepository.findById(songId).orElseThrow(NotFoundSongException::new);
+		songRepository.findById(songId).orElseThrow(NotFoundSongException::new)
 		songRepository.incrementDownloadCount(songId);
+	}
+
+	@Override
+	public SongSimilarityByRanksResponse getSongsSimilarityByRanks(Long songId, int size) {
+
+		Song song = songRepository.findById(songId).orElseThrow(NotFoundSongException::new);
+
+		List<SimilarityInfo> retrieved = webClientRequestService.requestSelectSimilarity(
+			songId);
+
+		List<Comparison> comparison = retrieved.stream().map(similarityInfo -> {
+			Long targetId = similarityInfo.getSimilarSongId();
+			Song targetSong = songRepository.findById(targetId).orElseThrow(NotFoundSongException::new);
+			return Comparison.builder()
+				.target(
+					Comparison.Target.builder()
+						.songId(targetSong.getId())
+						.albumImageFileName(targetSong.getAlbumImage().getOriginalFileName())
+						.title(targetSong.getTitle())
+						.createdDate(targetSong.getCreatedDate()).build()
+				).correlation(similarityInfo.getDistance()).build();
+		}).toList();
+
+		return SongSimilarityByRanksResponse.builder()
+			.size(size)
+			.albumImageFileName(song.getAlbumImage().getOriginalFileName())
+			.title(song.getTitle())
+			.createdDate(song.getCreatedDate())
+			.comparison(comparison)
+			.build();
 	}
 
 }
