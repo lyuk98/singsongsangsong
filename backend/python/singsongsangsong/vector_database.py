@@ -278,5 +278,5 @@ def search_similarity(
         data=[record["vector"]],
         limit=limit,
         search_params={ "nprobe": 32 },
-        filter="(is_published)"
+        filter=f"is_published == true && id != {song_id}"
     )[0]
