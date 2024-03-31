@@ -72,7 +72,7 @@ def analyse(song_id: int, audio_path: str): # pylint: disable=too-many-locals
                 "start": int(time[0]),
                 "end": int(time[1]),
                 "label": label
-            } for time, label in islice(s4dsp.find_structure(reference_path))
+            } for time, label in s4dsp.find_structure(reference_path).items()
         ]
 
         # 음원 분석 6 - 그래프 파일 생성
