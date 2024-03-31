@@ -31,7 +31,6 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 	private final JwtService jwtService;
 	private final ArtistRepository artistRepository;
 	private final Environment env;
-
 	private String REDIRECT_URL;
 
 	@PostConstruct
@@ -47,20 +46,15 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 			if(oAuth2User.getRole() == Role.GUEST) {
 				String accessToken = jwtService.createAccessToken(oAuth2User.getEmail());
 				ResponseCookie cookie = ResponseCookie.from("accessToken",accessToken)
-					.domain(".singsongsangsong.com")
+					.domain("localhost")
+					// TODO : 테스트 끝나고 domain 설정 변경
+					// .domain(".singsongsangsong.com")
 					.sameSite("None")
 					.maxAge(-1)
 					.httpOnly(true)
 					.secure(true)
 					.path("/")
 					.build();
-				// Cookie cookie = new Cookie("accessToken",accessToken);
-				// cookie.setHttpOnly(true);
-				// cookie.setMaxAge(60*60*60*60);
-				// cookie.setPath("/");
-				// cookie.setSecure(true);
-				// cookie.setDomain("singsongsangsong.com");
-				// response.addCookie(cookie);
 				response.addHeader("Set-Cookie",cookie.toString());
 				log.info("cookie : {}" ,  cookie.toString());
 				// response.addCookie(createCookie("accessToken", accessToken,"/",60*60*60*60));
@@ -82,7 +76,9 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
 		// response.addCookie(createCookie("accessToken", accessToken,"/",60*60*60*60));
 		ResponseCookie cookie = ResponseCookie.from("accessToken",accessToken)
-			.domain(".singsongsangsong.com")
+			.domain("localhost")
+			// TODO : 테스트 끝나고 domain 설정 변경
+			// .domain(".singsongsangsong.com")
 			.sameSite("None")
 			.maxAge(-1)
 			.httpOnly(true)
