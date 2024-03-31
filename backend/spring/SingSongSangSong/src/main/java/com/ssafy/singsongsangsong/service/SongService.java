@@ -5,6 +5,7 @@ import com.ssafy.singsongsangsong.dto.AnalyzeGenreAndAtmosphereResponse;
 import com.ssafy.singsongsangsong.dto.CommentsResponseDto;
 import com.ssafy.singsongsangsong.dto.SongInfoResponse;
 import com.ssafy.singsongsangsong.dto.SongListByThemeResponseDto;
+import com.ssafy.singsongsangsong.dto.SongSimilarityByRanksResponse;
 
 public interface SongService {
 
@@ -24,4 +25,5 @@ public interface SongService {
 
 	void downloadSong(Long artistId, Long songId);
 
+	SongSimilarityByRanksResponse getSongsSimilarityByRanks(Long songId, int size);
 }

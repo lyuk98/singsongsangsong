@@ -16,6 +16,7 @@ import com.ssafy.singsongsangsong.exception.song.NotFoundSongException;
 import com.ssafy.singsongsangsong.repository.maria.atmosphere.AtmosphereRepository;
 import com.ssafy.singsongsangsong.repository.maria.song.SongRepository;
 import com.ssafy.singsongsangsong.utils.ThemesClassifier;
+import com.ssafy.singsongsangsong.webclient.WebClientRequestService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -26,6 +27,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
 	private final SongRepository songRepository;
 	private final AtmosphereRepository atmosphereRepository;
 	private final ThemesClassifier themesClassifier;
+	private final WebClientRequestService webClientRequestService;
 
 	@Override
 	@Transactional
@@ -59,6 +61,8 @@ public class AnalyzeServiceImpl implements AnalyzeService {
 		if (!song.isAnalyzed()) {
 			throw new NotYetAnalyzedException();
 		}
+		// 유사도 분석을 위해, vector db에 값 저장을 위임한다.
+		webClientRequestService.requestSaveSimilarity(songId);
 		song.setPublished(true);
 	}
 

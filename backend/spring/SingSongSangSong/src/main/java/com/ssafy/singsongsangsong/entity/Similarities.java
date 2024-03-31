@@ -8,12 +8,15 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
+@Deprecated(forRemoval = true, since = "python server에서 실시간 처리가 가능할 정도의 퍼포먼스가 나옴")
 public class Similarities {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,6 +31,8 @@ public class Similarities {
 	private Song toSong;
 
 	private double similarityPercent;
-	private int partStartTime;
-	private int partEndTime;
+	private int fromPartStartTime;
+	private int fromPartEndTime;
+	private int toPartStartTime;
+	private int toPartEndTime;
 }

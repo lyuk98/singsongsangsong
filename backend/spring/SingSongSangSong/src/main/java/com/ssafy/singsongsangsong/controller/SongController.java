@@ -16,6 +16,7 @@ import com.ssafy.singsongsangsong.dto.CommentsResponseDto;
 import com.ssafy.singsongsangsong.dto.PostCommentsDto;
 import com.ssafy.singsongsangsong.dto.SongInfoResponse;
 import com.ssafy.singsongsangsong.dto.SongListByThemeResponseDto;
+import com.ssafy.singsongsangsong.dto.SongSimilarityByRanksResponse;
 import com.ssafy.singsongsangsong.security.ArtistAuthenticationToken;
 import com.ssafy.singsongsangsong.security.ArtistPrincipal;
 import com.ssafy.singsongsangsong.service.SongService;
@@ -83,4 +84,9 @@ public class SongController {
 		songService.downloadSong(user.getId(), songId);
 	}
 
+	@GetMapping("/similarity/{songId}")
+	public SongSimilarityByRanksResponse getSongsSimilarityByRanks(@PathVariable Long songId,
+		@RequestParam(defaultValue = "5") int size) {
+		return songService.getSongsSimilarityByRanks(songId, size);
+	}
 }
