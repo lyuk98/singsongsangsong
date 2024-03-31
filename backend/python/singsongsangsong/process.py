@@ -142,17 +142,17 @@ def analyse(song_id: int, audio_path: str): # pylint: disable=too-many-locals
                     file_server.upload(mfcc_path, "image", mfcc_filename, client)
                     saved_files.append(mfcc_filename)
                     cursor.execute(
-                        "insert into file (owner_id, file_name, original_file_name) "
-                        "values (%s, %s, %s)",
-                        (artist_id, mfcc_filename, f"mfcc-{song_id}.svg")
+                        "insert into image (saved_file_name, original_file_name) "
+                        "values (%s, %s)",
+                        (mfcc_filename, f"mfcc-{song_id}.svg")
                     )
                     mfcc_insert_id = cursor.lastrowid
 
                     file_server.upload(waveform_path, "image", waveform_filename, client)
                     cursor.execute(
-                        "insert into file (owner_id, file_name, original_file_name) "
-                        "values (%s, %s, %s)",
-                        (artist_id, waveform_filename, f"spectrum-{song_id}.svg")
+                        "insert into file (saved_file_name, original_file_name) "
+                        "values (%s, %s)",
+                        (waveform_filename, f"spectrum-{song_id}.svg")
                     )
                     waveform_insert_id = cursor.lastrowid
 
