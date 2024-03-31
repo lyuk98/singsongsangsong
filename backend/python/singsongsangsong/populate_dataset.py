@@ -117,6 +117,7 @@ for index, row in artists.iterrows():
             )
         except HTTPError:
             print(f"  Downloading {filename} failed")
+            file_id = None # pylint: disable=invalid-name
     else:
         file_id = None # pylint: disable=invalid-name
 
