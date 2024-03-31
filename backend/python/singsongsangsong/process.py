@@ -79,7 +79,7 @@ def analyse(song_id: int, audio_path: str): # pylint: disable=too-many-locals
         mfcc_filename = str(uuid.uuid4())
         waveform_filename = str(uuid.uuid4())
         mfcc_path = path.format(f"{mfcc_filename}.svg")
-        waveform_path = path.format(f"{waveform_filename}.svg")
+        waveform_path = path.format(f"{waveform_filename}.png")
 
         s4dsp.plot_mfcc(librosa.feature.mfcc(y=y, sr=sr, n_mfcc=20), mfcc_path)
         s4dsp.draw_spectrum(y, sr, waveform_path, structure)
