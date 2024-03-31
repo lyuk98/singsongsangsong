@@ -70,14 +70,12 @@ const TrendPage = () => {
   // }, []);
 
   useEffect(() => {
-    const accessToken = getCookie("accessToken");
-    console.log(document.cookie);
+    const accessToken = getCookie("JSESSIONID");
     setCookie("testCookie", "test", {
       path: "/",
       secure: true,
       sameSite: "none",
     });
-    console.log(getCookie("testCookie"));
     console.log(accessToken);
   }, []);
 

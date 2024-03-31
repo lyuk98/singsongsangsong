@@ -22,3 +22,15 @@ export const getLikeSong = (
     console.log(error);
   }
 };
+
+export const getFollowerNumber = (artistId: string) => {
+  try {
+    const response = axiosInstance.request({
+      method: "GET",
+      url: `/artist/followers/${artistId}/count`,
+    });
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};

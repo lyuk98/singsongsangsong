@@ -75,6 +75,11 @@ export const getSongSimilarity = (songId: string | undefined) => {
   }
 };
 
+/**
+ * 해당 노래에 대한 댓글들을 가져오는 함수
+ * @param songId
+ * @returns
+ */
 export const getSongComment = (songId: string | undefined) => {
   try {
     const response = axiosInstance.request({
@@ -87,6 +92,10 @@ export const getSongComment = (songId: string | undefined) => {
   }
 };
 
+/**
+ * 해당 곡에 대한 다운로드 수를 증가 시키는 함수
+ * @param songId
+ */
 export const downloadSong = (songId: string | undefined) => {
   try {
     const response = axiosInstance.request({
@@ -98,6 +107,10 @@ export const downloadSong = (songId: string | undefined) => {
   }
 };
 
+/**
+ * 해당 곡에 대한 재생 수를 증가시키는 함수
+ * @param songId
+ */
 export const playSong = (songId: string | undefined) => {
   try {
     const response = axiosInstance.request({
