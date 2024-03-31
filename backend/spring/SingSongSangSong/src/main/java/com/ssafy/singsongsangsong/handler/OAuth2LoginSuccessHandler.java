@@ -51,7 +51,6 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 					// .domain(".singsongsangsong.com")
 					.sameSite("None")
 					.maxAge(-1)
-					.httpOnly(true)
 					.secure(true)
 					.path("/")
 					.build();
@@ -81,7 +80,6 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 			// .domain(".singsongsangsong.com")
 			.sameSite("None")
 			.maxAge(-1)
-			.httpOnly(true)
 			.secure(true)
 			.path("/")
 			.build();
