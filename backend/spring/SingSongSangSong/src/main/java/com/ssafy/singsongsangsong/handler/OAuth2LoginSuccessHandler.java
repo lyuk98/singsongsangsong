@@ -51,7 +51,6 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 					// .domain(".singsongsangsong.com")
 					.sameSite("None")
 					.maxAge(-1)
-					.secure(true)
 					.path("/")
 					.build();
 				response.addHeader("Set-Cookie",cookie.toString());
@@ -80,7 +79,6 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 			// .domain(".singsongsangsong.com")
 			.sameSite("None")
 			.maxAge(-1)
-			.secure(true)
 			.path("/")
 			.build();
 		response.addHeader("Set-Cookie",cookie.toString());
