@@ -4,6 +4,8 @@ import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
+import org.springframework.batch.item.data.MongoItemWriter;
+import org.springframework.batch.item.data.builder.MongoItemWriterBuilder;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.mapping.DefaultLineMapper;
 import org.springframework.batch.item.file.mapping.FieldSetMapper;
@@ -12,6 +14,7 @@ import org.springframework.batch.item.file.transform.FieldSet;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import com.ssafy.singsongsangsong.entity.Play;
@@ -47,6 +50,14 @@ public class ChunkStepConfig {
 		itemReader.setLineMapper(lineMapper);
 		
 		return itemReader;
+	}
+	
+	@Bean
+	public MongoItemWriter<Play> mongoItemWriter(MongoOperations mongoTemplate) {
+		return new MongoItemWriterBuilder<Play>()
+				.collection("trend")
+				.template(mongoTemplate)
+				.build();
 	}
 	
 	@Bean
