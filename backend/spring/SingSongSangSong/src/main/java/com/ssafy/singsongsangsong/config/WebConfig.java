@@ -2,6 +2,7 @@ package com.ssafy.singsongsangsong.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
+import org.springframework.http.HttpMethod;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -21,7 +22,13 @@ public class WebConfig implements WebMvcConfigurer {
 		registry.addMapping("/**")
 			.allowedOrigins("http://localhost:3000", "https://api.singsongsangsong.com",
 				"https://www.singsongsangsong.com")
-			.allowedMethods("GET", "POST", "PUT", "DELETE","OPTIONS")
+			.allowedMethods(
+				HttpMethod.GET.name(),
+				HttpMethod.POST.name(),
+				HttpMethod.PUT.name(),
+				HttpMethod.DELETE.name(),
+				HttpMethod.OPTIONS.name()
+				)
 			.allowedHeaders("*")
 			.allowCredentials(true)
 			.maxAge(3000);
