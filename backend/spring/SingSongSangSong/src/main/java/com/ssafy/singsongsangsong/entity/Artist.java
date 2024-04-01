@@ -2,11 +2,6 @@ package com.ssafy.singsongsangsong.entity;
 
 import com.ssafy.singsongsangsong.util.Role;
 
-<<<<<<< HEAD
-=======
-import jakarta.annotation.Nullable;
-import jakarta.persistence.Column;
->>>>>>> spring
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;

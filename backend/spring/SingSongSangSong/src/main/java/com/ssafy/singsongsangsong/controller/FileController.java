@@ -20,9 +20,11 @@ import com.ssafy.singsongsangsong.security.ArtistPrincipal;
 import com.ssafy.singsongsangsong.service.FileService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 public class FileController {
 
 	private final FileService fileService;
@@ -41,6 +43,8 @@ public class FileController {
 	public ResponseEntity<Resource> downloadFile(@AuthenticationPrincipal ArtistPrincipal user,
 		@PathVariable String fileType, @PathVariable String originalFileName) throws IOException {
 		Objects.requireNonNull(user, "로그인이 필요합니다.");
+
+		log.info("fileType: {}", fileType);
 		FileType type = FileType.valueOf(fileType);
 
 		Resource file = fileService.getFile(user.getId(), type, originalFileName);
