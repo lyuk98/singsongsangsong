@@ -20,7 +20,7 @@ spring:
             client-id: 813928593657-9v2bpcp9p2l3i3j5ri6vrdnu0dd1sif5.apps.googleusercontent.com
             client-secret: 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
             scope: profile, email
-            redirect-uri: http://api.singsongsangsong.com/login/oauth2/code/google
+            redirect-uri: https://api.singsongsangsong.com/login/oauth2/code/google
           naver:
             client-id: t8m3plQmDMt1BM58c5g6
             client-secret: VbWntwUdPR
@@ -50,9 +50,9 @@ spring:
             user-info-uri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id
     singsongsangsong:
-      redirect-uri: http://localhost:3000/
+#      redirect-uri: http://localhost:3000/
       # TODO : url temp용으로 localhost
-      # redirect-uri: https://www.singsongsangsong.com/
+       redirect-uri: https://www.singsongsangsong.com/
 
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver

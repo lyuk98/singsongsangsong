@@ -46,9 +46,9 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 			if(oAuth2User.getRole() == Role.GUEST) {
 				String accessToken = jwtService.createAccessToken(oAuth2User.getEmail());
 				ResponseCookie cookie = ResponseCookie.from("accessToken",accessToken)
-					.domain("localhost")
+					// .domain("localhost")
 					// TODO : 테스트 끝나고 domain 설정 변경
-					// .domain(".singsongsangsong.com")
+					.domain(".singsongsangsong.com")
 					.sameSite("None")
 					.maxAge(-1)
 					.path("/")
@@ -74,9 +74,9 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
 		// response.addCookie(createCookie("accessToken", accessToken,"/",60*60*60*60));
 		ResponseCookie cookie = ResponseCookie.from("accessToken",accessToken)
-			.domain("localhost")
+			// .domain("localhost")
 			// TODO : 테스트 끝나고 domain 설정 변경
-			// .domain(".singsongsangsong.com")
+			.domain(".singsongsangsong.com")
 			.sameSite("None")
 			.maxAge(-1)
 			.path("/")
