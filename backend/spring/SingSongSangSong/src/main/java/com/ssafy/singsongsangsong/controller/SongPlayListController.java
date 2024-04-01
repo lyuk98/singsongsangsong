@@ -25,7 +25,7 @@ import lombok.RequiredArgsConstructor;
 public class SongPlayListController {
 	private final SongPlayListService songPlayListService;
 	@GetMapping("/liked-song/{pageNo}")
-	public LikedPageResponseDto getLikedPagination(@AuthenticationPrincipal ArtistPrincipal artistPrincipal, @PathVariable int pageNo) {
+	public LikedPageResponseDto getLikedPagination(@AuthenticationPrincipal ArtistPrincipal artistPrincipal, @PathVariable("pageNo") int pageNo) {
 		return songPlayListService.getLikedPagination(artistPrincipal.getUsername(), pageNo);
 	}
 
@@ -35,10 +35,11 @@ public class SongPlayListController {
 	}
 
 	@GetMapping("/genre-hitsong/{genre}")
-	public List<SongBriefDto> getGenreHitSongList(@PathVariable String genre) { return songPlayListService.getGenreHitSongList(genre);}
+	public List<SongBriefDto> getGenreHitSongList(@PathVariable("genre") String genre) {
+		return songPlayListService.getGenreHitSongList(genre);}
 
 	@GetMapping("/atmosphere-hitsong/{atmosphere}")
-	public List<SongBriefDto> getAtmosphereHitSongList(@PathVariable String atmosphere) { return songPlayListService.getAtmosphereHitSongList(atmosphere);}
+	public List<SongBriefDto> getAtmosphereHitSongList(@PathVariable("atmosphere") String atmosphere) { return songPlayListService.getAtmosphereHitSongList(atmosphere);}
 
 	@GetMapping("/hot-artist")
 	public List<HotArtistResponseDto> getHotArtist() {
