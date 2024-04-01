@@ -19,7 +19,7 @@ import lombok.Setter;
 @Setter
 @Builder
 public class SongBriefDto {
-	private Long musicId;
+	private Long songId;
 	private String title;
 	private Long artistId;
 	private String artistName;
@@ -33,7 +33,7 @@ public class SongBriefDto {
 		SongBriefDto dto = new SongBriefDto();
 		BeanUtils.copyProperties(song, dto);
 
-		dto.setMusicId(song.getId());
+		dto.setSongId(song.getId());
 		dto.setTitle(song.getTitle());
 		dto.setArtistId(song.getArtist().getId());
 		dto.setArtistName(song.getArtist().getNickname());
