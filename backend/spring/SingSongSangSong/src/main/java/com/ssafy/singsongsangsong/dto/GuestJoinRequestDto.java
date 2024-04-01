@@ -2,10 +2,7 @@ package com.ssafy.singsongsangsong.dto;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import com.ssafy.singsongsangsong.entity.Image;
-
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
