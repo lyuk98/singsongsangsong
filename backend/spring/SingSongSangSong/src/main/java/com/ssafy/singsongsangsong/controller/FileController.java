@@ -44,6 +44,9 @@ public class FileController {
 		IOException {
 		Objects.requireNonNull(user, "로그인이 필요합니다.");
 
+		log.info("fileType: {}", fileType);
+		log.info("originalFileName: {}", originalFileName);
+
 		Resource file = fileService.getFile(user.getId(), fileType, originalFileName);
 		return ResponseEntity.ok()
 			.contentType(MediaType.IMAGE_JPEG)
