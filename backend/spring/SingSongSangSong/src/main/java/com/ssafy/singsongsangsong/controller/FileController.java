@@ -15,7 +15,6 @@ import org.springframework.web.multipart.MultipartFile;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.ssafy.singsongsangsong.constants.FileType;
 import com.ssafy.singsongsangsong.dto.UploadFileDto;
-import com.ssafy.singsongsangsong.repository.maria.artist.ArtistRepository;
 import com.ssafy.singsongsangsong.security.ArtistPrincipal;
 import com.ssafy.singsongsangsong.service.file.FileService;
 
@@ -28,7 +27,6 @@ import lombok.extern.slf4j.Slf4j;
 public class FileController {
 
 	private final FileService fileService;
-	private final ArtistRepository artistRepository;
 
 	@PostMapping("/upload/{fileType}")
 	public UploadFileDto uploadFile(@AuthenticationPrincipal ArtistPrincipal user,

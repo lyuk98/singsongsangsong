@@ -100,7 +100,7 @@ public class GlobalExceptionHandler {
 		response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
 		return ErrorEntity.builder()
 			.code(HttpStatus.INTERNAL_SERVER_ERROR.toString())
-			.message("서버 관리자에게 문의하세요..ㅜㅜ" + e.getCause().toString())
+			.message("서버 관리자에게 문의하세요..ㅜㅜ [msg] => " + e.getMessage())
 			.build();
 	}
 
