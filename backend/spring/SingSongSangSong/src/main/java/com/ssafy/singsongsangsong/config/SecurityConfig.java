@@ -94,9 +94,8 @@ public class SecurityConfig {
 	public CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration config = new CorsConfiguration();
 
-		config.setAllowCredentials(true);
-		config.setAllowedOrigins(List.of("http://localhost:3000","https://api.singsongsangsong.com","https://www.singsongsangsong.com"));
-		config.setAllowedMethods(Arrays.asList("HEAD","POST","GET","DELETE","PUT","OPTIONS"));
+		config.setAllowedOrigins(List.of("*"));
+		config.setAllowedMethods(List.of("*"));
 		config.setAllowedHeaders(List.of("*"));
 		config.setMaxAge(1000L);
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
