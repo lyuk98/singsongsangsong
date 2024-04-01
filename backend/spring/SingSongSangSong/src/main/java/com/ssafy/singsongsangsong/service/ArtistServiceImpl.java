@@ -9,12 +9,12 @@ import org.springframework.web.multipart.MultipartFile;
 import com.ssafy.singsongsangsong.constants.FileType;
 import com.ssafy.singsongsangsong.dto.ArtistInfoDto;
 import com.ssafy.singsongsangsong.dto.EmotionsDto;
-import com.ssafy.singsongsangsong.dto.GuestJoinRequestDto;
 import com.ssafy.singsongsangsong.dto.FollowerCountResponse;
+import com.ssafy.singsongsangsong.dto.GuestJoinRequestDto;
 import com.ssafy.singsongsangsong.dto.SimpleSongDto;
 import com.ssafy.singsongsangsong.entity.Artist;
+import com.ssafy.singsongsangsong.entity.File;
 import com.ssafy.singsongsangsong.entity.Follower_Following;
-import com.ssafy.singsongsangsong.entity.Image;
 import com.ssafy.singsongsangsong.entity.Song;
 import com.ssafy.singsongsangsong.exception.artist.ArtistNotFoundException;
 import com.ssafy.singsongsangsong.repository.maria.artist.ArtistRepository;
@@ -41,9 +41,9 @@ public class ArtistServiceImpl implements ArtistService {
 		artist.setRole(Role.USER);
 		artist.setSex(dto.getSex());
 
-		if(dto.getProfileImage() != null) {
+		if (dto.getProfileImage() != null) {
 			MultipartFile profileImage = dto.getProfileImage();
-			artist.setProfileImage(Image.builder()
+			artist.setProfileImage(File.builder()
 				.originalFileName(profileImage.getOriginalFilename())
 				.savedFileName(fileService.saveFile(artist.getId(), FileType.IMAGE, profileImage))
 				.build());
