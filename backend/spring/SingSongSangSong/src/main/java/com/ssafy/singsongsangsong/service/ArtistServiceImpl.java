@@ -1,20 +1,26 @@
 package com.ssafy.singsongsangsong.service;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.ssafy.singsongsangsong.constants.FileType;
 import com.ssafy.singsongsangsong.dto.ArtistInfoDto;
 import com.ssafy.singsongsangsong.dto.EmotionsDto;
+import com.ssafy.singsongsangsong.dto.GuestJoinRequestDto;
 import com.ssafy.singsongsangsong.dto.FollowerCountResponse;
 import com.ssafy.singsongsangsong.dto.SimpleSongDto;
 import com.ssafy.singsongsangsong.entity.Artist;
 import com.ssafy.singsongsangsong.entity.Follower_Following;
+import com.ssafy.singsongsangsong.entity.Image;
 import com.ssafy.singsongsangsong.entity.Song;
 import com.ssafy.singsongsangsong.exception.artist.ArtistNotFoundException;
 import com.ssafy.singsongsangsong.repository.maria.artist.ArtistRepository;
 import com.ssafy.singsongsangsong.repository.maria.artist.FollowingRepository;
 import com.ssafy.singsongsangsong.repository.maria.song.SongRepository;
+import com.ssafy.singsongsangsong.util.Role;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,6 +30,27 @@ public class ArtistServiceImpl implements ArtistService {
 	private final ArtistRepository artistRepository;
 	private final SongRepository songRepository;
 	private final FollowingRepository followingRepository;
+	private final FileService fileService;
+
+	@Override
+	public void join(String username, GuestJoinRequestDto dto) throws IOException {
+		Artist artist = artistRepository.findByUsername(username).orElseThrow();
+		artist.setAge(dto.getAge());
+		artist.setIntroduction(dto.getIntroduction());
+		artist.setNickname(dto.getNickname());
+		artist.setRole(Role.USER);
+		artist.setSex(dto.getSex());
+
+		if(dto.getProfileImage() != null) {
+			MultipartFile profileImage = dto.getProfileImage();
+			artist.setProfileImage(Image.builder()
+				.originalFileName(profileImage.getOriginalFilename())
+				.savedFileName(fileService.saveFile(artist.getId(), FileType.IMAGE, profileImage))
+				.build());
+		}
+
+		artistRepository.save(artist);
+	}
 
 	@Override
 	public ArtistInfoDto getArtistInfo(Long artistId) {
