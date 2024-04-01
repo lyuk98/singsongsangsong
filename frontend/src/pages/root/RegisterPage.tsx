@@ -175,10 +175,10 @@ const RegisterPage = () => {
             <option key="none" value={""}>
               성별을 선택해주세요
             </option>
-            <option key="male" value="male">
+            <option key="male" value="M">
               남성
             </option>
-            <option key="female" value="female">
+            <option key="female" value="F">
               여성
             </option>
           </select>
