@@ -2,18 +2,17 @@ package com.ssafy.singsongsangsong.handler;
 
 import java.io.IOException;
 
-import org.checkerframework.checker.units.qual.C;
 import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
+import com.ssafy.singsongsangsong.constants.Role;
 import com.ssafy.singsongsangsong.entity.Artist;
 import com.ssafy.singsongsangsong.repository.maria.artist.ArtistRepository;
+import com.ssafy.singsongsangsong.security.oauth2.CustomOAuth2User;
 import com.ssafy.singsongsangsong.service.jwt.JwtService;
-import com.ssafy.singsongsangsong.util.CustomOAuth2User;
-import com.ssafy.singsongsangsong.util.Role;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.ServletException;
@@ -37,30 +36,31 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 	void init() {
 		REDIRECT_URL = env.getProperty("spring.security.singsongsangsong.redirect-uri");
 	}
+
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
 		Authentication authentication) throws IOException, ServletException {
 		log.info("OAuth2 Login 성공");
-		try{
-			CustomOAuth2User oAuth2User = (CustomOAuth2User) authentication.getPrincipal();
-			if(oAuth2User.getRole() == Role.GUEST) {
+		try {
+			CustomOAuth2User oAuth2User = (CustomOAuth2User)authentication.getPrincipal();
+			if (oAuth2User.getRole() == Role.GUEST) {
 				String accessToken = jwtService.createAccessToken(oAuth2User.getEmail());
-				ResponseCookie cookie = ResponseCookie.from("accessToken",accessToken)
+				ResponseCookie cookie = ResponseCookie.from("accessToken", accessToken)
 					.domain("localhost")
 					// TODO : 테스트 끝나고 domain 설정 변경
 					// .domain(".singsongsangsong.com")
 					.sameSite("None")
-					.maxAge(60*60*60*60)
+					.maxAge(60 * 60 * 60 * 60)
 					.path("/")
 					.build();
-				response.addHeader("Set-Cookie",cookie.toString());
-				log.info("cookie : {}" ,  cookie.toString());
+				response.addHeader("Set-Cookie", cookie.toString());
+				log.info("cookie : {}", cookie.toString());
 				// response.addCookie(createCookie("accessToken", accessToken,"/",60*60*60*60));
-				response.sendRedirect(REDIRECT_URL+"sign-up?accessToken="+accessToken);
+				response.sendRedirect(REDIRECT_URL + "sign-up?accessToken=" + accessToken);
 			} else {
 				loginSuccess(response, oAuth2User);
 			}
-		} catch(Exception e) {
+		} catch (Exception e) {
 			throw e;
 		}
 	}
@@ -72,21 +72,21 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 		String accessToken = jwtService.createAccessToken(oAuth2User.getEmail());
 
 		// response.addCookie(createCookie("accessToken", accessToken,"/",60*60*60*60));
-		ResponseCookie cookie = ResponseCookie.from("accessToken",accessToken)
+		ResponseCookie cookie = ResponseCookie.from("accessToken", accessToken)
 			.domain("localhost")
 			// TODO : 테스트 끝나고 domain 설정 변경
 			// .domain(".singsongsangsong.com")
 			.sameSite("None")
-			.maxAge(60*60*60*60)
+			.maxAge(60 * 60 * 60 * 60)
 			.path("/")
 			.build();
-		response.addHeader("Set-Cookie",cookie.toString());
+		response.addHeader("Set-Cookie", cookie.toString());
 
-		response.sendRedirect(REDIRECT_URL+"?accessToken="+accessToken);
+		response.sendRedirect(REDIRECT_URL + "?accessToken=" + accessToken);
 	}
 
-	public Cookie createCookie(String key, String value,String path,int time) {
-		Cookie cookie = new Cookie(key,value);
+	public Cookie createCookie(String key, String value, String path, int time) {
+		Cookie cookie = new Cookie(key, value);
 		cookie.setMaxAge(time);
 		cookie.setPath(path);
 		// cookie.setHttpOnly(true);

@@ -18,7 +18,7 @@ import com.ssafy.singsongsangsong.dto.SongInfoResponse;
 import com.ssafy.singsongsangsong.dto.SongListByThemeResponseDto;
 import com.ssafy.singsongsangsong.dto.SongSimilarityByRanksResponse;
 import com.ssafy.singsongsangsong.security.ArtistPrincipal;
-import com.ssafy.singsongsangsong.service.SongService;
+import com.ssafy.singsongsangsong.service.song.SongService;
 
 import lombok.RequiredArgsConstructor;
 

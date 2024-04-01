@@ -19,6 +19,7 @@ import com.ssafy.singsongsangsong.ArtistFixture;
 import com.ssafy.singsongsangsong.constants.FileType;
 import com.ssafy.singsongsangsong.entity.Artist;
 import com.ssafy.singsongsangsong.repository.maria.artist.ArtistRepository;
+import com.ssafy.singsongsangsong.service.file.FileService;
 
 @SpringBootTest
 @ActiveProfiles("test")

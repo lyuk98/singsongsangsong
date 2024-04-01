@@ -17,7 +17,7 @@ import com.ssafy.singsongsangsong.constants.FileType;
 import com.ssafy.singsongsangsong.dto.UploadFileDto;
 import com.ssafy.singsongsangsong.repository.maria.artist.ArtistRepository;
 import com.ssafy.singsongsangsong.security.ArtistPrincipal;
-import com.ssafy.singsongsangsong.service.FileService;
+import com.ssafy.singsongsangsong.service.file.FileService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
