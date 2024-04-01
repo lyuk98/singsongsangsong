@@ -1,5 +1,11 @@
 import React, { useState, ChangeEvent, useRef } from "react";
-import { Form, Link, ActionFunction, redirect } from "react-router-dom";
+import {
+  Form,
+  Link,
+  ActionFunction,
+  redirect,
+  useLocation,
+} from "react-router-dom";
 
 import styles from "./RegisterPage.module.css";
 
@@ -11,6 +17,8 @@ import {
   descValidator,
   nicknameValidator,
 } from "../../utils/validator";
+import { axiosInstance } from "../../hooks/api";
+import axios from "axios";
 
 const AGES = [
   { data: 10, text: "10대" },
@@ -22,7 +30,10 @@ const AGES = [
 ];
 
 const RegisterPage = () => {
-  console.log(window.location);
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const accessToken = searchParams.get("accessToken");
+  console.log(accessToken);
   const {
     value: nicknameValue,
     handleInputChange: handleNicknameChange,
@@ -58,9 +69,30 @@ const RegisterPage = () => {
     }
   };
 
+  const handleSubmit = async () => {
+    try {
+      const reponse = await axios({
+        method: "POST",
+        url: `${process.env.REACT_APP_API_URL}/artist/join`,
+        data: {
+          nickname: nicknameValue,
+          profileImage: profileImage,
+          age,
+          sex: gender,
+          introduction: descValue,
+        },
+        headers: {
+          // Authorization: `Bearer ${accessToken}`
+        },
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className={styles.container}>
-      <form>
+      <form onSubmit={handleSubmit}>
         <div className={`w-100 p-15 flex-col-center`}>
           <label className={`flex-col-center p-15 ${styles.inputForm}`}>
             <input
@@ -111,7 +143,7 @@ const RegisterPage = () => {
             <option key="male" value="male">
               남성
             </option>
-            <option key="femail" value="female">
+            <option key="female" value="female">
               여성
             </option>
           </select>
