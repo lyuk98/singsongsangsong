@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useState, ChangeEvent, useRef } from "react";
 import {
   Form,
@@ -6,9 +7,9 @@ import {
   redirect,
   useLocation,
 } from "react-router-dom";
+import { GrPowerReset } from "react-icons/gr";
 
 import styles from "./RegisterPage.module.css";
-
 import AuthInput from "../../components/auth/AuthInput";
 import Button from "../../components/buttons/Button";
 import { useInput } from "../../hooks/useInput";
@@ -18,7 +19,6 @@ import {
   nicknameValidator,
 } from "../../utils/validator";
 import { axiosInstance } from "../../hooks/api";
-import axios from "axios";
 
 const AGES = [
   { data: 10, text: "10대" },
@@ -46,10 +46,14 @@ const RegisterPage = () => {
     valueIsValid: descIsValid,
   } = useInput("", descValidator);
 
+  // 회원가입 관련 state들
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [profileImage, setProfileImage] = useState<File | null>(null);
+  const [profileUrl, setProfileUrl] = useState<string>("");
   const [gender, setGender] = useState<undefined | string>(undefined);
   const [age, setAge] = useState<undefined | number>(undefined);
+  // 프로필 사진 설정 시 호버했을 때 리셋 버튼을 보여줄 boolean값
+  const [isHover, setIsHover] = useState<boolean>(false);
 
   const handleGenderChange = (event: ChangeEvent<HTMLSelectElement>): void => {
     setGender(event.target.value);
@@ -59,19 +63,25 @@ const RegisterPage = () => {
     setAge(+event.target.value);
   };
 
+  // 프로필 이미지를 등록
   const handleFileUpload = (event: ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
     console.log(files);
     console.log(new Date());
     if (files && files[0] && files[0].type.startsWith("image/")) {
-      // const url = URL.createObjectURL(files[0]);
+      setProfileUrl(URL.createObjectURL(files[0]));
       setProfileImage(files[0]);
     }
   };
 
+  // 프로필 이미지를 리셋
+  const handleImageReset = () => {
+    setProfileImage(null);
+  };
+
   const handleSubmit = async () => {
     try {
-      const reponse = await axios({
+      const response = await axios({
         method: "POST",
         url: `${process.env.REACT_APP_API_URL}/artist/join`,
         data: {
@@ -82,9 +92,10 @@ const RegisterPage = () => {
           introduction: descValue,
         },
         headers: {
-          // Authorization: `Bearer ${accessToken}`
+          Authorization: `Bearer ${accessToken}`,
         },
       });
+      console.log(response);
     } catch (error) {
       console.log(error);
     }
@@ -94,18 +105,42 @@ const RegisterPage = () => {
     <div className={styles.container}>
       <form onSubmit={handleSubmit}>
         <div className={`w-100 p-15 flex-col-center`}>
-          <label className={`flex-col-center p-15 ${styles.inputForm}`}>
-            <input
-              type="file"
-              id="albumImg"
-              className={`${styles.imgInput}`}
-              accept="image/jpeg, image/png, image/jpg"
-              ref={fileInputRef}
-              onChange={handleFileUpload}
-              required
-            />
-            <h2>프로필 사진을 업로드 해주세요</h2>
-          </label>
+          <>
+            {profileImage && (
+              <div
+                onMouseOver={() => setIsHover(true)}
+                onMouseLeave={() => setIsHover(false)}
+                className={`${styles.imageContainer}`}
+              >
+                <img src={profileUrl} className={`${styles.profileImage}`} />
+                <div
+                  className={` flex-col-center ${styles.resetBtn} ${
+                    isHover ? styles.active : ""
+                  }`}
+                >
+                  <GrPowerReset
+                    onClick={handleImageReset}
+                    style={{ cursor: "pointer" }}
+                    size={42}
+                  />
+                </div>
+              </div>
+            )}
+            {!profileImage && (
+              <label className={`flex-col-center p-15 ${styles.inputForm}`}>
+                <input
+                  type="file"
+                  id="albumImg"
+                  className={`${styles.imgInput}`}
+                  accept="image/jpeg, image/png, image/jpg"
+                  ref={fileInputRef}
+                  onChange={handleFileUpload}
+                  required
+                />
+                <h2>프로필 사진을 업로드 해주세요</h2>
+              </label>
+            )}
+          </>
         </div>
         <AuthInput
           id="nickname"
