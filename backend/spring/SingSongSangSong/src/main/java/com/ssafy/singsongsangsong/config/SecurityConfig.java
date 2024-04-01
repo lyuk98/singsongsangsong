@@ -1,6 +1,7 @@
 package com.ssafy.singsongsangsong.config;
 
 import java.util.Arrays;
+import java.util.List;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -92,7 +93,7 @@ public class SecurityConfig {
 		CorsConfiguration config = new CorsConfiguration();
 
 		config.setAllowCredentials(true);
-		config.setAllowedOrigins(Arrays.asList("http://localhost:3000","https://api.singsongsangsong.com","https://www.singsongsangsong.com"));
+		config.setAllowedOrigins(List.of("http://localhost:3000","https://api.singsongsangsong.com","https://www.singsongsangsong.com"));
 		// config.setAllowedOriginPatterns(Arrays.asList("https://www.singsongsangsong.com"));
 		config.setAllowedMethods(Arrays.asList("HEAD","POST","GET","DELETE","PUT","OPTIONS"));
 		config.setAllowedHeaders(Arrays.asList("DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization"));
