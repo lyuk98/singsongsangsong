@@ -1,6 +1,6 @@
 package com.ssafy.singsongsangsong.entity;
 
-import com.ssafy.singsongsangsong.util.Role;
+import com.ssafy.singsongsangsong.constants.Role;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

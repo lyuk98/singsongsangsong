@@ -16,13 +16,11 @@ import org.springframework.web.multipart.MultipartFile;
 import com.ssafy.singsongsangsong.constants.FileType;
 import com.ssafy.singsongsangsong.dto.SimpleSongDto;
 import com.ssafy.singsongsangsong.dto.UploadMainPageDto;
-import com.ssafy.singsongsangsong.entity.Artist;
-import com.ssafy.singsongsangsong.exception.artist.ArtistNotFoundException;
 import com.ssafy.singsongsangsong.exception.song.AlreadyCompletedException;
 import com.ssafy.singsongsangsong.repository.maria.artist.ArtistRepository;
 import com.ssafy.singsongsangsong.security.ArtistPrincipal;
-import com.ssafy.singsongsangsong.service.AnalyzeService;
-import com.ssafy.singsongsangsong.service.FileService;
+import com.ssafy.singsongsangsong.service.analyze.AnalyzeService;
+import com.ssafy.singsongsangsong.service.file.FileService;
 
 import lombok.RequiredArgsConstructor;
 

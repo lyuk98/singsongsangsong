@@ -16,6 +16,7 @@ import com.ssafy.singsongsangsong.entity.Artist;
 import com.ssafy.singsongsangsong.entity.File;
 import com.ssafy.singsongsangsong.repository.maria.artist.ArtistRepository;
 import com.ssafy.singsongsangsong.repository.maria.artist.FollowingRepository;
+import com.ssafy.singsongsangsong.service.artist.ArtistService;
 
 @SpringBootTest()
 @ActiveProfiles("test")
