@@ -25,7 +25,7 @@ export const getAnalyzeState = async () => {
 export const handleStartAnalyze = async (inputFile: File) => {
   const formData = new FormData();
   console.log(inputFile);
-  formData.append("file", inputFile);
+  formData.append(inputFile.type, inputFile);
   const accessToken = getCookie("accessToken");
   try {
     const result = await axios({
