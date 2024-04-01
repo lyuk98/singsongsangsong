@@ -57,7 +57,7 @@ spring:
     password: 1234
   jpa:
     hibernate:
-      ddl-auto: none # create-drop, create? ??? ?
+      ddl-auto: create
     properties:
       hibernate:
         format_sql: true
