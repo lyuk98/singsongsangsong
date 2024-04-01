@@ -84,19 +84,20 @@ public class StfpFileService implements FileService {
 	 * NAS와 볼륨 마운트가 이루어지기 전까지 임시로 사용하는 Service이므로, 다시 서버를 껐다가 켜주시면 파일을 인식합니다.
 	 */
 	@Override
-	public Resource getFile(Long artistId, FileType fileType, String fileName) throws IOException {
+	public Resource getFile(Long artistId, FileType fileType, String originalFileName) throws IOException {
 		ChannelSftp channel = createChannel();
 		final String ABSOLUTE_DST = "/src/main/resources" + synologyFileStationConfig.getBaseDir() + File.separator
-			+ fileType.getName() + File.separator + fileName;
-		final String RELATIVE_DST = synologyFileStationConfig.getBaseDir() + "/" + fileType.getName() + "/" + fileName;
+			+ fileType.getName() + File.separator + originalFileName;
+		final String RELATIVE_DST =
+			synologyFileStationConfig.getBaseDir() + "/" + fileType.getName() + "/" + originalFileName;
 
-		log.info("src: {}", fileName);
+		log.info("src: {}", originalFileName);
 		log.info("dest: {}", ABSOLUTE_DST);
 
 		try {
 			channel.cd(synologyFileStationConfig.getBaseDir() + "/" + fileType.getName());
 
-			channel.get(fileName, ABSOLUTE_DST);
+			channel.get(originalFileName, ABSOLUTE_DST);
 			return new ClassPathResource(RELATIVE_DST);
 		} catch (SftpException e) {
 			throw new RuntimeException(e);

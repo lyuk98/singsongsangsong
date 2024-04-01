@@ -10,8 +10,8 @@ import java.util.stream.Stream;
 import org.springframework.stereotype.Component;
 
 import com.ssafy.singsongsangsong.annotation.CsvFileContents;
-import com.ssafy.singsongsangsong.exception.CreateFileException;
 import com.ssafy.singsongsangsong.exception.NotMatchedWithCsvColumnsException;
+import com.ssafy.singsongsangsong.exception.file.CreateFileException;
 
 @Component
 public class CsvWriterImpl implements CsvWriter {

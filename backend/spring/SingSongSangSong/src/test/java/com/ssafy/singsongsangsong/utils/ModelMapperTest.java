@@ -9,9 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
+import com.ssafy.singsongsangsong.ArtistFixture;
 import com.ssafy.singsongsangsong.dto.ArtistInfoDto;
 import com.ssafy.singsongsangsong.entity.Artist;
-import com.ssafy.singsongsangsong.entity.Image;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -27,7 +27,7 @@ public class ModelMapperTest {
 			.nickname("nickname")
 			.username("username")
 			.password("password")
-			.profileImage(new Image(2L, "imgLocation", "orgFileName"))
+			.profileImage(ArtistFixture.NO_PROFILE_USER.getProfileImage())
 			.introduction("introduction")
 			.age(1)
 			.sex('M')
@@ -40,7 +40,8 @@ public class ModelMapperTest {
 			assertThat(result.getNickname()).isEqualTo(artist.getNickname());
 			assertThat(result.getUsername()).isEqualTo(artist.getUsername());
 			assertThat(result.getIntroduction()).isEqualTo(artist.getIntroduction());
-			assertThat(result.getProfileImageFileName()).isEqualTo(artist.getProfileImage().getSavedFileName());
+			assertThat(result.getProfileImage().getSavedFileName()).isEqualTo(
+				artist.getProfileImage().getSavedFileName());
 		}
 
 	}

@@ -1,11 +1,12 @@
 package com.ssafy.singsongsangsong.entity;
 
-import org.springframework.beans.factory.annotation.Value;
-
 import com.ssafy.singsongsangsong.util.Role;
 
+<<<<<<< HEAD
+=======
 import jakarta.annotation.Nullable;
 import jakarta.persistence.Column;
+>>>>>>> spring
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -14,7 +15,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -39,9 +39,10 @@ public class Artist {
 
 	@OneToOne
 	@JoinColumn(name = "profileImageId")
-	private Image profileImage;
-	private Integer age;
-	private Character sex;
+	private File profileImage;
+	private int age;
+	private char sex;
+
 	private String introduction;
 	@Enumerated(value = EnumType.STRING)
 	private Role role;

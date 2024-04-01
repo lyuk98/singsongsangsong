@@ -31,13 +31,13 @@ public class Song extends BaseTimeEntity{
 	private Artist artist;
 	@OneToOne
 	@JoinColumn(name = "mfccImageId")
-	private Image mfccImage;
+	private File mfccImage;
 	@OneToOne
 	@JoinColumn(name = "spectrumImageId")
-	private Image spectrumImage;
+	private File spectrumImage;
 	@OneToOne
 	@JoinColumn(name = "albumImageId")
-	private Image albumImage;
+	private File albumImage;
 
 	private String title;
 	private String songDescription;
