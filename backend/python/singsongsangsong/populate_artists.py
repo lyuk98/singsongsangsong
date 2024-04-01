@@ -172,12 +172,12 @@ try:
             cursor.executemany(
                 "insert into file "
                 "(id, owner_id, saved_file_name, original_file_name) "
-                "values (%s, %s, %s)",
+                "values (%s, %s, %s, %s)",
                 [
                     (
                         row["id"],
                         row["owner_id"],
-                        row["file_name"],
+                        row["saved_file_name"],
                         row["original_file_name"]
                     ) for row in file_insert
                 ]
@@ -195,15 +195,18 @@ try:
 
             # 이미지 파일을 client에 업로드합니다
             for image_file in file_insert:
-                print(f"Uploading {image_file['original_file_name']} ({image_file['file_name']})")
+                print(
+                    f"Uploading {image_file['original_file_name']}"
+                    f" ({image_file['saved_file_name']})"
+                )
 
                 file_server.upload(
                     image_file["file_path"],
                     "image",
-                    image_file["file_name"],
+                    image_file["saved_file_name"],
                     minio_client
                 )
-                saved_files.append(image_file["file_name"])
+                saved_files.append(image_file["saved_file_name"])
 
             # NaN 값을 NULL로 변경합니다
             # (더 좋은 방법이 있을 것 같으나 시간 문제로 진행하지 않습니다)
