@@ -12,16 +12,16 @@ import { GiPoisonGas } from "react-icons/gi";
 import styles from "./Sidebar.module.css";
 
 const Sidebar = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState<boolean>(true);
 
   const handleLogout = () => {
     setIsLogin(!isLogin);
   };
-  
+
   const navigateMain = () => {
-    navigate('/')
-  }
+    navigate("/");
+  };
 
   return (
     <div className={styles.mainContainer}>
@@ -72,7 +72,7 @@ const Sidebar = () => {
         {!isLogin && (
           <>
             <NavLink
-              to="/register"
+              to="/select-sign-up"
               className={({ isActive }) =>
                 isActive ? styles.active : undefined
               }

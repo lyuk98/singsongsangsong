@@ -17,6 +17,7 @@ import TopRankSongPage from "../pages/root/TopRankSongPage";
 import TopRankArtistPage from "../pages/root/TopRankArtistPage";
 import FavoriteArtistPage from "../pages/root/FavoriteArtistPage";
 import FavoriteSongPage from "../pages/root/FavoriteSongPage";
+import RegisterSelectPage from "../pages/root/RegisterSelectPage";
 
 export const router = createBrowserRouter([
   {
@@ -81,6 +82,10 @@ export const router = createBrowserRouter([
       {
         path: "/sign-up",
         element: <RegisterPage />,
+      },
+      {
+        path: `/select-sign-up`,
+        element: <RegisterSelectPage />,
       },
       {
         path: "/login",

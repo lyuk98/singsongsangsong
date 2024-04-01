@@ -1,20 +1,16 @@
 import React from "react";
 import { Link, redirect } from "react-router-dom";
 
-import styles from "./LoginPage.module.css";
+import styles from "./RegisterSelectPage.module.css";
 
 import googleIcon from "./../../sources/imgs/auth/googleSymbol.png";
 import naverIcon from "./../../sources/imgs/auth/naverIcon.png";
 import kakoIcon from "./../../sources/imgs/auth/kakaoIcon.png";
 
-import AuthInput from "../../components/auth/AuthInput";
-import Button from "../../components/buttons/Button";
-import { useInput } from "../../hooks/useInput";
-import { idValidator, passwordValidator } from "../../utils/validator";
 import { axiosInstance } from "../../hooks/api";
 import LoginButton from "../../components/buttons/LoginButton";
 
-const LoginPage = () => {
+const RegisterSelectPage = () => {
   const handleLogin = async (props: string) => {
     console.log("실행은되니?");
     try {
@@ -37,12 +33,9 @@ const LoginPage = () => {
           <LoginButton name="naver" url="naver" img={naverIcon} />
         </div>
         <p>
-          계정이 없으신가요?{" "}
-          <Link
-            style={{ borderBottom: "1px solid black" }}
-            to="/select-sign-up"
-          >
-            회원가입
+          이미 아이디를 가지고 계신가요?{" "}
+          <Link style={{ borderBottom: "1px solid black" }} to="/login">
+            로그인
           </Link>
         </p>
       </div>
@@ -50,4 +43,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default RegisterSelectPage;

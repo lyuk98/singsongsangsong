@@ -12,7 +12,11 @@ const Notice: React.FC<NoticeProps> = ({ pathname }): JSX.Element => {
   };
 
   switch (pathname) {
-    case "/register":
+    case "/select-sign-up":
+      authInfo.index = "Create your account";
+      authInfo.notice = "discover brilliant idea";
+      break;
+    case "/sign-up":
       authInfo.index = "Create your account";
       authInfo.notice = "discover brilliant idea";
       break;
