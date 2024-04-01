@@ -1,4 +1,5 @@
 import axios from "axios";
+import { useDispatch } from "react-redux";
 import React, {
   useState,
   ChangeEvent,
@@ -6,25 +7,18 @@ import React, {
   FormEvent,
   useEffect,
 } from "react";
-import {
-  Form,
-  Link,
-  ActionFunction,
-  redirect,
-  useLocation,
-} from "react-router-dom";
+import { Link, redirect, useLocation } from "react-router-dom";
 import { GrPowerReset } from "react-icons/gr";
 
 import styles from "./RegisterPage.module.css";
 import AuthInput from "../../components/auth/AuthInput";
 import Button from "../../components/buttons/Button";
+
 import { useInput } from "../../hooks/useInput";
-import {
-  passwordValidator,
-  descValidator,
-  nicknameValidator,
-} from "../../utils/validator";
+import { descValidator, nicknameValidator } from "../../utils/validator";
 import { axiosInstance } from "../../hooks/api";
+import { setCookie } from "../../utils/cookie";
+import { userAction } from "../../store/userSlice";
 
 const AGES = [
   { data: 10, text: "10대" },
@@ -37,6 +31,8 @@ const AGES = [
 
 const RegisterPage = () => {
   const location = useLocation();
+  const dispatch = useDispatch();
+
   const searchParams = new URLSearchParams(location.search);
   const accessToken = searchParams.get("accessToken");
 
@@ -104,6 +100,22 @@ const RegisterPage = () => {
         },
       });
       console.log(response);
+      if (response.status === 200) {
+        setCookie("accessToken", `${accessToken}`, {
+          path: "/",
+          secure: true,
+          sameSite: "none",
+        });
+        const userInfo = await axiosInstance.request({
+          method: "GET",
+          url: "/artist/myProfile",
+        });
+        if (userInfo?.data?.data) {
+          const userSliceData = userInfo.data.data;
+          dispatch(userAction.setLogin(userSliceData));
+        }
+        redirect("/");
+      }
     } catch (error) {
       console.log(error);
     }
