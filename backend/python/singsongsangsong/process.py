@@ -94,6 +94,9 @@ def analyse(song_id: int, audio_path: str): # pylint: disable=too-many-locals
                 connection.autocommit = False
 
                 with connection.cursor() as cursor:
+                    # 아티스트 ID 받아오기
+                    artist_id = database.get_song_artist(song_id, cursor)
+
                     # 장르 데이터 준비
                     genre_data = []
                     for genre_str, correlation in islice(genres.items(), 5):
@@ -142,18 +145,18 @@ def analyse(song_id: int, audio_path: str): # pylint: disable=too-many-locals
                     file_server.upload(mfcc_path, "image", mfcc_filename, client)
                     saved_files.append(mfcc_filename)
                     cursor.execute(
-                        "insert into image (saved_file_name, original_file_name) "
-                        "values (%s, %s)",
-                        (mfcc_filename, f"mfcc-{song_id}.svg")
+                        "insert into file (owner_id, saved_file_name, original_file_name) "
+                        "values (%s, %s, %s)",
+                        (artist_id, mfcc_filename, f"mfcc-{song_id}.svg")
                     )
                     mfcc_insert_id = cursor.lastrowid
 
                     file_server.upload(waveform_path, "image", waveform_filename, client)
                     saved_files.append(waveform_filename)
                     cursor.execute(
-                        "insert into image (saved_file_name, original_file_name) "
-                        "values (%s, %s)",
-                        (waveform_filename, f"spectrum-{song_id}.svg")
+                        "insert into file (owner_id, saved_file_name, original_file_name) "
+                        "values (%s, %s, %s)",
+                        (artist_id, waveform_filename, f"spectrum-{song_id}.png")
                     )
                     waveform_insert_id = cursor.lastrowid
 
