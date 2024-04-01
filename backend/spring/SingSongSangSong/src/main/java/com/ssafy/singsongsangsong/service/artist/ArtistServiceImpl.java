@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ssafy.singsongsangsong.constants.FileType;
@@ -34,6 +35,7 @@ public class ArtistServiceImpl implements ArtistService {
 	private final FollowingRepository followingRepository;
 	private final FileService fileService;
 
+	@Transactional
 	@Override
 	public void join(String username, GuestJoinRequestDto dto) throws IOException {
 		Artist artist = artistRepository.findByUsername(username).orElseThrow();
