@@ -11,3 +11,17 @@ export const passwordValidator = (password: string): boolean => {
   }
   return true;
 };
+
+export const descValidator = (desc: string): boolean => {
+  if (desc.length < 0) {
+    return false;
+  }
+  return true;
+};
+
+export const nicknameValidator = (nickname: string): boolean => {
+  if (nickname.length < 0) {
+    return false;
+  }
+  return true;
+};

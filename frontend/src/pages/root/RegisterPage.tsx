@@ -1,12 +1,24 @@
-import React, { useState, ChangeEvent } from "react";
-import { Form, Link, ActionFunction, redirect } from "react-router-dom";
+import React, { useState, ChangeEvent, useRef } from "react";
+import {
+  Form,
+  Link,
+  ActionFunction,
+  redirect,
+  useLocation,
+} from "react-router-dom";
 
 import styles from "./RegisterPage.module.css";
 
 import AuthInput from "../../components/auth/AuthInput";
 import Button from "../../components/buttons/Button";
 import { useInput } from "../../hooks/useInput";
-import { idValidator, passwordValidator } from "../../utils/validator";
+import {
+  passwordValidator,
+  descValidator,
+  nicknameValidator,
+} from "../../utils/validator";
+import { axiosInstance } from "../../hooks/api";
+import axios from "axios";
 
 const AGES = [
   { data: 10, text: "10대" },
@@ -18,24 +30,24 @@ const AGES = [
 ];
 
 const RegisterPage = () => {
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const accessToken = searchParams.get("accessToken");
+  console.log(accessToken);
   const {
-    value: idValue,
-    handleInputChange: handleIdChange,
-    valueIsValid: idIsValid,
-  } = useInput("", idValidator);
+    value: nicknameValue,
+    handleInputChange: handleNicknameChange,
+    valueIsValid: nicknameIsValid,
+  } = useInput("", nicknameValidator);
 
   const {
-    value: passwordValue,
-    handleInputChange: handlePasswordChange,
-    valueIsValid: passwordIsValid,
-  } = useInput("", passwordValidator);
+    value: descValue,
+    handleInputChange: handleDescChange,
+    valueIsValid: descIsValid,
+  } = useInput("", descValidator);
 
-  const {
-    value: passwordConfirmValue,
-    handleInputChange: handlePasswordConfirmChange,
-    valueIsValid: passwordConfirmIsValid,
-  } = useInput("", (value) => value === passwordValue);
-
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [profileImage, setProfileImage] = useState<File | null>(null);
   const [gender, setGender] = useState<undefined | string>(undefined);
   const [age, setAge] = useState<undefined | number>(undefined);
 
@@ -47,44 +59,78 @@ const RegisterPage = () => {
     setAge(+event.target.value);
   };
 
+  const handleFileUpload = (event: ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
+    console.log(files);
+    console.log(new Date());
+    if (files && files[0] && files[0].type.startsWith("image/")) {
+      // const url = URL.createObjectURL(files[0]);
+      setProfileImage(files[0]);
+    }
+  };
+
+  const handleSubmit = async () => {
+    try {
+      const reponse = await axios({
+        method: "POST",
+        url: `${process.env.REACT_APP_API_URL}/artist/join`,
+        data: {
+          nickname: nicknameValue,
+          profileImage: profileImage,
+          age,
+          sex: gender,
+          introduction: descValue,
+        },
+        headers: {
+          // Authorization: `Bearer ${accessToken}`
+        },
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className={styles.container}>
-      <Form method="post">
+      <form onSubmit={handleSubmit}>
+        <div className={`w-100 p-15 flex-col-center`}>
+          <label className={`flex-col-center p-15 ${styles.inputForm}`}>
+            <input
+              type="file"
+              id="albumImg"
+              className={`${styles.imgInput}`}
+              accept="image/jpeg, image/png, image/jpg"
+              ref={fileInputRef}
+              onChange={handleFileUpload}
+              required
+            />
+            <h2>프로필 사진을 업로드 해주세요</h2>
+          </label>
+        </div>
         <AuthInput
-          id="id"
-          label="ID"
-          name="id"
-          hasError={!idIsValid && "아이디는 4-16글자 사이입니다"}
+          id="nickname"
+          label="닉네임"
+          name="nickname"
           type="text"
-          placeholder="아이디"
-          value={idValue}
-          onChange={handleIdChange}
+          placeholder="닉네임을 입력해주세요"
+          value={nicknameValue}
+          onChange={handleNicknameChange}
           required
         />
+
         <AuthInput
-          id="password"
-          label="PASSWORD"
-          name="password"
-          hasError={!passwordIsValid && "비밀번호는 4-16글자 사이입니다"}
-          type="password"
-          placeholder="비밀번호"
-          value={passwordValue}
-          onChange={handlePasswordChange}
+          id="intro"
+          label="소개"
+          name="intro"
+          type="textarea"
+          placeholder="자기소개를 입력해주세요"
+          value={descValue}
+          onChange={handleDescChange}
           required
         />
-        <AuthInput
-          id="passwordConfirm"
-          label="confirm password"
-          name="passwordConfirm"
-          hasError={!passwordConfirmIsValid && "비밀번호가 일치하지 않습니다"}
-          type="password"
-          placeholder="비밀번호 확인"
-          value={passwordConfirmValue}
-          onChange={handlePasswordConfirmChange}
-          required
-        />
+
         <div className={styles.selectBox}>
-          <label>Gender</label>
+          <label>성별</label>
           <select
             name="gender"
             value={gender}
@@ -97,12 +143,12 @@ const RegisterPage = () => {
             <option key="male" value="male">
               남성
             </option>
-            <option key="femail" value="female">
+            <option key="female" value="female">
               여성
             </option>
           </select>
 
-          <label>Age Range</label>
+          <label>연령</label>
           <select name="age" value={age} onChange={handleAgeChange} required>
             <option value={""}>연령대를 설정해주세요</option>
             {AGES.map((element) => {
@@ -120,22 +166,9 @@ const RegisterPage = () => {
             You hava account?<Link to="/login">Login</Link>{" "}
           </p>
         </div>
-      </Form>
+      </form>
     </div>
   );
 };
 
 export default RegisterPage;
-
-export const action: ActionFunction = async ({ request, params }) => {
-  console.log("submit");
-  const data = await request.formData();
-  const userData = {
-    id: data.get("id"),
-    password: data.get("password"),
-    gender: data.get("gender"),
-    age: data.get("age"),
-  };
-  console.log(userData);
-  return redirect("/");
-};

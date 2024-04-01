@@ -25,6 +25,8 @@ import TestWeeklySingsongChart from "../../components/pageComponents/trendpageCo
 import noneImg from "./../../sources/imgs/nodataimg.webp";
 import { getCookie, setCookie } from "../../utils/cookie";
 
+
+
 const TrendPage = () => {
   const { year, month, day } = getLastSunday();
   const [selectedDate, setSelectedDate] = useState<DateType>({
@@ -43,7 +45,7 @@ const TrendPage = () => {
     },
   });
 
-  // console.log(response);
+  console.log(response);
 
   useEffect(() => {
     setWeekNumber(getWeekNumber(selectedDate));
@@ -71,13 +73,6 @@ const TrendPage = () => {
 
   useEffect(() => {
     const accessToken = getCookie("accessToken");
-    console.log(document.cookie);
-    setCookie("testCookie", "test", {
-      path: "/",
-      secure: true,
-      sameSite: "none",
-    });
-    console.log(getCookie("testCookie"));
     console.log(accessToken);
   }, []);
 

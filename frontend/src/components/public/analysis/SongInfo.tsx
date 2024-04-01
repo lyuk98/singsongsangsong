@@ -3,6 +3,10 @@ import { PiVinylRecord } from "react-icons/pi";
 import styles from "./SongInfo.module.css";
 import MoodTag from "../../moodTag/MoodTag";
 
+// songDescription={DUMMY_DATA.songDescription}
+// bpm={DUMMY_DATA.bpm}
+// chord={DUMMY_DATA.chord}
+
 /**
  * @todo 곡설명에 대한 정보와 tag에 관련된 props를 받아야함
  * @returns
@@ -16,12 +20,7 @@ const SongInfo = () => {
           <PiVinylRecord color="#0085E5" size={"42"} />
         </h2>
       </header>
-      <div className={`${styles.explanationBox}`}>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dignissimos
-        quis culpa sunt minima animi inventore quos ducimus placeat sed,
-        incidunt delectus. Nulla aliquam odio laudantium, magnam reiciendis
-        quas? Quidem, incidunt.
-      </div>
+      <div className={`${styles.explanationBox}`}>{"songDescription"}</div>
       <div className={`flex-row-center ${styles.tagBox}`}>
         <MoodTag mood="발라드" />
         <MoodTag mood="테마" />

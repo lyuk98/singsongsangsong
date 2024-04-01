@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./SongDetails.module.css";
 import RaderChart from "../../public/chart/raderChart/RaderChart";
 import MusicSectionIndicator from "../../public/analysis/MusicSectionIndicator";
 import SimilarSong from "../../public/analysis/SimilarSong";
+import { getAnalyzeResult } from "../../../utils/api/songDetailApi";
+import { useParams } from "react-router-dom";
 
 const TAB_CONTENT = ["가사", "분위기 / 장르", "유사곡", "구간분석"];
 
@@ -14,10 +16,15 @@ const TAB_CONTENT = ["가사", "분위기 / 장르", "유사곡", "구간분석"
 
 const SongDetails = () => {
   const [focused, setFocused] = useState<string>("가사");
-
+  const { songId } = useParams();
   const handleSelectButton = (content: string): void => {
     setFocused(content);
   };
+
+  // useEffect(() => {
+  //   const result = getAnalyzeResult(songId);
+  //   console.log(result);
+  // }, []);
 
   return (
     <div className={styles.container}>

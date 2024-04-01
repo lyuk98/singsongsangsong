@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 
 import { getCookie } from "../../utils/cookie";
 
@@ -25,3 +25,12 @@ axiosInstance.interceptors.request.use(
     return Promise.reject(error);
   }
 );
+
+// axios.interceptors.response.use(
+//   async (response: AxiosResponse) => {
+//     return response;
+//   },
+//   (error) => {
+//     return Promise.reject(error);
+//   }
+// );

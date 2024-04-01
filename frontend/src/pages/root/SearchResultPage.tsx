@@ -6,6 +6,7 @@ import { SearchType, SearchParmasType } from "../../utils/types";
 import MusicTable from "../../components/public/music/MusicTable";
 import styles from "./SearchResultPage.module.css";
 import { getSearchResult } from "../../utils/api/api";
+import { useAxios } from "../../hooks/api/useAxios";
 
 const SearchResultPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -23,6 +24,18 @@ const SearchResultPage = () => {
     atmosphere,
     sort,
   };
+
+  const { response, refetch, isLoading } = useAxios({
+    method: "GET",
+    url: "/music-playlist/search",
+    data: {
+      keyword,
+      genre,
+      atmosphere,
+      bpm,
+      sort,
+    },
+  });
 
   useEffect(() => {
     console.log(userSearchParams);
