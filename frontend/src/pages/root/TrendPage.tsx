@@ -45,7 +45,7 @@ const TrendPage = () => {
     },
   });
 
-  // console.log(response);
+  console.log(response);
 
   useEffect(() => {
     setWeekNumber(getWeekNumber(selectedDate));
@@ -72,12 +72,7 @@ const TrendPage = () => {
   // }, []);
 
   useEffect(() => {
-    const accessToken = getCookie("JSESSIONID");
-    setCookie("testCookie", "test", {
-      path: "/",
-      secure: true,
-      sameSite: "none",
-    });
+    const accessToken = getCookie("accessToken");
     console.log(accessToken);
   }, []);
 

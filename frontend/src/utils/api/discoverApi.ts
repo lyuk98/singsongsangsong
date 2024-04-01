@@ -34,3 +34,57 @@ export const getFollowerNumber = async (artistId: string) => {
     console.log(error);
   }
 };
+
+export const getGenreList = async (genre: string) => {
+  try {
+    const response = await axiosInstance.request({
+      method: "GET",
+      url: `/music-playlisy/genre-hitsong/${genre}`,
+      data: {
+        Genre: genre,
+      },
+    });
+    return response?.data?.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getAtmosphereList = async (atmosphere: string) => {
+  try {
+    const response = await axiosInstance.request({
+      method: "GET",
+      url: `/music-playlisy/atmosphere-hitsong/${atmosphere}`,
+      data: {
+        Atmosphere: atmosphere,
+      },
+    });
+    return response?.data?.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getWeeklyArtist = async () => {
+  try {
+    const response = await axiosInstance.request({
+      method: "GET",
+      url: `/mustic-playlist/hot-artist`,
+    });
+    return response?.data?.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getWeeklySong = async () => {
+  try {
+    const response = await axiosInstance.request({
+      method: "GET",
+      url: `/music-playlist/weekly-hitsong`,
+    });
+    return response?.data?.data;
+  } catch (error) {
+    console.log(error);
+  }
+};

@@ -23,6 +23,7 @@ type audioType = {
 
 const UploadPage = () => {
   const [uploadFile, setUploadFile] = useState<audioType | null>(null);
+  const [viewFileName, setViewFileName] = useState<string | null>(null);
   const [isActive, setIsActive] = useState<boolean>(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -61,15 +62,21 @@ const UploadPage = () => {
   const handleDrop = (event: React.DragEvent<HTMLLabelElement>) => {
     event.preventDefault();
     event.stopPropagation();
-    const data = event.dataTransfer.files;
-    console.log(data[0]);
-    if (data && data[0].type.startsWith("audio/")) {
-      const url = URL.createObjectURL(data[0]);
+    const file = event.dataTransfer.files;
+    console.log(file[0]);
+    if (file && file[0].type.startsWith("audio/")) {
+      const url = URL.createObjectURL(file[0]);
+      const prevFileName = file[0].name;
+      // 파일 이름 앞에 유저 이름을 붙여서 저장 후 전달 (ex. USER${userId}_${musicFileName})
+      let newFile = new File([file[0]], `USER${"userID"}_${prevFileName}`, {
+        type: file[0].type,
+      });
+      console.log("drop이벤트 시 파일", newFile);
       setUploadFile({
-        file: data[0],
+        file: newFile,
         url: url,
-        name: data[0].name,
-        type: data[0].type,
+        name: newFile.name,
+        type: newFile.type,
       });
     }
     setIsActive(false);
@@ -82,20 +89,36 @@ const UploadPage = () => {
   const handleFileInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
     event.stopPropagation();
-
     const file = event.target.files;
-    console.log(file);
     if (file && file[0].type.startsWith("audio/")) {
       const url = URL.createObjectURL(file[0]);
+      const prevFileName = file[0].name;
+      // 파일 이름 앞에 유저 이름을 붙여서 저장 후 전달 (ex. USER${userId}_${musicFileName})
+      let newFile = new File([file[0]], `USER${"userID"}_${prevFileName}`, {
+        type: file[0].type,
+      });
+      console.log(newFile);
       setUploadFile({
-        file: file[0],
+        file: newFile,
         url: url,
-        name: file[0].name,
+        name: newFile.name,
         type: file[0].type,
       });
     }
     setIsActive(false);
   };
+
+  const extractString = (str: string) => {
+    const match = str.match(/_(.*?)\./);
+    return match ? match[1] : null;
+  };
+
+  useEffect(() => {
+    if (uploadFile !== null) {
+      const name = uploadFile.name as string;
+      setViewFileName(extractString(name));
+    }
+  }, [uploadFile]);
 
   return (
     <div className={`w-100 px-main ${styles.container}`}>
@@ -111,7 +134,7 @@ const UploadPage = () => {
               <AudioPlayer src={uploadFile.url} volume={0.5}></AudioPlayer>
             </div>
             <h1 className="flex-row-center" style={{ gap: "15px" }}>
-              {uploadFile.name}{" "}
+              {viewFileName}{" "}
               <GrPowerReset
                 onClick={handleClear}
                 style={{ cursor: "pointer" }}

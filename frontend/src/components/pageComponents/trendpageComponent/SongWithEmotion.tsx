@@ -26,7 +26,7 @@ type EmotionMap = Record<string, Song>;
 
 const SongWithEmotion = ({ emotions }: EmotionMap) => {
   const navigate = useNavigate();
-
+  console.log(emotions);
   return (
     <div className={`flex-col-center ${styles.container}`}>
       <h1>감정 극대화 곡</h1>

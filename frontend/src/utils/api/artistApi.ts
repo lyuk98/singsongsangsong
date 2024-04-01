@@ -1,6 +1,20 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { axiosInstance } from "../../hooks/api";
 import { getCookie } from "../cookie";
+import { useAxios } from "../../hooks/api/useAxios";
+
+export const getArtist = async (artistId: any) => {
+  try {
+    const response = await axiosInstance.request({
+      method: "GET",
+      url: `/artist/${artistId}`,
+    });
+    console.log("getArtist : ", response);
+    return response;
+  } catch (error) {
+    console.log("error occur at getArtist");
+  }
+};
 
 /**
  * 아티스트 팔로우 기능
@@ -47,14 +61,13 @@ export const getSongList = async (artistId: number) => {
  * @param artistId
  * @returns emotion 배열
  */
-export const getEmotions = async (artistId: number) => {
+export const getEmotions = async (artistId: any) => {
   try {
     const response = await axiosInstance.request({
       method: "GET",
       url: `/artist/emotions/${artistId}`,
     });
-    console.log("getEmotions -> ", response);
-    return response;
+    return response?.data?.data;
   } catch (error) {
     console.log(error);
   }
