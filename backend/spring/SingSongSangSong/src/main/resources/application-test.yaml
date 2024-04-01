@@ -49,7 +49,6 @@ spring:
             user-name-attribute: id
     singsongsangsong:
       redirect-uri: http://localhost:3000/
-
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
     url: jdbc:mariadb://localhost:3306/singsongsangsong?useUnicode=true&characterEncoding=UTF-8
@@ -63,6 +62,7 @@ spring:
         format_sql: true
     show-sql: true
     generate-ddl: true
+    defer-datasource-initialization: true
   data:
     mongodb:
       uri: mongodb+srv://S10P22E206:rui4ZhwEt1@ssafy.ngivl.mongodb.net/S10P22E206?authSource=admin
@@ -73,6 +73,9 @@ spring:
   batch:
     jdbc:
       initialize-schema: always
+  sql:
+    init:
+      mode: always
 
 jwt:
   secretKey: "QjaVCjBnUIWtzWt8erZbO2ZFApswkbVhSArPu6GshQ8jp2OLtRhhOVl3pv8DTxaBA6kEjeZPJz8Uhy66tpGVwBEWIdflSQcSwTNvnMM7FSL8hz8N4syBT9nWqT006unUVqIemV9L8jMtu2bPFRu8p6qO8RXySni4cliOF4Wd1dUWiAx7Io4ONcW3UHXwtD4QvDstZm4EWHGnXXaZ4um4Pj5BXwJJb7jmlGMXYM84ZBwyDA6I1XmpQlv19O0bnZjqMqbNo5ockscMYv1xOHQSiTXBf6YjD0y98ZgRZiRkz4cYjxvJDpWGN28DmArr2TZ0AvRLd78uvmJzybH137CIgGRzwtfR91MbG5Q3QAMytYPgdkxv2weeOFGcAlIUEIAXkn6pXRPrxWZBUL3NrzEyYJyK6xUbZM1T4ZgelQ650DK6RAdWgLaHA0sdw7lZltcZRoVjhgteMWpnvPWOaZ97xR25cNYdOLvFhrO9bev8QnZfHB7HKiPE3gCpN4539wNlQjaVCjBnUIWtzWt8erZbO2ZFApswkbVhSArPu6GshQ8jp2OLtRhhOVl3pv8DTxaBA6kEjeZPJz8Uhy66tpGVwBEWIdflSQcSwTNvnMM7FSL8hz8N4syBT9nWqT006unUVqIemV9L8jMtu2bPFRu8p6qO8RXySni4cliOF4Wd1dUWiAx7Io4ONcW3UHXwtD4QvDstZm4EWHGnXXaZ4um4Pj5BXwJJb7jmlGMXYM84ZBwyDA6I1XmpQlv19O0bnZjqMqbNo5ockscMYv1xOHQSiTXBf6YjD0y98ZgRZiRkz4cYjxvJDpWGN28DmArr2TZ0AvRLd78uvmJzybH137CIgGRzwtfR91MbG5Q3QAMytYPgdkxv2weeOFGcAlIUEIAXkn6pXRPrxWZBUL3NrzEyYJyK6xUbZM1T4ZgelQ650DK6RAdWgLaHA0sdw7lZltcZRoVjhgteMWpnvPWOaZ97xR25cNYdOLvFhrO9bev8QnZfHB7HKiPE3gCpN4539wNl"
@@ -88,6 +91,7 @@ logging:
     org:
       springframework:
         security: trace
+        web: trace
 
 synology:
   host: zip.udon.party
