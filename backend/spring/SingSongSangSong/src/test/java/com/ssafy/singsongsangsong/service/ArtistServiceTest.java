@@ -11,10 +11,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import com.ssafy.singsongsangsong.dto.ArtistInfoDto;
+import com.ssafy.singsongsangsong.dto.ImageDto;
 import com.ssafy.singsongsangsong.entity.Artist;
-import com.ssafy.singsongsangsong.entity.Image;
+import com.ssafy.singsongsangsong.entity.File;
 import com.ssafy.singsongsangsong.repository.maria.artist.ArtistRepository;
 import com.ssafy.singsongsangsong.repository.maria.artist.FollowingRepository;
+import com.ssafy.singsongsangsong.service.artist.ArtistService;
 
 @SpringBootTest()
 @ActiveProfiles("test")
@@ -63,14 +65,16 @@ public class ArtistServiceTest {
 	public void getArtistInfoTest() {
 		Artist saved = artistRepository.save(validArtist1);
 
-		Image profileImage = Optional.ofNullable(saved.getProfileImage()).orElseGet(() -> null);
-		String profileImageUrl = Optional.ofNullable(profileImage).map(Image::getSavedFileName).orElseGet(() -> null);
+		File profileImage = Optional.ofNullable(saved.getProfileImage()).orElseGet(() -> null);
+		String savedImageFileName = Optional.ofNullable(profileImage)
+			.map(File::getSavedFileName)
+			.orElseGet(() -> ImageDto.DEFAULT_SAVED_FILENAME);
 
 		ArtistInfoDto artistInfo = artistService.getArtistInfo(saved.getId());
 		assertThat(artistInfo.getArtistId()).isEqualTo(saved.getId());
 		assertThat(artistInfo.getIntroduction()).isEqualTo(saved.getIntroduction());
 		assertThat(artistInfo.getNickname()).isEqualTo(saved.getNickname());
-		assertThat(artistInfo.getProfileImageUrl()).isEqualTo(profileImageUrl);
+		assertThat(artistInfo.getProfileImage().getSavedFileName()).isEqualTo(savedImageFileName);
 		assertThat(artistInfo.getUsername()).isEqualTo(saved.getUsername());
 	}
 

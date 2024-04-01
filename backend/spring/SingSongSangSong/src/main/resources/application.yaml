@@ -1,11 +1,21 @@
 spring:
   application:
     name: SingSongSangSong
+  servlet:
+    session:
+      cookie:
+        same-site: none
+        secure: true
+        domain: singsongsangsong.com
+    multipart:
+      maxFileSize: 100MB
+      maxRequestSize: 100MB
 
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: validate
+    defer-datasource-initialization: true
 
   security:
     oauth2:
@@ -15,7 +25,7 @@ spring:
             client-id: 813928593657-9v2bpcp9p2l3i3j5ri6vrdnu0dd1sif5.apps.googleusercontent.com
             client-secret: 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
             scope: profile, email
-            redirect-uri: http://api.singsongsangsong.com/login/oauth2/code/google
+            redirect-uri: https://api.singsongsangsong.com/login/oauth2/code/google
           naver:
             client-id: t8m3plQmDMt1BM58c5g6
             client-secret: VbWntwUdPR
@@ -26,7 +36,6 @@ spring:
           kakao:
             client-id: d3ace32d6368823829feba818d7ff6d3
             client-secret: LF49xe2E8pAoMeQaRtskgi5hIvzX4CbK
-            #            redirect-uri: http://localhost:8080/login/oauth2/code/kakao
             redirect-uri: http://api.singsongsangsong.com/login/oauth2/code/kakao
             scope:
               - account_email
@@ -45,7 +54,15 @@ spring:
             token-uri: https://kauth.kakao.com/oauth/token
             user-info-uri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id
+    singsongsangsong:
+      #      redirect-uri: http://localhost:3000/
+      # TODO : url temp용으로 localhost
+      redirect-uri: https://www.singsongsangsong.com/
 
+  sql:
+    init:
+      mode: always
+  
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
     url: jdbc:mariadb://stg-yswa-kr-practice-db-master.mariadb.database.azure.com:3306/S10P22E206?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8
@@ -80,3 +97,20 @@ minio:
   accessKey: mtppqpRtSxArNq81phwB
   secretKey: pqjrczK0C5JsFDnociyril8CqCbB5Mtfybkhl8p5
   serviceName: s3
+
+csv:
+  file:
+    dir:
+      "./csv/"
+
+logging:
+  level:
+    org:
+      springframework:
+        test:
+          context:
+            cache: DEBUG
+
+webclient:
+  baseUrl: https://dsp.singsongsangsong.com
+  contentType: application/json

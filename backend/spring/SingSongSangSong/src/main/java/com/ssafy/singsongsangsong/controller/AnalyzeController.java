@@ -16,12 +16,11 @@ import org.springframework.web.multipart.MultipartFile;
 import com.ssafy.singsongsangsong.constants.FileType;
 import com.ssafy.singsongsangsong.dto.SimpleSongDto;
 import com.ssafy.singsongsangsong.dto.UploadMainPageDto;
-import com.ssafy.singsongsangsong.entity.Artist;
-import com.ssafy.singsongsangsong.exception.artist.ArtistNotFoundException;
 import com.ssafy.singsongsangsong.exception.song.AlreadyCompletedException;
 import com.ssafy.singsongsangsong.repository.maria.artist.ArtistRepository;
-import com.ssafy.singsongsangsong.service.AnalyzeService;
-import com.ssafy.singsongsangsong.service.FileService;
+import com.ssafy.singsongsangsong.security.ArtistPrincipal;
+import com.ssafy.singsongsangsong.service.analyze.AnalyzeService;
+import com.ssafy.singsongsangsong.service.file.FileService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -42,29 +41,30 @@ public class AnalyzeController {
 
 	@GetMapping("/")
 	public UploadMainPageDto getUploadMainPage(
-		@AuthenticationPrincipal String username) {
-		Artist artist = artistRepository.findByUsername(username)
-			.orElseThrow(() -> new ArtistNotFoundException("유효하지 않은 유저입니다."));
-		return analyzeService.getUploadStatus(artist.getId());
+		@AuthenticationPrincipal ArtistPrincipal user) {
+		return analyzeService.getUploadStatus(user.getId());
+	}
+
+	@PostMapping("/{songId}")
+	public void requestAnalyze(@AuthenticationPrincipal ArtistPrincipal user,
+		@PathVariable Long songId) {
+		analyzeService.requestAnalyze(user.getId(), songId);
 	}
 
 	@PostMapping("/upload")
-	public void uploadMusic(@AuthenticationPrincipal String username,
+	public void uploadMusic(@AuthenticationPrincipal ArtistPrincipal user,
 		@RequestBody MultipartFile fileData) throws IOException {
-		Artist artist = artistRepository.findByUsername(username)
-			.orElseThrow(() -> new ArtistNotFoundException("유효하지 않은 유저입니다."));
 		// check if MEDIA_TYPE is valid
-		fileService.saveFile(artist.getId(), FileType.AUDIO, fileData);
+		fileService.saveFile(user.getId(), FileType.AUDIO, fileData);
 	}
 
 	@PutMapping("/publish/{songId}")
-	public void publishSong(@AuthenticationPrincipal String username, @PathVariable Long songId) {
+	public void publishSong(@AuthenticationPrincipal ArtistPrincipal user, @PathVariable Long songId) {
 		analyzeService.publishSong(songId);
 	}
 
 	@GetMapping("/{songId}")
-	public SimpleSongDto getSongsAnalistics(@AuthenticationPrincipal String
-		username, @PathVariable Long songId) {
+	public SimpleSongDto getSongsAnalistics(@AuthenticationPrincipal ArtistPrincipal user, @PathVariable Long songId) {
 		return analyzeService.getSongAnalistics(songId);
 	}
 }

@@ -11,12 +11,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.singsongsangsong.constants.EmotionsConstants;
+import com.ssafy.singsongsangsong.dto.AnalyzeGenreAndAtmosphereResponse;
 import com.ssafy.singsongsangsong.dto.CommentsResponseDto;
 import com.ssafy.singsongsangsong.dto.PostCommentsDto;
+import com.ssafy.singsongsangsong.dto.SongInfoResponse;
 import com.ssafy.singsongsangsong.dto.SongListByThemeResponseDto;
-import com.ssafy.singsongsangsong.security.ArtistAuthenticationToken;
+import com.ssafy.singsongsangsong.dto.SongSimilarityByRanksResponse;
 import com.ssafy.singsongsangsong.security.ArtistPrincipal;
-import com.ssafy.singsongsangsong.service.SongService;
+import com.ssafy.singsongsangsong.service.song.SongService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -39,7 +41,7 @@ public class SongController {
 
 	@PostMapping("/comments")
 	@PreAuthorize("hasRole('USER')")
-	public void postComment(@AuthenticationPrincipal ArtistAuthenticationToken user,
+	public void postComment(@AuthenticationPrincipal ArtistPrincipal user,
 		PostCommentsDto dto) {
 		// 댓글을 남긴다.
 		songService.postComment(user.getId(), dto.getSongId(), dto.getContent());
@@ -57,5 +59,33 @@ public class SongController {
 	public SongListByThemeResponseDto getSongListByTheme(@PathVariable String themeName,
 		@RequestParam(defaultValue = "10") int size) {
 		return songService.getSongListByTheme(themeName, size);
+	}
+
+	@GetMapping("/{songId}")
+	public SongInfoResponse getSong(@PathVariable Long songId) {
+		return songService.getSong(songId);
+	}
+
+	// 해당 노래에 해당하는 분위기와 장르의 correlation을 가져옵니다.
+	@GetMapping("/analyze/{songId}")
+	public AnalyzeGenreAndAtmosphereResponse getAnalyzeGenreAndAtmosphere(@PathVariable Long songId,
+		@RequestParam("defaultValue = 5") int size) {
+		return songService.getAnalyzeGenreAndAtmosphere(songId, size);
+	}
+
+	@PostMapping("/play/{songId}")
+	public void playSong(@PathVariable Long songId, @AuthenticationPrincipal ArtistPrincipal user) {
+		songService.playSong(user.getId(), songId);
+	}
+
+	@PostMapping("/download/{songId}")
+	public void downloadSong(@PathVariable Long songId, @AuthenticationPrincipal ArtistPrincipal user) {
+		songService.downloadSong(user.getId(), songId);
+	}
+
+	@GetMapping("/similarity/{songId}")
+	public SongSimilarityByRanksResponse getSongsSimilarityByRanks(@PathVariable Long songId,
+		@RequestParam(defaultValue = "5") int size) {
+		return songService.getSongsSimilarityByRanks(songId, size);
 	}
 }

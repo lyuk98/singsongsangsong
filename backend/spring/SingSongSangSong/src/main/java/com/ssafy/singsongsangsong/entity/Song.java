@@ -21,7 +21,7 @@ import lombok.Setter;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Song {
+public class Song extends BaseTimeEntity{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -31,15 +31,16 @@ public class Song {
 	private Artist artist;
 	@OneToOne
 	@JoinColumn(name = "mfccImageId")
-	private Image mfccImage;
+	private File mfccImage;
 	@OneToOne
 	@JoinColumn(name = "spectrumImageId")
-	private Image spectrumImage;
+	private File spectrumImage;
 	@OneToOne
 	@JoinColumn(name = "albumImageId")
-	private Image albumImage;
+	private File albumImage;
 
 	private String title;
+	private String songDescription;
 	private String lyrics;
 
 	private String customGenre; // 사용자가 직접 지정할 수 있고, 지정하지 않는 경우 분석 결과를 기반으로 자동으로 결정됩니다
@@ -60,7 +61,7 @@ public class Song {
 	@ColumnDefault("false")
 	private boolean isPublished;
 
-	private String musicLocation;
+	private String musicFileName;
 
 	@ColumnDefault("0")
 	private int movedEmotionCount;

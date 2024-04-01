@@ -1,12 +1,18 @@
 spring:
+  redis:
+    host: localhost
+    port: 6379
   application:
-    name: SingSongSangSong
-
-  jpa:
-    show-sql: true
-    hibernate:
-      ddl-auto: create
-
+    name: singsongsangsong
+  servlet:
+    session:
+      cookie:
+        same-site: none
+        secure: true
+        domain: singsongsangsong.com
+    multipart:
+      maxFileSize: 100MB
+      maxRequestSize: 100MB
   security:
     oauth2:
       client:
@@ -44,12 +50,22 @@ spring:
             token-uri: https://kauth.kakao.com/oauth/token
             user-info-uri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id
-
+    singsongsangsong:
+      redirect-uri: http://localhost:3000/
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://localhost:3306/singsongsangsong?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8
+    url: jdbc:mariadb://localhost:3306/singsongsangsong?useUnicode=true&characterEncoding=UTF-8
     username: root
     password: 1234
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: true
+    generate-ddl: true
+    defer-datasource-initialization: true
   data:
     mongodb:
       uri: mongodb+srv://S10P22E206:rui4ZhwEt1@ssafy.ngivl.mongodb.net/S10P22E206?authSource=admin
@@ -60,6 +76,9 @@ spring:
   batch:
     jdbc:
       initialize-schema: always
+  sql:
+    init:
+      mode: always
 
 jwt:
   secretKey: "QjaVCjBnUIWtzWt8erZbO2ZFApswkbVhSArPu6GshQ8jp2OLtRhhOVl3pv8DTxaBA6kEjeZPJz8Uhy66tpGVwBEWIdflSQcSwTNvnMM7FSL8hz8N4syBT9nWqT006unUVqIemV9L8jMtu2bPFRu8p6qO8RXySni4cliOF4Wd1dUWiAx7Io4ONcW3UHXwtD4QvDstZm4EWHGnXXaZ4um4Pj5BXwJJb7jmlGMXYM84ZBwyDA6I1XmpQlv19O0bnZjqMqbNo5ockscMYv1xOHQSiTXBf6YjD0y98ZgRZiRkz4cYjxvJDpWGN28DmArr2TZ0AvRLd78uvmJzybH137CIgGRzwtfR91MbG5Q3QAMytYPgdkxv2weeOFGcAlIUEIAXkn6pXRPrxWZBUL3NrzEyYJyK6xUbZM1T4ZgelQ650DK6RAdWgLaHA0sdw7lZltcZRoVjhgteMWpnvPWOaZ97xR25cNYdOLvFhrO9bev8QnZfHB7HKiPE3gCpN4539wNlQjaVCjBnUIWtzWt8erZbO2ZFApswkbVhSArPu6GshQ8jp2OLtRhhOVl3pv8DTxaBA6kEjeZPJz8Uhy66tpGVwBEWIdflSQcSwTNvnMM7FSL8hz8N4syBT9nWqT006unUVqIemV9L8jMtu2bPFRu8p6qO8RXySni4cliOF4Wd1dUWiAx7Io4ONcW3UHXwtD4QvDstZm4EWHGnXXaZ4um4Pj5BXwJJb7jmlGMXYM84ZBwyDA6I1XmpQlv19O0bnZjqMqbNo5ockscMYv1xOHQSiTXBf6YjD0y98ZgRZiRkz4cYjxvJDpWGN28DmArr2TZ0AvRLd78uvmJzybH137CIgGRzwtfR91MbG5Q3QAMytYPgdkxv2weeOFGcAlIUEIAXkn6pXRPrxWZBUL3NrzEyYJyK6xUbZM1T4ZgelQ650DK6RAdWgLaHA0sdw7lZltcZRoVjhgteMWpnvPWOaZ97xR25cNYdOLvFhrO9bev8QnZfHB7HKiPE3gCpN4539wNl"
@@ -67,6 +86,15 @@ jwt:
   access:
     expiration: 3600000 # 1??(60?) (1000L(ms -> s) * 60L(s -> m) * 60L(m -> h))
     header: Authorization
+  refresh:
+    expiration: 1209600000 #  (1000L(ms -> s) * 60L(s -> m) * 60L(m -> h) * 24L(h -> ??) * 14(2?))
+    header: Authorization-refresh
+logging:
+  level:
+    org:
+      springframework:
+        security: trace
+        web: trace
 
 synology:
   host: zip.udon.party

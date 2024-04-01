@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.ssafy.singsongsangsong.entity.Comments;
-import com.ssafy.singsongsangsong.entity.Image;
+import com.ssafy.singsongsangsong.entity.File;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -33,14 +33,15 @@ public class CommentsResponseDto {
 
 		public static CommentsResponse from(Comments comments) {
 			Date date = Date.from(comments.getCreatedDate().atZone(ZoneId.systemDefault()).toInstant());
-			Optional<Image> profileImage = Optional.ofNullable(comments.getArtist().getProfileImage());
+			Optional<File> profileImage = Optional.ofNullable(comments.getArtist().getProfileImage());
 			return CommentsResponse.builder()
 				.authorId(comments.getArtist().getId())
 				.artistNickname(comments.getArtist().getNickname())
 				.content(comments.getContent())
 				.imageFileName(
 					profileImage.orElseGet(() ->
-						new Image(999L, "default.jpg", "default.jpg")).getOriginalFileName())
+							new File(999L, "default.jpg", "default.jpg", comments.getArtist().getId()))
+						.getOriginalFileName())
 				.createdAt(date)
 				.build();
 		}
