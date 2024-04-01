@@ -11,6 +11,7 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: validate
+    defer-datasource-initialization: true
 
   security:
     oauth2:
@@ -50,10 +51,14 @@ spring:
             user-info-uri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id
     singsongsangsong:
-#      redirect-uri: http://localhost:3000/
+      #      redirect-uri: http://localhost:3000/
       # TODO : url temp용으로 localhost
-       redirect-uri: https://www.singsongsangsong.com/
+      redirect-uri: https://www.singsongsangsong.com/
 
+  sql:
+    init:
+      mode: always
+  
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
     url: jdbc:mariadb://stg-yswa-kr-practice-db-master.mariadb.database.azure.com:3306/S10P22E206?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8

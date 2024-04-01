@@ -11,11 +11,11 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
+import com.ssafy.singsongsangsong.constants.SocialType;
 import com.ssafy.singsongsangsong.entity.Artist;
 import com.ssafy.singsongsangsong.repository.maria.artist.ArtistRepository;
-import com.ssafy.singsongsangsong.util.CustomOAuth2User;
-import com.ssafy.singsongsangsong.util.OAuthAttributes;
-import com.ssafy.singsongsangsong.util.SocialType;
+import com.ssafy.singsongsangsong.security.oauth2.CustomOAuth2User;
+import com.ssafy.singsongsangsong.security.oauth2.attributes.OAuthAttributes;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -77,8 +77,9 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 		}
 		return user;
 	}
-	private Artist saveUser(SocialType socialType, OAuthAttributes oAuthAttributes){
-		Artist user = oAuthAttributes.toEntity(socialType,oAuthAttributes.getOAuth2UserInfo());
+
+	private Artist saveUser(SocialType socialType, OAuthAttributes oAuthAttributes) {
+		Artist user = oAuthAttributes.toEntity(socialType, oAuthAttributes.getOAuth2UserInfo());
 		System.out.println("유저 저장, save user");
 		userRepository.save(user);
 		return user;

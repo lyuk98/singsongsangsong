@@ -17,9 +17,8 @@ import com.ssafy.singsongsangsong.dto.PostCommentsDto;
 import com.ssafy.singsongsangsong.dto.SongInfoResponse;
 import com.ssafy.singsongsangsong.dto.SongListByThemeResponseDto;
 import com.ssafy.singsongsangsong.dto.SongSimilarityByRanksResponse;
-import com.ssafy.singsongsangsong.security.ArtistAuthenticationToken;
 import com.ssafy.singsongsangsong.security.ArtistPrincipal;
-import com.ssafy.singsongsangsong.service.SongService;
+import com.ssafy.singsongsangsong.service.song.SongService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -42,7 +41,7 @@ public class SongController {
 
 	@PostMapping("/comments")
 	@PreAuthorize("hasRole('USER')")
-	public void postComment(@AuthenticationPrincipal ArtistAuthenticationToken user,
+	public void postComment(@AuthenticationPrincipal ArtistPrincipal user,
 		PostCommentsDto dto) {
 		// 댓글을 남긴다.
 		songService.postComment(user.getId(), dto.getSongId(), dto.getContent());

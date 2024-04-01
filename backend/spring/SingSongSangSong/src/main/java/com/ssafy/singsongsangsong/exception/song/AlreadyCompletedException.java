@@ -1,6 +1,6 @@
 package com.ssafy.singsongsangsong.exception.song;
 
-public class AlreadyCompletedException extends Exception {
+public class AlreadyCompletedException extends RuntimeException {
 	public AlreadyCompletedException(String message) {
 		super(message);
 	}

@@ -1,8 +1,8 @@
 package com.ssafy.singsongsangsong;
 
+import com.ssafy.singsongsangsong.constants.Role;
 import com.ssafy.singsongsangsong.entity.Artist;
 import com.ssafy.singsongsangsong.entity.File;
-import com.ssafy.singsongsangsong.util.Role;
 
 public enum ArtistFixture {
 
