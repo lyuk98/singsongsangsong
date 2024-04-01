@@ -55,7 +55,7 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
 
 		Optional<String> accessToken = jwtService.extractAccessToken(request)
 			.filter(jwtService::isTokenValid);
-
+		log.info("accessToken : {}", accessToken);
 		// 회원이 access token을 가지고 요청을 보낸 상황
 		if (accessToken.isPresent()) {
 			log.info("access token이 존재합니다");
