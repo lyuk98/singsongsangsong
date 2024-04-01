@@ -22,9 +22,17 @@ public class WebClientRequestService {
 
 	private final WebClient webClient;
 
+	public void requestAnalyzeSong(Long songId) {
+		webClient.post()
+			.uri("/song/{songId}", songId)
+			.retrieve()
+			.toBodilessEntity()
+			.block();
+	}
+
 	public void requestSaveSimilarity(Long songId) throws WebClientRequestException {
 		ResponseEntity<Void> response = webClient.post()
-			.uri("/similarity")
+			.uri("/similarity/{songId}", songId)
 			.retrieve()
 			.toBodilessEntity()
 			.block();

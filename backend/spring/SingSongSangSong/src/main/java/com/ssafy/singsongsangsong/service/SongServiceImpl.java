@@ -174,7 +174,7 @@ public class SongServiceImpl implements SongService {
 	@ExportCsvFile(format = CsvFileContents.ARTIST_SONG_RECORD)
 	public void downloadSong(Long artistId, Long songId) {
 		// 노래 다운로드 횟수 증가 및 CSV파일로 로그 저장 (통계적 분석 위함)
-		songRepository.findById(songId).orElseThrow(NotFoundSongException::new)
+		songRepository.findById(songId).orElseThrow(NotFoundSongException::new);
 		songRepository.incrementDownloadCount(songId);
 	}
 
