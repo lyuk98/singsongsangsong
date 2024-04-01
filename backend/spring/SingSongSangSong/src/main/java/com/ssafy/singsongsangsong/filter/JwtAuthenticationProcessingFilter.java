@@ -17,8 +17,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import com.ssafy.singsongsangsong.entity.Artist;
 import com.ssafy.singsongsangsong.repository.maria.artist.ArtistRepository;
 import com.ssafy.singsongsangsong.security.ArtistPrincipal;
+import com.ssafy.singsongsangsong.security.PasswordUtil;
 import com.ssafy.singsongsangsong.service.jwt.JwtService;
-import com.ssafy.singsongsangsong.util.PasswordUtil;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

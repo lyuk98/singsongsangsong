@@ -17,7 +17,7 @@ import com.ssafy.singsongsangsong.dto.GuestJoinRequestDto;
 import com.ssafy.singsongsangsong.dto.JoinResponseDto;
 import com.ssafy.singsongsangsong.dto.FollowerCountResponse;
 import com.ssafy.singsongsangsong.dto.SimpleSongDto;
-import com.ssafy.singsongsangsong.service.ArtistService;
+import com.ssafy.singsongsangsong.service.artist.ArtistService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -26,11 +26,13 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/artist")
 public class ArtistController {
 	private final ArtistService artistService;
+
 	@PostMapping("/join")
 	public JoinResponseDto join(@AuthenticationPrincipal String username, GuestJoinRequestDto dto) throws IOException {
 		artistService.join(username, dto);
 		return new JoinResponseDto();
 	}
+
 	@GetMapping("{id}")
 	public ArtistInfoDto getArtistInfo(@PathVariable Long id) {
 		return artistService.getArtistInfo(id);
