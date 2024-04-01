@@ -17,6 +17,7 @@ import com.ssafy.singsongsangsong.dto.GuestJoinRequestDto;
 import com.ssafy.singsongsangsong.dto.JoinResponseDto;
 import com.ssafy.singsongsangsong.dto.FollowerCountResponse;
 import com.ssafy.singsongsangsong.dto.SimpleSongDto;
+import com.ssafy.singsongsangsong.security.ArtistPrincipal;
 import com.ssafy.singsongsangsong.service.ArtistService;
 
 import lombok.RequiredArgsConstructor;
@@ -27,8 +28,8 @@ import lombok.RequiredArgsConstructor;
 public class ArtistController {
 	private final ArtistService artistService;
 	@PostMapping("/join")
-	public JoinResponseDto join(@AuthenticationPrincipal String username, GuestJoinRequestDto dto) throws IOException {
-		artistService.join(username, dto);
+	public JoinResponseDto join(@AuthenticationPrincipal ArtistPrincipal user, GuestJoinRequestDto dto) throws IOException {
+		artistService.join(user.getUsername(), dto);
 		return new JoinResponseDto();
 	}
 	@GetMapping("{id}")
@@ -44,9 +45,8 @@ public class ArtistController {
 	// todo: 아래 메소드는 security 구현이 끝난 이 후, 처리할 예정입니다.
 	// todo: refactor this. Principal 정보 수정 및 target Id는 String username으로 변경
 	@PostMapping("/follow/{id}")
-	public void followArtist(@AuthenticationPrincipal User loginUser, @PathVariable Long id) {
-		String username = loginUser.getUsername();
-		artistService.toggleFollowArtist(username, id);
+	public void followArtist(@AuthenticationPrincipal ArtistPrincipal user, @PathVariable Long id) {
+		artistService.toggleFollowArtist(user.getUsername(), id);
 	}
 
 	// todo: 아래 메소드는 song 데이터가 추가된 후에, 테스트 코드 작성 예정입니다.
