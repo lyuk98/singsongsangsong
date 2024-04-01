@@ -98,6 +98,7 @@ const RegisterPage = () => {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
+        withCredentials: false,
       });
       console.log(response);
       if (response.status === 200) {
