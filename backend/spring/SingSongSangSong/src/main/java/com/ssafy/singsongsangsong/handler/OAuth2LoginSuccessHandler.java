@@ -46,20 +46,19 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 			if(oAuth2User.getRole() == Role.GUEST) {
 				String accessToken = jwtService.createAccessToken(oAuth2User.getEmail());
 				ResponseCookie cookie = ResponseCookie.from("accessToken",accessToken)
-					// .domain("localhost")
+					.domain("localhost")
 					// TODO : 테스트 끝나고 domain 설정 변경
-					.domain(".singsongsangsong.com")
+					// .domain(".singsongsangsong.com")
 					.sameSite("None")
-					.maxAge(-1)
+					.maxAge(60*60*60*60)
 					.path("/")
 					.build();
 				response.addHeader("Set-Cookie",cookie.toString());
 				log.info("cookie : {}" ,  cookie.toString());
 				// response.addCookie(createCookie("accessToken", accessToken,"/",60*60*60*60));
-				response.sendRedirect(REDIRECT_URL+"sign-up");
+				response.sendRedirect(REDIRECT_URL+"sign-up?accessToken="+accessToken);
 			} else {
 				loginSuccess(response, oAuth2User);
-				response.sendRedirect(REDIRECT_URL);
 			}
 		} catch(Exception e) {
 			throw e;
@@ -74,14 +73,16 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
 		// response.addCookie(createCookie("accessToken", accessToken,"/",60*60*60*60));
 		ResponseCookie cookie = ResponseCookie.from("accessToken",accessToken)
-			// .domain("localhost")
+			.domain("localhost")
 			// TODO : 테스트 끝나고 domain 설정 변경
-			.domain(".singsongsangsong.com")
+			// .domain(".singsongsangsong.com")
 			.sameSite("None")
-			.maxAge(-1)
+			.maxAge(60*60*60*60)
 			.path("/")
 			.build();
 		response.addHeader("Set-Cookie",cookie.toString());
+
+		response.sendRedirect(REDIRECT_URL+"?accessToken="+accessToken);
 	}
 
 	public Cookie createCookie(String key, String value,String path,int time) {
