@@ -16,7 +16,7 @@ public class Play {
 	private long songId;
 	private String genre;
 	private String atmosphere;
-	private int age;
-	private char sex;
+	private String age;
+	private String sex;
 
 }

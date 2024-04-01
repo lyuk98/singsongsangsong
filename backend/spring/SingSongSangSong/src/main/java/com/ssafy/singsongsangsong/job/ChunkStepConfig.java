@@ -28,8 +28,8 @@ public class ChunkStepConfig {
 	        		.songId(fieldSet.readLong("songId"))
 	        		.genre(fieldSet.readString("genre"))
 	        		.atmosphere(fieldSet.readString("atmosphere"))
-	        		.age(fieldSet.readInt("age"))
-	        		.sex(fieldSet.readChar("sex"))
+	        		.age(fieldSet.readString("age"))
+	        		.sex(fieldSet.readString("sex"))
 	        		.build();
 
 	        return play;

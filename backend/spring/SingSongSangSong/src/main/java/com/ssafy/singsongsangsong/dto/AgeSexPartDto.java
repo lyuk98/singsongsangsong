@@ -11,16 +11,16 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AgeSexDto {
+public class AgeSexPartDto {
 	
 	private int age;
 	private char sex;
+	private String part;
 	
 	@Override
 	public int hashCode() {
-		return Objects.hash(age, sex);
+		return Objects.hash(age, part, sex);
 	}
-	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -29,8 +29,8 @@ public class AgeSexDto {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		AgeSexDto other = (AgeSexDto) obj;
-		return age == other.age && sex == other.sex;
+		AgeSexPartDto other = (AgeSexPartDto) obj;
+		return age == other.age && Objects.equals(part, other.part) && sex == other.sex;
 	}
 
 }
