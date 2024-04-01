@@ -68,7 +68,6 @@ public class ArtistServiceImpl implements ArtistService {
 			.map(SimpleSongDto::from)
 			.toList();
 	}
-
 	@Override
 	public void toggleFollowArtist(String username, Long followingId) throws ArtistNotFoundException {
 		Artist follower = artistRepository.findByUsername(username)
