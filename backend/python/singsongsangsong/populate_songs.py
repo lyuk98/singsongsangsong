@@ -17,6 +17,11 @@ import file_server
 DRY_RUN = True
 DRY_RUN_SIZE = 256
 
+# 데이터베이스 삽입 시 시작 할 ID를 명시합니다
+SONG_START_FROM = 1
+IMAGE_START_FROM = 7638
+FILE_START_FROM = 1
+
 def download(url: str, path: str):
     """URL로부터 지정한 파일을 `path`에 저장합니다
 
@@ -57,6 +62,23 @@ def update_image_url(url: str) -> str:
 
     return f"{new_prefix}{url[len(old_prefix):]}{new_suffix}"
 
+def filename_from_id(song_id: int) -> str:
+    """곡 ID를 이용하여 파일 이름을 생성합니다
+
+    Parameters
+    ----------
+    song_id : int
+        곡 ID
+
+    Returns
+    -------
+    str
+        파일 이름
+    """
+
+    assert 0 <= song_id < 1000000
+    return f"{song_id:06}.mp3"
+
 # .env를 읽습니다
 load_dotenv()
 
@@ -67,6 +89,7 @@ artists = pd.read_csv(
     usecols=[
         "track_id",
         "artist_id",
+        "track_date_created",
         "track_image_file",
         "track_information",
         "track_title"
@@ -75,13 +98,15 @@ artists = pd.read_csv(
 
 insert = []
 image_insert = []
-file_insert = []
-image_insert_id = itertools.count(7638)
-file_insert_id = itertools.count(1)
+image_insert_id = itertools.count(IMAGE_START_FROM)
+file_insert_id = itertools.count(FILE_START_FROM)
 
 for index, row in artists.iterrows():
-    # 아티스트 이미지를 다운로드하기 전 URL을 정리합니다
-    download_url = row["artist_image_file"]
+    if int(row["track_id"]) < SONG_START_FROM:
+        continue
+
+    # 앨범 이미지를 다운로드하기 전 URL을 정리합니다
+    download_url = row["track_image_file"]
 
     filename = download_url[
         len("https://freemusicarchive.org/file/images/albums/"):
@@ -110,10 +135,11 @@ for index, row in artists.iterrows():
 
             # file entity에 삽입할 데이터를 준비합니다
             file_id = next(image_insert_id)
-            file_insert.append(
+            image_insert.append(
                 {
                     "id": file_id,
-                    "file_name": str(uuid.uuid4()),
+                    "owner_id": row["artist_id"],
+                    "saved_file_name": str(uuid.uuid4()),
                     "original_file_name": filename,
                     "file_path": download_path
                 }
@@ -127,9 +153,13 @@ for index, row in artists.iterrows():
     # 삽입할 데이터를 준비합니다
     insert.append(
         {
-            "id": row["artist_id"],
-            "profile_image_id": file_id,
-            "introduction": str(row["artist_bio"])[:255],
+            "id": row["track_id"],
+            "artist_id": row["artist_id"],
+            "album_image_id": file_id,
+            "created_date": row["track_date_created"],
+            "modified_date": row["track_date_created"],
+            "music_file_name": filename_from_id(int(row["track_id"])),
+            "song_description": row["track_information"],
             "nickname": str(row["artist_name"]),
             "username": str(row["artist_handle"]),
         }
@@ -148,37 +178,46 @@ try:
     with database.get_connection() as connection:
         with connection.cursor() as cursor:
             connection.autocommit = False
+            cursor.execute("set @@session.sql_mode = ''")
 
             print("Inserting image records")
 
             # 이미지 파일 정보를 삽입합니다
             cursor.executemany(
-                "insert into image "
-                "(id, saved_file_name, original_file_name) "
-                "values (%s, %s, %s)",
+                "insert into file "
+                "(id, owner_id, saved_file_name, original_file_name) "
+                "values (%s, %s, %s, %s)",
                 [
                     (
                         row["id"],
+                        row["owner_id"],
                         row["file_name"],
                         row["original_file_name"]
-                    ) for row in file_insert
+                    ) for row in image_insert
                 ]
             )
 
-            print("Inserting artist records")
+            print("Inserting song records")
 
             # 아티스트 정보를 삽입합니다
             cursor.executemany(
-                "insert into artist "
-                "(id, age, sex, profile_image_id, introduction, nickname, username, role) "
-                "values (%s, 20, 'F', %s, %s, %s, %s, 'GUEST')",
+                "insert into song "
+                "(bpm, download_count, duration, like_count, play_count, "
+                "weekly_download_count, weekly_like_count, weekly_play_count "
+                "album_image_id, artist_id, created_date, id, modified_date, "
+                "music_file_name, song_description, title)"
+                "values "
+                "(0, 0, 0, 0, 0, " "0, 0, 0, "
+                "%s, %s, %s, %s, %s, %s, %s, %s)",
                 [
                     (
+                        row["album_image_id"],
+                        row["artist_id"],
+                        row["created_date"],
                         row["id"],
-                        row["profile_image_id"],
-                        row["introduction"],
-                        row["nickname"],
-                        row["username"]
+                        row["modified_date"],
+                        row["music_file_name"],
+                        row["song_description"]
                     ) for row in insert
                 ]
             )
@@ -186,7 +225,7 @@ try:
             print("Updating artists' profile images")
 
             # 이미지 파일을 client에 업로드합니다
-            for image_file in file_insert:
+            for image_file in audio_insert:
                 print(f"Uploading {image_file['original_file_name']} ({image_file['file_name']})")
 
                 file_server.upload(
