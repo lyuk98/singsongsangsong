@@ -24,8 +24,7 @@ import SongWithBPM from "../../components/pageComponents/trendpageComponent/Song
 import TestWeeklySingsongChart from "../../components/pageComponents/trendpageComponent/testComponent/TestWeeklySingsongChart";
 import noneImg from "./../../sources/imgs/nodataimg.webp";
 import { getCookie, setCookie } from "../../utils/cookie";
-
-
+import { axiosInstance } from "../../hooks/api";
 
 const TrendPage = () => {
   const { year, month, day } = getLastSunday();
@@ -72,8 +71,21 @@ const TrendPage = () => {
   // }, []);
 
   useEffect(() => {
+    const checkUser = async () => {
+      try {
+        const reponse = await axiosInstance.request({
+          method: "GET",
+          url: "/artist/myProfile",
+        });
+        console.log(response);
+        return reponse;
+      } catch (error) {
+        console.log("error at check user");
+      }
+    };
     const accessToken = getCookie("accessToken");
-    console.log(accessToken);
+    if (accessToken) {
+    }
   }, []);
 
   const handleCalendarOpen = (): void => {

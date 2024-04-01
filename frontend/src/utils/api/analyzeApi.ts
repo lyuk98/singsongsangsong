@@ -28,13 +28,14 @@ export const handleStartAnalyze = async (inputFile: File) => {
 
   try {
     const result = await axios({
-      url: `${process.env.REACT_APP_API_URL}/upload/audio`,
+      url: `${process.env.REACT_APP_API_URL}upload/audio`,
       method: "POST",
       data: formData,
       headers: {
         "Content-Type": "multipart/form-data",
       },
     });
+    console.log(result);
   } catch (error) {
     return error;
   }

@@ -14,7 +14,7 @@ import { AnalyzedResultType } from "../../utils/types";
 import { useNavigate } from "react-router";
 
 const AnalysisPage = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const { response, isLoading, error } = useAxios({
     url: `/anayze/${`songId`}`,
@@ -27,7 +27,7 @@ const AnalysisPage = () => {
     try {
       const response = await axios({
         method: "PUT",
-        url: `${process.env.REACT_APP_API_URL}/analyze/publish/${"songid"}`,
+        url: `${process.env.REACT_APP_API_URL}analyze/publish/${"songid"}`,
       });
       console.log(response);
     } catch (error) {
@@ -36,8 +36,8 @@ const AnalysisPage = () => {
   };
 
   const navigatePostPage = () => {
-    navigate('post')
-  }
+    navigate("post");
+  };
 
   return (
     <div className={`w-100 px-main ${styles.container}`}>
