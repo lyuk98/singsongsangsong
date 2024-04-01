@@ -22,11 +22,23 @@ public class WebClientRequestService {
 
 	private final WebClient webClient;
 
-	public void requestAnalyzeSong(Long songId) {
+	public static class RequestAnalyzeSongDto {
+		private Long songId;
+		private String savedFileName;
+
+		public RequestAnalyzeSongDto(Long songId, String savedFileName) {
+			this.songId = songId;
+			this.savedFileName = savedFileName;
+		}
+	}
+
+	public void requestAnalyzeSong(Long songId, String savedFileName) {
+		RequestAnalyzeSongDto requestAnalyzeSongDto = new RequestAnalyzeSongDto(songId, savedFileName);
 		webClient.post()
 			.uri("/song/{songId}", songId)
+			.bodyValue(requestAnalyzeSongDto)
 			.retrieve()
-			.toBodilessEntity()
+			.bodyToMono(Void.class)
 			.block();
 	}
 
