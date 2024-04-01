@@ -40,9 +40,9 @@ public class ArtistController {
 		return artistService.getArtistInfo(id);
 	}
 
-	@GetMapping("/song/{id}")
-	public List<SimpleSongDto> getPublishedSong(@PathVariable Long id) {
-		return artistService.getPublishedSong(id);
+	@GetMapping("/song")
+	public List<SimpleSongDto> getPublishedSong(@AuthenticationPrincipal ArtistPrincipal principal) {
+		return artistService.getPublishedSong(principal.getId());
 	}
 
 	// todo: 아래 메소드는 security 구현이 끝난 이 후, 처리할 예정입니다.
@@ -63,7 +63,7 @@ public class ArtistController {
 		return artistService.getFollowerCount(artistId);
 	}
 
-	@GetMapping("/me")
+	@GetMapping("/profile/me")
 	public MyProfileResponse getMyProfile(@AuthenticationPrincipal ArtistPrincipal loginUser) {
 		return artistService.getMyProfile(loginUser.getId());
 	}
