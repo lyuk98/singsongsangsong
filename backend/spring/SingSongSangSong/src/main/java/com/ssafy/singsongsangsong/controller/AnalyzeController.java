@@ -52,7 +52,7 @@ public class AnalyzeController {
 	@PostMapping("/{songId}")
 	public void requestAnalyze(@AuthenticationPrincipal ArtistPrincipal user,
 		@PathVariable Long songId) {
-		// analyzeService.requestAnalyze(user.getId(), songId);
+		analyzeService.requestAnalyze(user.getId(), songId);
 	}
 
 	@PostMapping("/upload")
