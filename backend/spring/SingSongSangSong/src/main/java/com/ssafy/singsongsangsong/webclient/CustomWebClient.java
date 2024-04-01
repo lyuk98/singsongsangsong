@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 @Component
-public class WebClient {
+public class CustomWebClient {
 
 	@Value("${webclient.baseurl}")
 	private String baseUrl;
