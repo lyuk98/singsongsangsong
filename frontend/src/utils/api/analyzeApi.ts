@@ -1,5 +1,6 @@
 import axios from "axios";
 import { axiosInstance } from "../../hooks/api";
+import { getCookie } from "../cookie";
 
 /**
  *  분석 페이지 최초 진입 시 실행시킬 함수
@@ -25,7 +26,7 @@ export const handleStartAnalyze = async (inputFile: File) => {
   const formData = new FormData();
   console.log(inputFile);
   formData.append("file", inputFile);
-
+  const accessToken = getCookie("accessToken");
   try {
     const result = await axios({
       url: `${process.env.REACT_APP_API_URL}upload/audio`,
@@ -33,6 +34,7 @@ export const handleStartAnalyze = async (inputFile: File) => {
       data: formData,
       headers: {
         "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${accessToken}`,
       },
     });
     console.log(result);
