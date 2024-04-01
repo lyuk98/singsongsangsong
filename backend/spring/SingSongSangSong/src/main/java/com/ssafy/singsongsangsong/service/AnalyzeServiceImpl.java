@@ -85,6 +85,6 @@ public class AnalyzeServiceImpl implements AnalyzeService {
 		String originalFileName = song.getMusicFileName();
 		File file = fileRepository.findByOriginalFileName(originalFileName)
 			.orElseThrow(() -> new NotFoundFileException("음악 파일을 찾을 수 없습니다."));
-		webClientRequestService.requestAnalyzeSong(songId, file.getFileName());
+		webClientRequestService.requestAnalyzeSong(songId, file.getSavedFileName());
 	}
 }

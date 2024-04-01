@@ -3,7 +3,7 @@ package com.ssafy.singsongsangsong.dto;
 import java.util.Optional;
 
 import com.ssafy.singsongsangsong.entity.Artist;
-import com.ssafy.singsongsangsong.entity.Image;
+import com.ssafy.singsongsangsong.entity.File;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,17 +20,17 @@ public class ArtistInfoDto {
 	private Long artistId;
 	private String nickname;
 	private String username;
-	private String profileImageFileName;
+	private ImageDto profileImage;
 	private String introduction;
 
 	public static ArtistInfoDto from(Artist artist) {
-		Image profileImage = Optional.ofNullable(artist.getProfileImage()).orElseGet(() -> null);
-		String profileImageUrl = Optional.ofNullable(profileImage).map(Image::getSavedFileName).orElseGet(() -> null);
+		File profileImage = Optional.ofNullable(artist.getProfileImage()).orElseGet(() -> null);
+
 		return ArtistInfoDto.builder()
 			.artistId(artist.getId())
 			.nickname(artist.getNickname())
 			.username(artist.getUsername())
-			.profileImageFileName(profileImageUrl)
+			.profileImage(ImageDto.from(profileImage))
 			.introduction(artist.getIntroduction())
 			.build();
 	}

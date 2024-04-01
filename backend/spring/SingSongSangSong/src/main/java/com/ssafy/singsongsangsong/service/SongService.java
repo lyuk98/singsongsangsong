@@ -23,6 +23,7 @@ public interface SongService {
 
 	void playSong(Long artistId, Long songId);
 
+	// TODO: 파일 형식으로 클라이언트가 다운로드 받을 수 있게끔 구현 수정
 	void downloadSong(Long artistId, Long songId);
 
 	SongSimilarityByRanksResponse getSongsSimilarityByRanks(Long songId, int size);

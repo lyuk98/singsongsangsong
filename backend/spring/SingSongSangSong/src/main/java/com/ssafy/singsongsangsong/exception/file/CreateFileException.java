@@ -1,4 +1,4 @@
-package com.ssafy.singsongsangsong.exception;
+package com.ssafy.singsongsangsong.exception.file;
 
 public class CreateFileException extends RuntimeException {
 	public CreateFileException(String msg) {

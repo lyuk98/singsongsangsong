@@ -14,6 +14,6 @@ public interface FileService {
 	// img, audio
 	// img => get ---
 	// audio => get -- ?
-	public Resource getFile(Long artistId, FileType fileType, String fileName) throws IOException;
+	public Resource getFile(Long artistId, FileType fileType, String originalFileName) throws IOException;
 
 }

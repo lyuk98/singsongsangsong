@@ -41,12 +41,12 @@ public class MinioFileService implements FileService {
 	}
 
 	@Override
-	public Resource getFile(Long artistId, FileType fileType, String fileName) throws IOException {
-		File file = fileRepository.findByOriginalFileName(fileName).orElseThrow(NotFoundFileException::new);
-		log.info("getFile => fileName: {}", fileName);
+	public Resource getFile(Long artistId, FileType fileType, String originalFileName) throws IOException {
+		File file = fileRepository.findByOriginalFileName(originalFileName).orElseThrow(NotFoundFileException::new);
+		log.info("getFile => originalFileName: {}", originalFileName);
 		try (InputStream inputStream = minioClient.getObject(GetObjectArgs.builder()
 			.bucket(fileType.getName())
-			.object(file.getFileName())
+			.object(file.getSavedFileName())
 			.build())) {
 			return new ByteArrayResource(inputStream.readAllBytes());
 		} catch (Exception e) {
