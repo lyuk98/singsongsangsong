@@ -31,7 +31,7 @@ export const handleStartAnalyze = async (inputFile: File) => {
     const result = await axios({
       url: `${process.env.REACT_APP_API_URL}upload/audio`,
       method: "POST",
-      data: formData,
+      data: { fileData: formData },
       headers: {
         "Content-Type": "multipart/form-data",
         Authorization: `Bearer ${accessToken}`,
