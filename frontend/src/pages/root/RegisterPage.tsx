@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState, ChangeEvent, useRef } from "react";
+import React, { useState, ChangeEvent, useRef, FormEvent } from "react";
 import {
   Form,
   Link,
@@ -79,7 +79,8 @@ const RegisterPage = () => {
     setProfileImage(null);
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     try {
       const response = await axios({
         method: "POST",
@@ -152,7 +153,6 @@ const RegisterPage = () => {
           onChange={handleNicknameChange}
           required
         />
-
         <AuthInput
           id="intro"
           label="소개"
