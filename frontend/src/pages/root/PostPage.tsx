@@ -99,9 +99,7 @@ const PostPage = () => {
     setAlbumImg(null);
   };
 
-  const handleSubmit = () => {
-
-  };
+  const handleSubmit = () => {};
 
   useEffect(() => {
     console.log(albumImg);

@@ -4,9 +4,7 @@ import MainLayout from "../pages/layout/MainLayout";
 import TrendPage from "../pages/root/TrendPage";
 import AnalysisPage from "../pages/root/AnalysisPage";
 import DiscoverPage from "../pages/root/DiscoverPage";
-import RegisterPage, {
-  action as RegisterAction,
-} from "../pages/root/RegisterPage";
+import RegisterPage from "../pages/root/RegisterPage";
 import LoginPage from "../pages/root/LoginPage";
 import AuthLayout from "../pages/layout/AuthLayout";
 import ArtistPage from "../pages/root/ArtistPage";
@@ -83,7 +81,6 @@ export const router = createBrowserRouter([
       {
         path: "/sign-up",
         element: <RegisterPage />,
-        action: RegisterAction,
       },
       {
         path: "/login",

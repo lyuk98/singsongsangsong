@@ -7,6 +7,19 @@
   margin-top: 6px;
 }
 
+.inputForm {
+  width: 200px;
+  height: 200px;
+  box-sizing: border-box;
+  text-align: center;
+  border: 5px dashed #dddddd;
+  border-radius: 15px;
+}
+
+.imgInput {
+  display: none;
+}
+
 .selectBox label {
   font-family: "Pretendart-600";
   font-size: 22px;

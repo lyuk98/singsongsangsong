@@ -56,7 +56,7 @@ const SongDetailPage = () => {
     method: "GET",
     url: `/song/${songId}`,
   });
-
+  console.log(response);
   return (
     <div className={`w-100 flex-col-center gap-30 ${styles.container}`}>
       <SongHeader
