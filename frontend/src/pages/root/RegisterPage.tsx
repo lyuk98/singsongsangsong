@@ -39,7 +39,7 @@ const RegisterPage = () => {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const accessToken = searchParams.get("accessToken");
-  console.log(accessToken);
+
   const {
     value: nicknameValue,
     handleInputChange: handleNicknameChange,
@@ -87,6 +87,7 @@ const RegisterPage = () => {
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    console.log("제출 시 토큰값 : ", accessToken);
     try {
       const response = await axios({
         method: "POST",
@@ -204,7 +205,10 @@ const RegisterPage = () => {
         <div className={styles.bottomBox}>
           <Button>Register</Button>
           <p>
-            You hava account?<Link to="/login">Login</Link>{" "}
+            이미 계정을 보유 중이신가요?
+            <Link style={{ borderBottom: "1px solid black" }} to="/login">
+              로그인
+            </Link>{" "}
           </p>
         </div>
       </form>
