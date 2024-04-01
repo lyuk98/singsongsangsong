@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.ssafy.singsongsangsong.dto.ArtistInfoDto;
 import com.ssafy.singsongsangsong.dto.EmotionsDto;
 import com.ssafy.singsongsangsong.dto.FollowerCountResponse;
+import com.ssafy.singsongsangsong.dto.MyProfileResponse;
 import com.ssafy.singsongsangsong.dto.SimpleSongDto;
 import com.ssafy.singsongsangsong.entity.Artist;
 import com.ssafy.singsongsangsong.entity.Follower_Following;
@@ -77,6 +78,16 @@ public class ArtistServiceImpl implements ArtistService {
 		return FollowerCountResponse.builder()
 			.artistId(artistId)
 			.followerCount(followerCount)
+			.build();
+	}
+
+	@Override
+	public MyProfileResponse getMyProfile(Long id) {
+		Artist artist = artistRepository.findById(id).orElseThrow(ArtistNotFoundException::new);
+		return MyProfileResponse.builder()
+			.id(id)
+			.username(artist.getUsername())
+			.nickname(artist.getNickname())
 			.build();
 	}
 }
