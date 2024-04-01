@@ -84,7 +84,7 @@ const RegisterPage = () => {
     try {
       const response = await axios({
         method: "POST",
-        url: `${process.env.REACT_APP_API_URL}/artist/join`,
+        url: `${process.env.REACT_APP_API_URL}artist/join`,
         data: {
           nickname: nicknameValue,
           profileImage: profileImage,
