@@ -107,6 +107,7 @@ logging:
   level:
     org:
       springframework:
+        mvc: TRACE
         test:
           context:
             cache: DEBUG
