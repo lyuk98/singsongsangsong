@@ -30,10 +30,12 @@ import com.ssafy.singsongsangsong.service.jwt.CustomOAuth2UserService;
 import com.ssafy.singsongsangsong.service.jwt.JwtService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
+@Slf4j
 public class SecurityConfig {
 	private final JwtService jwtService;
 	private final ArtistRepository artistRepository;
@@ -100,6 +102,9 @@ public class SecurityConfig {
 		config.setMaxAge(1000L);
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		source.registerCorsConfiguration("/**", config);
+
+		log.info("source : {}",source);
+
 		return source;
 	}
 }
