@@ -62,13 +62,4 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
 		response.sendRedirect(REDIRECT_URL + "?accessToken=" + accessToken);
 	}
-
-	public Cookie createCookie(String key, String value, String path, int time) {
-		Cookie cookie = new Cookie(key, value);
-		cookie.setMaxAge(time);
-		cookie.setPath(path);
-		// cookie.setHttpOnly(true);
-
-		return cookie;
-	}
 }
