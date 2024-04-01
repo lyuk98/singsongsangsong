@@ -43,10 +43,8 @@ public class AnalyzeController {
 
 	@GetMapping("/")
 	public UploadMainPageDto getUploadMainPage(
-		@AuthenticationPrincipal String username) {
-		Artist artist = artistRepository.findByUsername(username)
-			.orElseThrow(() -> new ArtistNotFoundException("유효하지 않은 유저입니다."));
-		return analyzeService.getUploadStatus(artist.getId());
+		@AuthenticationPrincipal ArtistPrincipal user) {
+		return analyzeService.getUploadStatus(user.getId());
 	}
 
 	@PostMapping("/{songId}")
@@ -56,22 +54,19 @@ public class AnalyzeController {
 	}
 
 	@PostMapping("/upload")
-	public void uploadMusic(@AuthenticationPrincipal String username,
+	public void uploadMusic(@AuthenticationPrincipal ArtistPrincipal user,
 		@RequestBody MultipartFile fileData) throws IOException {
-		Artist artist = artistRepository.findByUsername(username)
-			.orElseThrow(() -> new ArtistNotFoundException("유효하지 않은 유저입니다."));
 		// check if MEDIA_TYPE is valid
-		fileService.saveFile(artist.getId(), FileType.AUDIO, fileData);
+		fileService.saveFile(user.getId(), FileType.AUDIO, fileData);
 	}
 
 	@PutMapping("/publish/{songId}")
-	public void publishSong(@AuthenticationPrincipal String username, @PathVariable Long songId) {
+	public void publishSong(@AuthenticationPrincipal ArtistPrincipal user, @PathVariable Long songId) {
 		analyzeService.publishSong(songId);
 	}
 
 	@GetMapping("/{songId}")
-	public SimpleSongDto getSongsAnalistics(@AuthenticationPrincipal String
-		username, @PathVariable Long songId) {
+	public SimpleSongDto getSongsAnalistics(@AuthenticationPrincipal ArtistPrincipal user, @PathVariable Long songId) {
 		return analyzeService.getSongAnalistics(songId);
 	}
 }

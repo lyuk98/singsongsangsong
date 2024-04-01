@@ -7,8 +7,10 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.singsongsangsong.entity.Atmosphere;
+import com.ssafy.singsongsangsong.entity.Song;
 
 import lombok.RequiredArgsConstructor;
 
@@ -25,7 +27,18 @@ public class AtmosphereRepositoryCustomImpl
 			.where(atmosphere1.song.id.eq(songId))
 			.fetch();
 	}
-
+	@Override
+	public List<Song> atmosphereFilterList(List<Long> songIdList, String requestAtmosphere) {
+		BooleanBuilder booleanBuilder = new BooleanBuilder();
+		songIdList.stream().forEach(id->{
+			booleanBuilder.or(atmosphere1.song.id.eq(id));
+		});
+		return queryFactory
+			.select(atmosphere1.song)
+			.from(atmosphere1)
+			.where(atmosphere1.atmosphere.eq(requestAtmosphere).and(booleanBuilder))
+			.fetch();
+	}
 	@Override
 	public List<Atmosphere> findBySongId(Long songId, int limit) {
 		return queryFactory.selectFrom(atmosphere1)
