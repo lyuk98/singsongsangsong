@@ -109,10 +109,11 @@ const RegisterPage = () => {
         });
         const userInfo = await axiosInstance.request({
           method: "GET",
-          url: "/artist/myProfile",
+          url: "/artist/profile/me",
         });
         if (userInfo?.data?.data) {
           const userSliceData = userInfo.data.data;
+          console.log("들어오는 유저 슬라이스값", userSliceData);
           dispatch(userAction.setLogin(userSliceData));
         }
         redirect("/");
