@@ -41,14 +41,13 @@ public class ArtistServiceImpl implements ArtistService {
 		artist.setRole(Role.USER);
 		artist.setSex(dto.getSex());
 
-		// if(dto.getProfileImage() != null) {
-		// 	MultipartFile profileImage = dto.getProfileImage();
-		// 	Image image= Image.builder()
-		// 		.savedFileName(fileService.saveFile(artist.getId(), FileType.IMAGE, profileImage))
-		// 		.originalFileName(profileImage.getName())
-		// 		.build();
-		// 	artist.setProfileImage(image);
-		// }
+		if(dto.getProfileImage() != null) {
+			MultipartFile profileImage = dto.getProfileImage();
+			artist.setProfileImage(Image.builder()
+				.originalFileName(profileImage.getOriginalFilename())
+				.savedFileName(fileService.saveFile(artist.getId(), FileType.IMAGE, profileImage))
+				.build());
+		}
 
 		artistRepository.save(artist);
 	}

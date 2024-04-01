@@ -20,7 +20,6 @@ public class GuestJoinRequestDto {
 	private String nickname;
 	private int age;
 	private String introduction;
-	// private MultipartFile profileImage;
+	private MultipartFile profileImage;
 	private char sex;
-	private String profileImageFileName;
 }
