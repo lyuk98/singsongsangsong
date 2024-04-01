@@ -31,7 +31,7 @@ public class GlobalExceptionHandler {
 		} else {
 			errorMessage = "something wrong with jwt token.";
 		}
-		
+
 		response.setStatus(HttpStatus.UNAUTHORIZED.value());
 		return ErrorEntity.builder()
 			.code(HttpStatus.UNAUTHORIZED.toString())
@@ -100,7 +100,7 @@ public class GlobalExceptionHandler {
 		response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
 		return ErrorEntity.builder()
 			.code(HttpStatus.INTERNAL_SERVER_ERROR.toString())
-			.message("서버 관리자에게 문의하세요..ㅜㅜ" + e.getMessage())
+			.message("서버 관리자에게 문의하세요..ㅜㅜ" + e.getCause().toString())
 			.build();
 	}
 

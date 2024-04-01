@@ -13,10 +13,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.singsongsangsong.dto.ArtistInfoDto;
 import com.ssafy.singsongsangsong.dto.EmotionsDto;
+import com.ssafy.singsongsangsong.dto.FollowerCountResponse;
 import com.ssafy.singsongsangsong.dto.GuestJoinRequestDto;
 import com.ssafy.singsongsangsong.dto.JoinResponseDto;
-import com.ssafy.singsongsangsong.dto.FollowerCountResponse;
+import com.ssafy.singsongsangsong.dto.MyProfileResponse;
 import com.ssafy.singsongsangsong.dto.SimpleSongDto;
+import com.ssafy.singsongsangsong.security.ArtistPrincipal;
 import com.ssafy.singsongsangsong.service.artist.ArtistService;
 
 import lombok.RequiredArgsConstructor;
@@ -60,5 +62,10 @@ public class ArtistController {
 	@GetMapping("/followers/{artistId}/count")
 	public FollowerCountResponse getFollowerCount(@PathVariable Long artistId) {
 		return artistService.getFollowerCount(artistId);
+	}
+
+	@GetMapping("/me")
+	public MyProfileResponse getMyProfile(@AuthenticationPrincipal ArtistPrincipal loginUser) {
+		return artistService.getMyProfile(loginUser.getId());
 	}
 }
