@@ -14,6 +14,7 @@ import com.ssafy.singsongsangsong.dto.HotArtistResponseDto;
 import com.ssafy.singsongsangsong.dto.LikedPageResponseDto;
 import com.ssafy.singsongsangsong.dto.SearchResponseDto;
 import com.ssafy.singsongsangsong.dto.SongBriefDto;
+import com.ssafy.singsongsangsong.security.ArtistPrincipal;
 import com.ssafy.singsongsangsong.service.SongPlayListService;
 
 import lombok.RequiredArgsConstructor;
@@ -24,8 +25,8 @@ import lombok.RequiredArgsConstructor;
 public class SongPlayListController {
 	private final SongPlayListService songPlayListService;
 	@GetMapping("/liked-song/{pageNo}")
-	public LikedPageResponseDto getLikedPagination(@AuthenticationPrincipal String username, @PathVariable int pageNo) {
-		return songPlayListService.getLikedPagination(username,pageNo);
+	public LikedPageResponseDto getLikedPagination(@AuthenticationPrincipal ArtistPrincipal artistPrincipal, @PathVariable int pageNo) {
+		return songPlayListService.getLikedPagination(artistPrincipal.getUsername(), pageNo);
 	}
 
 	@GetMapping("/weekly-hitsong")
