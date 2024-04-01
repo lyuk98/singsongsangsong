@@ -40,8 +40,8 @@ public class SchedulerConfig {
 				.build();
 		
 		scheduler = new StdSchedulerFactory().getScheduler();
-		MyJobListener myJobListner = new MyJobListener();
-		scheduler.getListenerManager().addJobListener(myJobListner);
+//		PlayStepListener myJobListner = new PlayStepListener();
+//		scheduler.getListenerManager().addJobListener(myJobListner);
 		scheduler.start();
 		scheduler.scheduleJob(job, cronTrigger);
 	}
