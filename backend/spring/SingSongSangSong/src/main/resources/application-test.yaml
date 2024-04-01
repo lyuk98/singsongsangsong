@@ -10,6 +10,9 @@ spring:
         same-site: none
         secure: true
         domain: singsongsangsong.com
+    multipart:
+      maxFileSize: 100MB
+      maxRequestSize: 100MB
   security:
     oauth2:
       client:
