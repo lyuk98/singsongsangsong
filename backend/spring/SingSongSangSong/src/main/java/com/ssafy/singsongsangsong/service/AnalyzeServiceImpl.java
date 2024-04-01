@@ -9,11 +9,14 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ssafy.singsongsangsong.dto.SimpleSongDto;
 import com.ssafy.singsongsangsong.dto.UploadMainPageDto;
 import com.ssafy.singsongsangsong.entity.Atmosphere;
+import com.ssafy.singsongsangsong.entity.File;
 import com.ssafy.singsongsangsong.entity.Song;
 import com.ssafy.singsongsangsong.exception.NotYetAnalyzedException;
+import com.ssafy.singsongsangsong.exception.file.NotFoundFileException;
 import com.ssafy.singsongsangsong.exception.song.AlreadyCompletedException;
 import com.ssafy.singsongsangsong.exception.song.NotFoundSongException;
 import com.ssafy.singsongsangsong.repository.maria.atmosphere.AtmosphereRepository;
+import com.ssafy.singsongsangsong.repository.maria.file.FileRepository;
 import com.ssafy.singsongsangsong.repository.maria.song.SongRepository;
 import com.ssafy.singsongsangsong.utils.ThemesClassifier;
 import com.ssafy.singsongsangsong.webclient.WebClientRequestService;
@@ -28,6 +31,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
 	private final AtmosphereRepository atmosphereRepository;
 	private final ThemesClassifier themesClassifier;
 	private final WebClientRequestService webClientRequestService;
+	private final FileRepository fileRepository;
 
 	@Override
 	@Transactional
@@ -72,5 +76,15 @@ public class AnalyzeServiceImpl implements AnalyzeService {
 		SimpleSongDto dto = SimpleSongDto.from(song);
 		dto.setAtmosphere(atmosphereRepository.getAtmosphereBySongId(songId).getFirst().getAtmosphere());
 		return dto;
+	}
+
+	@Override
+	public void requestAnalyze(Long artistId, Long songId) {
+		// artistId와 songId에 해당하는 음악파일의 savedPath를 가져온다.
+		Song song = songRepository.findById(songId).orElseThrow(NotFoundSongException::new);
+		String originalFileName = song.getMusicFileName();
+		File file = fileRepository.findByOriginalFileName(originalFileName)
+			.orElseThrow(() -> new NotFoundFileException("음악 파일을 찾을 수 없습니다."));
+		webClientRequestService.requestAnalyzeSong(songId, file.getFileName());
 	}
 }

@@ -12,4 +12,6 @@ public interface AnalyzeService {
 	public void publishSong(Long songId);
 
 	public SimpleSongDto getSongAnalistics(Long songId);
+
+	public void requestAnalyze(Long artistId, Long songId);
 }
