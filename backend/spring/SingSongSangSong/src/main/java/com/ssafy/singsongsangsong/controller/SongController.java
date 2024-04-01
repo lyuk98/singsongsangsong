@@ -42,7 +42,7 @@ public class SongController {
 
 	@PostMapping("/comments")
 	@PreAuthorize("hasRole('USER')")
-	public void postComment(@AuthenticationPrincipal ArtistAuthenticationToken user,
+	public void postComment(@AuthenticationPrincipal ArtistPrincipal user,
 		PostCommentsDto dto) {
 		// 댓글을 남긴다.
 		songService.postComment(user.getId(), dto.getSongId(), dto.getContent());
