@@ -42,8 +42,7 @@ public class SongRepositoryCustomImpl implements SongRepositoryCustom {
 	@Override
 	public List<Song> findSongForGenreOrderByWeeklyCountDesc(String requestGenre) {
 		return jpaQueryFactory.select(song)
-			.from(genre)
-			.join(genre.song, song)
+			.from(song)
 			.where(song.customGenre.eq(requestGenre))
 			.orderBy(song.weeklyPlayCount.desc())
 			.limit(10)
