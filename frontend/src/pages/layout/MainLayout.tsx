@@ -15,7 +15,20 @@ const MainLayout = () => {
   const location = useLocation();
   const login = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch();
+
   useEffect(() => {
+    const getUserInfo = async () => {
+      try {
+        const response = await axiosInstance.request({
+          url: "/artist/profile/me",
+          method: "GET",
+        });
+        dispatch(userAction.setLogin(response?.data?.data));
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
     const searchParams = new URLSearchParams(location.search);
     const accessToken = searchParams.get("accessToken");
     if (accessToken) {
@@ -24,6 +37,7 @@ const MainLayout = () => {
         secure: true,
         sameSite: "none",
       });
+      getUserInfo();
     }
   }, []);
 
