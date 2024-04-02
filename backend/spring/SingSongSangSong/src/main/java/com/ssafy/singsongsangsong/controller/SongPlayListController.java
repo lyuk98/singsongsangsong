@@ -17,10 +17,12 @@ import com.ssafy.singsongsangsong.security.ArtistPrincipal;
 import com.ssafy.singsongsangsong.service.song.SongPlayListService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping("/music-playlist")
 @RequiredArgsConstructor
+@Slf4j
 public class SongPlayListController {
 	private final SongPlayListService songPlayListService;
 
@@ -51,11 +53,12 @@ public class SongPlayListController {
 	}
 
 	@GetMapping("/search")
-	public SearchResponseDto SearchArtistAndSong(@RequestParam(required = false) String keyword,
-		@RequestParam(required = false) String genre,
-		@RequestParam(required = false) String atmosphere,
-		@RequestParam(required = false, defaultValue = "0") Integer bpm,
-		@RequestParam(required = false) String sort) {
+	public SearchResponseDto SearchArtistAndSong(@RequestParam(value = "keyword", required = false) String keyword,
+		@RequestParam(value = "genre", required = false) String genre,
+		@RequestParam(value =  "atmosphere",required = false) String atmosphere,
+		@RequestParam(value = "bpm", required = false, defaultValue = "0") Integer bpm,
+		@RequestParam(value =  "sort", required = false, defaultValue = "date") String sort) {
+		log.info("keyword : {} , genre : {} , atmosphere : {} , bpm : {} , sort : {}", keyword, genre, atmosphere, bpm, sort);
 		return songPlayListService.searchArtistAndSong(keyword, genre, atmosphere, bpm, sort);
 	}
 }

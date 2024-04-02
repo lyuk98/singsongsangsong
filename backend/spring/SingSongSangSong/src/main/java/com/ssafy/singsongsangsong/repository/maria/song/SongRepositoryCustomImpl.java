@@ -51,10 +51,9 @@ public class SongRepositoryCustomImpl implements SongRepositoryCustom {
 
 	@Override
 	public List<Song> findSongForAtmosphereOrderByWeeklyCountDesc(String requestAtmosphere) {
-		return jpaQueryFactory.select(song)
-			.from(atmosphere1)
-			.join(atmosphere1.song, song)
-			.where(atmosphere1.atmosphere.eq(requestAtmosphere))
+		return jpaQueryFactory
+			.selectFrom(song)
+			.where(song.themes.eq(requestAtmosphere))
 			.orderBy(song.weeklyPlayCount.desc())
 			.limit(10)
 			.fetch();
