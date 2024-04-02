@@ -1,6 +1,7 @@
 package com.ssafy.singsongsangsong.controller;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
@@ -36,8 +37,17 @@ public class FileController {
 		if (user == null) {
 			throw new JWTVerificationException("로그인이 필요합니다");
 		}
-		return new UploadFileDto(fileService.saveFile(user.getId(), fileType, fileData),
-			fileData.getOriginalFilename());
+		
+		switch (fileType) {
+			case IMAGE:
+				return UploadFileDto.builder()
+					.savedFileName(fileService.saveFile(user.getId(), fileType, fileData))
+					.originalFileName(fileData.getOriginalFilename()).build();
+			case AUDIO:
+				return fileService.uploadSong(user.getId(), fileType, fileData);
+			default:
+				throw new MalformedURLException("upload 요청 URL이 잘못되었습니다.");
+		}
 	}
 
 	@GetMapping("/download/{fileType}/{originalFileName}")

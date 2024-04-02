@@ -12,10 +12,15 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ssafy.singsongsangsong.constants.FileType;
+import com.ssafy.singsongsangsong.dto.UploadSongDto;
+import com.ssafy.singsongsangsong.entity.Artist;
 import com.ssafy.singsongsangsong.entity.File;
+import com.ssafy.singsongsangsong.entity.Song;
+import com.ssafy.singsongsangsong.exception.artist.ArtistNotFoundException;
 import com.ssafy.singsongsangsong.exception.file.NotFoundFileException;
+import com.ssafy.singsongsangsong.repository.maria.artist.ArtistRepository;
 import com.ssafy.singsongsangsong.repository.maria.file.FileRepository;
-import com.ssafy.singsongsangsong.service.file.FileService;
+import com.ssafy.singsongsangsong.repository.maria.song.SongRepository;
 
 import io.minio.GetObjectArgs;
 import io.minio.MinioClient;
@@ -31,6 +36,8 @@ public class MinioFileService implements FileService {
 
 	private final MinioClient minioClient;
 	private final FileRepository fileRepository;
+	private final SongRepository songRepository;
+	private final ArtistRepository artistRepository;
 
 	@Override
 	@Transactional
@@ -54,6 +61,16 @@ public class MinioFileService implements FileService {
 			log.error(e.toString());
 		}
 		return null;
+	}
+
+	@Override
+	@Transactional
+	public UploadSongDto uploadSong(Long artistId, FileType fileType, MultipartFile fileData) throws IOException {
+		String savedFileName = saveFile(artistId, fileType, fileData);
+		Artist artist = artistRepository.findById(artistId).orElseThrow(ArtistNotFoundException::new);
+		Song song = songRepository.save(
+			Song.builder().artist(artist).musicFileName(fileData.getOriginalFilename()).build());
+		return new UploadSongDto(song.getId(), fileData.getOriginalFilename(), savedFileName);
 	}
 
 	private String uploadToMinIo(String bucket, MultipartFile file) {

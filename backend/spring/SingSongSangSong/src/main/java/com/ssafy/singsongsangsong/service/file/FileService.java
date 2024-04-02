@@ -6,6 +6,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ssafy.singsongsangsong.constants.FileType;
+import com.ssafy.singsongsangsong.dto.UploadSongDto;
 
 public interface FileService {
 
@@ -16,4 +17,5 @@ public interface FileService {
 	// audio => get -- ?
 	public Resource getFile(Long artistId, FileType fileType, String originalFileName) throws IOException;
 
+	public UploadSongDto uploadSong(Long artistId, FileType fileType, MultipartFile fileData) throws IOException;
 }

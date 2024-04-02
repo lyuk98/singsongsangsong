@@ -50,6 +50,11 @@ public class AnalyzeController {
 		analyzeService.requestAnalyze(user.getId(), songId);
 	}
 
+	/**
+	 * @param user
+	 * @param fileData
+	 * @throws IOException
+	 */
 	@PostMapping("/upload")
 	public void uploadMusic(@AuthenticationPrincipal ArtistPrincipal user,
 		@RequestBody MultipartFile fileData) throws IOException {
