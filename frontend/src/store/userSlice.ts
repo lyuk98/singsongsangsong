@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-
+import { removeCookie } from "../utils/cookie";
 const userSlice = createSlice({
   name: "user",
   initialState: {
@@ -16,6 +16,7 @@ const userSlice = createSlice({
       state.userNickName = action.payload.nickname;
     },
     setLogout(state, action) {
+      removeCookie("accessToken");
       state.isLogin = false;
       state.userId = "";
       state.userName = "";
