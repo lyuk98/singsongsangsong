@@ -49,14 +49,15 @@ const DUMMY_DATA = {
 
 const SongDetailPage = () => {
   const { songId } = useParams();
-
-  // getSong -> 아래로 내려줄 기본적인 페이지 로드 시 실행할 요청
-  // response =>
+  console.log(songId);
+  
   const { response, isLoading, refetch } = useAxios({
     method: "GET",
-    url: `/song/${songId}`,
+    url: `/song/detail/${songId}`,
   });
+
   console.log(response);
+
   if (isLoading) {
     return <p>로딩중입니다</p>;
   }
@@ -71,6 +72,8 @@ const SongDetailPage = () => {
         likeCount={response.likeCount}
         playCount={response.playCount}
         downloadCount={response.downloadCount}
+        songFileName={response.songFileName}
+        albumImageFileName={response.albumImageFileName}
       />
       <div className={`w-100 flex-col-center gap-30 ${styles.content}`}>
         <SongInfo

@@ -19,8 +19,10 @@ type PropsType = {
   lyrics: string;
 };
 const SongDetails = ({ lyrics }: PropsType) => {
-  const [focused, setFocused] = useState<string>("가사");
   const { songId } = useParams();
+  const [focused, setFocused] = useState<string>("가사");
+  const [genreData, setGenreData] = useState<any>();
+  const [atmosphereData, setAtmosphereData] = useState<any>();
   const handleSelectButton = (content: string): void => {
     setFocused(content);
   };
@@ -30,11 +32,13 @@ const SongDetails = ({ lyrics }: PropsType) => {
     url: `/song/analyze/${songId}`,
   });
 
-  console.log(response);
-
   useEffect(() => {
-    const result = getAnalyzeResult(songId);
-    console.log(result);
+    const callAxios = async () => {
+      const res = await getAnalyzeResult(songId);
+      setGenreData(res.genres);
+      setAtmosphereData(res.atmospheres);
+    };
+    callAxios();
   }, []);
 
   return (
@@ -65,31 +69,33 @@ const SongDetails = ({ lyrics }: PropsType) => {
               <div className={styles.moodBox}>
                 <h2>분위기 분석</h2>
                 <div className={styles.chartBox}>
-                  <RaderChart />
+                  <RaderChart type="atmo" data={atmosphereData} />
                 </div>
                 <div className={`flex-row-center ${styles.topFiveResult}`}>
                   <div className={`flex-col-center ${styles.result}`}>
-                    <p>기쁨</p>
-                    <h3>78%</h3>
+                    <p>{atmosphereData[0].atmosphere}</p>
+                    <h3>{`${Math.floor(atmosphereData[0].correlation)}%`}</h3>
                   </div>
                 </div>
                 <div className={`flex-col-center ${styles.summary}`}>
-                  와결과다
+                  가장 돋보이는 분위기는
+                  <strong>{atmosphereData[0].atmosphere}</strong> 입니다.
                 </div>
               </div>
               <div className={styles.genreBox}>
                 <h2>장르 분석</h2>
                 <div className={styles.chartBox}>
-                  <RaderChart />
+                  <RaderChart type="genre" data={genreData} />
                 </div>
                 <div className={`flex-row-center ${styles.topFiveResult}`}>
                   <div className={`flex-col-center ${styles.result}`}>
-                    <p>발라드</p>
-                    <h3>78%</h3>
+                    <p>{genreData[0].genre}</p>
+                    <h3>{`${Math.floor(genreData[0].correlation)}%`}</h3>
                   </div>
                 </div>
                 <div className={`flex-col-center ${styles.summary}`}>
-                  와결과다
+                  가장 돋보이는 장르는 <strong>{genreData[0].genre}</strong>{" "}
+                  입니다.
                 </div>
               </div>
             </div>

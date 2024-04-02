@@ -139,7 +139,11 @@ const RegisterPage = () => {
                 onMouseLeave={() => setIsHover(false)}
                 className={`${styles.imageContainer}`}
               >
-                <img src={profileUrl} className={`${styles.profileImage}`} />
+                <img
+                  src={profileUrl}
+                  className={`${styles.profileImage}`}
+                  alt="profileImg"
+                />
                 <div
                   className={` flex-col-center ${styles.resetBtn} ${
                     isHover ? styles.active : ""

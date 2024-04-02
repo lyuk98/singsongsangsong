@@ -18,6 +18,7 @@ import TopRankArtistPage from "../pages/root/TopRankArtistPage";
 import FavoriteArtistPage from "../pages/root/FavoriteArtistPage";
 import FavoriteSongPage from "../pages/root/FavoriteSongPage";
 import RegisterSelectPage from "../pages/root/RegisterSelectPage";
+import WeeklyMusicPage from "../pages/root/WeeklyMusicPage";
 
 export const router = createBrowserRouter([
   {
@@ -57,6 +58,10 @@ export const router = createBrowserRouter([
       {
         path: "discover/artist/:type",
         element: <TopRankArtistPage />,
+      },
+      {
+        path: "discover/weekly-singsong",
+        element: <WeeklyMusicPage />,
       },
       {
         path: "artist/:artistId",

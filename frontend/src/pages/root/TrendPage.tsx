@@ -138,13 +138,13 @@ const TrendPage = () => {
       )}
       {response && (
         <>
-          <TestWeeklySingsongChart weekly={response.weekly} />
+          {/* <TestWeeklySingsongChart weekly={response.weekly} /> */}
           <TrendWithOptions />
           <RankWithOption />
-          <CompareWithAnotherSite
+          {/* <CompareWithAnotherSite
             korean={response.korean}
             world={response.world}
-          />
+          /> */}
           <SongWithEmotion emotions={response.emotions} />
           <SongWithBPM />
         </>

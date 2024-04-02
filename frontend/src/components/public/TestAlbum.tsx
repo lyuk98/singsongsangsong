@@ -1,25 +1,30 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+
+import styles from "./TestAlbum.module.css";
 import { musicAction } from "../../store/musicSlice";
-import styles from "./Album.module.css";
 import { FaPlay } from "react-icons/fa";
 import { RootState } from "../../store";
-import { getAlbumImg, getMp3File } from "../../utils/api/downloadFileApi";
+import { useAxios } from "../../hooks/api/useAxios";
 import { axiosInstance } from "../../hooks/api";
+import { getAlbumImg, getMp3File } from "../../utils/api/downloadFileApi";
+import Spinner from "./../../sources/imgs/spinner.gif";
 
 /** 앨범 이미지를 받아와서 해당 앨범을 hover하면 재생 버튼이 보이고
  * 클릭시 음악을 재생시켜줄 컴포넌트
  */
 
 type PropsType = {
-  songId?: any;
+  songId: number;
 };
-const Album = ({ songId }: PropsType) => {
-  const dispatch = useDispatch();
+const TestAlbum = ({ songId }: PropsType) => {
   const music = useSelector((state: RootState) => state.music);
   const [isLoading, setIsloading] = useState<boolean>(false);
   const [albumImg, setAlbumImg] = useState<any>();
   const [audioFile, setAudioFile] = useState<any>();
+
+  const dispatch = useDispatch();
+  const currentMusic = audioFile;
 
   useEffect(() => {
     const getFileData = async () => {
@@ -47,11 +52,29 @@ const Album = ({ songId }: PropsType) => {
     getFileData();
   }, []);
 
+  if (isLoading) {
+    return (
+      <div
+        style={{ width: "200px", height: "200px" }}
+        className={`flex-row-center`}
+      >
+        <img
+          style={{ width: "10px", height: "10px" }}
+          src={Spinner}
+          alt="spinner"
+        />
+      </div>
+    );
+  }
   return (
     <div className={`flex-col-center ${styles.container}`}>
-      <img src={albumImg} alt="albumImg" />
+      <div className={`${styles.albumImg}`}>
+        <img src={albumImg} alt="" />
+      </div>
       <div className={styles.overlay}>
-        <button onClick={() => dispatch(musicAction.addMusicList(audioFile))}>
+        <button
+          onClick={() => dispatch(musicAction.addMusicList(currentMusic))}
+        >
           <FaPlay size={"24px"} />
         </button>
         {}
@@ -60,4 +83,4 @@ const Album = ({ songId }: PropsType) => {
   );
 };
 
-export default Album;
+export default TestAlbum;

@@ -171,24 +171,6 @@ const PostPage = () => {
             />
           </div>
         </div>
-        <div className={`w-100 flex-col gap-15 py-15 `}>
-          <h2>장르</h2>
-          <select
-            name="genre"
-            id="genre"
-            className={`w-100 border-box p-15 ${styles.postSelector}`}
-          >
-            <option value="발라드">발라드</option>
-          </select>
-        </div>
-        <div className={`w-100 flex-col gap-15 py-15`}>
-          <h2>테마</h2>
-          <div
-            className={`w-100 flex-row-center border-box p-15 ${styles.postSelector}`}
-          >
-            테마
-          </div>
-        </div>
         <div className={`w-100 flex-col gap-15 py-15`}>
           <h2>곡설명</h2>
           <textarea

@@ -63,7 +63,7 @@ export const getAnalyzeResult = async (songId: string | undefined) => {
       method: "GET",
       url: `/song/analyze/${songId}`,
     });
-    return response;
+    return response.data.data;
   } catch (error) {
     console.log(error);
   }
