@@ -1,5 +1,8 @@
 package com.ssafy.singsongsangsong.common.advice;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -94,6 +97,15 @@ public class GlobalExceptionHandler {
 		return ErrorEntity.builder()
 			.code(HttpStatus.TOO_EARLY.toString())
 			.message("아직 분석이 완료되지 않았습니다.")
+			.build();
+	}
+
+	@ExceptionHandler({MalformedURLException.class})
+	public ErrorEntity handleMalformedURLException(IOException e, HttpServletResponse response) {
+		response.setStatus(HttpStatus.BAD_REQUEST.value());
+		return ErrorEntity.builder()
+			.code(HttpStatus.BAD_REQUEST.toString())
+			.message(e.getMessage())
 			.build();
 	}
 

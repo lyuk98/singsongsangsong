@@ -18,8 +18,8 @@ import com.jcraft.jsch.Session;
 import com.jcraft.jsch.SftpException;
 import com.ssafy.singsongsangsong.config.SynologyFileStationConfig;
 import com.ssafy.singsongsangsong.constants.FileType;
+import com.ssafy.singsongsangsong.dto.UploadSongDto;
 import com.ssafy.singsongsangsong.repository.maria.file.FileRepository;
-import com.ssafy.singsongsangsong.service.file.FileService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -103,5 +103,10 @@ public class StfpFileService implements FileService {
 		} catch (SftpException e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	@Override
+	public UploadSongDto uploadSong(Long artistId, FileType fileType, MultipartFile fileData) throws IOException {
+		throw new Error("아직 구현되지 않은 메소드입니다.");
 	}
 }
