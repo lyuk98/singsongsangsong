@@ -14,7 +14,7 @@ import file_server
 
 # 시험 목적으로 실행합니다
 # (완료 시 실행 내용을 되돌립니다)
-DRY_RUN = True
+DRY_RUN = False
 
 # 데이터베이스 삽입 시 시작 및 종료할 ID를 명시합니다
 SONG_FROM = 1
@@ -82,7 +82,7 @@ def filename_from_id(song_id: int) -> str:
 load_dotenv()
 
 # 삽입할 곡의 정보를 읽습니다
-artists = pd.read_csv(
+tracks = pd.read_csv(
     "dataset/fma/data/fma_metadata/raw_tracks.csv",
     skipinitialspace=True,
     usecols=[
@@ -100,7 +100,7 @@ image_insert = []
 audio_insert = []
 file_insert_id = itertools.count(FILE_START_FROM)
 
-for index, row in artists.iterrows():
+for index, row in tracks.iterrows():
     track_id = int(row["track_id"])
 
     if track_id < SONG_FROM:
@@ -296,6 +296,12 @@ try:
                     minio_client
                 )
                 saved_audio.append(audio_file["saved_file_name"])
+
+            # NaN 값을 NULL로 변경합니다
+            # (더 좋은 방법이 있을 것 같으나 시간 문제로 진행하지 않습니다)
+            cursor.execute(
+                "update song set song_description = null where song_description = 'nan'"
+            )
 
             # 시험 목적으로 사용 시 commit을 하지 않습니다
             if not DRY_RUN:
