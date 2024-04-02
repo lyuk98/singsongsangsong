@@ -44,7 +44,7 @@ public class SongRepositoryCustomImpl implements SongRepositoryCustom {
 		return jpaQueryFactory.select(song)
 			.from(genre)
 			.join(genre.song, song)
-			.where(genre.mainCategory.eq(requestGenre).or(song.customGenre.eq(requestGenre)))
+			.where(song.customGenre.eq(requestGenre))
 			.orderBy(song.weeklyPlayCount.desc())
 			.limit(10)
 			.fetch();
