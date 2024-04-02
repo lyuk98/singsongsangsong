@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import com.ssafy.singsongsangsong.constants.DefaultFileName;
 import com.ssafy.singsongsangsong.entity.Comments;
 import com.ssafy.singsongsangsong.entity.File;
 
@@ -43,10 +44,10 @@ public class CommentsResponseDto implements Serializable {
 				.authorId(comments.getArtist().getId())
 				.artistNickname(comments.getArtist().getNickname())
 				.content(comments.getContent())
-				.imageFileName(
-					profileImage.orElseGet(() ->
-							new File(999L, "default.jpg", "default.jpg", comments.getArtist().getId()))
-						.getOriginalFileName())
+				.imageFileName(profileImage.orElseGet(
+						() -> new File(999L, DefaultFileName.DEFAULT_PROFILE_PICTURE.getName(),
+							DefaultFileName.DEFAULT_PROFILE_PICTURE.getName(), comments.getArtist().getId()))
+					.getOriginalFileName())
 				.createdAt(date)
 				.build();
 		}

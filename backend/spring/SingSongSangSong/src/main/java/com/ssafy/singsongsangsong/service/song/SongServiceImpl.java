@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.singsongsangsong.annotation.CsvFileContents;
 import com.ssafy.singsongsangsong.annotation.ExportCsvFile;
+import com.ssafy.singsongsangsong.constants.DefaultFileName;
 import com.ssafy.singsongsangsong.constants.EmotionsConstants;
 import com.ssafy.singsongsangsong.constants.FileType;
 import com.ssafy.singsongsangsong.dto.AnalyzeGenreAndAtmosphereResponse;
@@ -131,9 +132,19 @@ public class SongServiceImpl implements SongService {
 
 		SongInfoResponseBuilder builder = SongInfoResponse.builder();
 
+		String musicFileName = Optional.ofNullable(song.getMusicFileName()).orElseGet(
+			DefaultFileName.DEFAULT_PROFILE_PICTURE::getName);
+
+		String originalFileName;
+		if (song.getAlbumImage() != null && song.getAlbumImage().getOriginalFileName() != null) {
+			originalFileName = song.getAlbumImage().getOriginalFileName();
+		} else {
+			originalFileName = DefaultFileName.DEFAULT_PROFILE_PICTURE.getName();
+		}
+
 		builder = builder.songTitle(song.getTitle()).artist(ArtistInfoDto.from(artist))
 			.lyrics(song.getLyrics()).chord(song.getChord()).bpm(song.getBpm())
-			.songFileName(song.getMusicFileName()).albumImageFileName(song.getAlbumImage().getOriginalFileName())
+			.songFileName(musicFileName).albumImageFileName(originalFileName)
 			.songDescription(song.getSongDescription());
 
 		builder = builder.movedEmotionCount(song.getMovedEmotionCount())
@@ -202,19 +213,34 @@ public class SongServiceImpl implements SongService {
 		List<Comparison> comparison = retrieved.stream().map(similarityInfo -> {
 			Long targetId = similarityInfo.getSimilarSongId();
 			Song targetSong = songRepository.findById(targetId).orElseThrow(NotFoundSongException::new);
+			String originalFileName;
+
+			if (targetSong.getAlbumImage().getOriginalFileName() != null) {
+				originalFileName = targetSong.getAlbumImage().getOriginalFileName();
+			} else {
+				originalFileName = DefaultFileName.DEFAULT_PROFILE_PICTURE.getName();
+			}
+
 			return Comparison.builder()
 				.target(
 					Comparison.Target.builder()
 						.songId(targetSong.getId())
-						.albumImageFileName(targetSong.getAlbumImage().getOriginalFileName())
+						.albumImageFileName(originalFileName)
 						.title(targetSong.getTitle())
 						.createdDate(targetSong.getCreatedDate()).build()
 				).correlation(similarityInfo.getDistance()).build();
 		}).toList();
 
+		String originalAlbumImageFile;
+		if (song.getAlbumImage() != null && song.getAlbumImage().getOriginalFileName() != null) {
+			originalAlbumImageFile = song.getAlbumImage().getOriginalFileName();
+		} else {
+			originalAlbumImageFile = DefaultFileName.DEFAULT_ALBUM_PICTURE.getName();
+		}
+
 		return SongSimilarityByRanksResponse.builder()
 			.size(size)
-			.albumImageFileName(song.getAlbumImage().getOriginalFileName())
+			.albumImageFileName(originalAlbumImageFile)
 			.title(song.getTitle())
 			.createdDate(song.getCreatedDate())
 			.comparison(comparison.subList(0, size - 1))
