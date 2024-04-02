@@ -25,7 +25,11 @@ public class CommentsResponseDto implements Serializable {
 	List<CommentsResponse> comments;
 
 	@Builder
-	public static class CommentsResponse {
+	@NoArgsConstructor
+	@AllArgsConstructor
+	@Setter
+	@Getter
+	public static class CommentsResponse implements Serializable {
 		private Long authorId;
 		private String artistNickname;
 		private String content;
