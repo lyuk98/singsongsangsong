@@ -78,12 +78,21 @@ public class SongPlayListServiceImpl implements SongPlayListService {
 
 	@Override
 	public List<SongBriefDto> getGenreHitSongList(String genre) {
+		genre = castingGenreString(genre);
 		List<SongBriefDto> list = new ArrayList<>();
 		List<Song> songListFromDB = songRepository.findSongForGenreOrderByWeeklyCountDesc(genre);
 		for (Song song : songListFromDB) {
 			list.add(SongBriefDto.from(song));
 		}
 		return list;
+	}
+	private String castingGenreString(String genre) {
+		if(genre.equals("hiphop")) {
+			return "Hip Hop";
+		}
+		else {
+			return genre.substring(0,1).toUpperCase() + genre.substring(1);
+		}
 	}
 
 	@Override
@@ -119,6 +128,7 @@ public class SongPlayListServiceImpl implements SongPlayListService {
 		List<Long> songIdList = songListFiltering.stream().map(Song::getId).toList();
 
 		if (requestGenre != null) {
+			requestGenre = castingGenreString(requestGenre);
 			songListFiltering = genreRepository.genreFilterList(songIdList, requestGenre);
 			songIdList = songListFiltering.stream().map(Song::getId).toList();
 		}
