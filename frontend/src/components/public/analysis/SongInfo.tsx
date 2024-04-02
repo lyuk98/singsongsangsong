@@ -11,7 +11,13 @@ import MoodTag from "../../moodTag/MoodTag";
  * @todo 곡설명에 대한 정보와 tag에 관련된 props를 받아야함
  * @returns
  */
-const SongInfo = () => {
+
+type PropsType = {
+  songDescription: string;
+  bpm: string | number;
+  chord: string;
+};
+const SongInfo = ({ songDescription, bpm, chord }: PropsType) => {
   return (
     <div className={`flex-col-center ${styles.container}`}>
       <header>
@@ -20,12 +26,12 @@ const SongInfo = () => {
           <PiVinylRecord color="#0085E5" size={"42"} />
         </h2>
       </header>
-      <div className={`${styles.explanationBox}`}>{"songDescription"}</div>
+      <div className={`${styles.explanationBox}`}>
+        {songDescription ? songDescription : <p>곡에 대한 설명이 없습니다.</p>}
+      </div>
       <div className={`flex-row-center ${styles.tagBox}`}>
-        <MoodTag mood="발라드" />
-        <MoodTag mood="테마" />
-        <MoodTag mood="130bpm" />
-        <MoodTag mood="C#" />
+        <MoodTag mood={`${bpm}BPM`} />
+        <MoodTag mood={chord} />
       </div>
     </div>
   );

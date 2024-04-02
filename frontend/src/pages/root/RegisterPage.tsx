@@ -116,12 +116,17 @@ const RegisterPage = () => {
           console.log("들어오는 유저 슬라이스값", userSliceData);
           dispatch(userAction.setLogin(userSliceData));
         }
-        redirect("/");
+        redirect("/trend");
       }
     } catch (error) {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    console.log(nicknameValue);
+    console.log(descValue);
+  }, [descValue, nicknameValue]);
 
   return (
     <div className={styles.container}>

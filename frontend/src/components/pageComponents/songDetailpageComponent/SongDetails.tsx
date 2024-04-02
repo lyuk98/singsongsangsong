@@ -5,6 +5,7 @@ import MusicSectionIndicator from "../../public/analysis/MusicSectionIndicator";
 import SimilarSong from "../../public/analysis/SimilarSong";
 import { getAnalyzeResult } from "../../../utils/api/songDetailApi";
 import { useParams } from "react-router-dom";
+import { useAxios } from "../../../hooks/api/useAxios";
 
 const TAB_CONTENT = ["가사", "분위기 / 장르", "유사곡", "구간분석"];
 
@@ -14,17 +15,27 @@ const TAB_CONTENT = ["가사", "분위기 / 장르", "유사곡", "구간분석"
  * 결과값은 받아온 데이터중 가장 높은값을 변수로 사용해서 와 결과다 위치에 넣어줘야함
  */
 
-const SongDetails = () => {
+type PropsType = {
+  lyrics: string;
+};
+const SongDetails = ({ lyrics }: PropsType) => {
   const [focused, setFocused] = useState<string>("가사");
   const { songId } = useParams();
   const handleSelectButton = (content: string): void => {
     setFocused(content);
   };
 
-  // useEffect(() => {
-  //   const result = getAnalyzeResult(songId);
-  //   console.log(result);
-  // }, []);
+  const { response, isLoading } = useAxios({
+    method: "GET",
+    url: `/song/analyze/${songId}`,
+  });
+
+  console.log(response);
+
+  useEffect(() => {
+    const result = getAnalyzeResult(songId);
+    console.log(result);
+  }, []);
 
   return (
     <div className={styles.container}>
@@ -45,12 +56,7 @@ const SongDetails = () => {
       </ul>
       <div className={styles.selectedDetail}>
         {focused === "가사" && (
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex rerum
-            saepe in dignissimos consequatur officiis, officia labore qui,
-            ratione magnam placeat, molestias facere illum cupiditate
-            consectetur illo quaerat maxime minus?
-          </p>
+          <p>{lyrics ? lyrics : <p>제공되는 가사가 없습니다.</p>}</p>
         )}
         {focused === "분위기 / 장르" && (
           <div>
