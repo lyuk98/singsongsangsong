@@ -23,28 +23,17 @@ import ArtistEmotionBox from "../../components/public/emotionBox/ArtistEmotionBo
 import { axiosInstance } from "../../hooks/api";
 
 const ArtistPage = () => {
-  // const { artistId } = useParams();
+  const { artistId } = useParams();
   const [followerCount, setFollowerCount] = useState<number | null>(null);
   const [songList, setSongList] = useState(null);
-  const artistId = 1;
+  // const artistId = 1;
   // 아티스트 정보를 요청하는 페이지 로드시 실행할 함수
   const { response, isLoading, refetch, error } = useAxios({
     url: `/artist/${artistId}`,
     method: "GET",
   });
 
-  const {
-    response: emotions,
-    isLoading: emotionLoading,
-    refetch: emotionRefetch,
-    error: emotinEror,
-  } = useAxios({
-    url: `/artist/emotions/${artistId}`,
-    method: "GET",
-  });
-
-  // console.log(response);
-  // console.log(emotions);
+  console.log(response);
 
   useEffect(() => {
     const getItems = async () => {
