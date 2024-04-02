@@ -1,16 +1,14 @@
 import axios from "axios";
 import { AxiosInstance } from "axios";
 import { axiosInstance } from "../../hooks/api";
+import { getCookie } from "../cookie";
 
 /**
  * 곡의 감정 표현을 올려줄 api
  * @param songId
  * @param emotion
  */
-export const updateEmotion = async (
-  songId: string | undefined,
-  emotion: string
-) => {
+export const updateEmotion = async (songId: any, emotion: string) => {
   try {
     const response = await axiosInstance.request({
       method: "PUT",
@@ -76,6 +74,22 @@ export const getSongSimilarity = async (songId: string | undefined) => {
       url: `/song/similarity/${songId}`,
     });
     return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getTempSimilarity = async (songId: any) => {
+  const accessToken = getCookie("accessToken");
+  try {
+    const response = await axios({
+      method: "GET",
+      url: `https://dsp.singsongsangsong.com/similarity/${songId}`,
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    return response?.data?.data;
   } catch (error) {
     console.log(error);
   }

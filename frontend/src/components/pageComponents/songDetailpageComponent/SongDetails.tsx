@@ -3,7 +3,10 @@ import styles from "./SongDetails.module.css";
 import RaderChart from "../../public/chart/raderChart/RaderChart";
 import MusicSectionIndicator from "../../public/analysis/MusicSectionIndicator";
 import SimilarSong from "../../public/analysis/SimilarSong";
-import { getAnalyzeResult } from "../../../utils/api/songDetailApi";
+import {
+  getAnalyzeResult,
+  getTempSimilarity,
+} from "../../../utils/api/songDetailApi";
 import { useParams } from "react-router-dom";
 import { useAxios } from "../../../hooks/api/useAxios";
 
@@ -21,8 +24,8 @@ type PropsType = {
 const SongDetails = ({ lyrics }: PropsType) => {
   const { songId } = useParams();
   const [focused, setFocused] = useState<string>("가사");
-  const [genreData, setGenreData] = useState<any>();
-  const [atmosphereData, setAtmosphereData] = useState<any>();
+  const [genreData, setGenreData] = useState<any>(null);
+  const [atmosphereData, setAtmosphereData] = useState<any>(null);
   const handleSelectButton = (content: string): void => {
     setFocused(content);
   };
@@ -35,8 +38,13 @@ const SongDetails = ({ lyrics }: PropsType) => {
   useEffect(() => {
     const callAxios = async () => {
       const res = await getAnalyzeResult(songId);
-      setGenreData(res.genres);
-      setAtmosphereData(res.atmospheres);
+      const similarity = await getTempSimilarity(songId);
+      console.log(similarity);
+      console.log(res);
+      if (res) {
+        setGenreData(res.genres);
+        setAtmosphereData(res.atmospheres);
+      }
     };
     callAxios();
   }, []);
@@ -65,40 +73,50 @@ const SongDetails = ({ lyrics }: PropsType) => {
         {focused === "분위기 / 장르" && (
           <div>
             <h2>분위기 / 장르 분석 결과</h2>
-            <div className={`flex-row-center ${styles.radderBox}`}>
-              <div className={styles.moodBox}>
-                <h2>분위기 분석</h2>
-                <div className={styles.chartBox}>
-                  <RaderChart type="atmo" data={atmosphereData} />
-                </div>
-                <div className={`flex-row-center ${styles.topFiveResult}`}>
-                  <div className={`flex-col-center ${styles.result}`}>
-                    <p>{atmosphereData[0].atmosphere}</p>
-                    <h3>{`${Math.floor(atmosphereData[0].correlation)}%`}</h3>
+            {genreData.length !== 0 && atmosphereData.length !== 0 && (
+              <div className={`flex-row-center ${styles.radderBox}`}>
+                <div className={styles.moodBox}>
+                  <h2>분위기 분석</h2>
+                  <div className={styles.chartBox}>
+                    <RaderChart type="atmo" data={atmosphereData} />
+                  </div>
+                  <div className={`flex-row-center ${styles.topFiveResult}`}>
+                    {atmosphereData.map((element: any) => {
+                      return (
+                        <div className={`flex-col-center ${styles.result}`}>
+                          <p>{element.atmosphere}</p>
+                          <h3>{`${Math.floor(element.correlation)}%`}</h3>
+                        </div>
+                      );
+                    })}
+                  </div>
+                  <div className={`flex-col-center ${styles.summary}`}>
+                    가장 돋보이는 분위기는
+                    <strong>{atmosphereData[0].atmosphere}</strong> 입니다.
                   </div>
                 </div>
-                <div className={`flex-col-center ${styles.summary}`}>
-                  가장 돋보이는 분위기는
-                  <strong>{atmosphereData[0].atmosphere}</strong> 입니다.
-                </div>
-              </div>
-              <div className={styles.genreBox}>
-                <h2>장르 분석</h2>
-                <div className={styles.chartBox}>
-                  <RaderChart type="genre" data={genreData} />
-                </div>
-                <div className={`flex-row-center ${styles.topFiveResult}`}>
-                  <div className={`flex-col-center ${styles.result}`}>
-                    <p>{genreData[0].genre}</p>
-                    <h3>{`${Math.floor(genreData[0].correlation)}%`}</h3>
+                <div className={styles.genreBox}>
+                  <h2>장르 분석</h2>
+                  <div className={styles.chartBox}>
+                    <RaderChart type="genre" data={genreData} />
+                  </div>
+                  <div className={`flex-row-center ${styles.topFiveResult}`}>
+                    {genreData.map((element: any) => {
+                      return (
+                        <div className={`flex-col-center ${styles.result}`}>
+                          <p>{element.genre}</p>
+                          <h3>{`${Math.floor(element.correlation)}%`}</h3>
+                        </div>
+                      );
+                    })}
+                  </div>
+                  <div className={`flex-col-center ${styles.summary}`}>
+                    가장 돋보이는 장르는 <strong>{genreData[0].genre}</strong>{" "}
+                    입니다.
                   </div>
                 </div>
-                <div className={`flex-col-center ${styles.summary}`}>
-                  가장 돋보이는 장르는 <strong>{genreData[0].genre}</strong>{" "}
-                  입니다.
-                </div>
               </div>
-            </div>
+            )}
           </div>
         )}
         {focused === "유사곡" && <SimilarSong />}

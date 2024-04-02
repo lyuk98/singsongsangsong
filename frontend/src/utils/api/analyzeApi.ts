@@ -37,7 +37,7 @@ export const handleStartAnalyze = async (inputFile: File) => {
         Authorization: `Bearer ${accessToken}`,
       },
     });
-    console.log(result);
+    console.log(result.data.data);
   } catch (error) {
     return error;
   }

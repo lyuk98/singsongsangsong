@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { FaRegHeart, FaShareAlt, FaHeart } from "react-icons/fa";
 import { BsBookmarkPlusFill, BsFillBookmarkDashFill } from "react-icons/bs";
 
-import { followArtist } from "../../../utils/api/artistApi";
+import { followArtist, getFollowerCount } from "../../../utils/api/artistApi";
 import img from "./../../../sources/testimg/artistProfile.jpg";
 import styles from "./ArtistHeader.module.css";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -10,9 +10,12 @@ import { getPresignedUrl } from "../../../utils/api/minioApi";
 import { fileURLToPath } from "url";
 import axios from "axios";
 import { axiosInstance } from "../../../hooks/api";
+import { getAlbumImg } from "../../../utils/api/downloadFileApi";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../store";
 
 type PropsType = {
-  artistId: number;
+  artistId: any;
   nickname: string;
   introduction: string;
   profileImageFileName: string;
@@ -28,32 +31,33 @@ const ArtistHeader = ({
   introduction,
   profileImageFileName,
 }: PropsType) => {
+  const userSlice = useSelector((state: RootState) => state.user);
+
   const [imageURL, setImageURL] = useState();
+  const [trigger, setTrigger] = useState<any>(null);
   const [artistProfile, setArtistProfile] = useState<any>();
+  const [followerCount, setFollowerCount] = useState<any>();
+
   const handleShare = () => {
     const currentUrl = window.location.href;
     navigator.clipboard.writeText(currentUrl);
     alert("주소가 복사되었습니다");
   };
 
-  const handleFollow = () => {};
+  const handleFollow = async () => {
+    await followArtist(artistId);
+    setTrigger(new Date());
+  };
 
   useEffect(() => {
-    const profileImg = async () => {
-      try {
-        const response = await axiosInstance.request({
-          method: "GET",
-          url: `/download/image/${profileImageFileName}`,
-        });
-        if (response?.data?.data) {
-          setArtistProfile(response.data.data);
-        }
-      } catch (error) {
-        console.log(error);
-      }
+    const getInfo = async () => {
+      const imgUrl = await getAlbumImg(profileImageFileName);
+      const followers = await getFollowerCount(artistId);
+      setFollowerCount(followers.followerCount);
+      setArtistProfile(imgUrl);
     };
-    profileImg();
-  }, []);
+    getInfo();
+  }, [trigger]);
 
   return (
     <div className={`flex-row-center ${styles.container}`}>
@@ -67,12 +71,17 @@ const ArtistHeader = ({
           <div className={styles.artistIntroduce}>
             <p>{introduction}</p>
             <div className={styles.contactButton}>
-              <p onClick={handleFollow}>
-                <BsBookmarkPlusFill /> Follow
-              </p>
-              <p>
+              {userSlice.userId == artistId ? (
+                ""
+              ) : (
+                <p onClick={handleFollow}>
+                  <BsBookmarkPlusFill /> Follow
+                </p>
+              )}
+
+              {/* <p>
                 <FaRegHeart /> Like
-              </p>
+              </p> */}
               <p onClick={handleShare}>
                 <FaShareAlt /> Share
               </p>
@@ -86,7 +95,9 @@ const ArtistHeader = ({
             className={`flex-col-center`}
             style={{ borderRight: "1px solid white", paddingRight: "10px" }}
           >
-            <span style={{ fontSize: "32px" }}>{"720"}</span>
+            <span style={{ fontSize: "32px", color: "black" }}>
+              {followerCount}
+            </span>
             <span style={{ fontSize: "14px" }}>FOLLOWER</span>
           </span>
           <span className={`flex-col-center`}>

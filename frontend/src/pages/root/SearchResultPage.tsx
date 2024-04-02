@@ -7,6 +7,7 @@ import MusicTable from "../../components/public/music/MusicTable";
 import styles from "./SearchResultPage.module.css";
 import { getSearchResult } from "../../utils/api/api";
 import { useAxios } from "../../hooks/api/useAxios";
+import TestMusicTable from "../../components/public/music/TestMusicTable";
 
 const SearchResultPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -37,10 +38,20 @@ const SearchResultPage = () => {
     },
   });
 
+  console.log(response);
+
   useEffect(() => {
     console.log(userSearchParams);
     console.log(getSearchResult(userSearchParams));
   }, []);
+
+  if (isLoading) {
+    return <p>검색결과를 가져오고 있어요.</p>;
+  }
+
+  if (!response) {
+    return <p>일치하는 검색 결과가 없습니다.</p>;
+  }
 
   return (
     <div className={`w-100 flex-col px-main my-main gap-15`}>
@@ -55,7 +66,7 @@ const SearchResultPage = () => {
       </div>
       <div className={`w-100 flex-col py-15 gap-15`}>
         <h2 className={`${styles.borderBottom}`}>음악</h2>
-        <MusicTable />
+        {/* <TestMusicTable musicData={response.songBriefDtoList} /> */}
       </div>
     </div>
   );

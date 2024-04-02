@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 
 import styles from "./MainLayout.module.css";
 import Sidebar from "../../components/sidebar/Sidebar";
@@ -13,6 +13,7 @@ import { axiosInstance } from "../../hooks/api";
 
 const MainLayout = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   let login = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch();
 
@@ -63,6 +64,10 @@ const MainLayout = () => {
     }
   }, []);
 
+  if (!login.isLogin) {
+    navigate("/login");
+  }
+  
   return (
     <>
       <ScrollToTop />
