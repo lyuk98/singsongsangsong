@@ -34,16 +34,15 @@ const MainLayout = () => {
           url: "/artist/profile/me",
           method: "GET",
         });
-        return response.data.data;
+        dispatch(userAction.setLogin(response?.data?.data));
       } catch (error) {
         console.log(error);
       }
     };
     const accessToken = getCookie("accessToken");
-    console.log(accessToken);
+
     if (accessToken && !login.isLogin) {
-      const res = getUserInfo();
-      console.log(res);
+      getUserInfo();
     }
   }, []);
 
