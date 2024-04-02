@@ -13,7 +13,7 @@ import { axiosInstance } from "../../hooks/api";
 
 const MainLayout = () => {
   const location = useLocation();
-  const login = useSelector((state: RootState) => state.user);
+  let login = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -23,7 +23,9 @@ const MainLayout = () => {
           url: "/artist/profile/me",
           method: "GET",
         });
-        dispatch(userAction.setLogin(response?.data?.data));
+        if (response) {
+          dispatch(userAction.setLogin(response?.data?.data));
+        }
       } catch (error) {
         console.log(error);
       }
@@ -48,13 +50,14 @@ const MainLayout = () => {
           url: "/artist/profile/me",
           method: "GET",
         });
-        dispatch(userAction.setLogin(response?.data?.data));
+        if (response) {
+          dispatch(userAction.setLogin(response?.data?.data));
+        }
       } catch (error) {
         console.log(error);
       }
     };
     const accessToken = getCookie("accessToken");
-
     if (accessToken && !login.isLogin) {
       getUserInfo();
     }
