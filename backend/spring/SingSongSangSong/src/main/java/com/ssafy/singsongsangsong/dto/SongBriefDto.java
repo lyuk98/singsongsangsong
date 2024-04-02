@@ -4,14 +4,12 @@ import java.util.List;
 
 import org.springframework.beans.BeanUtils;
 
-import com.ssafy.singsongsangsong.entity.Atmosphere;
 import com.ssafy.singsongsangsong.entity.Song;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 @AllArgsConstructor

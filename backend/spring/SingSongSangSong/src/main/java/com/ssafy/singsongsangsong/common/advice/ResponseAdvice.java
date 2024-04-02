@@ -24,6 +24,7 @@ public class ResponseAdvice implements ResponseBodyAdvice<Object> {
 	public Object beforeBodyWrite(Object body, MethodParameter returnType, MediaType selectedContentType,
 		Class<? extends HttpMessageConverter<?>> selectedConverterType, ServerHttpRequest request,
 		ServerHttpResponse response) {
+
 		if (body instanceof ErrorEntity) {
 			return ResponseUtil.error((ErrorEntity)body);
 		} else if (body instanceof Resource) {

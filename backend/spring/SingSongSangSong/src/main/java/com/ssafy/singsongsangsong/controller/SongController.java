@@ -1,11 +1,15 @@
 package com.ssafy.singsongsangsong.controller;
 
+import java.io.IOException;
+
+import org.springframework.core.io.Resource;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -42,7 +46,7 @@ public class SongController {
 	@PostMapping("/comments")
 	@PreAuthorize("hasRole('USER')")
 	public void postComment(@AuthenticationPrincipal ArtistPrincipal user,
-		PostCommentsDto dto) {
+		@RequestBody PostCommentsDto dto) {
 		// 댓글을 남긴다.
 		songService.postComment(user.getId(), dto.getSongId(), dto.getContent());
 	}
@@ -61,7 +65,7 @@ public class SongController {
 		return songService.getSongListByTheme(themeName, size);
 	}
 
-	@GetMapping("/{songId}")
+	@GetMapping("/detail/{songId}")
 	public SongInfoResponse getSong(@PathVariable Long songId) {
 		return songService.getSong(songId);
 	}
@@ -69,7 +73,7 @@ public class SongController {
 	// 해당 노래에 해당하는 분위기와 장르의 correlation을 가져옵니다.
 	@GetMapping("/analyze/{songId}")
 	public AnalyzeGenreAndAtmosphereResponse getAnalyzeGenreAndAtmosphere(@PathVariable Long songId,
-		@RequestParam("defaultValue = 5") int size) {
+		@RequestParam(required = false, defaultValue = "5") int size) {
 		return songService.getAnalyzeGenreAndAtmosphere(songId, size);
 	}
 
@@ -79,13 +83,14 @@ public class SongController {
 	}
 
 	@PostMapping("/download/{songId}")
-	public void downloadSong(@PathVariable Long songId, @AuthenticationPrincipal ArtistPrincipal user) {
-		songService.downloadSong(user.getId(), songId);
+	public Resource downloadSong(@PathVariable Long songId, @AuthenticationPrincipal ArtistPrincipal user) throws
+		IOException {
+		return songService.downloadSong(user.getId(), songId);
 	}
 
 	@GetMapping("/similarity/{songId}")
 	public SongSimilarityByRanksResponse getSongsSimilarityByRanks(@PathVariable Long songId,
-		@RequestParam(defaultValue = "5") int size) {
+		@RequestParam(required = false, defaultValue = "5", name = "size") int size) {
 		return songService.getSongsSimilarityByRanks(songId, size);
 	}
 }

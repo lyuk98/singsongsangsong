@@ -19,7 +19,8 @@ public class UploadMainPageDto {
 
 	private List<UploadProcess> uploadProcesses;
 
-	private enum Process {
+	@Getter
+	public enum Process {
 		ANALYZING, COMPLETED
 	}
 

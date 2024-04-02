@@ -1,5 +1,6 @@
 package com.ssafy.singsongsangsong.dto;
 
+import java.io.Serializable;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
@@ -19,12 +20,16 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CommentsResponseDto {
+public class CommentsResponseDto implements Serializable {
 
 	List<CommentsResponse> comments;
 
 	@Builder
-	public static class CommentsResponse {
+	@NoArgsConstructor
+	@AllArgsConstructor
+	@Setter
+	@Getter
+	public static class CommentsResponse implements Serializable {
 		private Long authorId;
 		private String artistNickname;
 		private String content;
