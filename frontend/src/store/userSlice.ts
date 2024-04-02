@@ -15,7 +15,7 @@ const userSlice = createSlice({
       state.userName = action.payload.username;
       state.userNickName = action.payload.nickname;
     },
-    setLogout(state, action) {
+    setLogout(state) {
       removeCookie("accessToken");
       state.isLogin = false;
       state.userId = "";
