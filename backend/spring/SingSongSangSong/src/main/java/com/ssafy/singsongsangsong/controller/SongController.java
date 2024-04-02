@@ -85,7 +85,7 @@ public class SongController {
 
 	@GetMapping("/similarity/{songId}")
 	public SongSimilarityByRanksResponse getSongsSimilarityByRanks(@PathVariable Long songId,
-		@RequestParam(defaultValue = "5") int size) {
+		@RequestParam(required = false, defaultValue = "5", name = "size") int size) {
 		return songService.getSongsSimilarityByRanks(songId, size);
 	}
 }
