@@ -26,9 +26,11 @@ import com.ssafy.singsongsangsong.repository.maria.song.SongRepository;
 import com.ssafy.singsongsangsong.service.file.FileService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ArtistServiceImpl implements ArtistService {
 	private final ArtistRepository artistRepository;
 	private final SongRepository songRepository;
@@ -52,7 +54,7 @@ public class ArtistServiceImpl implements ArtistService {
 				.savedFileName(fileService.saveFile(artist.getId(), FileType.IMAGE, profileImage))
 				.build());
 		}
-
+		log.info("GuestJoinRequestDto : {}", dto.toString());
 		artistRepository.save(artist);
 	}
 
