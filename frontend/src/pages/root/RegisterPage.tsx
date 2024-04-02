@@ -7,7 +7,7 @@ import React, {
   FormEvent,
   useEffect,
 } from "react";
-import { Link, redirect, useLocation } from "react-router-dom";
+import { Link, redirect, useLocation, useNavigate } from "react-router-dom";
 import { GrPowerReset } from "react-icons/gr";
 
 import styles from "./RegisterPage.module.css";
@@ -32,7 +32,7 @@ const AGES = [
 const RegisterPage = () => {
   const location = useLocation();
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   const searchParams = new URLSearchParams(location.search);
   const accessToken = searchParams.get("accessToken");
 
@@ -116,7 +116,7 @@ const RegisterPage = () => {
           console.log("들어오는 유저 슬라이스값", userSliceData);
           dispatch(userAction.setLogin(userSliceData));
         }
-        redirect("/trend");
+        navigate("/trend");
       }
     } catch (error) {
       console.log(error);
