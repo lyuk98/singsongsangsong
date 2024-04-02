@@ -19,7 +19,7 @@ const Sidebar = () => {
   const userSlice = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch();
 
-  const isLogin = userSlice.isLogin;
+  let isLogin = userSlice.isLogin;
   const handleLogout = () => {
     dispatch(userAction.setLogout());
   };
@@ -62,7 +62,7 @@ const Sidebar = () => {
         {isLogin && (
           <>
             <NavLink
-              to={`/artist/${"userName"}`}
+              to={`/artist/${userSlice.userId}`}
               className={({ isActive }) =>
                 isActive ? styles.active : undefined
               }
