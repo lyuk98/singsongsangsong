@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -42,7 +43,7 @@ public class SongController {
 	@PostMapping("/comments")
 	@PreAuthorize("hasRole('USER')")
 	public void postComment(@AuthenticationPrincipal ArtistPrincipal user,
-		PostCommentsDto dto) {
+		@RequestBody PostCommentsDto dto) {
 		// 댓글을 남긴다.
 		songService.postComment(user.getId(), dto.getSongId(), dto.getContent());
 	}
@@ -61,7 +62,7 @@ public class SongController {
 		return songService.getSongListByTheme(themeName, size);
 	}
 
-	@GetMapping("/{songId}")
+	@GetMapping("/detail/{songId}")
 	public SongInfoResponse getSong(@PathVariable Long songId) {
 		return songService.getSong(songId);
 	}
