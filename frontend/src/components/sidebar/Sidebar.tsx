@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
 import titleIcon from "./../../sources/imgs/title/logo_small_투명.png";
 import title from "./../../sources/imgs/title/logo_투명.png";
@@ -10,13 +11,17 @@ import { MdOutlineLogin, MdOutlineLogout } from "react-icons/md";
 import { GiPoisonGas } from "react-icons/gi";
 
 import styles from "./Sidebar.module.css";
+import { RootState } from "../../store";
+import { userAction } from "../../store/userSlice";
 
 const Sidebar = () => {
   const navigate = useNavigate();
-  const [isLogin, setIsLogin] = useState<boolean>(true);
+  const userSlice = useSelector((state: RootState) => state.user);
+  const dispatch = useDispatch();
 
+  const isLogin = userSlice.isLogin;
   const handleLogout = () => {
-    setIsLogin(!isLogin);
+    dispatch(userAction.setLogout());
   };
 
   const navigateMain = () => {
@@ -26,7 +31,7 @@ const Sidebar = () => {
   return (
     <div className={styles.mainContainer}>
       <div className={styles.title} onClick={navigateMain}>
-        <img src={titleIcon} className={styles.titleIcon} />
+        <img src={titleIcon} className={styles.titleIcon} alt="titleImg" />
         <div className={`p-15 ${styles.titleImg}`}>
           <img src={title} alt="title" />
         </div>
