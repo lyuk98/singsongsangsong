@@ -1,5 +1,8 @@
 package com.ssafy.singsongsangsong.controller;
 
+import java.io.IOException;
+
+import org.springframework.core.io.Resource;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -80,8 +83,9 @@ public class SongController {
 	}
 
 	@PostMapping("/download/{songId}")
-	public void downloadSong(@PathVariable Long songId, @AuthenticationPrincipal ArtistPrincipal user) {
-		songService.downloadSong(user.getId(), songId);
+	public Resource downloadSong(@PathVariable Long songId, @AuthenticationPrincipal ArtistPrincipal user) throws
+		IOException {
+		return songService.downloadSong(user.getId(), songId);
 	}
 
 	@GetMapping("/similarity/{songId}")

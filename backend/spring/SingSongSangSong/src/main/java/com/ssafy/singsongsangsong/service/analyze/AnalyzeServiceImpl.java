@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ssafy.singsongsangsong.dto.PublishSongRequest;
 import com.ssafy.singsongsangsong.dto.SimpleSongDto;
 import com.ssafy.singsongsangsong.dto.UploadMainPageDto;
 import com.ssafy.singsongsangsong.entity.Atmosphere;
@@ -68,6 +69,17 @@ public class AnalyzeServiceImpl implements AnalyzeService {
 		// 유사도 분석을 위해, vector db에 값 저장을 위임한다.
 		webClientRequestService.requestSaveSimilarity(songId);
 		song.setPublished(true);
+	}
+
+	@Override
+	@Transactional
+	public void registerPublishedInformation(PublishSongRequest dto) {
+		Song song = songRepository.findById(dto.getSongId()).orElseThrow(NotFoundSongException::new);
+		File file = fileRepository.findByOriginalFileName(dto.getAlbumImageName())
+			.orElseThrow(NotFoundFileException::new);
+		song.setAlbumImage(file);
+		song.setLyrics(dto.getLyrics());
+		song.setSongDescription(dto.getDescription());
 	}
 
 	@Override

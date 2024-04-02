@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ssafy.singsongsangsong.constants.FileType;
+import com.ssafy.singsongsangsong.dto.PublishSongRequest;
 import com.ssafy.singsongsangsong.dto.SimpleSongDto;
 import com.ssafy.singsongsangsong.dto.UploadMainPageDto;
 import com.ssafy.singsongsangsong.exception.song.AlreadyCompletedException;
-import com.ssafy.singsongsangsong.repository.maria.artist.ArtistRepository;
 import com.ssafy.singsongsangsong.security.ArtistPrincipal;
 import com.ssafy.singsongsangsong.service.analyze.AnalyzeService;
 import com.ssafy.singsongsangsong.service.file.FileService;
@@ -31,7 +31,6 @@ public class AnalyzeController {
 
 	private final AnalyzeService analyzeService;
 	private final FileService fileService;
-	private final ArtistRepository artistRepository;
 
 	@PatchMapping("/song/{id}")
 	// @CrossOrigin(origins = corsConfig.getAllowedOrigins())
@@ -58,9 +57,12 @@ public class AnalyzeController {
 		fileService.saveFile(user.getId(), FileType.AUDIO, fileData);
 	}
 
-	@PutMapping("/publish/{songId}")
-	public void publishSong(@AuthenticationPrincipal ArtistPrincipal user, @PathVariable Long songId) {
-		analyzeService.publishSong(songId);
+	@PutMapping("/publish")
+	public void publishSong(@AuthenticationPrincipal ArtistPrincipal user,
+		@RequestBody PublishSongRequest publishSongRequest) {
+		// todo: 자기 자신만 publish song request를 보낼 수 있도록, 관련 인가 로직 구현을 filter chain에 등록
+		analyzeService.registerPublishedInformation(publishSongRequest);
+		analyzeService.publishSong(publishSongRequest.getSongId());
 	}
 
 	@GetMapping("/{songId}")

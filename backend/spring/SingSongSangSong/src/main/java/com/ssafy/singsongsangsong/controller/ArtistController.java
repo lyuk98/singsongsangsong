@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.List;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,7 +29,8 @@ public class ArtistController {
 	private final ArtistService artistService;
 
 	@PostMapping("/join")
-	public JoinResponseDto join(@AuthenticationPrincipal ArtistPrincipal user, GuestJoinRequestDto dto) throws IOException {
+	public JoinResponseDto join(@AuthenticationPrincipal ArtistPrincipal user, GuestJoinRequestDto dto) throws
+		IOException {
 		artistService.join(user.getUsername(), dto);
 		return new JoinResponseDto();
 	}
@@ -45,14 +45,11 @@ public class ArtistController {
 		return artistService.getPublishedSong(principal.getId());
 	}
 
-	// todo: 아래 메소드는 security 구현이 끝난 이 후, 처리할 예정입니다.
-	// todo: refactor this. Principal 정보 수정 및 target Id는 String username으로 변경
 	@PostMapping("/follow/{id}")
 	public void followArtist(@AuthenticationPrincipal ArtistPrincipal user, @PathVariable Long id) {
 		artistService.toggleFollowArtist(user.getUsername(), id);
 	}
 
-	// todo: 아래 메소드는 song 데이터가 추가된 후에, 테스트 코드 작성 예정입니다.
 	@GetMapping("/emotions/{id}")
 	public EmotionsDto getEmotions(@PathVariable Long id) {
 		return artistService.getEmotions(id);

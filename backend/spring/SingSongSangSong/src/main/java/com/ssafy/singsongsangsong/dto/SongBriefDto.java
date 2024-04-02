@@ -4,14 +4,12 @@ import java.util.List;
 
 import org.springframework.beans.BeanUtils;
 
-import com.ssafy.singsongsangsong.entity.Atmosphere;
 import com.ssafy.singsongsangsong.entity.Song;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 @AllArgsConstructor
@@ -38,10 +36,9 @@ public class SongBriefDto {
 		dto.setTitle(song.getTitle());
 		dto.setArtistId(song.getArtist().getId());
 		dto.setArtistName(song.getArtist().getNickname());
-		if(song.getAlbumImage() != null){
+		if (song.getAlbumImage() != null) {
 			dto.setAlbumImage(song.getAlbumImage().getSavedFileName());
-		}
-		else {
+		} else {
 			dto.setAlbumImage("default.jpg");
 		}
 		dto.setGenre(song.getCustomGenre());
