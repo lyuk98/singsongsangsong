@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./ModalTag.module.css";
 
 type PropsType = {
-  mood: string;
+  mood: any;
 };
 
 const MoodTag = ({ mood }: PropsType) => {

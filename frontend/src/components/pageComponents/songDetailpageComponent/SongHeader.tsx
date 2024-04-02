@@ -5,11 +5,20 @@ import coverimg from "./../../../sources/testimg/cover.png";
 import Album from "../../public/Album";
 
 type PropsType = {
-  songTitle: string;
+  songtitle: string;
   artist: any;
+  likeCount: any;
+  playCount: any;
+  downloadCount: any;
 };
 
-const SongHeader = () => {
+const SongHeader = ({
+  songtitle,
+  artist,
+  likeCount,
+  playCount,
+  downloadCount,
+}: PropsType) => {
   return (
     <div className={`flex-col-center ${styles.container}`}>
       <div className={styles.background}>
@@ -20,9 +29,8 @@ const SongHeader = () => {
           <Album />
         </div>
         <div className={`flex-col gap-15`}>
-          <h1>{"songTItle"}</h1>
-          <h2>{"artist"}</h2>
-          <h3>러닝타임</h3>
+          <h1>{songtitle}</h1>
+          <h2>{artist.username}</h2>
         </div>
       </div>
     </div>

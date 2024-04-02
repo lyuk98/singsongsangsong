@@ -57,24 +57,28 @@ const SongDetailPage = () => {
     url: `/song/${songId}`,
   });
   console.log(response);
+  if (isLoading) {
+    return <p>로딩중입니다</p>;
+  }
+  if (!response) {
+    return <p>해당곡에 대한 데이터가 없습니다</p>;
+  }
   return (
     <div className={`w-100 flex-col-center gap-30 ${styles.container}`}>
       <SongHeader
-      // songtitle={DUMMY_DATA.songTitle}
-      // artistName={DUMMY_DATA.artist.nickname}
-      // likeCount={DUMMY_DATA.likeCount}
-      // playCount={DUMMY_DATA.playCount}
-      // downloadCOunt={DUMMY_DATA.downloadCount}
+        songtitle={response.songTitle}
+        artist={response.artist}
+        likeCount={response.likeCount}
+        playCount={response.playCount}
+        downloadCount={response.downloadCount}
       />
-      <div className={`flex-col-center gap-30 ${styles.content}`}>
+      <div className={`w-100 flex-col-center gap-30 ${styles.content}`}>
         <SongInfo
-        // songDescription={DUMMY_DATA.songDescription}
-        // bpm={DUMMY_DATA.bpm}
-        // chord={DUMMY_DATA.chord}
+          songDescription={response.songDescription}
+          bpm={response.bpm}
+          chord={response.chord}
         />
-        <SongDetails
-        // lyrics={DUMMY_DATA.lyrics}
-        />
+        <SongDetails lyrics={response.lyrics} />
         <div className={`flex-col-center  ${styles.emotionBox}`}>
           <p>사람들은 이 곡에서</p>
           <p>이러한 느낌을 받았어요</p>
