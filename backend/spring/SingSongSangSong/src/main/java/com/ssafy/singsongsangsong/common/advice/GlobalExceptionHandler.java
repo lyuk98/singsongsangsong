@@ -103,7 +103,6 @@ public class GlobalExceptionHandler {
 
 		log.error(e.getMessage());
 		log.error(e.getLocalizedMessage());
-		log.error(e.getCause().toString());
 		return ErrorEntity.builder()
 			.code(HttpStatus.INTERNAL_SERVER_ERROR.toString())
 			.message("서버 관리자에게 문의하세요..ㅜㅜ [msg] => " + e.getMessage())

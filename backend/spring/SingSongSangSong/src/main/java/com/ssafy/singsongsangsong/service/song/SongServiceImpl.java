@@ -2,16 +2,19 @@ package com.ssafy.singsongsangsong.service.song;
 
 import static com.ssafy.singsongsangsong.webclient.WebClientRequestService.SimilarityResponse.*;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.singsongsangsong.annotation.CsvFileContents;
 import com.ssafy.singsongsangsong.annotation.ExportCsvFile;
 import com.ssafy.singsongsangsong.constants.EmotionsConstants;
+import com.ssafy.singsongsangsong.constants.FileType;
 import com.ssafy.singsongsangsong.dto.AnalyzeGenreAndAtmosphereResponse;
 import com.ssafy.singsongsangsong.dto.AnalyzeGenreAndAtmosphereResponse.AnalyzeAtmosphereDto;
 import com.ssafy.singsongsangsong.dto.AnalyzeGenreAndAtmosphereResponse.AnalyzeGenreDto;
@@ -39,6 +42,7 @@ import com.ssafy.singsongsangsong.repository.maria.comments.CommentsRepository;
 import com.ssafy.singsongsangsong.repository.maria.genre.GenreRepository;
 import com.ssafy.singsongsangsong.repository.maria.song.EmotionRepository;
 import com.ssafy.singsongsangsong.repository.maria.song.SongRepository;
+import com.ssafy.singsongsangsong.service.file.FileService;
 import com.ssafy.singsongsangsong.webclient.WebClientRequestService;
 
 import lombok.RequiredArgsConstructor;
@@ -60,6 +64,8 @@ public class SongServiceImpl implements SongService {
 	private final AtmosphereRepository atmosphereRepository;
 
 	private final WebClientRequestService webClientRequestService;
+
+	private final FileService fileService;
 
 	@Override
 	@Transactional
@@ -172,10 +178,13 @@ public class SongServiceImpl implements SongService {
 	@Override
 	@Transactional
 	@ExportCsvFile(format = CsvFileContents.ARTIST_SONG_RECORD)
-	public void downloadSong(Long artistId, Long songId) {
+	public Resource downloadSong(Long artistId, Long songId) throws IOException {
 		// 노래 다운로드 횟수 증가 및 CSV파일로 로그 저장 (통계적 분석 위함)
-		songRepository.findById(songId).orElseThrow(NotFoundSongException::new);
+		Song song = songRepository.findById(songId).orElseThrow(NotFoundSongException::new);
 		songRepository.incrementDownloadCount(songId);
+
+		String musicFileName = song.getMusicFileName();
+		return fileService.getFile(artistId, FileType.IMAGE, musicFileName);
 	}
 
 	@Override

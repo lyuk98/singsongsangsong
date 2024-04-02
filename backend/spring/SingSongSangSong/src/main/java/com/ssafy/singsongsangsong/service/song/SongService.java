@@ -1,5 +1,9 @@
 package com.ssafy.singsongsangsong.service.song;
 
+import java.io.IOException;
+
+import org.springframework.core.io.Resource;
+
 import com.ssafy.singsongsangsong.constants.EmotionsConstants;
 import com.ssafy.singsongsangsong.dto.AnalyzeGenreAndAtmosphereResponse;
 import com.ssafy.singsongsangsong.dto.CommentsResponseDto;
@@ -23,8 +27,7 @@ public interface SongService {
 
 	void playSong(Long artistId, Long songId);
 
-	// TODO: 파일 형식으로 클라이언트가 다운로드 받을 수 있게끔 구현 수정
-	void downloadSong(Long artistId, Long songId);
+	Resource downloadSong(Long artistId, Long songId) throws IOException;
 
 	SongSimilarityByRanksResponse getSongsSimilarityByRanks(Long songId, int size);
 }
