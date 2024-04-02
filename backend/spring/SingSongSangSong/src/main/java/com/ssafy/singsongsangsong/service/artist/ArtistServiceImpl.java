@@ -2,11 +2,13 @@ package com.ssafy.singsongsangsong.service.artist;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.ssafy.singsongsangsong.constants.DefaultFileName;
 import com.ssafy.singsongsangsong.constants.FileType;
 import com.ssafy.singsongsangsong.constants.Role;
 import com.ssafy.singsongsangsong.dto.ArtistInfoDto;
@@ -47,14 +49,21 @@ public class ArtistServiceImpl implements ArtistService {
 		artist.setRole(Role.USER);
 		artist.setSex(dto.getSex());
 
-		if (dto.getProfileImage() != null) {
-			MultipartFile profileImage = dto.getProfileImage();
-			artist.setProfileImage(File.builder()
-				.originalFileName(profileImage.getOriginalFilename())
-				.savedFileName(fileService.saveFile(artist.getId(), FileType.IMAGE, profileImage))
-				.build());
+		Optional<MultipartFile> profileImage = Optional.ofNullable(dto.getProfileImage());
+		String originalFileName = DefaultFileName.DEFAULT_PROFILE_PICTURE.getName();
+		String savedFileName = DefaultFileName.DEFAULT_PROFILE_PICTURE.getName();
+
+		if (profileImage.isPresent()) {
+			originalFileName = profileImage.get().getOriginalFilename();
+			savedFileName = fileService.saveFile(artist.getId(), FileType.IMAGE, profileImage.get());
 		}
-		log.info("GuestJoinRequestDto : {}", dto.toString());
+
+		artist.setProfileImage(File.builder()
+			.originalFileName(originalFileName)
+			.savedFileName(savedFileName)
+			.build());
+
+		log.info("GuestJoinRequestDto : {}", dto);
 		artistRepository.save(artist);
 	}
 
@@ -72,6 +81,7 @@ public class ArtistServiceImpl implements ArtistService {
 			.map(SimpleSongDto::from)
 			.toList();
 	}
+
 	@Override
 	public void toggleFollowArtist(String username, Long followingId) throws ArtistNotFoundException {
 		Artist follower = artistRepository.findByUsername(username)
