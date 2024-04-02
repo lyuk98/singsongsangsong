@@ -191,7 +191,7 @@ def analyse(song_id: int, audio_path: str): # pylint: disable=too-many-locals
 
             # 작업 완료 - API 서버에 처리 완료 통보
             requests.patch(
-                f"{os.environ.get('API_SERVER_URI')}/song/{song_id}",
+                f"{os.environ.get('API_SERVER_URI')}/analyze/song/{song_id}",
                 timeout=10
             )
     except Exception as exception: # pylint: disable=broad-exception-caught
