@@ -1,6 +1,7 @@
 package com.ssafy.singsongsangsong.controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.core.io.Resource;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,6 +19,7 @@ import com.ssafy.singsongsangsong.constants.EmotionsConstants;
 import com.ssafy.singsongsangsong.dto.AnalyzeGenreAndAtmosphereResponse;
 import com.ssafy.singsongsangsong.dto.CommentsResponseDto;
 import com.ssafy.singsongsangsong.dto.PostCommentsDto;
+import com.ssafy.singsongsangsong.dto.SectionResponseDto;
 import com.ssafy.singsongsangsong.dto.SongInfoResponse;
 import com.ssafy.singsongsangsong.dto.SongListByThemeResponseDto;
 import com.ssafy.singsongsangsong.dto.SongSimilarityByRanksResponse;
@@ -92,5 +94,10 @@ public class SongController {
 	public SongSimilarityByRanksResponse getSongsSimilarityByRanks(@PathVariable Long songId,
 		@RequestParam(required = false, defaultValue = "5", name = "size") int size) {
 		return songService.getSongsSimilarityByRanks(songId, size);
+	}
+
+	@GetMapping("/section/{songId}")
+	public List<SectionResponseDto> getSectionOfSong(@PathVariable(value = "songId") Long songId) {
+		return songService.getSectionOfSong(songId);
 	}
 }

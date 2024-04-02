@@ -1,12 +1,14 @@
 package com.ssafy.singsongsangsong.service.song;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.core.io.Resource;
 
 import com.ssafy.singsongsangsong.constants.EmotionsConstants;
 import com.ssafy.singsongsangsong.dto.AnalyzeGenreAndAtmosphereResponse;
 import com.ssafy.singsongsangsong.dto.CommentsResponseDto;
+import com.ssafy.singsongsangsong.dto.SectionResponseDto;
 import com.ssafy.singsongsangsong.dto.SongInfoResponse;
 import com.ssafy.singsongsangsong.dto.SongListByThemeResponseDto;
 import com.ssafy.singsongsangsong.dto.SongSimilarityByRanksResponse;
@@ -30,4 +32,6 @@ public interface SongService {
 	Resource downloadSong(Long artistId, Long songId) throws IOException;
 
 	SongSimilarityByRanksResponse getSongsSimilarityByRanks(Long songId, int size);
+
+	List<SectionResponseDto> getSectionOfSong(Long songId);
 }
