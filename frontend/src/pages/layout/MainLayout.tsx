@@ -41,9 +41,6 @@ const MainLayout = () => {
         sameSite: "none",
       });
       getUserInfo();
-    } else {
-      dispatch(userAction.setLogout());
-      navigate("/login");
     }
   }, []);
 
