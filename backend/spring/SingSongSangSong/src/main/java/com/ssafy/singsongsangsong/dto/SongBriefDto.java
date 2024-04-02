@@ -39,7 +39,7 @@ public class SongBriefDto {
 		dto.setArtistId(song.getArtist().getId());
 		dto.setArtistName(song.getArtist().getNickname());
 		if(song.getAlbumImage() != null){
-			dto.setAlbumImage(song.getAlbumImage().getSavedFileName());
+			dto.setAlbumImage(song.getAlbumImage().getOriginalFileName());
 		}
 		else {
 			dto.setAlbumImage("default.jpg");
