@@ -1,5 +1,7 @@
 package com.ssafy.singsongsangsong.entity;
 
+import java.io.Serializable;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,7 +13,9 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class Play {
+public class Play implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
 	
 	private long songId;
 	private String genre;

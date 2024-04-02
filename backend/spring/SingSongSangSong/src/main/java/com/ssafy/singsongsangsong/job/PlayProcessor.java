@@ -1,21 +1,10 @@
 package com.ssafy.singsongsangsong.job;
 
-<<<<<<< HEAD
-import org.springframework.batch.item.ItemProcessor;
-
-import com.ssafy.singsongsangsong.entity.Play;
-
-public class PlayProcessor implements ItemProcessor<Play, Play> {
-
-	@Override
-	public Play process(Play item) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-=======
 import java.util.TreeMap;
 
 import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.core.annotation.BeforeStep;
+import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.ItemProcessor;
 
 import com.ssafy.singsongsangsong.dto.GenreCountDto;
@@ -32,11 +21,12 @@ public class PlayProcessor implements ItemProcessor<Play, Play> {
 
 	@Override
 	public Play process(Play item) throws Exception {
-		TreeMap<String, Long> genreCount = ((GenreCountDto) stepExecution.getExecutionContext().get("genre")).getGenreCount();
+		ExecutionContext stepExecutionContext = stepExecution.getExecutionContext();
+		String in = item.getAge().concat(item.getSex());
+		TreeMap<String, Long> genreCount = ((GenreCountDto) stepExecutionContext.get(in.concat("/g"))).getGenreCount();
 		genreCount.replace(item.getGenre(), genreCount.get(item.getGenre()) + 1);
 		
 		return item;
->>>>>>> c3657287620771bbbd843b6c4f5d534a498ffc7f
 	}
 
 }
