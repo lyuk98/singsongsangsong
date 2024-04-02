@@ -192,7 +192,7 @@ for index, row in tracks.iterrows():
     )
 
     # 시험 목적으로 실행 시 일부 데이터만 가져옵니다
-    if DRY_RUN and track_id >= SONG_UNTIL:
+    if track_id >= SONG_UNTIL:
         break
 
 # MinIO client를 준비합니다
