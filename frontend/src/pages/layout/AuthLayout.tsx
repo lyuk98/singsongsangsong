@@ -1,11 +1,38 @@
-import { Link, Outlet, useLocation } from "react-router-dom";
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 import titleImg from "./../../sources/imgs/title/logo_투명.png";
 import styles from "./AuthLayout.module.css";
 import Notice from "../../components/auth/Notice";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../store";
+import { getCookie } from "../../utils/cookie";
+import { axiosInstance } from "../../hooks/api";
+import { userAction } from "../../store/userSlice";
 
 const AuthLayout = () => {
   const { pathname } = useLocation();
+  const naviagte = useNavigate();
+  const userSlice = useSelector((state: RootState) => state.user);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const checkUser = async () => {
+      try {
+        const response = await axiosInstance.request({
+          method: "GET",
+          url: "/artist/profile/me",
+        });
+        dispatch(userAction.setLogin(response?.data?.data));
+        naviagte("/trend");
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    if (!userSlice.isLogin) {
+      checkUser();
+    }
+  });
 
   return (
     <>
