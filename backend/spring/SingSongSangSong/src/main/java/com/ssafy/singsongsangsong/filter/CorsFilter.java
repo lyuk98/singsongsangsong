@@ -4,7 +4,11 @@
 // import java.util.Arrays;
 // import java.util.List;
 //
+// import org.springframework.context.annotation.Configuration;
+// import org.springframework.http.HttpMethod;
 // import org.springframework.stereotype.Component;
+// import org.springframework.web.servlet.config.annotation.CorsRegistry;
+// import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 //
 // import jakarta.servlet.Filter;
 // import jakarta.servlet.FilterChain;
@@ -13,20 +17,18 @@
 // import jakarta.servlet.ServletResponse;
 // import jakarta.servlet.http.HttpServletResponse;
 //
-// @Component
-// public class CorsFilter implements Filter {
-// 	private final List<String> urlList = Arrays.asList("http://localhost:3000","https://api.singsongsangsong.com","https://www.singsongsangsong.com");
+// @Configuration
+// public class CorsFilter implements WebMvcConfigurer { // WebMvcConfigurer 구현
 // 	@Override
-// 	public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws
-// 		IOException, ServletException {
-// 		HttpServletResponse response = (HttpServletResponse) servletResponse;
-//
-// 		response.setHeader("Access-Control-Allow-Origin", "https://www.singsongsangsong.com");
-// 		response.setHeader("Access-Control-Allow-Methods", "GET,POST,DELETE,PUT,OPTIONS");
-// 		response.setHeader("Access-Control-Allow-Headers", "DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization");
-// 		response.setHeader("Access-Control-Allow-Credentials", "true");
-// 		response.setHeader("Access-Control-Max-Age", "180");
-//
-// 		filterChain.doFilter(servletRequest, servletResponse);
+// 	public void addCorsMappings(CorsRegistry registry) {
+// 		registry.addMapping("/api") // 적용할 path 패턴을 입력
+// 			.allowedOrigins("http://localhost:3000","https://api.singsongsangsong.com","https://www.singsongsangsong.com","http://localhost:8080") // 허가할 출처들을 기입
+// 			.allowedMethods(                // 허가할 메서드를 기입
+// 				HttpMethod.GET.name(),
+// 				HttpMethod.POST.name(),
+// 				HttpMethod.PUT.name(),
+// 				HttpMethod.DELETE.name(),
+// 				HttpMethod.OPTIONS.name()
+// 			);
 // 	}
 // }

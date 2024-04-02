@@ -6,4 +6,5 @@ import com.ssafy.singsongsangsong.entity.File;
 
 public interface FileRepositoryCustom {
 	Optional<File> findByOriginalFileName(String originalFileName);
+
 }

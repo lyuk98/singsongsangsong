@@ -1,6 +1,7 @@
 package com.ssafy.singsongsangsong.config;
 
 import java.util.Arrays;
+import java.util.List;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,10 +30,12 @@ import com.ssafy.singsongsangsong.service.jwt.CustomOAuth2UserService;
 import com.ssafy.singsongsangsong.service.jwt.JwtService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
+@Slf4j
 public class SecurityConfig {
 	private final JwtService jwtService;
 	private final ArtistRepository artistRepository;
@@ -54,8 +57,7 @@ public class SecurityConfig {
 			.httpBasic(auth -> auth.disable())
 			.sessionManagement(auth -> auth.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 			.authorizeHttpRequests(req ->
-					req.requestMatchers("/", "error").permitAll()
-						.requestMatchers("/sign-up").hasRole("GUEST")
+					req.requestMatchers("/", "error","/sign-up").permitAll()
 						// .requestMatchers("/join").hasRole("GUEST")
 						.anyRequest().permitAll()
 				// .anyRequest().permitAll())
@@ -93,13 +95,16 @@ public class SecurityConfig {
 		CorsConfiguration config = new CorsConfiguration();
 
 		config.setAllowCredentials(true);
-		config.setAllowedOriginPatterns(Arrays.asList("http://localhost:3000","https://api.singsongsangsong.com","https://www.singsongsangsong.com"));
+		config.setAllowedOrigins(List.of("http://localhost:3000","https://api.singsongsangsong.com","https://www.singsongsangsong.com"));
 		// config.setAllowedOriginPatterns(Arrays.asList("https://www.singsongsangsong.com"));
 		config.setAllowedMethods(Arrays.asList("HEAD","POST","GET","DELETE","PUT","OPTIONS"));
 		config.setAllowedHeaders(Arrays.asList("DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization"));
 		config.setMaxAge(1000L);
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		source.registerCorsConfiguration("/**", config);
+
+		log.info("source : {}",source);
+
 		return source;
 	}
 }

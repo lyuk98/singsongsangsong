@@ -7,14 +7,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ssafy.singsongsangsong.dto.PostCommentsDto;
 import com.ssafy.singsongsangsong.repository.maria.artist.ArtistRepository;
 import com.ssafy.singsongsangsong.security.ArtistPrincipal;
-import com.ssafy.singsongsangsong.service.JoinService;
 
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @Slf4j
 public class LoginController {
-	private JoinService joinService;
 	private ArtistRepository artistRepository;
 
 	@GetMapping("/")
