@@ -11,8 +11,10 @@ import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientRequestException;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
@@ -22,6 +24,10 @@ public class WebClientRequestService {
 
 	private final WebClient webClient;
 
+	@Builder
+	@Getter
+	@Setter
+	@NoArgsConstructor
 	public static class RequestAnalyzeSongDto {
 		private Long songId;
 		private String savedFileName;
@@ -77,10 +83,14 @@ public class WebClientRequestService {
 	@Builder
 	@Getter
 	@Setter
+	@NoArgsConstructor
+	@AllArgsConstructor
 	public static class SimilarityResponse {
 		@Builder
 		@Getter
 		@Setter
+		@NoArgsConstructor
+		@AllArgsConstructor
 		public static class SimilarityInfo implements Comparable<SimilarityInfo> {
 			private Long similarSongId;
 			private Float distance;
