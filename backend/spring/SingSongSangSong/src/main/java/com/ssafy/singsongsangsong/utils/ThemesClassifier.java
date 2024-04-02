@@ -60,7 +60,7 @@ public class ThemesClassifier {
 	}
 
 	public String getTheme(String atmosphereName) {
-		if (mapper.containsKey(atmosphereName)) {
+		if (!mapper.containsKey(atmosphereName)) {
 			throw new IllegalArgumentException("해당 분위기에 대한 정의된 테마가 없습니다.");
 		}
 		return mapper.get(atmosphereName);

@@ -34,7 +34,7 @@ public class AnalyzeController {
 
 	@PatchMapping("/song/{id}")
 	// @CrossOrigin(origins = corsConfig.getAllowedOrigins())
-	public void completeAnalyze(Long id) throws AlreadyCompletedException {
+	public void completeAnalyze(@PathVariable Long id) throws AlreadyCompletedException {
 		analyzeService.completeAnalyze(id);
 	}
 
