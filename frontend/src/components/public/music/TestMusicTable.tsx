@@ -56,30 +56,39 @@ const TestMusicTable = ({ musicData }: PropsType) => {
               <tr key={element.artist}>
                 <td>
                   <div
-                    style={{ width: "50px", height: "50px", margin: "auto" }}
+                    style={{
+                      width: "100px",
+                      height: "100px",
+                      margin: "auto",
+                      border: "15px",
+                    }}
                   >
                     <TestAlbum songId={element.songId} />
                   </div>
                 </td>
-                <td
-                  style={{ cursor: "pointer" }}
-                  onClick={() => handleNavaigateSong(element.songId)}
-                >
-                  {element.title}
+                <td>
+                  <p
+                    style={{ cursor: "pointer" }}
+                    onClick={() => handleNavaigateSong(element.songId)}
+                  >
+                    {element.title}
+                  </p>
                 </td>
                 <td>{element.genre}</td>
                 <td>{element.atmosphere ? element.atmosphere : "x"}</td>
-                <td
-                  style={{ cursor: "pointer" }}
-                  onClick={() => handleNavaigateArtist(element.artistId)}
-                >
-                  {element.artistName}
+                <td>
+                  <p
+                    style={{ cursor: "pointer" }}
+                    onClick={() => handleNavaigateArtist(element.artistId)}
+                  >
+                    {element.artistName}
+                  </p>
                 </td>
                 <td>{`${Math.floor(element.duration / 60)}:${
                   element.duration % 60
                 }`}</td>
-                <td style={{ cursor: "pointer" }}>
-                  <FaRegStar />
+                <td>
+                  <FaRegStar style={{ cursor: "pointer" }} />
                 </td>
               </tr>
             );

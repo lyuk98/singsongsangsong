@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { musicAction } from "../../store/musicSlice";
+
 import styles from "./TestAlbum.module.css";
+import { musicAction } from "../../store/musicSlice";
 import { FaPlay } from "react-icons/fa";
 import { RootState } from "../../store";
 import { useAxios } from "../../hooks/api/useAxios";
 import { axiosInstance } from "../../hooks/api";
 import { getAlbumImg, getMp3File } from "../../utils/api/downloadFileApi";
+import Spinner from "./../../sources/imgs/spinner.gif";
 
 /** 앨범 이미지를 받아와서 해당 앨범을 hover하면 재생 버튼이 보이고
  * 클릭시 음악을 재생시켜줄 컴포넌트
@@ -22,7 +24,7 @@ const TestAlbum = ({ songId }: PropsType) => {
   const [audioFile, setAudioFile] = useState<any>();
 
   const dispatch = useDispatch();
-  const currentMusic = require("./../../sources/mp3/badday.m4a");
+  const currentMusic = audioFile;
 
   useEffect(() => {
     const getFileData = async () => {
@@ -51,7 +53,18 @@ const TestAlbum = ({ songId }: PropsType) => {
   }, []);
 
   if (isLoading) {
-    return <p>로딩중입니다</p>;
+    return (
+      <div
+        style={{ width: "200px", height: "200px" }}
+        className={`flex-row-center`}
+      >
+        <img
+          style={{ width: "10px", height: "10px" }}
+          src={Spinner}
+          alt="spinner"
+        />
+      </div>
+    );
   }
   return (
     <div className={`flex-col-center ${styles.container}`}>

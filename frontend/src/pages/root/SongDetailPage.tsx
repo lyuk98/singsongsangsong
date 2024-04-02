@@ -49,9 +49,8 @@ const DUMMY_DATA = {
 
 const SongDetailPage = () => {
   const { songId } = useParams();
-
-  // getSong -> 아래로 내려줄 기본적인 페이지 로드 시 실행할 요청
-  // response =>
+  console.log(songId);
+  
   const { response, isLoading, refetch } = useAxios({
     method: "GET",
     url: `/song/detail/${songId}`,

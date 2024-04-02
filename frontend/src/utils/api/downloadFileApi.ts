@@ -7,8 +7,10 @@ export const getAlbumImg = async (imgName: string) => {
     const response = await axiosInstance({
       method: "GET",
       url: `download/image/${imgName}`,
+      responseType: "blob",
     });
-    return response;
+    const imgUrl = URL.createObjectURL(response.data);
+    return imgUrl;
   } catch (error) {
     console.log("error at getAlbum");
   }
@@ -19,8 +21,10 @@ export const getMp3File = async (fileName: string) => {
     const response = await axiosInstance({
       method: "GET",
       url: `download/audio/${fileName}`,
+      responseType: "blob",
     });
-    return response.data;
+    const mp3Url = URL.createObjectURL(response.data);
+    return mp3Url;
   } catch (error) {
     console.log("error at getMp3File");
   }

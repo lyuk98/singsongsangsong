@@ -5,6 +5,8 @@ import coverimg from "./../../../sources/testimg/cover.png";
 import Album from "../../public/Album";
 import { useAxios } from "../../../hooks/api/useAxios";
 import axios from "axios";
+import { getAlbumImg } from "../../../utils/api/downloadFileApi";
+import { useParams } from "react-router-dom";
 
 type PropsType = {
   songtitle: string;
@@ -26,7 +28,7 @@ const SongHeader = ({
   albumImageFileName,
 }: PropsType) => {
   const [imgFile, setImgFile] = useState<any>();
-
+  const { songId } = useParams();
   // const { response: imgFile, isLoading: imgLoading } = useAxios({
   //   method: "GET",
   //   url: `/download/image/${albumImageFileName}`,
@@ -39,20 +41,8 @@ const SongHeader = ({
 
   useEffect(() => {
     const getAlbum = async () => {
-      try {
-        const response = await axios({
-          method: "GET",
-          url: `/download/image/${albumImageFileName}`,
-          headers: {
-            Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTcxMjAzODQ4NiwiZW1haWwiOiJHT09HTEVfMTAxNzU1MDkxNDQ0MzEzODA3MDcyIn0.TIZbya6B0w_wPKu_2ApOADfxNs8sOvu5GYhDyOMyegs`,
-          },
-        });
-        if (response?.data?.data) {
-          setImgFile(response.data.data);
-        }
-      } catch (error) {
-        console.log(error);
-      }
+      const imgUrl = await getAlbumImg(albumImageFileName);
+      setImgFile(imgUrl);
     };
     getAlbum();
   }, []);
@@ -64,7 +54,7 @@ const SongHeader = ({
       </div>
       <div className={`flex-row ${styles.content}`}>
         <div className={`${styles.musicAlbum}`}>
-          <Album />
+          <Album songId={songId} />
         </div>
         <div className={`flex-col gap-15`}>
           <h1>{songtitle}</h1>
