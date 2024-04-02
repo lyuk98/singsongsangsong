@@ -42,7 +42,7 @@ export const postComment = async (
       url: "/song/comments",
       data: {
         songId: songId,
-        contents: contents,
+        content: contents,
       },
     });
   } catch (error) {
