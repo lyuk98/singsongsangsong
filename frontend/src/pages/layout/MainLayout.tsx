@@ -41,6 +41,9 @@ const MainLayout = () => {
         sameSite: "none",
       });
       getUserInfo();
+    } else {
+      dispatch(userAction.setLogout());
+      navigate("/login");
     }
   }, []);
 
@@ -67,7 +70,7 @@ const MainLayout = () => {
   if (!login.isLogin) {
     navigate("/login");
   }
-  
+
   return (
     <>
       <ScrollToTop />
