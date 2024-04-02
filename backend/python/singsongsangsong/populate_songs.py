@@ -15,12 +15,11 @@ import file_server
 # 시험 목적으로 실행합니다
 # (완료 시 실행 내용을 되돌립니다)
 DRY_RUN = True
-DRY_RUN_SIZE = 256
 
-# 데이터베이스 삽입 시 시작 할 ID를 명시합니다
-SONG_START_FROM = 1
-IMAGE_START_FROM = 7638
-FILE_START_FROM = 1
+# 데이터베이스 삽입 시 시작 및 종료할 ID를 명시합니다
+SONG_FROM = 1
+SONG_UNTIL = 999
+FILE_START_FROM = 7638
 
 def download(url: str, path: str):
     """URL로부터 지정한 파일을 `path`에 저장합니다
@@ -98,80 +97,108 @@ artists = pd.read_csv(
 
 insert = []
 image_insert = []
-image_insert_id = itertools.count(IMAGE_START_FROM)
+audio_insert = []
 file_insert_id = itertools.count(FILE_START_FROM)
 
 for index, row in artists.iterrows():
-    if int(row["track_id"]) < SONG_START_FROM:
+    track_id = int(row["track_id"])
+
+    if track_id < SONG_FROM:
+        continue
+
+    # 음원 파일 설정을 준비합니다
+    audio_filename = filename_from_id(track_id)
+    audio_path = os.path.join(
+        "dataset",
+        "fma",
+        "data",
+        "fma_full",
+        audio_filename[:3],
+        audio_filename
+    )
+
+    if not os.path.exists(audio_path):
         continue
 
     # 앨범 이미지를 다운로드하기 전 URL을 정리합니다
-    download_url = row["track_image_file"]
+    image_url = str(row["track_image_file"]) # pylint: disable=invalid-name
 
-    filename = download_url[
+    image_filename = image_url[
         len("https://freemusicarchive.org/file/images/albums/"):
-    ] if download_url.startswith(
+    ] if image_url.startswith(
         "https://freemusicarchive.org/file/images/albums/"
     ) else None
-    download_url = update_image_url(
-        download_url
-    ) if download_url.startswith(
+    image_url = update_image_url(
+        image_url
+    ) if image_url.startswith(
         "https://freemusicarchive.org/file/images/albums/"
     ) else None
 
     # 유효한 이미지가 주어진 경우 다운로드를 진행합니다
-    if filename is not None:
-        download_path = os.path.join("dataset", "images", "albums", filename)
+    if image_filename is not None:
+        image_path = os.path.join("dataset", "images", "albums", image_filename)
+        image_extension = os.path.splitext(image_path)[1]
 
         try:
             # 파일이 존재하지 않을 시에만 진행합니다
-            if not os.path.exists(download_path) and download_url is not None:
-                print(f"Downloading from {download_url}")
-                download(download_url, download_path)
+            if not os.path.exists(image_path) and image_url is not None:
+                print(f"Downloading from {image_url}")
+                download(image_url, image_path)
             else:
-                print(f"Using downloaded {filename}")
+                print(f"Using downloaded {image_filename}")
 
-            assert mimetypes.guess_type(download_path)[0].startswith("image/")
+            assert mimetypes.guess_type(image_path)[0].startswith("image/")
 
             # file entity에 삽입할 데이터를 준비합니다
-            file_id = next(image_insert_id)
+            file_id = next(file_insert_id)
             image_insert.append(
                 {
                     "id": file_id,
                     "owner_id": row["artist_id"],
                     "saved_file_name": str(uuid.uuid4()),
-                    "original_file_name": filename,
-                    "file_path": download_path
+                    "original_file_name": f"{str(uuid.uuid4())}{image_extension}",
+                    "file_path": image_path
                 }
             )
         except HTTPError:
-            print(f"  Downloading {filename} failed")
+            print(f"  Downloading {image_filename} failed")
             file_id = None # pylint: disable=invalid-name
     else:
         file_id = None # pylint: disable=invalid-name
 
+    # 음원 정보 데이터를 준비합니다
+    audio_insert.append(
+        {
+            "id": next(file_insert_id),
+            "owner_id": row["artist_id"],
+            "saved_file_name": audio_filename,
+            "original_file_name": audio_filename,
+            "file_path": audio_path
+        }
+    )
+
     # 삽입할 데이터를 준비합니다
     insert.append(
         {
-            "id": row["track_id"],
+            "id": track_id,
             "artist_id": row["artist_id"],
             "album_image_id": file_id,
             "created_date": row["track_date_created"],
             "modified_date": row["track_date_created"],
-            "music_file_name": filename_from_id(int(row["track_id"])),
-            "song_description": row["track_information"],
-            "nickname": str(row["artist_name"]),
-            "username": str(row["artist_handle"]),
+            "music_file_name": audio_filename,
+            "song_description": str(row["track_information"]),
+            "title": str(row["track_title"])
         }
     )
 
     # 시험 목적으로 실행 시 일부 데이터만 가져옵니다
-    if DRY_RUN and index >= DRY_RUN_SIZE:
+    if DRY_RUN and track_id >= SONG_UNTIL:
         break
 
 # MinIO client를 준비합니다
 minio_client = file_server.get_client()
-saved_files = []
+saved_images = []
+saved_audio = []
 
 # MySQL (MariaDB) 데이터베이스에 연결합니다
 try:
@@ -191,9 +218,26 @@ try:
                     (
                         row["id"],
                         row["owner_id"],
-                        row["file_name"],
+                        row["saved_file_name"],
                         row["original_file_name"]
                     ) for row in image_insert
+                ]
+            )
+
+            print("Inserting audio records")
+
+            # 음원 파일 정보를 삽입합니다
+            cursor.executemany(
+                "insert into file "
+                "(id, owner_id, saved_file_name, original_file_name) "
+                "values (%s, %s, %s, %s)",
+                [
+                    (
+                        row["id"],
+                        row["owner_id"],
+                        row["saved_file_name"],
+                        row["original_file_name"]
+                    ) for row in audio_insert
                 ]
             )
 
@@ -203,12 +247,14 @@ try:
             cursor.executemany(
                 "insert into song "
                 "(bpm, download_count, duration, like_count, play_count, "
-                "weekly_download_count, weekly_like_count, weekly_play_count "
+                "weekly_download_count, weekly_like_count, weekly_play_count, "
                 "album_image_id, artist_id, created_date, id, modified_date, "
-                "music_file_name, song_description, title)"
+                "music_file_name, song_description, title) "
                 "values "
-                "(0, 0, 0, 0, 0, " "0, 0, 0, "
-                "%s, %s, %s, %s, %s, %s, %s, %s)",
+                "(0, 0, 0, 0, 0, "
+                "0, 0, 0, "
+                "%s, %s, %s, %s, %s, "
+                "%s, %s, %s)",
                 [
                     (
                         row["album_image_id"],
@@ -217,7 +263,8 @@ try:
                         row["id"],
                         row["modified_date"],
                         row["music_file_name"],
-                        row["song_description"]
+                        row["song_description"],
+                        row["title"]
                     ) for row in insert
                 ]
             )
@@ -225,28 +272,46 @@ try:
             print("Updating artists' profile images")
 
             # 이미지 파일을 client에 업로드합니다
-            for image_file in audio_insert:
-                print(f"Uploading {image_file['original_file_name']} ({image_file['file_name']})")
+            for image_file in image_insert:
+                print(f"Uploading {image_file['file_path']} ({image_file['saved_file_name']})")
 
                 file_server.upload(
                     image_file["file_path"],
                     "image",
-                    image_file["file_name"],
+                    image_file["saved_file_name"],
                     minio_client
                 )
-                saved_files.append(image_file["file_name"])
+                saved_images.append(image_file["saved_file_name"])
+
+            print("Uploading audio")
+
+            # 음원 파일을 client에 업로드합니다
+            for audio_file in audio_insert:
+                print(f"Uploading {audio_file['file_path']} ({audio_file['saved_file_name']})")
+
+                file_server.upload(
+                    audio_file["file_path"],
+                    "audio",
+                    audio_file["saved_file_name"],
+                    minio_client
+                )
+                saved_audio.append(audio_file["saved_file_name"])
 
             # 시험 목적으로 사용 시 commit을 하지 않습니다
             if not DRY_RUN:
                 connection.commit()
 
 except Exception as exception: # pylint: disable=broad-exception-caught
-    for image_file in saved_files:
+    for image_file in saved_images:
         file_server.delete("image", image_file, minio_client)
+    for audio_file in saved_audio:
+        file_server.delete("audio", audio_file, minio_client)
 
     raise exception
 
 # 시험 목적으로 사용 시 업로드한 이미지를 삭제합니다
 if DRY_RUN:
-    for image_file in saved_files:
+    for image_file in saved_images:
         file_server.delete("image", image_file, minio_client)
+    for audio_file in saved_audio:
+        file_server.delete("audio", audio_file, minio_client)
