@@ -17,6 +17,7 @@ from fastapi import (
     Response,
     status
 )
+from fastapi.middleware.cors import CORSMiddleware
 from minio.error import S3Error
 import uvicorn
 import file_server
@@ -41,6 +42,16 @@ load_dotenv()
 
 app = FastAPI(
     title="싱송생송 DSP API"
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:3000",
+        "https://www.singsongsangsong.com"
+        "https://api.singsongsangsong.com"
+    ],
+    allow_methods=["GET", "POST"]
 )
 
 @app.post(
