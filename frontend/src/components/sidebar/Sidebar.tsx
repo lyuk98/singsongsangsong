@@ -69,7 +69,12 @@ const Sidebar = () => {
             >
               <RxPerson size="20px" /> <span>Profile</span>
             </NavLink>
-            <NavLink onClick={handleLogout} to="/">
+            <NavLink
+              onClick={() => {
+                handleLogout();
+              }}
+              to="/login"
+            >
               <MdOutlineLogout size="20px" /> <span>Logout</span>
             </NavLink>
           </>
