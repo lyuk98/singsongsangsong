@@ -17,8 +17,10 @@ import com.ssafy.singsongsangsong.exception.song.NotFoundSongException;
 import com.ssafy.singsongsangsong.exception.song.PleaseRetryException;
 
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 
 @RestControllerAdvice
+@Slf4j
 public class GlobalExceptionHandler {
 
 	@ExceptionHandler({JWTVerificationException.class, JWTDecodeException.class})
@@ -98,6 +100,10 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler({BusinessException.class, Exception.class})
 	public ErrorEntity handleBusinessException(Exception e, HttpServletResponse response) {
 		response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+
+		log.error(e.getMessage());
+		log.error(e.getLocalizedMessage());
+		log.error(e.getCause().toString());
 		return ErrorEntity.builder()
 			.code(HttpStatus.INTERNAL_SERVER_ERROR.toString())
 			.message("서버 관리자에게 문의하세요..ㅜㅜ [msg] => " + e.getMessage())
