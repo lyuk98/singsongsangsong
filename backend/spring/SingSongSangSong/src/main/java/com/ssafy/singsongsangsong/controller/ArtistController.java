@@ -40,9 +40,9 @@ public class ArtistController {
 		return artistService.getArtistInfo(id);
 	}
 
-	@GetMapping("/song")
-	public List<SimpleSongDto> getPublishedSong(@AuthenticationPrincipal ArtistPrincipal principal) {
-		return artistService.getPublishedSong(principal.getId());
+	@GetMapping("/song/{id}")
+	public List<SimpleSongDto> getPublishedSong(@PathVariable Long id) {
+		return artistService.getPublishedSong(id);
 	}
 
 	@PostMapping("/follow/{id}")
