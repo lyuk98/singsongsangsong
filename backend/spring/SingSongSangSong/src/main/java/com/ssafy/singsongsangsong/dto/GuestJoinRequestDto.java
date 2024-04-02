@@ -19,4 +19,15 @@ public class GuestJoinRequestDto {
 	private String introduction;
 	private MultipartFile profileImage;
 	private char sex;
+
+	@Override
+	public String toString() {
+		return "GuestJoinRequestDto{" +
+			"nickname='" + nickname + '\'' +
+			", age=" + age +
+			", introduction='" + introduction + '\'' +
+			", profileImage=" + profileImage +
+			", sex=" + sex +
+			'}';
+	}
 }
