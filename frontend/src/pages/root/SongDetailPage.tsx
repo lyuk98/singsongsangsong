@@ -54,9 +54,11 @@ const SongDetailPage = () => {
   // response =>
   const { response, isLoading, refetch } = useAxios({
     method: "GET",
-    url: `/song/${songId}`,
+    url: `/song/detail/${songId}`,
   });
+
   console.log(response);
+
   if (isLoading) {
     return <p>로딩중입니다</p>;
   }
@@ -71,6 +73,8 @@ const SongDetailPage = () => {
         likeCount={response.likeCount}
         playCount={response.playCount}
         downloadCount={response.downloadCount}
+        songFileName={response.songFileName}
+        albumImageFileName={response.albumImageFileName}
       />
       <div className={`w-100 flex-col-center gap-30 ${styles.content}`}>
         <SongInfo

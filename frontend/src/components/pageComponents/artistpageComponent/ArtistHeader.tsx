@@ -9,6 +9,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { getPresignedUrl } from "../../../utils/api/minioApi";
 import { fileURLToPath } from "url";
 import axios from "axios";
+import { axiosInstance } from "../../../hooks/api";
 
 type PropsType = {
   artistId: number;
@@ -28,7 +29,7 @@ const ArtistHeader = ({
   profileImageFileName,
 }: PropsType) => {
   const [imageURL, setImageURL] = useState();
-
+  const [artistProfile, setArtistProfile] = useState<any>();
   const handleShare = () => {
     const currentUrl = window.location.href;
     navigator.clipboard.writeText(currentUrl);
@@ -38,27 +39,29 @@ const ArtistHeader = ({
   const handleFollow = () => {};
 
   useEffect(() => {
-    // getPresignedUrl("image", profileImageFileName);
-    // const getUrl = async (fileName: string) => {
-    //   const response = await axios({
-    //     method: "GET",
-    //     url: `http://zip.udon.party:40001/image/${fileName}`,
-    //     headers: {
-    //       Authorization: `AWS Signature, ${}`,
-    //     },
-    //   });
-    //   console.log(response);
-    // };
-    // getUrl(profileImageFileName);
+    const profileImg = async () => {
+      try {
+        const response = await axiosInstance.request({
+          method: "GET",
+          url: `/download/image/${profileImageFileName}`,
+        });
+        if (response?.data?.data) {
+          setArtistProfile(response.data.data);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    profileImg();
   }, []);
 
   return (
     <div className={`flex-row-center ${styles.container}`}>
       <div className={`${styles.background}`}>
-        <img src={img} alt="" />
+        <img src={artistProfile} alt="" />
       </div>
       <div className={`mx-auto flex-row-center ${styles.content}`}>
-        <img src={img} alt="" className={styles.artistProfile} />
+        <img src={artistProfile} alt="" className={styles.artistProfile} />
         <div className={`my-auto flex-col-center ${styles.artistInfo}`}>
           <h1>{nickname}</h1>
           <div className={styles.artistIntroduce}>

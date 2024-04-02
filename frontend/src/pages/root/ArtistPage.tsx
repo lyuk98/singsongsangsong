@@ -37,7 +37,7 @@ const ArtistPage = () => {
 
   useEffect(() => {
     const getItems = async () => {
-      const emotions = await getEmotions(1);
+      const emotions = await getEmotions(artistId);
       console.log(emotions);
     };
     // console.log("djasiofgnioasgnaegniae", getArtist(1));
@@ -60,7 +60,7 @@ const ArtistPage = () => {
         <ArtistHeader
           artistId={response.artistId}
           nickname={response.nickname}
-          profileImageFileName={response.profileImageFileName}
+          profileImageFileName={response.profileImage.originalFileName}
           introduction={response.introduction}
         />
       </div>

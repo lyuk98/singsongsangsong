@@ -28,9 +28,7 @@ const Album = () => {
         >
           <FaPlay size={"24px"} />
         </button>
-        {
-          
-        }
+        {}
       </div>
     </div>
   );

@@ -66,7 +66,7 @@ const AnalysisPage = () => {
           </div>
         </div>
       </div>
-      <MoodAndGenre />
+      {/* <MoodAndGenre /> */}
       <div className={"border-box bg-box py-15"}>
         <SimilarSong />
       </div>
