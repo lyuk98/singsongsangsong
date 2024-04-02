@@ -21,11 +21,13 @@ import { getPresignedUrl } from "../../utils/api/minioApi";
 import axios from "axios";
 import ArtistEmotionBox from "../../components/public/emotionBox/ArtistEmotionBox";
 import { axiosInstance } from "../../hooks/api";
+import TestMusicTable from "../../components/public/music/TestMusicTable";
 
 const ArtistPage = () => {
   const { artistId } = useParams();
   const [followerCount, setFollowerCount] = useState<number | null>(null);
   const [songList, setSongList] = useState(null);
+  const [songData, setSongData] = useState<any>();
   // const artistId = 1;
   // 아티스트 정보를 요청하는 페이지 로드시 실행할 함수
   const { response, isLoading, refetch, error } = useAxios({
@@ -38,6 +40,9 @@ const ArtistPage = () => {
   useEffect(() => {
     const getItems = async () => {
       const emotions = await getEmotions(artistId);
+      const songs = await getSongList(artistId);
+      setSongData(songs);
+      console.log(songs);
       console.log(emotions);
     };
     // console.log("djasiofgnioasgnaegniae", getArtist(1));
@@ -91,7 +96,7 @@ const ArtistPage = () => {
           <ArtistEmotionBox />
         </div>
         <div className={`w-100 py-15`}>
-          <MusicTable />
+          <TestMusicTable musicData={songData} />
         </div>
       </div>
     </div>

@@ -39,7 +39,7 @@ const GENRE = [
     img: electImg,
   },
   {
-    params: "rock",
+    params: "Rock",
     img: rockImg,
   },
   {
@@ -184,7 +184,10 @@ const DiscoverPage = () => {
               </div>
             </div>
             <div>
-              <div className={`${styles.musicBox}`}>
+              <div
+                className={`${styles.musicBox}`}
+                onClick={() => navigate("weekly-singsong")}
+              >
                 <img src={singsongSong} alt="싱송음악 top 10" />
               </div>
             </div>

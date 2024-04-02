@@ -26,14 +26,14 @@ const CommentForm = () => {
   const { songId } = useParams();
 
   const {
-    response,
-    isLoading,
+    response: comments,
+    isLoading: commentLoading,
     refetch: reloadComment,
   } = useAxios({
     method: "GET",
     url: `/song/comments/${songId}`,
   });
-
+  console.log("댓글댓글댓글글", comments);
   return (
     <div className={styles.container}>
       <header>
@@ -43,9 +43,16 @@ const CommentForm = () => {
         </h1>
       </header>
       <CommentInput reloadComment={reloadComment} />
-      {DUMMY.map((element) => {
-        return <Comments artist={element.artist} comment={element.comment} />;
-      })}
+      {/* {comments.map((element) => {
+        return (
+          <Comments
+            authorId={comments.authorId}
+            artistNickname={comments.artistNickname}
+            content={comments.contetn}
+            imgFileName={comments.imageFileName}
+          />
+        );
+      })} */}
     </div>
   );
 };

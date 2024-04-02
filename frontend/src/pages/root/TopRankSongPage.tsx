@@ -6,6 +6,8 @@ import { useDispatch } from "react-redux";
 import { musicAction } from "../../store/musicSlice";
 import { useAxios } from "../../hooks/api/useAxios";
 import { title } from "process";
+import { getAtmosphereList, getGenreList } from "../../utils/api/discoverApi";
+import TestMusicTable from "../../components/public/music/TestMusicTable";
 
 const GENRE_COMMENT = [
   {
@@ -14,7 +16,7 @@ const GENRE_COMMENT = [
     middle: "일렉트로닉",
   },
   {
-    keyword: "rock",
+    keyword: "Rock",
     top: "단단한",
     middle: "바위",
   },
@@ -93,6 +95,8 @@ const TopRankSongPage = () => {
     top: "",
     middle: "",
   });
+  const [musicData, setMusicData] = useState<any>();
+
   const randNum = Math.floor(Math.random() * 5) + 1;
   const header = require(`./../../sources/imgs/header/headerimg${randNum}.jpg`);
 
@@ -116,6 +120,25 @@ const TopRankSongPage = () => {
     }
   }, []);
 
+  useEffect(() => {
+    const genre = async () => {
+      const res = await getGenreList(keyword);
+      console.log("장르별 데이터", res);
+      setMusicData(res);
+    };
+    const atom = async () => {
+      const res = await getAtmosphereList(keyword);
+      setMusicData(res);
+    };
+    if (type === "genre") {
+      genre();
+    } else if (type === "mood") {
+      atom();
+    }
+  }, []);
+
+  console.log(musicData);
+
   return (
     <div className={`w-100 flex-col gap-30`}>
       <div className={`w-100 flex-row-center ${styles.header}`}>
@@ -128,7 +151,7 @@ const TopRankSongPage = () => {
           <h1>TOP 10</h1>
         </div>
       </div>
-      <MusicTable />
+      <TestMusicTable musicData={musicData} />
     </div>
   );
 };

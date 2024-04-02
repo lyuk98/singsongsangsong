@@ -35,11 +35,11 @@ export const getFollowerNumber = async (artistId: string) => {
   }
 };
 
-export const getGenreList = async (genre: string) => {
+export const getGenreList = async (genre: any) => {
   try {
     const response = await axiosInstance.request({
       method: "GET",
-      url: `/music-playlisy/genre-hitsong/${genre}`,
+      url: `/music-playlist/genre-hitsong/${genre}`,
       data: {
         Genre: genre,
       },
@@ -50,11 +50,11 @@ export const getGenreList = async (genre: string) => {
   }
 };
 
-export const getAtmosphereList = async (atmosphere: string) => {
+export const getAtmosphereList = async (atmosphere: any) => {
   try {
     const response = await axiosInstance.request({
       method: "GET",
-      url: `/music-playlisy/atmosphere-hitsong/${atmosphere}`,
+      url: `/music-playlist/atmosphere-hitsong/${atmosphere}`,
       data: {
         Atmosphere: atmosphere,
       },

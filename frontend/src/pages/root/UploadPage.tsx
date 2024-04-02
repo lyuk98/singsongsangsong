@@ -127,7 +127,6 @@ const UploadPage = () => {
         <p>곡을 업로드하고 자세한 정보를 얻어보세요</p>
       </div>
       <div className={`w-100 ${styles.uploadSection}`}>
-        <h1>곡 업로드</h1>
         {uploadFile ? (
           <div className={`bg-box flex-col-center ${styles.uploadBox}`}>
             <div className={styles.player}>
@@ -179,7 +178,7 @@ const UploadPage = () => {
       </div>
       <div className={`${styles.checkSection}`}>
         <div className={`flex-row gap-15`}>
-          <h1>업로드 현황</h1>
+          <h1>분석 현황</h1>
           <button
             disabled={analyzedDataIsLoading}
             onClick={loadAnalyzedData}

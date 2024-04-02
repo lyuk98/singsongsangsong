@@ -21,18 +21,11 @@ export const getArtist = async (artistId: any) => {
  * @param artistId 팔로우할 아티스트 아이디
  * @param followingArtistId 팔로워 아티스트 아이디
  */
-export const followArtist = async (
-  artistId: number,
-  followingArtistId: number
-) => {
+export const followArtist = async (artistId: any) => {
   try {
     const reponse = await axiosInstance.request({
       method: "POST",
-      url: "/artist/follow",
-      params: {
-        artistId: artistId,
-        followingArtistId: followingArtistId,
-      },
+      url: `/artist/follow/${artistId}`,
     });
   } catch (error) {
     console.log(error);
@@ -44,13 +37,13 @@ export const followArtist = async (
  * @param artistId
  * @returns 곡 배열
  */
-export const getSongList = async (artistId: number) => {
+export const getSongList = async (artistId: any) => {
   try {
     const response = await axiosInstance.request({
       method: "GET",
       url: `/artist/song/${artistId}`,
     });
-    return response;
+    return response.data.data;
   } catch (error) {
     console.log(error);
   }
@@ -104,13 +97,13 @@ export const addProfileImage = async (file: File) => {
  * @param artistId 아티스트 아이디
  * @returns 팔로워 수
  */
-export const getFollowerCount = async (artistId: number) => {
+export const getFollowerCount = async (artistId: any) => {
   try {
     const response = await axiosInstance.request({
       method: "GET",
-      url: `/followers/${artistId}/count`,
+      url: `/artist/followers/${artistId}/count`,
     });
-    return response;
+    return response.data.data;
   } catch (error) {
     console.log(error);
   }
