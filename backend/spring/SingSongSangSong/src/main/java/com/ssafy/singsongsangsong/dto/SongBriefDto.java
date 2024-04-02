@@ -26,7 +26,7 @@ public class SongBriefDto {
 	private String artistName;
 	private String albumImage;
 	private String genre;
-	private List<String> atmosphere;
+	private String atmosphere;
 	private int playCount;
 	private int duration;
 
@@ -47,6 +47,7 @@ public class SongBriefDto {
 		dto.setGenre(song.getCustomGenre());
 		dto.setPlayCount(song.getPlayCount());
 		dto.setDuration(song.getDuration());
+		dto.setAtmosphere(song.getThemes());
 
 		return dto;
 	}
