@@ -23,7 +23,7 @@ public class SongBriefDto {
 	private String title;
 	private Long artistId;
 	private String artistName;
-	private String imageLocation;
+	private String albumImage;
 	private String genre;
 	private List<String> atmosphere;
 	private int playCount;
@@ -37,7 +37,12 @@ public class SongBriefDto {
 		dto.setTitle(song.getTitle());
 		dto.setArtistId(song.getArtist().getId());
 		dto.setArtistName(song.getArtist().getNickname());
-		// dto.setImageLocation(song.getAlbumImage().getImageLocation());
+		if(song.getAlbumImage() != null){
+			dto.setAlbumImage(song.getAlbumImage().getSavedFileName());
+		}
+		else {
+			dto.setAlbumImage("default.jpg");
+		}
 		dto.setGenre(song.getCustomGenre());
 		dto.setPlayCount(song.getPlayCount());
 		dto.setDuration(song.getDuration());
