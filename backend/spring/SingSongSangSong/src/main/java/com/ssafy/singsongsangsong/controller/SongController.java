@@ -69,7 +69,7 @@ public class SongController {
 	// 해당 노래에 해당하는 분위기와 장르의 correlation을 가져옵니다.
 	@GetMapping("/analyze/{songId}")
 	public AnalyzeGenreAndAtmosphereResponse getAnalyzeGenreAndAtmosphere(@PathVariable Long songId,
-		@RequestParam("defaultValue = 5") int size) {
+		@RequestParam(required = false, defaultValue = "5") int size) {
 		return songService.getAnalyzeGenreAndAtmosphere(songId, size);
 	}
 
