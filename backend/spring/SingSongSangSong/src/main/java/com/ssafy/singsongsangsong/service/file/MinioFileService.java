@@ -53,14 +53,28 @@ public class MinioFileService implements FileService {
 	public Resource getFile(Long artistId, FileType fileType, String originalFileName) throws IOException {
 		File file = fileRepository.findByOriginalFileName(originalFileName).orElseThrow(NotFoundFileException::new);
 		log.info("getFile => originalFileName: {}", originalFileName);
+
+		String bucket = fileType.getName();
+		if (fileType == FileType.MFCC) {
+			bucket = FileType.IMAGE.getName();
+		}
+		log.info("get file => bucket: {}, savedFileName: {}", bucket, file.getSavedFileName());
+		
 		try (InputStream inputStream = minioClient.getObject(GetObjectArgs.builder()
-			.bucket(fileType.getName())
+			.bucket(bucket)
 			.object(file.getSavedFileName())
 			.build())) {
 			return new ByteArrayResource(inputStream.readAllBytes());
 		} catch (Exception e) {
 			throw new BusinessException("minio storage에서 파일을 다운받지 못했습니다 => reason: " + e.getMessage());
 		}
+	}
+
+	@Override
+	public Resource getFileViaId(Long artistId, FileType fileType, Long fileId) throws IOException {
+		File file = fileRepository.findById(fileId)
+			.orElseThrow(() -> new NotFoundFileException(String.valueOf(fileId) + "에 해당하는 file이 없습니다."));
+		return getFile(artistId, fileType, file.getOriginalFileName());
 	}
 
 	@Override
