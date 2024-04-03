@@ -37,7 +37,17 @@ export const handleStartAnalyze = async (inputFile: File) => {
         Authorization: `Bearer ${accessToken}`,
       },
     });
-    console.log(result.data.data);
+    if (result.status === 200) {
+      try {
+        const req = await axiosInstance.request({
+          method: "POST",
+          url: `/analyze/${result.data.data.songId}`,
+        });
+        return req.data.data;
+      } catch (error) {
+        console.log(error);
+      }
+    }
   } catch (error) {
     return error;
   }

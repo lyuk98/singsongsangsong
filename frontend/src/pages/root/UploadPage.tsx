@@ -173,6 +173,7 @@ const UploadPage = () => {
               disabled={!uploadFile}
               onClick={() => {
                 handleStartAnalyze(uploadFile.file);
+                loadAnalyzedData()
               }}
             >
               분석하기
@@ -218,23 +219,28 @@ const UploadPage = () => {
           </button>
         </div>
         <div className={`w-100 bg-box flex-col-center p-15 ${styles.checkBox}`}>
-          {/* {analyzedData.uploadProcesses.length === 0 && (
+          {analyzedData.uploadProcesses.length === 0 && (
             <h2>현재 분석중인 음악이 없습니다.</h2>
           )}
           {analyzedData &&
             analyzedData.uploadProcesses.map((element: AnalyzedStateType) => {
               return (
-                <div>
-                  <h2>{element.title}</h2>
-                  {element.process === "in process" ? (
+                <div className="flex-row-center gap-30">
+                  <h2>{element.title ? element.title : "제목이 없습니다"}</h2>
+                  {element.process === "ANALYZING" ? (
                     <h2>분석중</h2>
                   ) : (
-                    <h2>분석완료</h2>
+                    <h2
+                      onClick={() => navigate(`./${element.songId}`)}
+                      style={{ color: "blue", cursor: "pointer" }}
+                    >
+                      분석완료
+                    </h2>
                   )}
                 </div>
               );
-            })} */}
-          {uploadProcesses.length === 0 && (
+            })}
+          {/* {uploadProcesses.length === 0 && (
             <h2>현재 분석중인 음악이 없습니다.</h2>
           )}
           {uploadProcesses &&
@@ -261,7 +267,7 @@ const UploadPage = () => {
                   )}
                 </div>
               );
-            })}
+            })} */}
         </div>
       </div>
     </div>
