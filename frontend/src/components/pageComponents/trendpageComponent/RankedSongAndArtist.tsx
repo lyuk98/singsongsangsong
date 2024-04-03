@@ -29,9 +29,9 @@ const RankedSongAndArtist = ({
 }: PropsType) => {
   const checker = () => {};
   const navigate = useNavigate();
-  console.log(songData);
+  // console.log(songData);
   if (!songData) {
-    return <p>dkadfamsfgiop</p>;
+    return <p>음악 데이터가 존재하지 않습니다</p>;
   }
 
   return (

@@ -9,7 +9,7 @@ export const getArtist = async (artistId: any) => {
       method: "GET",
       url: `/artist/${artistId}`,
     });
-    console.log("getArtist : ", response);
+    // console.log("getArtist : ", response);
     return response;
   } catch (error) {
     console.log("error occur at getArtist");
