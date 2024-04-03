@@ -19,6 +19,7 @@ public class TrendSongDetailDto {
 	
 	private String songFileName;
 	private String albumImageFileName;
+	private String songDescription;
 	
 	private int likeCount;
 	private int downloadCount;

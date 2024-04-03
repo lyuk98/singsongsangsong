@@ -9,14 +9,23 @@ import org.springframework.stereotype.Service;
 
 import com.ssafy.singsongsangsong.constants.DefaultFileName;
 import com.ssafy.singsongsangsong.dto.AgeSexChartDto;
+import com.ssafy.singsongsangsong.dto.AgeSexDetailChartDto;
 import com.ssafy.singsongsangsong.dto.AllChartDto;
 import com.ssafy.singsongsangsong.dto.AnalyzeGenreAndAtmosphereResponse;
 import com.ssafy.singsongsangsong.dto.AnalyzeGenreAndAtmosphereResponse.AnalyzeAtmosphereDto;
 import com.ssafy.singsongsangsong.dto.AnalyzeGenreAndAtmosphereResponse.AnalyzeGenreDto;
+import com.ssafy.singsongsangsong.dto.ArtistAgeSexDetailDto;
+import com.ssafy.singsongsangsong.dto.ArtistAgeSexDto;
 import com.ssafy.singsongsangsong.dto.ArtistInfoDto;
+import com.ssafy.singsongsangsong.dto.AtmosphereAgeSexDetailDto;
+import com.ssafy.singsongsangsong.dto.AtmosphereAgeSexDto;
 import com.ssafy.singsongsangsong.dto.BpmChartDetailDto;
 import com.ssafy.singsongsangsong.dto.BpmDetailDto;
 import com.ssafy.singsongsangsong.dto.EmotionSongsDto;
+import com.ssafy.singsongsangsong.dto.GenreAgeSexDetailDto;
+import com.ssafy.singsongsangsong.dto.GenreAgeSexDto;
+import com.ssafy.singsongsangsong.dto.SongAgeSexDetailDto;
+import com.ssafy.singsongsangsong.dto.SongAgeSexDto;
 import com.ssafy.singsongsangsong.dto.SongArtistDetailDto;
 import com.ssafy.singsongsangsong.dto.SongArtistDto;
 import com.ssafy.singsongsangsong.dto.TrendChartDto;
@@ -100,6 +109,7 @@ public class TrendServiceImpl implements TrendService {
 				.artist(ArtistInfoDto.from(artist))
 				.songFileName(musicFileName)
 				.albumImageFileName(originalFileName)
+				.songDescription(song.getSongDescription())
 				.likeCount(song.getLikeCount())
 				.downloadCount(song.getDownloadCount())
 				.playCount(song.getPlayCount())
@@ -168,8 +178,32 @@ public class TrendServiceImpl implements TrendService {
 	}
 	
 	@Override
-	public AgeSexChartDto getAgeSexChart(LocalDate date, String age, String sex) {
-		return trendRepository.getAgeSexChart(date, age, sex);
+	public AgeSexDetailChartDto getAgeSexChart(LocalDate date, String age, String sex) {
+		AgeSexChartDto dto = trendRepository.getAgeSexChart(date, age, sex);
+		 
+		 List<GenreAgeSexDetailDto> genres = new ArrayList<>();
+		 List<AtmosphereAgeSexDetailDto> atmospheres = new ArrayList<>();
+		 List<SongAgeSexDetailDto> songs = new ArrayList<>();
+		 List<ArtistAgeSexDetailDto> artists = new ArrayList<>();
+		 
+		 for (GenreAgeSexDto temp : dto.getGenres()) {
+			 genres.add(new GenreAgeSexDetailDto(temp.getGenre(), temp.getPlayCount(), getSong(temp.getSongId())));
+		 }
+		 
+		 for (AtmosphereAgeSexDto temp : dto.getAtmospheres()) {
+			 atmospheres.add(new AtmosphereAgeSexDetailDto(temp.getAtmosphere(), temp.getPlayCount(), getSong(temp.getSongId())));
+		 }
+		 
+		 for (SongAgeSexDto temp : dto.getSongs()) {
+			 songs.add(new SongAgeSexDetailDto(getSong(temp.getSongId()), temp.getPlayCount()));
+		 }
+		 
+		 for (ArtistAgeSexDto temp : dto.getArtists()) {
+			 TrendSongDto songDto = getSong(temp.getSongId());
+			 artists.add(new ArtistAgeSexDetailDto(songDto.getArtist(), temp.getPlayCount(), songDto));
+		 }
+		
+		return new AgeSexDetailChartDto(genres, atmospheres, songs, artists);
 	}
 
 	@Override

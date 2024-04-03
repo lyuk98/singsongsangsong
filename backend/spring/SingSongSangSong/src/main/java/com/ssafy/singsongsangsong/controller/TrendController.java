@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ssafy.singsongsangsong.dto.AgeSexChartDto;
+import com.ssafy.singsongsangsong.dto.AgeSexDetailChartDto;
 import com.ssafy.singsongsangsong.dto.BpmChartDetailDto;
 import com.ssafy.singsongsangsong.dto.SongArtistDetailDto;
 import com.ssafy.singsongsangsong.dto.TrendChartDto;
@@ -29,7 +29,7 @@ public class TrendController {
 	}
 	
 	@GetMapping("/age")
-	public AgeSexChartDto getAgeSexChart(@RequestParam("date") String date, @RequestParam("age") String age, @RequestParam("sex") String sex) {
+	public AgeSexDetailChartDto getAgeSexChart(@RequestParam("date") String date, @RequestParam("age") String age, @RequestParam("sex") String sex) {
 		return trendService.getAgeSexChart(LocalDate.parse(date, DateTimeFormatter.ISO_DATE), age, sex);
 	}
 
