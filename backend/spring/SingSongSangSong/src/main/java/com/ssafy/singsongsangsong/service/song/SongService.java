@@ -9,6 +9,7 @@ import org.springframework.core.io.Resource;
 import com.ssafy.singsongsangsong.constants.EmotionsConstants;
 import com.ssafy.singsongsangsong.dto.AnalyzeGenreAndAtmosphereResponse;
 import com.ssafy.singsongsangsong.dto.CommentsResponseDto;
+import com.ssafy.singsongsangsong.dto.LikedResponseDto;
 import com.ssafy.singsongsangsong.dto.SectionAnalyzeResponseDto;
 import com.ssafy.singsongsangsong.dto.SectionElementDto;
 import com.ssafy.singsongsangsong.dto.SongInfoResponse;
@@ -36,4 +37,6 @@ public interface SongService {
 	SongSimilarityByRanksResponse getSongsSimilarityByRanks(Long songId, int size);
 
 	SectionAnalyzeResponseDto getSectionOfSong(Long songId, Long spectrumImageId);
+
+	LikedResponseDto likedSong(Long songId, Long artistId);
 }

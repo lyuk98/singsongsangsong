@@ -4,6 +4,7 @@ import static com.ssafy.singsongsangsong.entity.QLikes.*;
 
 import java.awt.print.Pageable;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 
@@ -24,5 +25,13 @@ public class LikedRepositoryCustomImpl implements LikedRepositoryCustom{
 			.where(likes.artist.id.eq(artistId))
 			.orderBy(likes.id.desc())
 			.fetch();
+	}
+
+	@Override
+	public Optional<Likes> findBySongIdAndArtistId(Long songId, Long artistId) {
+		return Optional.ofNullable(jpaQueryFactory
+			.selectFrom(likes)
+			.where(likes.song.id.eq(songId).and(likes.artist.id.eq(artistId)))
+			.fetchOne());
 	}
 }
