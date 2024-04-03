@@ -32,7 +32,7 @@ public class FileController {
 
 	@PostMapping("/upload/{fileType}")
 	public UploadFileDto uploadFile(@AuthenticationPrincipal ArtistPrincipal user,
-		@PathVariable("fileType") FileType fileType, @RequestBody MultipartFile fileData) throws IOException {
+		@PathVariable(name = "fileType") FileType fileType, @RequestBody MultipartFile fileData) throws IOException {
 
 		if (user == null) {
 			throw new JWTVerificationException("로그인이 필요합니다");
