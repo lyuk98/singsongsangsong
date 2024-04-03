@@ -39,8 +39,8 @@ const SongDetails = ({ lyrics }: PropsType) => {
     const callAxios = async () => {
       const res = await getAnalyzeResult(songId);
       const similarity = await getTempSimilarity(songId);
-      console.log(similarity);
-      console.log(res);
+      // console.log(similarity);
+      // console.log(res);
       if (res) {
         setGenreData(res.genres);
         setAtmosphereData(res.atmospheres);

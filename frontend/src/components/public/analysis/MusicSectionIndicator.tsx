@@ -34,7 +34,7 @@ const MusicSectionIndicator = () => {
     url: `/song/section/${songId}`,
   });
 
-  console.log(response);
+  // console.log(response);
 
   if (isLoading) {
     return <p>데이터를 로드중입니다</p>;

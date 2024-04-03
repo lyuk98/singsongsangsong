@@ -29,7 +29,7 @@ const AnalysisPage = () => {
         method: "PUT",
         url: `${process.env.REACT_APP_API_URL}analyze/publish/${"songid"}`,
       });
-      console.log(response);
+      // console.log(response);
     } catch (error) {
       console.log(error);
     }

@@ -123,7 +123,7 @@ const TopRankSongPage = () => {
   useEffect(() => {
     const genre = async () => {
       const res = await getGenreList(keyword);
-      console.log("장르별 데이터", res);
+      // console.log("장르별 데이터", res);
       setMusicData(res);
     };
     const atom = async () => {
@@ -137,7 +137,7 @@ const TopRankSongPage = () => {
     }
   }, []);
 
-  console.log(musicData);
+  // console.log(musicData);
 
   return (
     <div className={`w-100 flex-col gap-30`}>

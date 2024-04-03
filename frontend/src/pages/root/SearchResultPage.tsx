@@ -43,13 +43,13 @@ const SearchResultPage = () => {
       sort,
     },
   });
-  console.log("검색인자", keyword, genre, atmosphere, bpm, sort);
-  console.log("검색결과", response);
+  // console.log("검색인자", keyword, genre, atmosphere, bpm, sort);
+  // console.log("검색결과", response);
   const navigate = useNavigate();
-  useEffect(() => {
-    console.log(userSearchParams);
-    console.log(getSearchResult(userSearchParams));
-  }, []);
+  // useEffect(() => {
+  //   console.log(userSearchParams);
+  //   console.log(getSearchResult(userSearchParams));
+  // }, []);
 
   if (isLoading) {
     return <p>검색결과를 가져오고 있어요.</p>;

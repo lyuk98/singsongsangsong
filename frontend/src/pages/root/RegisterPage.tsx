@@ -68,8 +68,8 @@ const RegisterPage = () => {
   // 프로필 이미지를 등록
   const handleFileUpload = (event: ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
-    console.log(files);
-    console.log(new Date());
+    // console.log(files);
+    // console.log(new Date());
     if (files && files[0] && files[0].type.startsWith("image/")) {
       setProfileUrl(URL.createObjectURL(files[0]));
       setProfileImage(files[0]);
@@ -83,7 +83,7 @@ const RegisterPage = () => {
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log("제출 시 토큰값 : ", accessToken);
+    // console.log("제출 시 토큰값 : ", accessToken);
     try {
       const response = await axios({
         method: "POST",
@@ -100,7 +100,7 @@ const RegisterPage = () => {
         },
         withCredentials: false,
       });
-      console.log(response);
+      // console.log(response);
       if (response.status === 200) {
         setCookie("accessToken", `${accessToken}`, {
           path: "/",
@@ -113,7 +113,7 @@ const RegisterPage = () => {
         });
         if (userInfo?.data?.data) {
           const userSliceData = userInfo.data.data;
-          console.log("들어오는 유저 슬라이스값", userSliceData);
+          // console.log("들어오는 유저 슬라이스값", userSliceData);
           dispatch(userAction.setLogin(userSliceData));
         }
         navigate("/trend");
@@ -123,10 +123,10 @@ const RegisterPage = () => {
     }
   };
 
-  useEffect(() => {
-    console.log(nicknameValue);
-    console.log(descValue);
-  }, [descValue, nicknameValue]);
+  // useEffect(() => {
+  //   console.log(nicknameValue);
+  //   console.log(descValue);
+  // }, [descValue, nicknameValue]);
 
   return (
     <div className={styles.container}>

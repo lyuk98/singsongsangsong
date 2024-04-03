@@ -38,7 +38,7 @@ const TestAlbum = ({ songId }: PropsType) => {
         const tempImg = await getAlbumImg(songDetail.albumImageFileName);
         // const blob = new Blob([tempImg], { type: "image/png" });
         // const imageUrl = URL.createObjectURL(tempImg);
-        console.log("tempImg", tempImg);
+        // console.log("tempImg", tempImg);
         const tempAudio = await getMp3File(songDetail.songFileName);
         // setAlbumImg(imageUrl);
         setAlbumImg(tempImg);
