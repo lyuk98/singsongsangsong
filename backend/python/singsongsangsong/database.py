@@ -82,19 +82,19 @@ def get_song_artist(song_id: int, cursor: MySQLCursorAbstract=None) -> Union[str
 
     return None
 
-def get_filename(original_file_name: str, cursor: MySQLCursorAbstract=None) -> Union[str, None]:
-    """지정한 `original_file_name`을 가진 파일이 MinIO 저장소에서 가진 `saved_file_name`을 반환합니다
+def get_filename(song_id: int, cursor: MySQLCursorAbstract=None) -> Union[tuple[str, str], None]:
+    """지정한 `song_id`의 곡이 가진 파일 이름과 MinIO 저장소에서 가진 `saved_file_name`을 반환합니다
 
     Parameters
     ----------
-    original_file_name : str
-        기존 파일 이름
+    song_id : int
+        곡 ID
     cursor : MySQLCursorAbstract | None
         MySQL cursor 객체; 없을 시 생성
 
     Returns
     -------
-    str | None
+    tuple[str, str] | None
         저장되어 있는 파일 이름; 없을 시 `None`
     """
 
@@ -103,11 +103,15 @@ def get_filename(original_file_name: str, cursor: MySQLCursorAbstract=None) -> U
         cursor = connection.cursor()
 
     cursor.execute(
-        "select saved_file_name from file where original_file_name = %s",
-        (original_file_name,)
+        "select music_file_name from song where id = %s",
+        (song_id,)
     )
-
-    for (saved_file_name,) in cursor:
-        return saved_file_name
+    for (original_file_name,) in cursor:
+        cursor.execute(
+            "select saved_file_name from file where original_file_name = %s",
+            (original_file_name,)
+        )
+        for (saved_file_name,) in cursor:
+            return (original_file_name, saved_file_name)
 
     return None

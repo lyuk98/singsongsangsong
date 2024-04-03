@@ -67,7 +67,7 @@ app.add_middleware(
 )
 
 @app.post(
-    "/song",
+    "/song/{id}",
     summary="곡 분석 요청",
     response_model=None,
     responses={
@@ -84,16 +84,9 @@ app.add_middleware(
 def request_song_analysis(
     song_id: Annotated[
         int,
-        Query(
+        Path(
             alias="id",
             description="분석할 곡 ID"
-        )
-    ],
-    audio_path: Annotated[
-        str,
-        Query(
-            alias="path",
-            description="기존 음원 파일 이름"
         )
     ],
     background_tasks: BackgroundTasks
@@ -104,21 +97,23 @@ def request_song_analysis(
     """
 
     # 데이터베이스에서 파일 정보 얻어오기
-    audio_filename = database.get_filename(audio_path)
+    filename = database.get_filename(song_id)
 
     # 존재하지 않을 시 HTTP 404 응답
-    if audio_filename is None:
+    if filename is None:
         return Response(status_code=status.HTTP_404_NOT_FOUND)
+
+    original, saved = filename
 
     # 음원이 파일 서버에 존재하는지 확인
     client = file_server.get_client()
     try:
-        client.stat_object("audio", audio_filename)
+        client.stat_object("audio", saved)
     except S3Error:
         # 존재하지 않을 시 HTTP 404 응답
         return Response(status_code=status.HTTP_404_NOT_FOUND)
 
-    background_tasks.add_task(analyse, song_id, audio_filename, audio_path)
+    background_tasks.add_task(analyse, song_id, saved, original)
     return Response(status_code=status.HTTP_202_ACCEPTED)
 
 @app.post(
