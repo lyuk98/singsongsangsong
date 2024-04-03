@@ -18,42 +18,47 @@ const AnalysisPage = () => {
   const navigate = useNavigate();
   const { songId } = useParams();
   const [mfccImg, setMfccImg] = useState<any>();
-
-  const {
-    response: resultResponse,
-    isLoading: resultLoading,
-    error: resultError,
-  } = useAxios({
-    url: `/song/detail/${songId}`,
-    method: "GET",
-  });
-
-  const getMfccImage = async () => {
-    try {
-      const result = await axiosInstance({
-        method: "GET",
-        url: `/download/mfcc/${resultResponse.mfccImageId}`,
-        responseType: "blob",
-      });
-      const imgURL = URL.createObjectURL(result.data);
-      setMfccImg(imgURL);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const [resultResponse, setResultResponse] = useState<any>();
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    getMfccImage();
+    const request = async () => {
+      setIsLoading(true);
+      try {
+        const songDetail = await axiosInstance.request({
+          method: "GET",
+          url: `/song/detail/${songId}`,
+        });
+        console.log(songDetail.data.data);
+        setResultResponse(songDetail.data.data);
+        if (songDetail) {
+          try {
+            const mfccImage = await axiosInstance.request({
+              method: "GET",
+              url: `/download/mfcc/${songDetail.data.data.mfccImageId}`,
+              responseType: "blob",
+            });
+            const imgURL = URL.createObjectURL(mfccImage.data);
+            setMfccImg(imgURL);
+          } catch (error) {
+            console.log(error);
+          }
+        }
+      } catch (error) {
+        console.log(error);
+      }
+      setIsLoading(false);
+    };
+    request();
   }, []);
 
   const navigatePostPage = () => {
     navigate("post");
   };
 
-  if (resultLoading) {
+  if (isLoading) {
     return <p>결과 화면을 로딩중입니다</p>;
   }
-
   return (
     <div className={`w-100 px-main ${styles.container}`}>
       <div className={`${styles.header}`}>
