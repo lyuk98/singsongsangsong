@@ -9,9 +9,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.singsongsangsong.dto.AgeSexChartDto;
-import com.ssafy.singsongsangsong.dto.BpmChartDto;
+import com.ssafy.singsongsangsong.dto.BpmChartDetailDto;
 import com.ssafy.singsongsangsong.dto.SongArtistDetailDto;
-import com.ssafy.singsongsangsong.dto.SongArtistDto;
 import com.ssafy.singsongsangsong.dto.TrendChartDto;
 import com.ssafy.singsongsangsong.service.trend.TrendService;
 
@@ -46,7 +45,7 @@ public class TrendController {
 	}
 
 	@GetMapping("/bpm")
-	public BpmChartDto getBpmChart(@RequestParam("date") String date, @RequestParam("bpm") String bpm) {
+	public BpmChartDetailDto getBpmChart(@RequestParam("date") String date, @RequestParam("bpm") String bpm) {
 		return trendService.getBpmChart(LocalDate.parse(date, DateTimeFormatter.ISO_DATE), bpm);
 	}
 

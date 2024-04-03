@@ -16,6 +16,6 @@ public class TrendChartDto {
 	private List<TrendSongDto> weekly;
 	private List<TrendSongDto> world;
 	private List<TrendSongDto> korean;
-	private List<TrendSongDto> emotions;
+	private EmotionSongsDto emotions;
 	
 }
