@@ -61,7 +61,7 @@ public class MinioFileService implements FileService {
 		log.info("getFile => originalFileName: {}", originalFileName);
 
 		String bucket = fileType.getName();
-		if (fileType == FileType.MFCC) {
+		if (fileType == FileType.MFCC || fileType == FileType.SPECTRUM) {
 			bucket = FileType.IMAGE.getName();
 		}
 		log.info("get file => bucket: {}, savedFileName: {}", bucket, file.getSavedFileName());
@@ -91,7 +91,11 @@ public class MinioFileService implements FileService {
 		File defaultAlbumImage = fileRepository.findByOriginalFileName(DefaultFileName.DEFAULT_ALBUM_PICTURE.getName())
 			.orElseThrow(() -> new BusinessException("기본 앨범 이미지 확인.. 서버 파일 스토리지에 Default_Album 사진에 대한 정보가 없습니다."));
 		Song song = songRepository.save(
-			Song.builder().artist(artist).musicFileName(fileData.getOriginalFilename()).albumImage(defaultAlbumImage).build());
+			Song.builder()
+				.artist(artist)
+				.musicFileName(fileData.getOriginalFilename())
+				.albumImage(defaultAlbumImage)
+				.build());
 		return new UploadSongDto(song.getId(), fileData.getOriginalFilename(), savedFileName);
 	}
 

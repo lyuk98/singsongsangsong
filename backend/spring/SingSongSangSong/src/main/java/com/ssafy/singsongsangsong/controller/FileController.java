@@ -63,16 +63,26 @@ public class FileController {
 		log.info("originalFileName: {}", originalFileName);
 
 		Resource file = null;
+
+		ResponseEntity.BodyBuilder responseEntityBuilder = ResponseEntity.ok();
+
 		if (fileType == FileType.MFCC) {
 			Long mfccImageId = Long.valueOf(originalFileName);
 			file = fileService.getFileViaId(user.getId(), fileType, mfccImageId);
-		} else {
+			responseEntityBuilder.contentType(MediaType.valueOf("image/svg+xml"));
+		} else if (fileType == FileType.IMAGE) {
 			file = fileService.getFile(user.getId(), fileType, originalFileName);
+			responseEntityBuilder.contentType(MediaType.IMAGE_JPEG);
+		} else if (fileType == FileType.AUDIO) {
+			file = fileService.getFile(user.getId(), fileType, originalFileName);
+			responseEntityBuilder.contentType(MediaType.valueOf("audio/mpeg"));
+		} else if (fileType == FileType.SPECTRUM) {
+			Long spectrumImageId = Long.valueOf(originalFileName);
+			file = fileService.getFileViaId(user.getId(), fileType, spectrumImageId);
+			responseEntityBuilder.contentType(MediaType.IMAGE_JPEG);
 		}
 
-		return ResponseEntity.ok()
-			.contentType(MediaType.IMAGE_JPEG)
-			.body(file);
+		return responseEntityBuilder.body(file);
 	}
 
 }
