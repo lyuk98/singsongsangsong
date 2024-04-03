@@ -92,7 +92,7 @@ const TestWeeklySingsongChart = ({ weekly }: any) => {
                 </div>
                 <div className={`${styles.rightBox}`}>
                   <div style={{ height: "400px" }} className={`w-100`}>
-                    {/* <RaderChart type="genre" data={}/> */}
+                    <RaderChart type="genre" data={element.analysis.genres} />
                   </div>
                 </div>
               </div>

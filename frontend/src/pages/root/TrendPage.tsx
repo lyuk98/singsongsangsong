@@ -139,7 +139,7 @@ const TrendPage = () => {
       {response && (
         <>
           <TestWeeklySingsongChart weekly={response.weekly} />
-          <TrendWithOptions />
+          <TrendWithOptions selectedDate={selectedDate} />
           <RankWithOption selectedDate={selectedDate} />
           <CompareWithAnotherSite
             korean={response.korean}
