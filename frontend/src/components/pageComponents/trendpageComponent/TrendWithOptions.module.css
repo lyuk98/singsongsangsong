@@ -4,7 +4,6 @@
 }
 
 .content {
-  height: 670px;
   padding: 10px;
 }
 
@@ -13,6 +12,8 @@
   display: flex;
   align-items: center;
   height: 50px;
+  border-bottom: 2px solid #0085e5;
+  margin-bottom: 15px;
 }
 
 /* box 위쪽의 남성 여성 선택 토글 버튼을 위한 스타일 및 연령 선택 스타일 */
@@ -60,14 +61,12 @@
 
 /* bottom section */
 .bottomSection {
-  display: flex;
-  height: 600px;
+  flex-wrap: wrap;
 }
 
 /* 왼쪽 아래 장르 탭을 포함한 barchart를 감쌀 css 스타일 */
 .bottomLeftContainer {
   width: 60%;
-  height: 600px;
 }
 
 .tabMenu {
@@ -97,8 +96,9 @@
 /*왼쪽 아래의 barchart를 감쌀 스타일 */
 
 /*오른쪽 아래의 태그 별 랭킹을 관리할 스타일*/
-.bottomRightContainer {
+.bottomSongContainer {
   width: 40%;
+  padding: 10px;
   gap: 5px;
 }
 

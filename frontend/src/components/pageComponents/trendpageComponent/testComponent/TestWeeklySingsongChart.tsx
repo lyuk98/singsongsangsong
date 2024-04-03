@@ -10,6 +10,8 @@ import Album from "../../../public/Album";
 import MoodTag from "../../../moodTag/MoodTag";
 import EmotionBox from "../../../public/emotionBox/EmotionBox";
 import RaderChart from "../../../public/chart/raderChart/RaderChart";
+import MusicEmotionBox from "../../../public/emotionBox/MusicEmotionBox";
+import { useAxios } from "../../../../hooks/api/useAxios";
 
 type WeeklyData = {
   artistId: number;
@@ -25,6 +27,7 @@ type WeeklyData = {
 
 const TestWeeklySingsongChart = ({ weekly }: any) => {
   console.log("Weekdata : ", weekly);
+
   return (
     <div className={`w-100 gap-15 flex-col-center ${styles.container}`}>
       <h1>금주의 싱송차트</h1>
@@ -36,11 +39,11 @@ const TestWeeklySingsongChart = ({ weekly }: any) => {
                 <div className={`flex-col gap-15 ${styles.leftBox}`}>
                   <div className={`w-100 flex-row gap-30 space-between`}>
                     <div style={{ width: "100px", height: "100px" }}>
-                      <Album />
+                      <Album songId={element.songId} />
                     </div>
                     <div className={`flex-col`}>
-                      <h1>{element.title}</h1>
-                      <h3>{element.artistName}</h3>
+                      <h1>{element.songTitle}</h1>
+                      <h3>{element.artist.nickname}</h3>
                     </div>
                     <div
                       className={`flex-col border-box gap-15 p-15 ${styles.indicator}`}
@@ -48,36 +51,48 @@ const TestWeeklySingsongChart = ({ weekly }: any) => {
                       <p className={`flex-row-center gap-15`}>
                         <FaHeart size={24} />
                         Favorites
-                        <span>{element.like}</span>
+                        <span>{element.likeCount}</span>
                       </p>
                       <p className={`flex-row-center gap-15`}>
                         <MdOutlineFileDownload size={24} />
                         Downloads
-                        <span>{element.download}</span>
+                        <span>{element.downloadCount}</span>
                       </p>
                       <p className={`flex-row-center gap-15`}>
                         <LiaHeadsetSolid size={24} />
                         Plays
-                        <span>{element.play}</span>
+                        <span>{element.playCount}</span>
                       </p>
                     </div>
                   </div>
                   <div className={`w-100 p-15 border-box`}>
-                    이곳에는 곡설명이 들어올겁니다
+                    <p>
+                      {element.songDescription
+                        ? element.songDescription
+                        : "곡 소개가 없습니다."}
+                    </p>
                   </div>
                   <div className={`w-100 flex-row space-between`}>
-                    <MoodTag mood={"활기찬"} />
-                    <MoodTag mood={"활기찬"} />
-                    <MoodTag mood={"활기찬"} />
-                    <MoodTag mood={"활기찬"} />
+                    {element.analysis.atmospheres.map((ele: any) => {
+                      return <MoodTag mood={ele.atmosphere} />;
+                    })}
                   </div>
                   <div>
-                    <EmotionBox />
+                    <MusicEmotionBox
+                      songId={element.songId}
+                      movedEmotionCount={element.movedEmotionCount}
+                      likeEmotionCount={element.likeEmotionCount}
+                      excitedEmotionCount={element.excitedEmotionCount}
+                      funnyEmotionCount={element.funnyEmotionCount}
+                      sadEmotionCount={element.sadEmotionCount}
+                      energizedEmotionCount={element.energizedEmotionCount}
+                      refetch={() => console.log("refetch")}
+                    />
                   </div>
                 </div>
                 <div className={`${styles.rightBox}`}>
                   <div style={{ height: "400px" }} className={`w-100`}>
-                    <RaderChart />
+                    <RaderChart type="genre" data={element.analysis.genres} />
                   </div>
                 </div>
               </div>

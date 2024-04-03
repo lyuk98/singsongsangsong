@@ -54,6 +54,15 @@
   border: 1px solid black;
 }
 
+.album {
+  display: flex;
+}
+
+.album img {
+  width: 100%;
+  height: 100%;
+}
+
 .selected {
   background-color: #c5e7ff;
 }

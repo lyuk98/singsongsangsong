@@ -35,7 +35,7 @@ const UploadPage = () => {
     isLoading: analyzedDataIsLoading,
     refetch: loadAnalyzedData,
   } = useAxios({
-    url: "/analyze/",
+    url: "/analyze/status",
     method: "GET",
   });
 
