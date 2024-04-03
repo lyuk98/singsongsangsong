@@ -113,7 +113,12 @@ const TrendPage = () => {
   if (isLoading) {
     return <p>loading</p>;
   }
-
+  if (!response) {
+    <div className={`w-100 flex-col-center ${styles.nonePage}`}>
+      <img src={noneImg} alt="" />
+      <h1>해당 주차에 대한 데이터가 존재하지 않습니다</h1>
+    </div>;
+  }
   return (
     <div style={{ paddingBottom: "6rem" }} className={`flex-col w-100 gap-15`}>
       <Modal open={isModalOpen} onClose={handleCalendarClose}>
