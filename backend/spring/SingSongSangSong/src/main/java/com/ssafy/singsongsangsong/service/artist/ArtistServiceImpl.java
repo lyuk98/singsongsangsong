@@ -25,8 +25,10 @@ import com.ssafy.singsongsangsong.entity.File;
 import com.ssafy.singsongsangsong.entity.Follower_Following;
 import com.ssafy.singsongsangsong.entity.Song;
 import com.ssafy.singsongsangsong.exception.artist.ArtistNotFoundException;
+import com.ssafy.singsongsangsong.exception.common.BusinessException;
 import com.ssafy.singsongsangsong.repository.maria.artist.ArtistRepository;
 import com.ssafy.singsongsangsong.repository.maria.artist.FollowingRepository;
+import com.ssafy.singsongsangsong.repository.maria.file.FileRepository;
 import com.ssafy.singsongsangsong.repository.maria.song.SongRepository;
 import com.ssafy.singsongsangsong.service.file.FileService;
 
@@ -40,6 +42,7 @@ public class ArtistServiceImpl implements ArtistService {
 	private final ArtistRepository artistRepository;
 	private final SongRepository songRepository;
 	private final FollowingRepository followingRepository;
+	private final FileRepository fileRepository;
 	private final FileService fileService;
 
 	@Transactional
@@ -53,18 +56,21 @@ public class ArtistServiceImpl implements ArtistService {
 		artist.setSex(dto.getSex());
 
 		Optional<MultipartFile> profileImage = Optional.ofNullable(dto.getProfileImage());
-		String originalFileName = DefaultFileName.DEFAULT_PROFILE_PICTURE.getName();
-		String savedFileName = DefaultFileName.DEFAULT_PROFILE_PICTURE.getName();
 
 		if (profileImage.isPresent()) {
-			originalFileName = profileImage.get().getOriginalFilename();
-			savedFileName = fileService.saveFile(artist.getId(), FileType.IMAGE, profileImage.get());
+			String originalFileName = profileImage.get().getOriginalFilename();
+			String savedFileName = fileService.saveFile(artist.getId(), FileType.IMAGE, profileImage.get());
+			artist.setProfileImage(File.builder()
+				.originalFileName(originalFileName)
+				.savedFileName(savedFileName)
+				.build());
+		} else {
+			File defaultImageFile = fileRepository.findByOriginalFileName(
+					DefaultFileName.DEFAULT_PROFILE_PICTURE.getName())
+				.orElseThrow(
+					() -> new BusinessException("기본 프로필 이미지 확인.. 서버 파일 스토리지에 Default_Profile 사진에 대한 정보가 없습니다."));
+			artist.setProfileImage(defaultImageFile);
 		}
-
-		artist.setProfileImage(File.builder()
-			.originalFileName(originalFileName)
-			.savedFileName(savedFileName)
-			.build());
 
 		log.info("GuestJoinRequestDto : {}", dto);
 		artistRepository.save(artist);
@@ -76,20 +82,21 @@ public class ArtistServiceImpl implements ArtistService {
 			.orElseThrow(() -> new IllegalArgumentException("해당 아티스트가 존재하지 않습니다."));
 		List<Song> publishedSongList = songRepository.findAllByArtistIdAndIsPublished(artistId);
 		int publishedSongCount = publishedSongList.size();
-		Map<String,Integer> preferGenre = new HashMap<>();
-		Map<String,Integer> preferAtmosphere = new HashMap<>();
-		for(Song song : publishedSongList) {
+		Map<String, Integer> preferGenre = new HashMap<>();
+		Map<String, Integer> preferAtmosphere = new HashMap<>();
+		for (Song song : publishedSongList) {
 			String genre = song.getCustomGenre();
-			String countGenre = genre.replace(" ","").toLowerCase() + "Count";
-			int previousCount = preferGenre.getOrDefault(countGenre,0);
-			preferGenre.put(countGenre,previousCount+1);
+			String countGenre = genre.replace(" ", "").toLowerCase() + "Count";
+			int previousCount = preferGenre.getOrDefault(countGenre, 0);
+			preferGenre.put(countGenre, previousCount + 1);
 
 			String atmosphere = song.getThemes();
-			previousCount = preferAtmosphere.getOrDefault(atmosphere,0);
-			preferAtmosphere.put(atmosphere,previousCount+1);
+			previousCount = preferAtmosphere.getOrDefault(atmosphere, 0);
+			preferAtmosphere.put(atmosphere, previousCount + 1);
 		}
-		return ArtistDetailDto.from(ArtistInfoDto.from(artist),publishedSongCount, preferGenre, preferAtmosphere);
+		return ArtistDetailDto.from(ArtistInfoDto.from(artist), publishedSongCount, preferGenre, preferAtmosphere);
 	}
+
 	@Override
 	public List<SimpleSongDto> getPublishedSong(Long artistId) {
 		return artistRepository.getPublishedSongsByArtistId(artistId)

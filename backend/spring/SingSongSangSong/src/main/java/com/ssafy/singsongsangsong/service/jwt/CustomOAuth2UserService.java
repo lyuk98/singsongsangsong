@@ -11,9 +11,13 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
+import com.ssafy.singsongsangsong.constants.DefaultFileName;
 import com.ssafy.singsongsangsong.constants.SocialType;
 import com.ssafy.singsongsangsong.entity.Artist;
+import com.ssafy.singsongsangsong.entity.File;
+import com.ssafy.singsongsangsong.exception.common.BusinessException;
 import com.ssafy.singsongsangsong.repository.maria.artist.ArtistRepository;
+import com.ssafy.singsongsangsong.repository.maria.file.FileRepository;
 import com.ssafy.singsongsangsong.security.oauth2.CustomOAuth2User;
 import com.ssafy.singsongsangsong.security.oauth2.attributes.OAuthAttributes;
 
@@ -26,6 +30,7 @@ import lombok.extern.slf4j.Slf4j;
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
 	private final ArtistRepository userRepository;
+	private final FileRepository fileRepository;
 
 	private static final String NAVER = "naver";
 	private static final String KAKAO = "kakao";
@@ -80,7 +85,12 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
 	private Artist saveUser(SocialType socialType, OAuthAttributes oAuthAttributes) {
 		Artist user = oAuthAttributes.toEntity(socialType, oAuthAttributes.getOAuth2UserInfo());
-		System.out.println("유저 저장, save user");
+		// 여기서는 무조건 Profile Image가 null인 것이 보장된다.
+		// Default Profile Picture에 해당하는 File을 찾아서 삽입한다.
+		File defaultProfileFile = fileRepository.findByOriginalFileName(
+				DefaultFileName.DEFAULT_PROFILE_PICTURE.getName())
+			.orElseThrow(() -> new BusinessException("기본 프로필 이미지 확인.. 서버 파일 스토리지에 Default_Profile 사진에 대한 정보가 없습니다."));
+		user.setProfileImage(defaultProfileFile);
 		userRepository.save(user);
 		return user;
 	}
