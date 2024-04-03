@@ -69,7 +69,7 @@ public class FileController {
 		} else {
 			file = fileService.getFile(user.getId(), fileType, originalFileName);
 		}
-		
+
 		return ResponseEntity.ok()
 			.contentType(MediaType.IMAGE_JPEG)
 			.body(file);

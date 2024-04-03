@@ -16,6 +16,7 @@ import com.ssafy.singsongsangsong.dto.UploadSongDto;
 import com.ssafy.singsongsangsong.entity.Artist;
 import com.ssafy.singsongsangsong.entity.File;
 import com.ssafy.singsongsangsong.entity.Song;
+import com.ssafy.singsongsangsong.exception.DuplicatedFileException;
 import com.ssafy.singsongsangsong.exception.artist.ArtistNotFoundException;
 import com.ssafy.singsongsangsong.exception.common.BusinessException;
 import com.ssafy.singsongsangsong.exception.file.NotFoundFileException;
@@ -43,6 +44,11 @@ public class MinioFileService implements FileService {
 	@Override
 	@Transactional
 	public String saveFile(Long artistId, FileType fileType, MultipartFile fileData) throws IOException {
+
+		if (fileRepository.findByOriginalFileName(fileData.getOriginalFilename()).isPresent()) {
+			throw new DuplicatedFileException("동일한 파일을 중복하여 업로드 할 수 없습니다");
+		}
+
 		String savedFileName = uploadToMinIo(fileType.getName(), fileData);
 		log.info("original: {} => saved: {}", fileData.getOriginalFilename(), savedFileName);
 		fileRepository.save(File.of(savedFileName, fileData.getOriginalFilename(), artistId));
@@ -59,7 +65,7 @@ public class MinioFileService implements FileService {
 			bucket = FileType.IMAGE.getName();
 		}
 		log.info("get file => bucket: {}, savedFileName: {}", bucket, file.getSavedFileName());
-		
+
 		try (InputStream inputStream = minioClient.getObject(GetObjectArgs.builder()
 			.bucket(bucket)
 			.object(file.getSavedFileName())
