@@ -64,9 +64,9 @@ const MainLayout = () => {
     }
   }, []);
 
-  if (!login.isLogin) {
-    navigate("/login");
-  }
+  // if (!login.isLogin) {
+  //   navigate("/login");
+  // }
 
   return (
     <>

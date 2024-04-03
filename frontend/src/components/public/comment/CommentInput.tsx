@@ -26,7 +26,8 @@ const CommentInput = ({ reloadComment }: PropsType): JSX.Element => {
 
   const handleSubmit = async () => {
     console.log("댓글 작성시 songId", songId);
-    postComment(songId, comment);
+    await postComment(songId, comment);
+    reloadComment();
   };
 
   return (

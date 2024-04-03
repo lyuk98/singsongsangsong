@@ -24,7 +24,7 @@ const DUMMY = [
 const CommentForm = () => {
   const [trigger, setTrigger] = useState<number>(1);
   const { songId } = useParams();
-
+  console.log(`songID : `, songId);
   const {
     response: comments,
     isLoading: commentLoading,
@@ -34,6 +34,10 @@ const CommentForm = () => {
     url: `/song/comments/${songId}`,
   });
   console.log("댓글댓글댓글글", comments);
+
+  if (commentLoading) {
+    return <p>댓글을 로딩중입니다</p>;
+  }
   return (
     <div className={styles.container}>
       <header>
@@ -43,16 +47,16 @@ const CommentForm = () => {
         </h1>
       </header>
       <CommentInput reloadComment={reloadComment} />
-      {/* {comments.map((element) => {
+      {comments.comments.map((element: any) => {
         return (
           <Comments
-            authorId={comments.authorId}
-            artistNickname={comments.artistNickname}
-            content={comments.contetn}
-            imgFileName={comments.imageFileName}
+            authorId={element.authorId}
+            artistNickname={element.artistNickname}
+            content={element.content}
+            imgFileName={element.imageFileName}
           />
         );
-      })} */}
+      })}
     </div>
   );
 };

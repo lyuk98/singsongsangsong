@@ -10,6 +10,8 @@ import Button from "../../components/buttons/Button";
 import { useAxios } from "../../hooks/api/useAxios";
 import { AnalyzedStateType } from "../../utils/types";
 import { handleStartAnalyze } from "../../utils/api/analyzeApi";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store";
 // 참고해야할 사이트
 // https://hojung-testbench.tistory.com/entry/React-%ED%8C%8C%EC%9D%BC-%EC%97%85%EB%A1%9C%EB%93%9C-%EA%B8%B0%EB%8A%A5-%EA%B5%AC%ED%98%84
 // https://guiyomi.tistory.com/148
@@ -22,6 +24,7 @@ type audioType = {
 };
 
 const UploadPage = () => {
+  const userSlice = useSelector((state: RootState) => state.user);
   const [uploadFile, setUploadFile] = useState<audioType | null>(null);
   const [viewFileName, setViewFileName] = useState<string | null>(null);
   const [isActive, setIsActive] = useState<boolean>(false);
@@ -32,9 +35,11 @@ const UploadPage = () => {
     isLoading: analyzedDataIsLoading,
     refetch: loadAnalyzedData,
   } = useAxios({
-    url: "/analyze",
+    url: "/analyze/",
     method: "GET",
   });
+
+  console.log(analyzedData);
 
   const handleDragEnter = (event: React.DragEvent<HTMLLabelElement>) => {
     event.preventDefault();
@@ -68,9 +73,13 @@ const UploadPage = () => {
       const url = URL.createObjectURL(file[0]);
       const prevFileName = file[0].name;
       // 파일 이름 앞에 유저 이름을 붙여서 저장 후 전달 (ex. USER${userId}_${musicFileName})
-      let newFile = new File([file[0]], `USER${"userID"}_${prevFileName}`, {
-        type: file[0].type,
-      });
+      let newFile = new File(
+        [file[0]],
+        `USER${userSlice.userId}_${prevFileName}`,
+        {
+          type: file[0].type,
+        }
+      );
       console.log("drop이벤트 시 파일", newFile);
       setUploadFile({
         file: newFile,
@@ -94,9 +103,13 @@ const UploadPage = () => {
       const url = URL.createObjectURL(file[0]);
       const prevFileName = file[0].name;
       // 파일 이름 앞에 유저 이름을 붙여서 저장 후 전달 (ex. USER${userId}_${musicFileName})
-      let newFile = new File([file[0]], `USER${"userID"}_${prevFileName}`, {
-        type: file[0].type,
-      });
+      let newFile = new File(
+        [file[0]],
+        `USER${userSlice.userId}_${prevFileName}`,
+        {
+          type: file[0].type,
+        }
+      );
       console.log(newFile);
       setUploadFile({
         file: newFile,
@@ -120,6 +133,9 @@ const UploadPage = () => {
     }
   }, [uploadFile]);
 
+  if (analyzedDataIsLoading) {
+    return <p>현재 데이터를 로딩중입니다</p>;
+  }
   return (
     <div className={`w-100 px-main ${styles.container}`}>
       <div className={`${styles.header}`}>
@@ -188,9 +204,11 @@ const UploadPage = () => {
           </button>
         </div>
         <div className={`w-100 bg-box flex-col-center p-15 ${styles.checkBox}`}>
-          {!analyzedData && <h2>현재 분석중인 음악이 없습니다.</h2>}
+          {analyzedData.uploadProcesses.length === 0 && (
+            <h2>현재 분석중인 음악이 없습니다.</h2>
+          )}
           {analyzedData &&
-            analyzedData.map((element: AnalyzedStateType) => {
+            analyzedData.uploadProcesses.map((element: AnalyzedStateType) => {
               return (
                 <div>
                   <h2>{element.title}</h2>
