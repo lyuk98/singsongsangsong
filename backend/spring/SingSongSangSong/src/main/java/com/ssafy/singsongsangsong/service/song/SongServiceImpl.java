@@ -23,9 +23,7 @@ import com.ssafy.singsongsangsong.dto.ArtistInfoDto;
 import com.ssafy.singsongsangsong.dto.CommentsInfoDto;
 import com.ssafy.singsongsangsong.dto.CommentsResponseDto;
 import com.ssafy.singsongsangsong.dto.CommentsResponseDto.CommentsResponse;
-import com.ssafy.singsongsangsong.dto.ImageDto;
 import com.ssafy.singsongsangsong.dto.LikedResponseDto;
-import com.ssafy.singsongsangsong.dto.SectionAnalyzeResponseDto;
 import com.ssafy.singsongsangsong.dto.SectionElementDto;
 import com.ssafy.singsongsangsong.dto.SimpleSongDto;
 import com.ssafy.singsongsangsong.dto.SongInfoResponse;
@@ -33,6 +31,7 @@ import com.ssafy.singsongsangsong.dto.SongInfoResponse.SongInfoResponseBuilder;
 import com.ssafy.singsongsangsong.dto.SongListByThemeResponseDto;
 import com.ssafy.singsongsangsong.dto.SongSimilarityByRanksResponse;
 import com.ssafy.singsongsangsong.dto.SongSimilarityByRanksResponse.Comparison;
+import com.ssafy.singsongsangsong.dto.SpectrumResponseDto;
 import com.ssafy.singsongsangsong.entity.Artist;
 import com.ssafy.singsongsangsong.entity.Atmosphere;
 import com.ssafy.singsongsangsong.entity.Comments;
@@ -41,6 +40,7 @@ import com.ssafy.singsongsangsong.entity.Genre;
 import com.ssafy.singsongsangsong.entity.Likes;
 import com.ssafy.singsongsangsong.entity.Song;
 import com.ssafy.singsongsangsong.exception.artist.ArtistNotFoundException;
+import com.ssafy.singsongsangsong.exception.common.BusinessException;
 import com.ssafy.singsongsangsong.exception.song.NotFoundSongException;
 import com.ssafy.singsongsangsong.repository.maria.artist.ArtistRepository;
 import com.ssafy.singsongsangsong.repository.maria.atmosphere.AtmosphereRepository;
@@ -275,14 +275,14 @@ public class SongServiceImpl implements SongService {
 	}
 
 	@Override
-	public SectionAnalyzeResponseDto getSectionOfSong(Long songId, Long spectrumImageId) {
-		List<SectionElementDto> elementDtoList = structureRepository.getStructureBySongId(songId)
+	public List<SectionElementDto> getSectionOfSong(Long songId) {
+		return structureRepository.getStructureBySongId(songId)
 			.stream()
 			.map(SectionElementDto::from)
 			.toList();
-		ImageDto spectrumImage = ImageDto.from(fileRepository.findById(spectrumImageId).orElse(null));
-		return SectionAnalyzeResponseDto.from(elementDtoList, spectrumImage);
 	}
+
+
 
 	@Override
 	public LikedResponseDto likedSong(Long songId, Long artistId) {
@@ -305,6 +305,13 @@ public class SongServiceImpl implements SongService {
 		}
 		songRepository.save(song);
 		return LikedResponseDto.from(result);
+	}
+
+	@Override
+	public SpectrumResponseDto getSpectrumId(Long songId) {
+		Long spectrumId = songRepository.findById(songId).orElseThrow(() -> new BusinessException("노래를 찾지 못했습니다."))
+			.getSpectrumImage().getId();
+		return SpectrumResponseDto.from(spectrumId);
 	}
 
 }
