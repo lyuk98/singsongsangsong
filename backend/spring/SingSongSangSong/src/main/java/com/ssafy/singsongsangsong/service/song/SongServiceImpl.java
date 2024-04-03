@@ -2,6 +2,7 @@ package com.ssafy.singsongsangsong.service.song;
 
 import static com.ssafy.singsongsangsong.webclient.WebClientRequestService.SimilarityResponse.*;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
@@ -25,6 +26,9 @@ import com.ssafy.singsongsangsong.dto.ArtistInfoDto;
 import com.ssafy.singsongsangsong.dto.CommentsInfoDto;
 import com.ssafy.singsongsangsong.dto.CommentsResponseDto;
 import com.ssafy.singsongsangsong.dto.CommentsResponseDto.CommentsResponse;
+import com.ssafy.singsongsangsong.dto.ImageDto;
+import com.ssafy.singsongsangsong.dto.SectionAnalyzeResponseDto;
+import com.ssafy.singsongsangsong.dto.SectionElementDto;
 import com.ssafy.singsongsangsong.dto.SimpleSongDto;
 import com.ssafy.singsongsangsong.dto.SongInfoResponse;
 import com.ssafy.singsongsangsong.dto.SongInfoResponse.SongInfoResponseBuilder;
@@ -35,6 +39,7 @@ import com.ssafy.singsongsangsong.entity.Artist;
 import com.ssafy.singsongsangsong.entity.Atmosphere;
 import com.ssafy.singsongsangsong.entity.Comments;
 import com.ssafy.singsongsangsong.entity.Emotions;
+import com.ssafy.singsongsangsong.entity.File;
 import com.ssafy.singsongsangsong.entity.Genre;
 import com.ssafy.singsongsangsong.entity.Song;
 import com.ssafy.singsongsangsong.exception.artist.ArtistNotFoundException;
@@ -42,9 +47,11 @@ import com.ssafy.singsongsangsong.exception.song.NotFoundSongException;
 import com.ssafy.singsongsangsong.repository.maria.artist.ArtistRepository;
 import com.ssafy.singsongsangsong.repository.maria.atmosphere.AtmosphereRepository;
 import com.ssafy.singsongsangsong.repository.maria.comments.CommentsRepository;
+import com.ssafy.singsongsangsong.repository.maria.file.FileRepository;
 import com.ssafy.singsongsangsong.repository.maria.genre.GenreRepository;
 import com.ssafy.singsongsangsong.repository.maria.song.EmotionRepository;
 import com.ssafy.singsongsangsong.repository.maria.song.SongRepository;
+import com.ssafy.singsongsangsong.repository.maria.song.StructureRepository;
 import com.ssafy.singsongsangsong.service.file.FileService;
 import com.ssafy.singsongsangsong.webclient.WebClientRequestService;
 
@@ -68,7 +75,11 @@ public class SongServiceImpl implements SongService {
 
 	private final AtmosphereRepository atmosphereRepository;
 
+	private final StructureRepository structureRepository;
+
 	private final WebClientRequestService webClientRequestService;
+
+	private final FileRepository fileRepository;
 
 	private final FileService fileService;
 
@@ -78,22 +89,24 @@ public class SongServiceImpl implements SongService {
 		NoSuchFieldException {
 		// 기존 사용자가 해당 노래에 대해서 emotion을 남긴 경우, 해당 노래의 emotion을 삭제하고 count down 시킨 다음,
 		// 새로운 감정을 추가한다. count up++
-
+		Artist artist = artistRepository.findById(artistId).orElseThrow(ArtistNotFoundException::new);
 		Song song = songRepository.findById(songId).orElseThrow(NotFoundSongException::new);
-
 		Optional<java.lang.String> targetEmotion = emotionRepository.checkIfEmotionExists(song.getId(), artistId);
 		if (targetEmotion.isPresent()) {
 			java.lang.String previousEmotionName = targetEmotion.get();
 
 			// 기존 emotion 업데이트 및 반정규화된 table, count 조정
 			emotionRepository.updateEmotionType(song.getId(), artistId, emotionType);
-			songRepository.decrementEmotionCount(song.getId(), artistId, previousEmotionName);
-			songRepository.incrementEmotionCount(song.getId(), artistId, emotionType.getName());
+			songRepository.decrementEmotionCount(song.getId(),  previousEmotionName);
+			songRepository.incrementEmotionCount(song.getId(), emotionType.getName());
 		} else {
 			// emotion 추가 및 반정규화된 table, count++
-			emotionRepository.save(
-				Emotions.builder().song(song).artist(song.getArtist()).emotionType(emotionType).build());
-			songRepository.incrementEmotionCount(song.getId(), artistId, emotionType.getName());
+			emotionRepository.save(Emotions.builder()
+				.song(song)
+				.artist(artist)
+				.emotionType(emotionType)
+				.build());
+			songRepository.incrementEmotionCount(song.getId(), emotionType.getName());
 		}
 	}
 
@@ -148,7 +161,8 @@ public class SongServiceImpl implements SongService {
 			.bpm(song.getBpm())
 			.songFileName(musicFileName)
 			.albumImageFileName(originalFileName)
-			.songDescription(song.getSongDescription());
+			.songDescription(song.getSongDescription())
+			.spectrumImageId(song.getSpectrumImage().getId());
 
 		builder = builder.movedEmotionCount(song.getMovedEmotionCount())
 			.likeEmotionCount(song.getLikeEmotionCount())
@@ -158,7 +172,6 @@ public class SongServiceImpl implements SongService {
 			.sadEmotionCount(song.getSadEmotionCount());
 
 		List<CommentsInfoDto> comments = commentsList.stream().map(CommentsInfoDto::from).toList();
-
 		builder = builder.likeCount(song.getLikeCount())
 			.downloadCount(song.getDownloadCount())
 			.playCount(song.getPlayCount());
@@ -256,6 +269,13 @@ public class SongServiceImpl implements SongService {
 			log.error(e.getLocalizedMessage());
 		}
 		return response;
+	}
+
+	@Override
+	public SectionAnalyzeResponseDto getSectionOfSong(Long songId , Long spectrumImageId) {
+		List<SectionElementDto> elementDtoList = structureRepository.getStructureBySongId(songId).stream().map(SectionElementDto::from).toList();
+		ImageDto spectrumImage = ImageDto.from(fileRepository.findById(spectrumImageId).orElse(null));
+		return SectionAnalyzeResponseDto.from(elementDtoList,spectrumImage);
 	}
 
 }

@@ -59,14 +59,19 @@ public class SongRepositoryCustomImpl implements SongRepositoryCustom {
 
 	@Override
 	public List<Song> findSongByBpmAndKeyword(String keyword, int startBpm, int endBpm,
-		List<OrderSpecifier> orderSpecifiers) {
+		OrderSpecifier[] orderSpecifiers, String requestGenre, String requestAtmosphere) {
 		BooleanBuilder builder = new BooleanBuilder();
 		builder.and(song.bpm.between(startBpm, endBpm));
 		if (keyword != null) {
 			builder.and(song.title.contains(keyword));
 		}
-
-		return jpaQueryFactory.select(song).distinct().from(song).where(builder).fetch();
+		if(requestGenre != null) {
+			builder.and(song.customGenre.eq(requestGenre));
+		}
+		if(requestAtmosphere != null) {
+			builder.and(song.themes.eq(requestAtmosphere));
+		}
+		return jpaQueryFactory.select(song).distinct().from(song).where(builder).orderBy(orderSpecifiers).limit(20).fetch();
 	}
 
 	public Optional<Song> getSongByArtistIdAndSongId(Long songId, Long artistId) {
@@ -75,24 +80,24 @@ public class SongRepositoryCustomImpl implements SongRepositoryCustom {
 	}
 
 	@Override
-	public long decrementEmotionCount(Long songId, Long artistId, String emotionName) throws NoSuchFieldException {
+	public long decrementEmotionCount(Long songId, String emotionName) throws NoSuchFieldException {
 		String columnName = getEmotionColumnName(emotionName);
 		Path<Integer> targetEmotionPath = Expressions.numberPath(Integer.class, columnName);
 
 		return jpaQueryFactory.update(song)
 			.set(targetEmotionPath, ((NumberExpression<Integer>)targetEmotionPath).subtract(1))
-			.where(song.id.eq(songId).and(song.artist.id.eq(artistId)))
+			.where(song.id.eq(songId))
 			.execute();
 	}
 
 	@Override
-	public long incrementEmotionCount(Long songId, Long artistId, String emotionName) {
+	public long incrementEmotionCount(Long songId, String emotionName) {
 		String columnName = getEmotionColumnName(emotionName);
 		Path<Integer> targetEmotionPath = Expressions.numberPath(Integer.class, columnName);
 
 		return jpaQueryFactory.update(song)
 			.set(targetEmotionPath, ((NumberExpression<Integer>)targetEmotionPath).add(1))
-			.where(song.id.eq(songId).and(song.artist.id.eq(artistId)))
+			.where(song.id.eq(songId))
 			.execute();
 	}
 
@@ -118,5 +123,12 @@ public class SongRepositoryCustomImpl implements SongRepositoryCustom {
 			.set(song.downloadCount, song.downloadCount.add(1))
 			.where(song.id.eq(songId))
 			.execute();
+	}
+
+	@Override
+	public List<Song> findAllByArtistIdAndIsPublished(Long artistId) {
+		return jpaQueryFactory.selectFrom(song)
+			.where(song.artist.id.eq(artistId).and(song.isPublished))
+			.fetch();
 	}
 }

@@ -1,7 +1,9 @@
 package com.ssafy.singsongsangsong.service.artist;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -11,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.ssafy.singsongsangsong.constants.DefaultFileName;
 import com.ssafy.singsongsangsong.constants.FileType;
 import com.ssafy.singsongsangsong.constants.Role;
+import com.ssafy.singsongsangsong.dto.ArtistDetailDto;
 import com.ssafy.singsongsangsong.dto.ArtistInfoDto;
 import com.ssafy.singsongsangsong.dto.EmotionsDto;
 import com.ssafy.singsongsangsong.dto.FollowerCountResponse;
@@ -68,12 +71,25 @@ public class ArtistServiceImpl implements ArtistService {
 	}
 
 	@Override
-	public ArtistInfoDto getArtistInfo(Long artistId) {
+	public ArtistDetailDto getArtistInfo(Long artistId) {
 		Artist artist = artistRepository.findById(artistId)
 			.orElseThrow(() -> new IllegalArgumentException("해당 아티스트가 존재하지 않습니다."));
-		return ArtistInfoDto.from(artist);
-	}
+		List<Song> publishedSongList = songRepository.findAllByArtistIdAndIsPublished(artistId);
+		int publishedSongCount = publishedSongList.size();
+		Map<String,Integer> preferGenre = new HashMap<>();
+		Map<String,Integer> preferAtmosphere = new HashMap<>();
+		for(Song song : publishedSongList) {
+			String genre = song.getCustomGenre();
+			String countGenre = genre.replace(" ","").toLowerCase() + "Count";
+			int previousCount = preferGenre.getOrDefault(countGenre,0);
+			preferGenre.put(countGenre,previousCount+1);
 
+			String atmosphere = song.getThemes();
+			previousCount = preferAtmosphere.getOrDefault(atmosphere,0);
+			preferAtmosphere.put(atmosphere,previousCount+1);
+		}
+		return ArtistDetailDto.from(ArtistInfoDto.from(artist),publishedSongCount, preferGenre, preferAtmosphere);
+	}
 	@Override
 	public List<SimpleSongDto> getPublishedSong(Long artistId) {
 		return artistRepository.getPublishedSongsByArtistId(artistId)

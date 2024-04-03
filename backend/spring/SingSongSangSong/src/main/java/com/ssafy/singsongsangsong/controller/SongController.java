@@ -1,6 +1,8 @@
 package com.ssafy.singsongsangsong.controller;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.core.io.Resource;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,6 +20,8 @@ import com.ssafy.singsongsangsong.constants.EmotionsConstants;
 import com.ssafy.singsongsangsong.dto.AnalyzeGenreAndAtmosphereResponse;
 import com.ssafy.singsongsangsong.dto.CommentsResponseDto;
 import com.ssafy.singsongsangsong.dto.PostCommentsDto;
+import com.ssafy.singsongsangsong.dto.SectionAnalyzeResponseDto;
+import com.ssafy.singsongsangsong.dto.SectionElementDto;
 import com.ssafy.singsongsangsong.dto.SongInfoResponse;
 import com.ssafy.singsongsangsong.dto.SongListByThemeResponseDto;
 import com.ssafy.singsongsangsong.dto.SongSimilarityByRanksResponse;
@@ -35,8 +39,8 @@ public class SongController {
 
 	@PutMapping("/{songId}/{emotionType}")
 	@PreAuthorize("hasRole('USER')")
-	public void updateEmotion(@AuthenticationPrincipal ArtistPrincipal user, @PathVariable Long songId,
-		@PathVariable EmotionsConstants emotionType) throws
+	public void updateEmotion(@AuthenticationPrincipal ArtistPrincipal user, @PathVariable(value = "songId") Long songId,
+		@PathVariable(value = "emotionType") EmotionsConstants emotionType) throws
 		NoSuchFieldException {
 		// 기존 사용자가 해당 노래에 대해서 emotion을 남긴 경우, 해당 노래의 emotion을 삭제하고 count down 시킨 다음,
 		// 새로운 감정을 추가한다. count up++
@@ -66,7 +70,7 @@ public class SongController {
 	}
 
 	@GetMapping("/detail/{songId}")
-	public SongInfoResponse getSong(@PathVariable Long songId) {
+	public SongInfoResponse getSong(@PathVariable(value = "songId") Long songId) {
 		return songService.getSong(songId);
 	}
 
@@ -92,5 +96,11 @@ public class SongController {
 	public SongSimilarityByRanksResponse getSongsSimilarityByRanks(@PathVariable Long songId,
 		@RequestParam(required = false, defaultValue = "5", name = "size") int size) {
 		return songService.getSongsSimilarityByRanks(songId, size);
+	}
+
+	@GetMapping("/section/{songId}")
+	public SectionAnalyzeResponseDto getSectionOfSong(@PathVariable(value = "songId") Long songId,
+		@RequestParam(required = false, name = "spectrumImageId") Long spectrumImageId) {
+		return songService.getSectionOfSong(songId, spectrumImageId);
 	}
 }

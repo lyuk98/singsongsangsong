@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.singsongsangsong.dto.ArtistDetailDto;
 import com.ssafy.singsongsangsong.dto.ArtistInfoDto;
 import com.ssafy.singsongsangsong.dto.EmotionsDto;
 import com.ssafy.singsongsangsong.dto.FollowerCountResponse;
@@ -36,7 +37,7 @@ public class ArtistController {
 	}
 
 	@GetMapping("{id}")
-	public ArtistInfoDto getArtistInfo(@PathVariable Long id) {
+	public ArtistDetailDto getArtistInfo(@PathVariable(value = "id") Long id) {
 		return artistService.getArtistInfo(id);
 	}
 

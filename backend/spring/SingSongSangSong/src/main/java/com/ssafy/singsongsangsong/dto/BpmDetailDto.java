@@ -11,11 +11,9 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class TrendChartDto {
+public class BpmDetailDto {
 	
-	private List<TrendSongDto> weekly;
-	private List<TrendSongDto> world;
-	private List<TrendSongDto> korean;
-	private EmotionSongsDto emotions;
-	
+	private int count;
+	private List<Long> songs;
+
 }
