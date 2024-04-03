@@ -24,8 +24,6 @@ public class UploadMainPageDto {
 		ANALYZING, COMPLETED
 	}
 
-	private Long songId;
-
 	@Getter
 	@Setter
 	@Builder
