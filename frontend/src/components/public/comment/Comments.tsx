@@ -29,10 +29,13 @@ const Comments = ({
     <div className={`flex-row-center ${styles.container}`}>
       <div className={`flex-col-center ${styles.user}`}>
         <div className={styles.profileImg}>
-          <Profile />
+          <Profile artistId={authorId} />
         </div>
         <div className={`${styles.userName}`}>
-          <p onClick={() => navigate(`/artist/${authorId}`)}>
+          <p
+            style={{ cursor: "pointer" }}
+            onClick={() => navigate(`/artist/${authorId}`)}
+          >
             {artistNickname}
           </p>
         </div>
