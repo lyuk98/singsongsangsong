@@ -158,9 +158,9 @@ const RankWithOption = ({ selectedDate }: PropsType) => {
     }
   }, [headerOption, selectedDate, contentOption]);
 
-  useEffect(() => {
-    console.log(contentOption);
-  }, [contentOption]);
+  // useEffect(() => {
+  //   console.log(contentOption);
+  // }, [contentOption]);
 
   // console.log("장르 분위기 데이터", responseData);
 

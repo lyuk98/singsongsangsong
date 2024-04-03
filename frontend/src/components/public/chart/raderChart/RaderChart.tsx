@@ -41,7 +41,7 @@ type PropsType = {
 
 const RaderChart = ({ type, data }: PropsType) => {
   const [keyValue, setKeyValue] = useState<any>();
-  console.log(data);
+  // console.log(data);
   useEffect(() => {
     if (type === "genre") {
       setKeyValue("genre");
