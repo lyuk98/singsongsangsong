@@ -71,7 +71,7 @@ public class SongRepositoryCustomImpl implements SongRepositoryCustom {
 		if(requestAtmosphere != null) {
 			builder.and(song.themes.eq(requestAtmosphere));
 		}
-		return jpaQueryFactory.select(song).distinct().from(song).where(builder).orderBy(orderSpecifiers).fetch();
+		return jpaQueryFactory.select(song).distinct().from(song).where(builder).orderBy(orderSpecifiers).limit(20).fetch();
 	}
 
 	public Optional<Song> getSongByArtistIdAndSongId(Long songId, Long artistId) {

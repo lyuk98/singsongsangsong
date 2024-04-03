@@ -70,6 +70,7 @@ public class ArtistRepositoryCustomImpl implements ArtistRepositoryCustom {
 			artistList = jpaQueryFactory
 				.selectFrom(artist)
 				.where(artist.nickname.contains(keyword))
+				.limit(20)
 				.fetch();
 		}
 		return artistList;
