@@ -1,6 +1,11 @@
 import React, { useEffect } from "react";
 import axios from "axios";
-import { defer, useLoaderData, useSearchParams } from "react-router-dom";
+import {
+  defer,
+  useLoaderData,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
 
 import { SearchType, SearchParmasType } from "../../utils/types";
 import MusicTable from "../../components/public/music/MusicTable";
@@ -8,6 +13,7 @@ import styles from "./SearchResultPage.module.css";
 import { getSearchResult } from "../../utils/api/api";
 import { useAxios } from "../../hooks/api/useAxios";
 import TestMusicTable from "../../components/public/music/TestMusicTable";
+import Profile from "../../components/public/Profile";
 
 const SearchResultPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -29,7 +35,7 @@ const SearchResultPage = () => {
   const { response, refetch, isLoading } = useAxios({
     method: "GET",
     url: "/music-playlist/search",
-    data: {
+    params: {
       keyword,
       genre,
       atmosphere,
@@ -37,9 +43,9 @@ const SearchResultPage = () => {
       sort,
     },
   });
-
-  console.log(response);
-
+  console.log("검색인자", keyword, genre, atmosphere, bpm, sort);
+  console.log("검색결과", response);
+  const navigate = useNavigate();
   useEffect(() => {
     console.log(userSearchParams);
     console.log(getSearchResult(userSearchParams));
@@ -59,8 +65,22 @@ const SearchResultPage = () => {
       <div className={`w-100 flex-col py-15 gap-15`}>
         <h2 className={`${styles.borderBottom}`}>아티스트</h2>
         <div className={`flex-row gap-30`}>
-          <div className={`${styles.artist}`}>
-            <img src={""} alt="" />
+          <div className={`flex-col-center gap-15 ${styles.profileBox}`}>
+            {response.artistInfoDtoList.map((element: any) => {
+              return (
+                <>
+                  <div style={{ width: "100px", height: "100px" }}>
+                    <Profile artistId={element.artistId} />
+                  </div>
+                  <h2
+                    style={{ cursor: "pointer" }}
+                    onClick={() => navigate(`/artist/${element.artistId}`)}
+                  >
+                    {element.nickname}
+                  </h2>
+                </>
+              );
+            })}
           </div>
         </div>
       </div>
