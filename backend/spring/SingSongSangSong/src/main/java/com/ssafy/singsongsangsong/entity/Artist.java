@@ -5,13 +5,17 @@ import com.ssafy.singsongsangsong.constants.Role;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+<<<<<<< HEAD
+=======
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+>>>>>>> spring
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -34,7 +38,7 @@ public class Artist {
 	private String username;
 	private String password;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "profileImageId")
 	private File profileImage;
 	private int age;

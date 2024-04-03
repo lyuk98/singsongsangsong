@@ -30,21 +30,20 @@ public class WebClientRequestService {
 	@NoArgsConstructor
 	public static class RequestAnalyzeSongDto {
 		private Long songId;
-		private String savedFileName;
+		private String path;
 
-		public RequestAnalyzeSongDto(Long songId, String savedFileName) {
+		public RequestAnalyzeSongDto(Long songId, String originalFileName) {
 			this.songId = songId;
-			this.savedFileName = savedFileName;
+			this.path = originalFileName;
 		}
 	}
 
-	public void requestAnalyzeSong(Long songId, String savedFileName) {
-		RequestAnalyzeSongDto requestAnalyzeSongDto = new RequestAnalyzeSongDto(songId, savedFileName);
+	public void requestAnalyzeSong(Long songId, String originalFileName) {
+		RequestAnalyzeSongDto requestAnalyzeSongDto = new RequestAnalyzeSongDto(songId, originalFileName);
 		webClient.post()
 			.uri("/song/{songId}", songId)
-			.bodyValue(requestAnalyzeSongDto)
 			.retrieve()
-			.bodyToMono(Void.class)
+			.toBodilessEntity()
 			.block();
 	}
 
@@ -92,7 +91,7 @@ public class WebClientRequestService {
 		@NoArgsConstructor
 		@AllArgsConstructor
 		public static class SimilarityInfo implements Comparable<SimilarityInfo> {
-			private Long similarSongId;
+			private Long id;
 			private Float distance;
 
 			@Override
