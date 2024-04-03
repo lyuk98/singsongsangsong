@@ -11,6 +11,7 @@ import com.ssafy.singsongsangsong.dto.AgeSexChartDto;
 import com.ssafy.singsongsangsong.dto.AllChartDto;
 import com.ssafy.singsongsangsong.dto.AtmosphereChartDto;
 import com.ssafy.singsongsangsong.dto.BpmChartDto;
+import com.ssafy.singsongsangsong.dto.BpmDetailDto;
 import com.ssafy.singsongsangsong.dto.GenreChartDto;
 import com.ssafy.singsongsangsong.dto.SongArtistDto;
 
@@ -43,8 +44,8 @@ public class TrendRepositoryImpl implements TrendRepository {
 	}
 
 	@Override
-	public BpmChartDto getBpmChart(LocalDate date, String bpm) {
-		return mongoTemplate.findOne(Query.query(Criteria.where("part").is("bpm").and("start").lte(date).and("end").gt(date)), BpmChartDto.class);
+	public BpmDetailDto getBpmChart(LocalDate date, String bpm) {
+		return mongoTemplate.findOne(Query.query(Criteria.where("part").is("bpm").and("start").lte(date).and("end").gt(date)), BpmChartDto.class).getBpms().get(bpm);
 	}
 
 }

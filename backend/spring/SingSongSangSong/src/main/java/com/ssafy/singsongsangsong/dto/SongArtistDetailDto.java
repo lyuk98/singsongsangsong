@@ -14,6 +14,6 @@ import lombok.Setter;
 public class SongArtistDetailDto {
 	
 	private List<TrendSongDto> songs;
-	private List<Integer> artists;
+	private List<ArtistInfoDto> artists;
 
 }

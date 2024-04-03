@@ -18,9 +18,9 @@ public class AgeSexChartDto {
 	
 	private String age;
 	private String sex;
-	private List<Integer> genreChart;
-	private List<Integer> atmosphereChart;
-	private List<Integer> songChart;
-	private List<Integer> artistChart;
+	private List<Long> genreChart;
+	private List<Long> atmosphereChart;
+	private List<Long> songChart;
+	private List<Long> artistChart;
 
 }
