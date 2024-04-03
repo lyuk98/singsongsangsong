@@ -37,7 +37,7 @@ public class FileController {
 		if (user == null) {
 			throw new JWTVerificationException("로그인이 필요합니다");
 		}
-		
+
 		switch (fileType) {
 			case IMAGE:
 				return UploadFileDto.builder()
@@ -62,7 +62,14 @@ public class FileController {
 		log.info("fileType: {}", fileType);
 		log.info("originalFileName: {}", originalFileName);
 
-		Resource file = fileService.getFile(user.getId(), fileType, originalFileName);
+		Resource file = null;
+		if (fileType == FileType.MFCC) {
+			Long mfccImageId = Long.valueOf(originalFileName);
+			file = fileService.getFileViaId(user.getId(), fileType, mfccImageId);
+		} else {
+			file = fileService.getFile(user.getId(), fileType, originalFileName);
+		}
+
 		return ResponseEntity.ok()
 			.contentType(MediaType.IMAGE_JPEG)
 			.body(file);
