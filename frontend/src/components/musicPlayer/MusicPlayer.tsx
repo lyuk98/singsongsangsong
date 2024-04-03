@@ -6,6 +6,7 @@ import "react-h5-audio-player/lib/styles.css";
 import styles from "./MusicPlayer.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
+import { playSong } from "../../utils/api/songDetailApi";
 
 const MusicPlayer = () => {
   const trackList = useSelector((state: RootState) => state.music);
@@ -25,9 +26,7 @@ const MusicPlayer = () => {
     });
   }, []);
 
-  // useEffect(() => {
-  //   console.log("changing music");
-  // }, [trackList.musicList]);
+  useEffect(() => {}, [trackList.isPlaying]);
 
   return (
     <div

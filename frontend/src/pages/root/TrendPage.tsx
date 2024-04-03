@@ -44,7 +44,7 @@ const TrendPage = () => {
     },
   });
 
-  console.log("트렌드 페이지 로드 시 받아올 데이터터", response);
+  console.log("트렌드 페이지 로드 시 받아올 데이터", response);
 
   useEffect(() => {
     setWeekNumber(getWeekNumber(selectedDate));

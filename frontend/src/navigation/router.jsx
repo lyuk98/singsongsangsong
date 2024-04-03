@@ -37,11 +37,11 @@ export const router = createBrowserRouter([
         element: <UploadPage />,
       },
       {
-        path: "upload/:songName",
+        path: "upload/:songId",
         element: <AnalysisPage />,
       },
       {
-        path: "upload/:songName/post",
+        path: "upload/:songId/post",
         element: <PostPage />,
       },
       {
