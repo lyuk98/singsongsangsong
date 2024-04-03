@@ -40,19 +40,15 @@ const SongWithEmotion = ({ emotions }: EmotionMap) => {
               key={element[0]}
               className={`flex-col-center ${styles.songBox}`}
             >
-              <div className={`flex-row-center ${styles.emotions}`}>
-                {/* <img src={element.emotion} alt="" /> */}
-                <p>{element[1].count}</p>
-              </div>
               <div style={{ width: "100px", height: "100px" }}>
-                <Album />
+                <Album songId={element[1].songId} />
               </div>
               <div className={`flex-col-center ${styles.info}`}>
                 <h2
                   style={{ cursor: "pointer" }}
                   onClick={() => navigate(`/song/${element[1].songId}`)}
                 >
-                  {element[1].title}
+                  {element[1].songTitle}
                 </h2>
                 <h3
                   style={{ cursor: "pointer" }}
@@ -64,24 +60,6 @@ const SongWithEmotion = ({ emotions }: EmotionMap) => {
             </div>
           );
         })}
-        {/* {EMOTIONS.map((element, indenx) => {
-          return (
-            <div className={`flex-col-center ${styles.songBox}`}>
-              <div className={`flex-row-center ${styles.emotions}`}>
-                <img src={element.emotion} alt="" />
-                <p>{element.count}</p>
-              </div>
-              <div style={{ width: "100px", height: "100px" }}>
-                <Album />
-              </div>
-              <div className={`flex-col-center ${styles.info}`}>
-                <h2>무슨노래</h2>
-                <h3>김작곡</h3>
-                <p>#태그 #태그</p>
-              </div>
-            </div>
-          );
-        })} */}
       </div>
     </div>
   );

@@ -2,14 +2,20 @@ import React, { ChangeEvent, useEffect, useState } from "react";
 import Marquee from "react-fast-marquee";
 import styles from "./RankWithOption.module.css";
 import RankedSongAndArtist from "./RankedSongAndArtist";
+import { axiosInstance } from "../../../hooks/api";
 
 /** 장르별 랭킹 / 분위기별 랭킹 컴포넌트
  * @todo 장르 / 분위기 검색할 태그 확정되면 배열만들어서 관리해야함
  * @todo marquu 안의 태그들도 관리해야해서 기억해둬야함
  */
-const RankWithOption = () => {
+type PropsType = {
+  selectedDate: any;
+};
+const RankWithOption = ({ selectedDate }: PropsType) => {
   const [headerOption, setHeaderOption] = useState<string>("genre");
-  const [contentOption, setContentOption] = useState<string>("발라드");
+  const [contentOption, setContentOption] = useState<string>("Rock");
+  const [responseData, setResponseData] = useState<any>();
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const handleContentOption = (event: ChangeEvent<HTMLSelectElement>): void => {
     setContentOption(event.target.value);
@@ -19,16 +25,57 @@ const RankWithOption = () => {
   const handleHeaderOption = (option: string): void => {
     setHeaderOption(option);
     if (option === "genre") {
-      setContentOption("발라드");
+      setContentOption("Rock");
     } else if (option === "mood") {
       setContentOption("신나는");
     }
   };
 
+  // 태그가 장르 일 때 실행시킬 useEffect
+  useEffect(() => {
+    const genreAxios = async () => {
+      setIsLoading(true);
+      try {
+        const response = await axiosInstance.request({
+          method: "GET",
+          url: "/trend/genre",
+          params: {
+            date: `${selectedDate.year}-${selectedDate.month}-${selectedDate.day}`,
+            // date: `2024-03-20`,
+            genre: contentOption,
+          },
+        });
+        console.log("asujgb aisguaeigiauegnauioe : ", response);
+        setResponseData(response.data.data);
+      } catch (error) {
+        console.log(error);
+      }
+      setIsLoading(false);
+    };
+    if (headerOption === "genre") {
+      console.log("이거 실행은돠냐?");
+      console.log("장르입니다");
+      console.log(responseData);
+      genreAxios();
+    }
+  }, [headerOption, selectedDate]);
+
+  // 태그가 분위기 일 때 실행시킬 useEffect
+  useEffect(() => {
+    if (headerOption === "mood") {
+      console.log("무드입니다");
+    }
+  }, [headerOption]);
+
   useEffect(() => {
     console.log(contentOption);
   }, [contentOption]);
 
+  console.log("장르 분위기 데이터", responseData);
+
+  if (isLoading) {
+    return <p>로딩중입니당</p>;
+  }
   return (
     <div className={`flex-col-center gap-15 ${styles.container}`}>
       <div className={styles.header}>
@@ -48,57 +95,74 @@ const RankWithOption = () => {
           <h1>분위기별 랭킹</h1>
         </button>
       </div>
-      <div className={`w-100 shadow-box b-15 bg-box`}>
-        <Marquee pauseOnHover={true} autoFill={true} className={styles.marquee}>
-          <p>슬픔 분위기의 곡이 많이 나왔어요.</p>
-          <p>180-190BPM 의 곡이 많이 발매되었어요.</p>
-          <p>24개의 곡이 발매되었어요.</p>
-          <p>7,845번의 재생이 발생했어요.</p>
-          <p>C#으로 작성된 곡이 많아요.</p>
-        </Marquee>
-        {/* 장르 확정되면 태그들 넣어서 바꿔둬야함 */}
-        <div className={`flex-row-center ${styles.optionSelectBox}`}>
-          {headerOption === "genre" && (
-            <select
-              className={styles.optionSelector}
-              name="contentOption"
-              value={contentOption}
-              onChange={handleContentOption}
-            >
-              <option key="발라드" value="발라드">
-                발라드
-              </option>
-            </select>
-          )}
-          {headerOption === "mood" && (
-            <select
-              className={styles.optionSelector}
-              name="contentOption"
-              value={contentOption}
-              onChange={handleContentOption}
-            >
-              <option key="신나는" value="신나는">
-                신나는
-              </option>
-              <option key="슬픈" value="슬픈">
-                슬픈
-              </option>
-            </select>
-          )}
-        </div>
-        <div className={`flex-row-center ${styles.rankSection}`}>
-          <div className={`flex-col-center ${styles.songSection}`}>
-            <RankedSongAndArtist type={"song"} />
-            <RankedSongAndArtist type={"song"} />
-            <RankedSongAndArtist type={"song"} />
+      {isLoading && <p>로딩중입니당</p>}
+      {!isLoading && (
+        <div className={`w-100 shadow-box b-15 bg-box`}>
+          <Marquee
+            pauseOnHover={true}
+            autoFill={true}
+            className={styles.marquee}
+          >
+            <p>슬픔 분위기의 곡이 많이 나왔어요.</p>
+            <p>180-190BPM 의 곡이 많이 발매되었어요.</p>
+            <p>24개의 곡이 발매되었어요.</p>
+            <p>7,845번의 재생이 발생했어요.</p>
+            <p>C#으로 작성된 곡이 많아요.</p>
+          </Marquee>
+          {/* 장르 확정되면 태그들 넣어서 바꿔둬야함 */}
+          <div className={`flex-row-center ${styles.optionSelectBox}`}>
+            {headerOption === "genre" && (
+              <select
+                className={styles.optionSelector}
+                name="contentOption"
+                value={contentOption}
+                onChange={handleContentOption}
+              >
+                <option key="Rock" value="Rock">
+                  락
+                </option>
+                <option key="Hip hop" value="Hip hop">
+                  힙합
+                </option>
+              </select>
+            )}
+            {headerOption === "mood" && (
+              <select
+                className={styles.optionSelector}
+                name="contentOption"
+                value={contentOption}
+                onChange={handleContentOption}
+              >
+                <option key="신나는" value="신나는">
+                  신나는
+                </option>
+                <option key="슬픈" value="슬픈">
+                  슬픈
+                </option>
+              </select>
+            )}
           </div>
-          <div className={`flex-col-center ${styles.authorSection}`}>
-            <RankedSongAndArtist type={"author"} />
-            <RankedSongAndArtist type={"author"} />
-            <RankedSongAndArtist type={"author"} />
+          <div className={`flex-row-center ${styles.rankSection}`}>
+            <div className={`flex-col-center ${styles.songSection}`}>
+              {responseData.songs.map((element: any) => {
+                return <RankedSongAndArtist type={"song"} songData={element} />;
+              })}
+            </div>
+            <div className={`flex-col-center ${styles.authorSection}`}>
+              {responseData.artists &&
+                responseData.artists.map((element: any) => {
+                  return (
+                    <RankedSongAndArtist
+                      type={"author"}
+                      showIndicator={false}
+                      songData={element}
+                    />
+                  );
+                })}
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

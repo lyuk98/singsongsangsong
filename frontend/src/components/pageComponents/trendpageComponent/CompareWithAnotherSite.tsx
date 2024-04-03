@@ -18,10 +18,10 @@ const CompareWithAnotherSite = ({ korean, world }: tempType) => {
         className={`flex-row-center w-100 bg-box b-15 shadow-box ${styles.content}`}
       >
         <div className={`flex-row-center ${styles.billboard}`}>
-          <ChartWithMelonBillboard data={world} type="billboard" />
+          {/* <ChartWithMelonBillboard data={world} type="billboard" /> */}
         </div>
         <div className={`flex-row-center ${styles.melon}`}>
-          <ChartWithMelonBillboard data={korean} type="melon" />
+          {/* <ChartWithMelonBillboard data={korean} type="melon" /> */}
         </div>
       </div>
     </div>
