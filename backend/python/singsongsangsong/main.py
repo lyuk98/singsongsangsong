@@ -75,7 +75,7 @@ app.add_middleware(
             "description": "요청 확인, 분석 진행 예정",
             "content": None
         },
-        404: { "description": "올바르지 않은 `path` 제공" },
+        404: { "description": "존재하지 않는 `id` 또는 파일 정보가 올바르지 않은 곡의 `id` 제공" },
         422: { "description": "올바르지 않은 형태의 `id` 제공" },
         500: { "description": "예상치 못한 오류 발생" }
     },
