@@ -173,7 +173,8 @@ const UploadPage = () => {
               disabled={!uploadFile}
               onClick={() => {
                 handleStartAnalyze(uploadFile.file);
-                loadAnalyzedData()
+                loadAnalyzedData();
+                setUploadFile(null);
               }}
             >
               분석하기
