@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.singsongsangsong.dto.ArtistDetailDto;
-import com.ssafy.singsongsangsong.dto.ArtistInfoDto;
 import com.ssafy.singsongsangsong.dto.EmotionsDto;
 import com.ssafy.singsongsangsong.dto.FollowerCountResponse;
 import com.ssafy.singsongsangsong.dto.GuestJoinRequestDto;
@@ -22,9 +21,11 @@ import com.ssafy.singsongsangsong.security.ArtistPrincipal;
 import com.ssafy.singsongsangsong.service.artist.ArtistService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 @RequestMapping("/artist")
 public class ArtistController {
 	private final ArtistService artistService;
@@ -32,6 +33,7 @@ public class ArtistController {
 	@PostMapping("/join")
 	public JoinResponseDto join(@AuthenticationPrincipal ArtistPrincipal user, GuestJoinRequestDto dto) throws
 		IOException {
+		log.info("register request ==> nickname: {}, introduction: {}", dto.getNickname(), dto.getIntroduction());
 		artistService.join(user.getUsername(), dto);
 		return new JoinResponseDto();
 	}
