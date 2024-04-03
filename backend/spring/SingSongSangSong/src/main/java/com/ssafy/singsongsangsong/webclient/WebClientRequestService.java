@@ -38,13 +38,18 @@ public class WebClientRequestService {
 		}
 	}
 
-	public void requestAnalyzeSong(Long songId, String originalFileName) {
-		RequestAnalyzeSongDto requestAnalyzeSongDto = new RequestAnalyzeSongDto(songId, originalFileName);
-		webClient.post()
+	public void requestAnalyzeSong(Long songId) {
+		ResponseEntity<Void> response = webClient.post()
 			.uri("/song/{songId}", songId)
 			.retrieve()
 			.toBodilessEntity()
 			.block();
+
+		Objects.requireNonNull(response, "응답을 받아오는 것에 문제가 생김");
+		if (response.getStatusCode() != HttpStatus.ACCEPTED) {
+			throw new WebClientResponseException("Failed to save similarity", response.getStatusCode().value(),
+				response.getStatusCode().toString(), null, null, null);
+		}
 	}
 
 	public void requestSaveSimilarity(Long songId) throws WebClientRequestException {
