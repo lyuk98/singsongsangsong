@@ -64,24 +64,25 @@ const SearchResultPage = () => {
       <h1>검색 결과</h1>
       <div className={`w-100 flex-col py-15 gap-15`}>
         <h2 className={`${styles.borderBottom}`}>아티스트</h2>
-        <div className={`flex-row gap-30`}>
-          <div className={`flex-col-center gap-15 ${styles.profileBox}`}>
-            {response.artistInfoDtoList.map((element: any) => {
-              return (
-                <>
-                  <div style={{ width: "100px", height: "100px" }}>
-                    <Profile artistId={element.artistId} />
-                  </div>
-                  <h2
-                    style={{ cursor: "pointer" }}
-                    onClick={() => navigate(`/artist/${element.artistId}`)}
-                  >
-                    {element.nickname}
-                  </h2>
-                </>
-              );
-            })}
-          </div>
+        <div className={`flex-row-center gap-15 ${styles.profileBox}`}>
+          {response.artistInfoDtoList.map((element: any) => {
+            return (
+              <div
+                className={`flex-col-center`}
+                style={{ width: "200px", height: "150px" }}
+              >
+                <div style={{ width: "100px", height: "100px" }}>
+                  <Profile artistId={element.artistId} />
+                </div>
+                <h2
+                  style={{ cursor: "pointer" }}
+                  onClick={() => navigate(`/artist/${element.artistId}`)}
+                >
+                  {element.nickname}
+                </h2>
+              </div>
+            );
+          })}
         </div>
       </div>
       <div className={`w-100 flex-col py-15 gap-15`}>

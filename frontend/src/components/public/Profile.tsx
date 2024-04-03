@@ -21,7 +21,7 @@ const Profile = ({ artistId }: PropsType) => {
       try {
         const artistInfo = await getArtist(artistId);
         const url = await getAlbumImg(
-          artistInfo?.data.data.profileImage.originalFileName
+          artistInfo?.data.data.artistInfoDto.profileImage.originalFileName
         );
         setArtistImg(url);
       } catch (error) {

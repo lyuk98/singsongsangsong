@@ -6,11 +6,13 @@ import { MdOutlineFileDownload } from "react-icons/md";
 import styles from "./RankedSongAndArtist.module.css";
 import Album from "../../public/Album";
 import Profile from "../../public/Profile";
+import { useNavigate } from "react-router-dom";
 
 type PropsType = {
   type: string;
   showIndicator?: boolean;
-  songId?: any;
+  resData?: any;
+  songData?: any;
 };
 
 /**
@@ -20,27 +22,39 @@ type PropsType = {
  * @todo 곡 / 작곡가 클릭 시 상세 페이지로 이동하는 로직 작성
  * @todo 데이터 들어오면 info쪽 수정
  */
-const RankedSongAndArtist = ({ type, showIndicator = true }: PropsType) => {
-  const checker = () => {
-    console.log("te");
-  };
+const RankedSongAndArtist = ({
+  type,
+  showIndicator = true,
+  songData,
+}: PropsType) => {
+  const checker = () => {};
+  const navigate = useNavigate();
+  console.log(songData);
+  if (!songData) {
+    return <p>dkadfamsfgiop</p>;
+  }
 
   return (
     <div className={`flex-row-center ${styles.container}`}>
       <div className={`flex-col-center ${styles.album}`}>
-        {type === "song" && <Album />}
-        {type === "author" && <Profile />}
+        {type === "song" && <Album songId={songData.songId} />}
+        {type === "author" && <Profile artistId={songData.artistId} />}
       </div>
       <div className={`flex-col-center ${styles.info}`}>
         {type === "song" && (
           <>
-            <h2 onClick={checker}>무슨노래</h2>
-            <h3>김작곡</h3>
+            <h2 onClick={checker}>{songData.songTitle}</h2>
+            <h3>{songData.artist.nickname}</h3>
           </>
         )}
         {type === "author" && (
           <>
-            <h1>김작곡</h1>
+            <h1
+              onClick={() => navigate(`/artist/${songData.artistId}`)}
+              style={{ cursor: "pointer" }}
+            >
+              {songData.nickname}
+            </h1>
           </>
         )}
       </div>
@@ -48,15 +62,15 @@ const RankedSongAndArtist = ({ type, showIndicator = true }: PropsType) => {
         <div className={`flex-col-center ${styles.indicator}`}>
           <p>
             <MdOutlineFileDownload size={"28px"} />
-            24
+            {songData.downloadCount}
           </p>
           <p>
             <LiaHeadsetSolid size={"28px"} />
-            24
+            {songData.playCount}
           </p>
           <p>
             <FaHeart size={"24px"} />
-            24
+            {songData.likeCount}
           </p>
         </div>
       )}

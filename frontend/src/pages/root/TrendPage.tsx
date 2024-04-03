@@ -44,7 +44,7 @@ const TrendPage = () => {
     },
   });
 
-  console.log(response);
+  console.log("트렌드 페이지 로드 시 받아올 데이터터", response);
 
   useEffect(() => {
     setWeekNumber(getWeekNumber(selectedDate));
@@ -140,13 +140,13 @@ const TrendPage = () => {
         <>
           {/* <TestWeeklySingsongChart weekly={response.weekly} /> */}
           <TrendWithOptions />
-          <RankWithOption />
+          <RankWithOption selectedDate={selectedDate} />
           {/* <CompareWithAnotherSite
             korean={response.korean}
             world={response.world}
           /> */}
           <SongWithEmotion emotions={response.emotions} />
-          <SongWithBPM />
+          <SongWithBPM selectedDate={selectedDate} />
         </>
       )}
     </div>

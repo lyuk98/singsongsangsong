@@ -19,6 +19,7 @@ type PropsType = {
   nickname: string;
   introduction: string;
   profileImageFileName: string;
+  countPublishedSong: any;
 };
 /**
  * 아티스트 페이지에 사용할 헤더 컴포넌트
@@ -30,6 +31,7 @@ const ArtistHeader = ({
   nickname,
   introduction,
   profileImageFileName,
+  countPublishedSong,
 }: PropsType) => {
   const userSlice = useSelector((state: RootState) => state.user);
 
@@ -99,7 +101,7 @@ const ArtistHeader = ({
             <span style={{ fontSize: "14px" }}>FOLLOWER</span>
           </span>
           <span className={`flex-col-center`}>
-            <span style={{ fontSize: "32px" }}>{"25"}</span>
+            <span style={{ fontSize: "32px" }}>{countPublishedSong}</span>
             <span style={{ fontSize: "14px" }}>TRACKS</span>
           </span>
         </div>

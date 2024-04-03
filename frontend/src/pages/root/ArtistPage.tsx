@@ -51,6 +51,15 @@ const ArtistPage = () => {
     getItems();
   }, []);
 
+  if (isLoading) {
+    return (
+      <div className={`w-100 flex-col-center ${styles.nonePage}`}>
+        <img src={nodataImg} alt="" />
+        <p>데이터를 로드중입니다</p>
+      </div>
+    );
+  }
+
   if (!response) {
     return (
       <div className={`w-100 flex-col-center ${styles.nonePage}`}>
@@ -63,10 +72,13 @@ const ArtistPage = () => {
     <div className={styles.container}>
       <div className={styles.headerSection}>
         <ArtistHeader
-          artistId={response.artistId}
-          nickname={response.nickname}
-          profileImageFileName={response.profileImage.originalFileName}
-          introduction={response.introduction}
+          artistId={response.artistInfoDto.artistId}
+          nickname={response.artistInfoDto.nickname}
+          profileImageFileName={
+            response.artistInfoDto.profileImage.originalFileName
+          }
+          introduction={response.artistInfoDto.introduction}
+          countPublishedSong={response.countPublishedSong}
         />
       </div>
       <div className={styles.content}>
