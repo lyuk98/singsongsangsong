@@ -43,7 +43,7 @@ const SimilarSong = () => {
   if (isLoading) {
     return <p>데이터를 로딩중입니다</p>;
   }
-  if(!responseData){
+  if (!responseData) {
     return <p>데이터가 존재하지 않습니다</p>;
   }
   return (

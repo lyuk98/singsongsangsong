@@ -4,6 +4,7 @@ import styles from "./MusicSectionIndicator.module.css";
 import SectionButton from "./SectionButton";
 import { useParams } from "react-router-dom";
 import { useAxios } from "../../../hooks/api/useAxios";
+import { axiosInstance } from "../../../hooks/api";
 
 /**
  * 구간분석용 지표가 나오는 컴포넌트.
@@ -15,38 +16,62 @@ import { useAxios } from "../../../hooks/api/useAxios";
 
 const MusicSectionIndicator = () => {
   const { songId } = useParams();
-  // const [intro, setIntro] = useState();
-  // const [transition, setTransition] = useState();
-  // const [chorus, setChorus] = useState();
-  // const [verse, setVerse] = useState();
-  // const [outro, setOutro] = useState();
+  const [response, setResponse] = useState<any>();
+  const [sectionImg, setSectionImg] = useState<any>();
+  const [isLoading, setIsloading] = useState<boolean>(true);
 
-  const [section, setSection] = useState({
-    intro: [],
-    transition: [],
-    chorus: [],
-    verse: [],
-    outro: [],
-  });
-
-  const { response, isLoading } = useAxios({
-    method: "GET",
-    url: `/song/section/${songId}`,
-  });
-
-  // console.log(response);
+  useEffect(() => {
+    const request = async () => {
+      setIsloading(true);
+      try {
+        const songDetail = await axiosInstance.request({
+          method: "GET",
+          url: `/song/detail/${songId}`,
+        });
+        if (songDetail) {
+          try {
+            const sectionData = await axiosInstance.request({
+              method: "GET",
+              url: `/song/section/${songId}`,
+              params: {
+                spectrumImageId: songDetail.data.data.spectrumImageId,
+              },
+            });
+            setResponse(sectionData.data.data);
+            if (sectionData) {
+              try {
+                const secImg = await axiosInstance.request({
+                  method: "GET",
+                  url: `/download/spectrum/${songDetail.data.data.spectrumImageId}`,
+                  responseType: "blob",
+                });
+                const imgUrl = URL.createObjectURL(secImg.data);
+                setSectionImg(imgUrl);
+              } catch (error) {
+                console.log(`error at get sectionImg`);
+              }
+            }
+          } catch (error) {
+            console.log(error);
+          }
+        }
+      } catch (error) {
+        console.log(error);
+      }
+      setIsloading(false);
+    };
+    request();
+  }, []);
 
   if (isLoading) {
-    return <p>데이터를 로드중입니다</p>;
+    return <p>구간 데이터를 조회중입니다.</p>;
   }
-  if (!response) {
-    return <p>분석 데이터가 존재하지 않습니다</p>;
-  }
+
   return (
     <div className={`flex-col-center ${styles.content}`}>
       <h2>각 구간은 이런 특징을 가져요</h2>
       <div className={`${styles.imgSection}`}>
-        <img src={img} alt="sectionimg" />
+        <img src={sectionImg} alt="sectionimg" />
       </div>
       <div className={`${styles.tagSection}`}>
         <div className={`flex-row-center ${styles.innerSection}`}>

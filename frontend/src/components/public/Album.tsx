@@ -6,6 +6,7 @@ import { FaPlay } from "react-icons/fa";
 import { RootState } from "../../store";
 import { getAlbumImg, getMp3File } from "../../utils/api/downloadFileApi";
 import { axiosInstance } from "../../hooks/api";
+import { playSong } from "../../utils/api/songDetailApi";
 
 /** 앨범 이미지를 받아와서 해당 앨범을 hover하면 재생 버튼이 보이고
  * 클릭시 음악을 재생시켜줄 컴포넌트
@@ -51,7 +52,13 @@ const Album = ({ songId }: PropsType) => {
     <div className={`flex-col-center ${styles.container}`}>
       <img src={albumImg} alt="albumImg" />
       <div className={styles.overlay}>
-        <button onClick={() => dispatch(musicAction.addMusicList(audioFile))}>
+        <button
+          onClick={() => {
+            dispatch(musicAction.setSongId(songId));
+            setTimeout(() => playSong(songId), 1000);
+            dispatch(musicAction.addMusicList(audioFile));
+          }}
+        >
           <FaPlay size={"24px"} />
         </button>
         {}

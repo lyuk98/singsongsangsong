@@ -79,21 +79,21 @@ export const getSongSimilarity = async (songId: string | undefined) => {
   }
 };
 
-export const getTempSimilarity = async (songId: any) => {
-  const accessToken = getCookie("accessToken");
-  try {
-    const response = await axios({
-      method: "GET",
-      url: `https://dsp.singsongsangsong.com/similarity/${songId}`,
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
-    return response?.data?.data;
-  } catch (error) {
-    console.log(error);
-  }
-};
+// export const getTempSimilarity = async (songId: any) => {
+//   const accessToken = getCookie("accessToken");
+//   try {
+//     const response = await axios({
+//       method: "GET",
+//       url: `https://dsp.singsongsangsong.com/similarity/${songId}`,
+//       headers: {
+//         Authorization: `Bearer ${accessToken}`,
+//       },
+//     });
+//     return response?.data?.data;
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
 
 /**
  * 해당 노래에 대한 댓글들을 가져오는 함수
@@ -131,9 +131,9 @@ export const downloadSong = async (songId: string | undefined) => {
  * 해당 곡에 대한 재생 수를 증가시키는 함수
  * @param songId
  */
-export const playSong = async (songId: string | undefined) => {
+export const playSong = async (songId: any) => {
   try {
-    const response = await axiosInstance.request({
+    await axiosInstance.request({
       method: "POST",
       url: `/song/play/${songId}`,
     });

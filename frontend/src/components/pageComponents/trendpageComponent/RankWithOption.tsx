@@ -237,12 +237,15 @@ const RankWithOption = ({ selectedDate }: PropsType) => {
           </div>
           <div className={`flex-row-center ${styles.rankSection}`}>
             <div className={`flex-col-center ${styles.songSection}`}>
-              {responseData.songs.map((element: any) => {
-                return <RankedSongAndArtist type={"song"} songData={element} />;
-              })}
+              {responseData &&
+                responseData.songs.map((element: any) => {
+                  return (
+                    <RankedSongAndArtist type={"song"} songData={element} />
+                  );
+                })}
             </div>
             <div className={`flex-col-center ${styles.authorSection}`}>
-              {responseData.artists &&
+              {responseData &&
                 responseData.artists.map((element: any) => {
                   return (
                     <RankedSongAndArtist

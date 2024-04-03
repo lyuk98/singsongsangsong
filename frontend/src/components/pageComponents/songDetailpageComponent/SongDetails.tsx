@@ -5,7 +5,6 @@ import MusicSectionIndicator from "../../public/analysis/MusicSectionIndicator";
 import SimilarSong from "../../public/analysis/SimilarSong";
 import {
   getAnalyzeResult,
-  getTempSimilarity,
 } from "../../../utils/api/songDetailApi";
 import { useParams } from "react-router-dom";
 import { useAxios } from "../../../hooks/api/useAxios";
@@ -38,7 +37,6 @@ const SongDetails = ({ lyrics }: PropsType) => {
   useEffect(() => {
     const callAxios = async () => {
       const res = await getAnalyzeResult(songId);
-      const similarity = await getTempSimilarity(songId);
       // console.log(similarity);
       // console.log(res);
       if (res) {

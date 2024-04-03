@@ -12,6 +12,7 @@ import { AnalyzedStateType } from "../../utils/types";
 import { handleStartAnalyze } from "../../utils/api/analyzeApi";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
+import { useNavigate } from "react-router-dom";
 // 참고해야할 사이트
 // https://hojung-testbench.tistory.com/entry/React-%ED%8C%8C%EC%9D%BC-%EC%97%85%EB%A1%9C%EB%93%9C-%EA%B8%B0%EB%8A%A5-%EA%B5%AC%ED%98%84
 // https://guiyomi.tistory.com/148
@@ -23,13 +24,26 @@ type audioType = {
   type: string;
 };
 
+const uploadProcesses = [
+  {
+    title: "rumble",
+    process: "result",
+    songId: 200001,
+  },
+  {
+    title: "Rumble (Extended Version)",
+    process: "result",
+    songId: 200004,
+  },
+];
+
 const UploadPage = () => {
   const userSlice = useSelector((state: RootState) => state.user);
   const [uploadFile, setUploadFile] = useState<audioType | null>(null);
   const [viewFileName, setViewFileName] = useState<string | null>(null);
   const [isActive, setIsActive] = useState<boolean>(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
-
+  const navigate = useNavigate();
   const {
     response: analyzedData,
     isLoading: analyzedDataIsLoading,
@@ -204,7 +218,7 @@ const UploadPage = () => {
           </button>
         </div>
         <div className={`w-100 bg-box flex-col-center p-15 ${styles.checkBox}`}>
-          {analyzedData.uploadProcesses.length === 0 && (
+          {/* {analyzedData.uploadProcesses.length === 0 && (
             <h2>현재 분석중인 음악이 없습니다.</h2>
           )}
           {analyzedData &&
@@ -216,6 +230,34 @@ const UploadPage = () => {
                     <h2>분석중</h2>
                   ) : (
                     <h2>분석완료</h2>
+                  )}
+                </div>
+              );
+            })} */}
+          {uploadProcesses.length === 0 && (
+            <h2>현재 분석중인 음악이 없습니다.</h2>
+          )}
+          {uploadProcesses &&
+            uploadProcesses.map((element: AnalyzedStateType) => {
+              return (
+                <div className="flex-row-center gap-30">
+                  <h2
+                    style={{
+                      borderRight: "5px solid black",
+                      paddingRight: "15px",
+                    }}
+                  >
+                    {element.title}
+                  </h2>
+                  {element.process === "in process" ? (
+                    <h2>분석중</h2>
+                  ) : (
+                    <h2
+                      onClick={() => navigate(`./${element.songId}`)}
+                      style={{ color: "blue", cursor: "pointer" }}
+                    >
+                      분석완료
+                    </h2>
                   )}
                 </div>
               );

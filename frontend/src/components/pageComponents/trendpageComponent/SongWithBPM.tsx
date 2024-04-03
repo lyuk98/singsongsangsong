@@ -44,6 +44,9 @@ const SongWithBPM = ({ selectedDate }: PropsType) => {
   if (isLoading) {
     return <p>bpm데이터를 로딩중입니다</p>;
   }
+  if (!bpmData) {
+    return <p>해당 데이터가 존재하지 않습니다</p>;
+  }
 
   return (
     <div className={`flex-col-center ${styles.container}`}>

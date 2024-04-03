@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaQuestionCircle } from "react-icons/fa";
 
 import styles from "./AnalysisPage.module.css";
@@ -11,33 +11,48 @@ import { useAxios } from "../../hooks/api/useAxios";
 import axios from "axios";
 
 import { AnalyzedResultType } from "../../utils/types";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
+import { axiosInstance } from "../../hooks/api";
 
 const AnalysisPage = () => {
   const navigate = useNavigate();
+  const { songId } = useParams();
+  const [mfccImg, setMfccImg] = useState<any>();
 
-  const { response, isLoading, error } = useAxios({
-    url: `/anayze/${`songId`}`,
+  const {
+    response: resultResponse,
+    isLoading: resultLoading,
+    error: resultError,
+  } = useAxios({
+    url: `/song/detail/${songId}`,
     method: "GET",
   });
 
-  const [result, setResult] = useState<AnalyzedResultType | null>(null);
-
-  const handleUpload = async () => {
+  const getMfccImage = async () => {
     try {
-      const response = await axios({
-        method: "PUT",
-        url: `${process.env.REACT_APP_API_URL}analyze/publish/${"songid"}`,
+      const result = await axiosInstance({
+        method: "GET",
+        url: `/download/mfcc/${resultResponse.mfccImageId}`,
+        responseType: "blob",
       });
-      // console.log(response);
+      const imgURL = URL.createObjectURL(result.data);
+      setMfccImg(imgURL);
     } catch (error) {
       console.log(error);
     }
   };
 
+  useEffect(() => {
+    getMfccImage();
+  }, []);
+
   const navigatePostPage = () => {
     navigate("post");
   };
+
+  if (resultLoading) {
+    return <p>결과 화면을 로딩중입니다</p>;
+  }
 
   return (
     <div className={`w-100 px-main ${styles.container}`}>
@@ -45,7 +60,7 @@ const AnalysisPage = () => {
         <h1>분석 결과</h1>
       </div>
       <div className={`flex-row-center border-box py-15`}>
-        <h2>{`songTitle`}</h2>
+        <h2>{resultResponse.songTitle}</h2>
       </div>
       <div className={`flex-col gap-15}`}>
         <h2 className={`flex-row gap-15`}>
@@ -53,7 +68,7 @@ const AnalysisPage = () => {
         </h2>
         {/* songMfcc */}
         <div className={`border-box bg-box flex-col-center ${styles.imgBox}`}>
-          <img src={testimg} alt="mfccimg" />
+          <img src={mfccImg} alt="mfccimg" />
         </div>
       </div>
       <div className={`flex-col gap-15`}>
