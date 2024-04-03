@@ -3,6 +3,7 @@ package com.ssafy.singsongsangsong.entity;
 import org.hibernate.annotations.ColumnDefault;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -23,7 +24,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class Song extends BaseTimeEntity{
+public class Song extends BaseTimeEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -37,7 +38,7 @@ public class Song extends BaseTimeEntity{
 	@OneToOne
 	@JoinColumn(name = "spectrumImageId")
 	private File spectrumImage;
-	@OneToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "albumImageId")
 	private File albumImage;
 

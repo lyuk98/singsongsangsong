@@ -11,6 +11,8 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.singsongsangsong.annotation.CsvFileContents;
 import com.ssafy.singsongsangsong.annotation.ExportCsvFile;
 import com.ssafy.singsongsangsong.constants.DefaultFileName;
@@ -47,7 +49,9 @@ import com.ssafy.singsongsangsong.service.file.FileService;
 import com.ssafy.singsongsangsong.webclient.WebClientRequestService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class SongServiceImpl implements SongService {
@@ -125,7 +129,6 @@ public class SongServiceImpl implements SongService {
 		Song song = songRepository.findById(songId).orElseThrow(NotFoundSongException::new);
 		Artist artist = song.getArtist();
 		List<Comments> commentsList = commentsRepository.findBySongId(songId);
-
 		SongInfoResponseBuilder builder = SongInfoResponse.builder();
 
 		String musicFileName = Optional.ofNullable(song.getMusicFileName())
@@ -210,7 +213,7 @@ public class SongServiceImpl implements SongService {
 		Collections.sort(retrieved);
 
 		List<Comparison> comparison = retrieved.stream().map(similarityInfo -> {
-			Long targetId = similarityInfo.getSimilarSongId();
+			Long targetId = similarityInfo.getId();
 			Song targetSong = songRepository.findById(targetId).orElseThrow(NotFoundSongException::new);
 			String originalFileName;
 
@@ -238,13 +241,21 @@ public class SongServiceImpl implements SongService {
 			originalAlbumImageFile = DefaultFileName.DEFAULT_ALBUM_PICTURE.getName();
 		}
 
-		return SongSimilarityByRanksResponse.builder()
+		SongSimilarityByRanksResponse response = SongSimilarityByRanksResponse.builder()
 			.size(size)
 			.albumImageFileName(originalAlbumImageFile)
 			.title(song.getTitle())
 			.createdDate(song.getCreatedDate())
 			.comparison(comparison.subList(0, size - 1))
 			.build();
+
+		ObjectMapper objectMapper = new ObjectMapper();
+		try {
+			log.info("response: {}", objectMapper.writeValueAsString(response));
+		} catch (JsonProcessingException e) {
+			log.error(e.getLocalizedMessage());
+		}
+		return response;
 	}
 
 }

@@ -41,7 +41,7 @@ public class WebClientRequestService {
 	public void requestAnalyzeSong(Long songId, String savedFileName) {
 		RequestAnalyzeSongDto requestAnalyzeSongDto = new RequestAnalyzeSongDto(songId, savedFileName);
 		webClient.post()
-			.uri("/song/{songId}", songId)
+			.uri("/song/")
 			.bodyValue(requestAnalyzeSongDto)
 			.retrieve()
 			.bodyToMono(Void.class)
@@ -92,7 +92,7 @@ public class WebClientRequestService {
 		@NoArgsConstructor
 		@AllArgsConstructor
 		public static class SimilarityInfo implements Comparable<SimilarityInfo> {
-			private Long similarSongId;
+			private Long id;
 			private Float distance;
 
 			@Override
