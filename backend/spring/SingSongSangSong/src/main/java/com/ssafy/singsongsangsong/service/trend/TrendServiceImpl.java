@@ -10,6 +10,9 @@ import org.springframework.stereotype.Service;
 import com.ssafy.singsongsangsong.constants.DefaultFileName;
 import com.ssafy.singsongsangsong.dto.AgeSexChartDto;
 import com.ssafy.singsongsangsong.dto.AllChartDto;
+import com.ssafy.singsongsangsong.dto.AnalyzeGenreAndAtmosphereResponse;
+import com.ssafy.singsongsangsong.dto.AnalyzeGenreAndAtmosphereResponse.AnalyzeAtmosphereDto;
+import com.ssafy.singsongsangsong.dto.AnalyzeGenreAndAtmosphereResponse.AnalyzeGenreDto;
 import com.ssafy.singsongsangsong.dto.ArtistInfoDto;
 import com.ssafy.singsongsangsong.dto.BpmChartDetailDto;
 import com.ssafy.singsongsangsong.dto.BpmDetailDto;
@@ -17,11 +20,16 @@ import com.ssafy.singsongsangsong.dto.EmotionSongsDto;
 import com.ssafy.singsongsangsong.dto.SongArtistDetailDto;
 import com.ssafy.singsongsangsong.dto.SongArtistDto;
 import com.ssafy.singsongsangsong.dto.TrendChartDto;
+import com.ssafy.singsongsangsong.dto.TrendSongDetailDto;
 import com.ssafy.singsongsangsong.dto.TrendSongDto;
 import com.ssafy.singsongsangsong.entity.Artist;
+import com.ssafy.singsongsangsong.entity.Atmosphere;
+import com.ssafy.singsongsangsong.entity.Genre;
 import com.ssafy.singsongsangsong.entity.Song;
 import com.ssafy.singsongsangsong.exception.song.NotFoundSongException;
 import com.ssafy.singsongsangsong.repository.maria.artist.ArtistRepository;
+import com.ssafy.singsongsangsong.repository.maria.atmosphere.AtmosphereRepository;
+import com.ssafy.singsongsangsong.repository.maria.genre.GenreRepository;
 import com.ssafy.singsongsangsong.repository.maria.song.SongRepository;
 import com.ssafy.singsongsangsong.repository.mongo.trend.TrendRepository;
 
@@ -34,6 +42,8 @@ public class TrendServiceImpl implements TrendService {
 	private final TrendRepository trendRepository;
 	private final SongRepository songRepository;
 	private final ArtistRepository artistRepository;
+	private final GenreRepository genreRepository;
+	private final AtmosphereRepository atmosphereRepository;
 	
 	@Override
 	public TrendSongDto getSong(Long songId) {
@@ -70,10 +80,58 @@ public class TrendServiceImpl implements TrendService {
 	}
 	
 	@Override
+	public TrendSongDetailDto getSongDetail(Long songId) {
+		Song song = songRepository.findById(songId).orElseThrow(NotFoundSongException::new);
+		Artist artist = song.getArtist();
+
+		String musicFileName = Optional.ofNullable(song.getMusicFileName())
+			.orElseGet(DefaultFileName.DEFAULT_PROFILE_PICTURE::getName);
+
+		String originalFileName;
+		if (song.getAlbumImage() != null && song.getAlbumImage().getOriginalFileName() != null) {
+			originalFileName = song.getAlbumImage().getOriginalFileName();
+		} else {
+			originalFileName = DefaultFileName.DEFAULT_PROFILE_PICTURE.getName();
+		}
+		
+		return TrendSongDetailDto.builder()
+				.songId(song.getId())
+				.songTitle(song.getTitle())
+				.artist(ArtistInfoDto.from(artist))
+				.songFileName(musicFileName)
+				.albumImageFileName(originalFileName)
+				.likeCount(song.getLikeCount())
+				.downloadCount(song.getDownloadCount())
+				.playCount(song.getPlayCount())
+				.bpm(song.getBpm())
+				.movedEmotionCount(song.getMovedEmotionCount())
+				.likeEmotionCount(song.getLikeEmotionCount())
+				.energizedEmotionCount(song.getEnergizedEmotionCount())
+				.excitedEmotionCount(song.getExcitedEmotionCount())
+				.funnyEmotionCount(song.getFunnyEmotionCount())
+				.sadEmotionCount(song.getSadEmotionCount())
+				.analysis(getAnalyzeGenreAndAtmosphere(songId, 5))
+				.build();
+	}
+	
+	@Override
 	public ArtistInfoDto getArtistInfo(Long artistId) {
 		Artist artist = artistRepository.findById(artistId)
 			.orElseThrow(() -> new IllegalArgumentException("해당 아티스트가 존재하지 않습니다."));
 		return ArtistInfoDto.from(artist);
+	}
+	
+	@Override
+	public AnalyzeGenreAndAtmosphereResponse getAnalyzeGenreAndAtmosphere(Long songId, int size) {
+		List<Genre> genres = genreRepository.findBySongId(songId, size);
+		List<Atmosphere> atmospheres = atmosphereRepository.findBySongId(songId, size);
+
+		return AnalyzeGenreAndAtmosphereResponse.builder()
+			.genreLength(genres.size())
+			.atmosphereLength(atmospheres.size())
+			.genres(genres.stream().map(AnalyzeGenreDto::from).toList())
+			.atmospheres(atmospheres.stream().map(AnalyzeAtmosphereDto::from).toList())
+			.build();
 	}
 
 	@Override
@@ -81,8 +139,14 @@ public class TrendServiceImpl implements TrendService {
 		AllChartDto dto = trendRepository.getAllChart(date);
 		TrendChartDto trendChartDto = new TrendChartDto();
 		
-		List<TrendSongDto> weekly = new ArrayList<>();
-		for (Long songId : dto.getWeekly()) weekly.add(getSong(songId));
+		List<TrendSongDetailDto> weekly = new ArrayList<>();
+		for (Long songId : dto.getWeekly()) weekly.add(getSongDetail(songId));
+		
+		List<TrendSongDetailDto> world = new ArrayList<>();
+		for (Long songId : dto.getWeekly()) world.add(getSongDetail(songId));
+		
+		List<TrendSongDetailDto> korean = new ArrayList<>();
+		for (Long songId : dto.getWeekly()) korean.add(getSongDetail(songId));
 		
 		List<Long> emotions = dto.getEmotions();
 		
@@ -96,6 +160,8 @@ public class TrendServiceImpl implements TrendService {
 				.build();
 		
 		trendChartDto.setWeekly(weekly);
+		trendChartDto.setWorld(world);
+		trendChartDto.setKorean(korean);
 		trendChartDto.setEmotions(emotionSongsDto);
 		
 		return trendChartDto;
