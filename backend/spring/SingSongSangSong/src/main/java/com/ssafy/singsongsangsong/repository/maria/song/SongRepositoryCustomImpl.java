@@ -61,14 +61,19 @@ public class SongRepositoryCustomImpl implements SongRepositoryCustom {
 
 	@Override
 	public List<Song> findSongByBpmAndKeyword(String keyword, int startBpm, int endBpm,
-		List<OrderSpecifier> orderSpecifiers) {
+		OrderSpecifier[] orderSpecifiers, String requestGenre, String requestAtmosphere) {
 		BooleanBuilder builder = new BooleanBuilder();
 		builder.and(song.bpm.between(startBpm, endBpm));
 		if (keyword != null) {
 			builder.and(song.title.contains(keyword));
 		}
-
-		return jpaQueryFactory.select(song).distinct().from(song).where(builder).fetch();
+		if(requestGenre != null) {
+			builder.and(song.customGenre.eq(requestGenre));
+		}
+		if(requestAtmosphere != null) {
+			builder.and(song.themes.eq(requestAtmosphere));
+		}
+		return jpaQueryFactory.select(song).distinct().from(song).where(builder).orderBy(orderSpecifiers).fetch();
 	}
 
 	public Optional<Song> getSongByArtistIdAndSongId(Long songId, Long artistId) {

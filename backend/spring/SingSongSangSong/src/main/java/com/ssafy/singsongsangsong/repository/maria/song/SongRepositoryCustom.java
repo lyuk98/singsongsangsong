@@ -16,7 +16,7 @@ public interface SongRepositoryCustom {
 	public List<Song> findSongOrderByWeeklyCountDesc();
 	public List<Song> findSongForGenreOrderByWeeklyCountDesc(String requestGenre);
 	public List<Song> findSongForAtmosphereOrderByWeeklyCountDesc(String requestAtmosphere);
-	public List<Song> findSongByBpmAndKeyword(String keyword, int startBpm, int endBpm, List<OrderSpecifier> orderSpecifier);
+	public List<Song> findSongByBpmAndKeyword(String keyword, int startBpm, int endBpm, OrderSpecifier[] orderSpecifier, String requestGenre, String requestAtmosphere);
 	public Optional<Song> getSongByArtistIdAndSongId(Long songId, Long artistId);
 
 	void decrementEmotionCount(Long songId, Long artistId, String emotionName) throws NoSuchFieldException;
