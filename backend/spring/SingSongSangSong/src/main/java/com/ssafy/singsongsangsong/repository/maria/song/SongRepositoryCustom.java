@@ -28,5 +28,5 @@ public interface SongRepositoryCustom {
 
 	void incrementDownloadCount(Long songId);
 
-	Long countByArtistIdAndIsPublished(Long artistId);
+	List<Song> findAllByArtistIdAndIsPublished(Long artistId);
 }

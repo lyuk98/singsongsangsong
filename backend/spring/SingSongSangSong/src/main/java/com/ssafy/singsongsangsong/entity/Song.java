@@ -37,7 +37,7 @@ public class Song extends BaseTimeEntity{
 	@OneToOne
 	@JoinColumn(name = "spectrumImageId")
 	private File spectrumImage;
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(name = "albumImageId")
 	private File albumImage;
 

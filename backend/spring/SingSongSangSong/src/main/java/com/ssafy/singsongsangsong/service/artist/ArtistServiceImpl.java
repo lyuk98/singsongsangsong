@@ -1,7 +1,9 @@
 package com.ssafy.singsongsangsong.service.artist;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -72,10 +74,22 @@ public class ArtistServiceImpl implements ArtistService {
 	public ArtistDetailDto getArtistInfo(Long artistId) {
 		Artist artist = artistRepository.findById(artistId)
 			.orElseThrow(() -> new IllegalArgumentException("해당 아티스트가 존재하지 않습니다."));
-		int publishedSongCount = songRepository.countByArtistIdAndIsPublished(artistId).intValue();
-		return ArtistDetailDto.from(ArtistInfoDto.from(artist),publishedSongCount);
-	}
+		List<Song> publishedSongList = songRepository.findAllByArtistIdAndIsPublished(artistId);
+		int publishedSongCount = publishedSongList.size();
+		Map<String,Integer> preferGenre = new HashMap<>();
+		Map<String,Integer> preferAtmosphere = new HashMap<>();
+		for(Song song : publishedSongList) {
+			String genre = song.getCustomGenre();
+			String countGenre = genre.replace(" ","").toLowerCase() + "Count";
+			int previousCount = preferGenre.getOrDefault(countGenre,0);
+			preferGenre.put(countGenre,previousCount+1);
 
+			String atmosphere = song.getThemes();
+			previousCount = preferAtmosphere.getOrDefault(atmosphere,0);
+			preferAtmosphere.put(atmosphere,previousCount+1);
+		}
+		return ArtistDetailDto.from(ArtistInfoDto.from(artist),publishedSongCount, preferGenre, preferAtmosphere);
+	}
 	@Override
 	public List<SimpleSongDto> getPublishedSong(Long artistId) {
 		return artistRepository.getPublishedSongsByArtistId(artistId)
