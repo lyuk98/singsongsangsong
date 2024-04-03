@@ -12,6 +12,7 @@ type PropsType = {
 const SongWithBPM = ({ selectedDate }: PropsType) => {
   const [bpm, setBpm] = useState<number>(120);
   const [bpmData, setBpmData] = useState<any>();
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const handleBpmChange = (value: number) => {
     console.log(bpm);
     setBpm(value);
@@ -20,6 +21,7 @@ const SongWithBPM = ({ selectedDate }: PropsType) => {
   // 최초 로드 시 bpm 120으로 로드 그게 bpm과 selectedDate에 따라 재렌더링
   useEffect(() => {
     const request = async () => {
+      setIsLoading(true);
       try {
         const response = await axiosInstance.request({
           url: `/trend/bpm`,
@@ -33,13 +35,15 @@ const SongWithBPM = ({ selectedDate }: PropsType) => {
       } catch (error) {
         console.log(error);
       }
+      setIsLoading(false);
     };
     request();
-    console.log(
-      "bpm ================================================",
-      bpmData
-    );
   }, [selectedDate, bpm]);
+  console.log(bpmData);
+
+  if (isLoading) {
+    return <p>bpm데이터를 로딩중입니다</p>;
+  }
 
   return (
     <div className={`flex-col-center ${styles.container}`}>
@@ -61,8 +65,8 @@ const SongWithBPM = ({ selectedDate }: PropsType) => {
         />
         <div className={`flex-col-center ${styles.numberOfSong}`}>
           <p>
-            이번주에는 <span style={{ fontSize: "34px" }}>{"162"}</span> 개의
-            노래가
+            이번주에는 <span style={{ fontSize: "34px" }}>{bpmData.count}</span>{" "}
+            개의 노래가
           </p>
           <p>
             <span>{bpm}</span>
@@ -72,18 +76,18 @@ const SongWithBPM = ({ selectedDate }: PropsType) => {
           </p>
         </div>
         <div className={`flex-row-center ${styles.songs}`}>
-          <div className={`flex-col-center gap-15`}>
-            <h2>bpm</h2>
-            <RankedSongAndArtist type="song" showIndicator={false} />
-          </div>
-          <div className={`flex-col-center gap-15`}>
-            <h2>bpm</h2>
-            <RankedSongAndArtist type="song" showIndicator={false} />
-          </div>
-          <div className={`flex-col-center gap-15`}>
-            <h2>bpm</h2>
-            <RankedSongAndArtist type="song" showIndicator={false} />
-          </div>
+          {bpmData.songs.map((element: any) => {
+            return (
+              <div className={`flex-col-center gap-15`}>
+                <h2>{element.bpm}</h2>
+                <RankedSongAndArtist
+                  type="song"
+                  showIndicator={false}
+                  songData={element}
+                />
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>

@@ -4,6 +4,80 @@ import styles from "./RankWithOption.module.css";
 import RankedSongAndArtist from "./RankedSongAndArtist";
 import { axiosInstance } from "../../../hooks/api";
 
+const GENRE = [
+  {
+    option: "락",
+    value: "Rock",
+  },
+  {
+    option: "블루스",
+    value: "Blues",
+  },
+  {
+    option: "펑크",
+    value: "Funk",
+  },
+  {
+    option: "펑크&소울",
+    value: "Funk / Soul",
+  },
+  {
+    option: "힙합",
+    value: "Hip Hop",
+  },
+  {
+    option: "재즈",
+    value: "jazz",
+  },
+  {
+    option: "레게",
+    value: "Reggae",
+  },
+  {
+    option: "팝",
+    value: "Pop",
+  },
+];
+
+const ATMOSPHERE = [
+  {
+    option: "happy",
+    value: "happy",
+  },
+  {
+    option: "sad",
+    value: "sad",
+  },
+  {
+    option: "calm",
+    value: "calm",
+  },
+  {
+    option: "exciting",
+    value: "exciting",
+  },
+  {
+    option: "love",
+    value: "love",
+  },
+  {
+    option: "inspiring",
+    value: "inspiring",
+  },
+  {
+    option: "nostalgia",
+    value: "nostalgia",
+  },
+  {
+    option: "mystery",
+    value: "mystery",
+  },
+  {
+    option: "etc",
+    value: "etc",
+  },
+];
+
 /** 장르별 랭킹 / 분위기별 랭킹 컴포넌트
  * @todo 장르 / 분위기 검색할 태그 확정되면 배열만들어서 관리해야함
  * @todo marquu 안의 태그들도 관리해야해서 기억해둬야함
@@ -58,14 +132,31 @@ const RankWithOption = ({ selectedDate }: PropsType) => {
       console.log(responseData);
       genreAxios();
     }
-  }, [headerOption, selectedDate]);
+  }, [headerOption, selectedDate, contentOption]);
 
   // 태그가 분위기 일 때 실행시킬 useEffect
   useEffect(() => {
+    const moodAxios = async () => {
+      setIsLoading(true);
+      try {
+        const response = await axiosInstance.request({
+          method: "GET",
+          url: "/trend/atmosphere",
+          params: {
+            date: `${selectedDate.year}-${selectedDate.month}-${selectedDate.day}`,
+            atmosphere: contentOption,
+          },
+        });
+        setResponseData(response.data.data);
+      } catch (error) {
+        console.log(error);
+      }
+      setIsLoading(false);
+    };
     if (headerOption === "mood") {
-      console.log("무드입니다");
+      moodAxios();
     }
-  }, [headerOption]);
+  }, [headerOption, selectedDate, contentOption]);
 
   useEffect(() => {
     console.log(contentOption);
@@ -118,12 +209,13 @@ const RankWithOption = ({ selectedDate }: PropsType) => {
                 value={contentOption}
                 onChange={handleContentOption}
               >
-                <option key="Rock" value="Rock">
-                  락
-                </option>
-                <option key="Hip hop" value="Hip hop">
-                  힙합
-                </option>
+                {GENRE.map((element: any) => {
+                  return (
+                    <option key={element.value} value={element.value}>
+                      {element.option}
+                    </option>
+                  );
+                })}
               </select>
             )}
             {headerOption === "mood" && (
@@ -133,12 +225,13 @@ const RankWithOption = ({ selectedDate }: PropsType) => {
                 value={contentOption}
                 onChange={handleContentOption}
               >
-                <option key="신나는" value="신나는">
-                  신나는
-                </option>
-                <option key="슬픈" value="슬픈">
-                  슬픈
-                </option>
+                {ATMOSPHERE.map((element: any) => {
+                  return (
+                    <option key={element.value} value={element.value}>
+                      {element.option}
+                    </option>
+                  );
+                })}
               </select>
             )}
           </div>
