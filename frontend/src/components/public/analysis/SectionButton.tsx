@@ -18,6 +18,8 @@ const SectionButton = ({ section, startPoint, endPoint }: PropsType) => {
         return styles.chorus;
       case "bridge":
         return styles.bridge;
+      case "outro":
+        return styles.verse;
       default:
         return "";
     }
