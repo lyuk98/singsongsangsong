@@ -17,6 +17,7 @@ import com.ssafy.singsongsangsong.entity.Artist;
 import com.ssafy.singsongsangsong.entity.File;
 import com.ssafy.singsongsangsong.entity.Song;
 import com.ssafy.singsongsangsong.exception.artist.ArtistNotFoundException;
+import com.ssafy.singsongsangsong.exception.common.BusinessException;
 import com.ssafy.singsongsangsong.exception.file.NotFoundFileException;
 import com.ssafy.singsongsangsong.repository.maria.artist.ArtistRepository;
 import com.ssafy.singsongsangsong.repository.maria.file.FileRepository;
@@ -58,9 +59,8 @@ public class MinioFileService implements FileService {
 			.build())) {
 			return new ByteArrayResource(inputStream.readAllBytes());
 		} catch (Exception e) {
-			log.error(e.toString());
+			throw new BusinessException("minio storage에서 파일을 다운받지 못했습니다 => reason: " + e.getMessage());
 		}
-		return null;
 	}
 
 	@Override

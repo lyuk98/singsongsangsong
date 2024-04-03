@@ -94,10 +94,11 @@ public class AnalyzeServiceImpl implements AnalyzeService {
 	@Override
 	public void requestAnalyze(Long artistId, Long songId) {
 		// artistId와 songId에 해당하는 음악파일의 savedPath를 가져온다.
+		// todo: production 환경에서는, 해당 Song이 Artist의 Song이 맞는 지 검증하는 로직이 추가적으로 필요하다.
 		Song song = songRepository.findById(songId).orElseThrow(NotFoundSongException::new);
 		String originalFileName = song.getMusicFileName();
-		File file = fileRepository.findByOriginalFileName(originalFileName)
+		fileRepository.findByOriginalFileName(originalFileName)
 			.orElseThrow(() -> new NotFoundFileException("음악 파일을 찾을 수 없습니다."));
-		webClientRequestService.requestAnalyzeSong(songId, file.getSavedFileName());
+		webClientRequestService.requestAnalyzeSong(songId);
 	}
 }
