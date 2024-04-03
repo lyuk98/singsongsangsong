@@ -38,7 +38,7 @@ public class AnalyzeController {
 		analyzeService.completeAnalyze(id);
 	}
 
-	@GetMapping("/")
+	@GetMapping("/status")
 	public UploadMainPageDto getUploadMainPage(
 		@AuthenticationPrincipal ArtistPrincipal user) {
 		return analyzeService.getUploadStatus(user.getId());
