@@ -59,7 +59,7 @@ public class MinioFileService implements FileService {
 			.build())) {
 			return new ByteArrayResource(inputStream.readAllBytes());
 		} catch (Exception e) {
-			throw new BusinessException("minio storage에서 파일을 다운받지 못했습니다");
+			throw new BusinessException("minio storage에서 파일을 다운받지 못했습니다 => reason: " + e.getMessage());
 		}
 	}
 
