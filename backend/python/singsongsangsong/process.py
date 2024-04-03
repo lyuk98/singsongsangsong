@@ -20,7 +20,7 @@ import database
 import vector_database
 import s4dsp
 
-def analyse(song_id: int, audio_path: str): # pylint: disable=too-many-locals
+def analyse(song_id: int, audio_path: str, audio_filename: str): # pylint: disable=too-many-locals,too-many-statements
     """곡 분석을 진행합니다
 
     Parameters
@@ -29,6 +29,8 @@ def analyse(song_id: int, audio_path: str): # pylint: disable=too-many-locals
         곡 ID
     audio_path : str
         MinIO 내 음원 파일 경로
+    audio_filename : str
+        실제 음원 파일 이름
 
     Raises
     ------
@@ -47,12 +49,21 @@ def analyse(song_id: int, audio_path: str): # pylint: disable=too-many-locals
 
             # 음원 파일 다운로드
             os.mkdir(path.format("audio"))
-            file_server.download("audio", audio_path, path.format(f"audio/{audio_path}"), client)
+            file_server.download(
+                "audio",
+                audio_path,
+                path.format(f"audio/{audio_filename}"),
+                client
+            )
 
             # 음원 파일 불러오기
-            reference_path = path.format(f"audio/{audio_path}")
+            reference_path = path.format(f"audio/{audio_filename}")
             y, sr = librosa.load(reference_path, mono=True)
-            reference_audio = MonoLoader(filename=reference_path, sampleRate=16000, resampleQuality=4)()
+            reference_audio = MonoLoader(
+                filename=reference_path,
+                sampleRate=16000,
+                resampleQuality=4
+            )()
 
             # 음원 분석 0 - duration
             duration = int(y.shape[0] / sr)

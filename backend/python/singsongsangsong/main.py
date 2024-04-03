@@ -21,6 +21,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from minio.error import S3Error
 import uvicorn
 import file_server
+import database
 import vector_database
 from process import analyse
 
@@ -81,7 +82,7 @@ def request_song_analysis(
         str,
         Query(
             alias="path",
-            description="음원 파일 경로"
+            description="기존 음원 파일 이름"
         )
     ],
     background_tasks: BackgroundTasks
@@ -91,15 +92,22 @@ def request_song_analysis(
     분석 완료 후 데이터베이스에 분석 결과를 저장한 뒤 API 서버의 callback endpoint에 분석 완료를 알립니다
     """
 
+    # 데이터베이스에서 파일 정보 얻어오기
+    audio_filename = database.get_filename(audio_path)
+
+    # 존재하지 않을 시 HTTP 404 응답
+    if audio_filename is None:
+        return Response(status_code=status.HTTP_404_NOT_FOUND)
+
     # 음원이 파일 서버에 존재하는지 확인
     client = file_server.get_client()
     try:
-        client.stat_object("audio", audio_path)
+        client.stat_object("audio", audio_filename)
     except S3Error:
         # 존재하지 않을 시 HTTP 404 응답
         return Response(status_code=status.HTTP_404_NOT_FOUND)
 
-    background_tasks.add_task(analyse, song_id, audio_path)
+    background_tasks.add_task(analyse, song_id, audio_filename, audio_path)
     return Response(status_code=status.HTTP_202_ACCEPTED)
 
 @app.post(
