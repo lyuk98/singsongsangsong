@@ -8,7 +8,10 @@ const FavoriteSongPage = () => {
 
   const { response, isLoading } = useAxios({
     method: "GET",
+    url: `/music-playlist/liked-song/1`,
   });
+
+  console.log(response);
 
   return (
     <div className={`w-100`}>
@@ -22,7 +25,6 @@ const FavoriteSongPage = () => {
         </div>
       </div>
       <div className={`flex-col p-15 w-100`}>
-        <MusicTable />
       </div>
     </div>
   );

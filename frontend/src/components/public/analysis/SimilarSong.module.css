@@ -15,8 +15,9 @@
 }
 
 .similarSong {
-  width: 40%;
+  width: 45%;
   gap: 20px;
+  flex-wrap: wrap;
 }
 
 .compareSongSection {
@@ -26,6 +27,7 @@
 
 .compareSong {
   width: 100%;
+  text-align: center;
 }
 
 .selectedSong {
@@ -36,6 +38,7 @@
 .mySong {
   padding: 15px;
   width: 50%;
+  text-align: center;
 }
 
 .box {
