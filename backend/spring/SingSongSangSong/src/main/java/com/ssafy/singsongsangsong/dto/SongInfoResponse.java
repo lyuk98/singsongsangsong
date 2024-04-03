@@ -38,5 +38,6 @@ public class SongInfoResponse {
 
 	private List<CommentsInfoDto> comments;
 
+	private Long mfccImageId;
 	private Long spectrumImageId;
 }
