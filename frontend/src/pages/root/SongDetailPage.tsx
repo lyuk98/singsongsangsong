@@ -57,7 +57,7 @@ const SongDetailPage = () => {
     url: `/song/detail/${songId}`,
   });
 
-  console.log(response);
+  // console.log(response);
 
   if (isLoading) {
     return <p>로딩중입니다</p>;

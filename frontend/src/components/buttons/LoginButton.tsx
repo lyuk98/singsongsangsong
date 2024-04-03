@@ -23,9 +23,9 @@ const LoginButton = ({ name, url, img }: ProspsType) => {
   //     console.log(error);
   //   }
   // };
-  useEffect(() => {
-    console.log(getCookie("accessToken"));
-  }, []);
+  // useEffect(() => {
+  //   console.log(getCookie("accessToken"));
+  // }, []);
 
   const handleRedirect = () => {
     window.location.href = redirectUrl;

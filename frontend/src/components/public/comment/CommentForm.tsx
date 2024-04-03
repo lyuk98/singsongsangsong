@@ -24,7 +24,7 @@ const DUMMY = [
 const CommentForm = () => {
   const [trigger, setTrigger] = useState<number>(1);
   const { songId } = useParams();
-  console.log(`songID : `, songId);
+  // console.log(`songID : `, songId);
   const {
     response: comments,
     isLoading: commentLoading,
@@ -33,7 +33,7 @@ const CommentForm = () => {
     method: "GET",
     url: `/song/comments/${songId}`,
   });
-  console.log("댓글댓글댓글글", comments);
+  // console.log("댓글댓글댓글글", comments);
 
   if (commentLoading) {
     return <p>댓글을 로딩중입니다</p>;

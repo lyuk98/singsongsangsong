@@ -30,7 +30,7 @@ const SimilarSong = () => {
           method: "GET",
           url: `/song/similarity/${songId}`,
         });
-        console.log(response.data.data);
+        // console.log(response.data.data);
         setResponseData(response.data.data);
       } catch (error) {
         console.log(error);
@@ -42,6 +42,9 @@ const SimilarSong = () => {
 
   if (isLoading) {
     return <p>데이터를 로딩중입니다</p>;
+  }
+  if(!responseData){
+    return <p>데이터가 존재하지 않습니다</p>;
   }
   return (
     <div className={`flex-col-center ${styles.container}`}>

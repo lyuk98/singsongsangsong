@@ -14,20 +14,20 @@ const MusicPlayer = () => {
   const [currentMusic, setCurrentMusic] = useState();
 
   useEffect(() => {
-    console.log(player.current.audio);
+    // console.log(player.current.audio);
     player.current.audio.current.addEventListener("ended", (event: any) => {
-      console.log("ended");
+      // console.log("ended");
       setIsPlaying(false);
     });
     player.current.audio.current.addEventListener("play", (event: any) => {
-      console.log("playing");
+      // console.log("playing");
       setIsPlaying(true);
     });
   }, []);
 
-  useEffect(() => {
-    console.log("changing music");
-  }, [trackList.musicList]);
+  // useEffect(() => {
+  //   console.log("changing music");
+  // }, [trackList.musicList]);
 
   return (
     <div

@@ -13,7 +13,7 @@ const WeeklyArtistPage = () => {
     url: "/music-playlist/hot-artist",
   });
 
-  console.log(response);
+  // console.log(response);
 
   if (isLoading) {
     return <p>로딩중입니당~</p>;

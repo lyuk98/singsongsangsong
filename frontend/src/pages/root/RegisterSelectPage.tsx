@@ -12,13 +12,13 @@ import LoginButton from "../../components/buttons/LoginButton";
 
 const RegisterSelectPage = () => {
   const handleLogin = async (props: string) => {
-    console.log("실행은되니?");
+    // console.log("실행은되니?");
     try {
       const response = await axiosInstance.request({
         method: "GET",
         url: `/oauth2/authorization/${props}`,
       });
-      console.log(response);
+      // console.log(response);
     } catch (error) {
       console.log(error);
     }

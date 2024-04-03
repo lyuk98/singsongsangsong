@@ -39,19 +39,19 @@ const UploadPage = () => {
     method: "GET",
   });
 
-  console.log(analyzedData);
+  // console.log(analyzedData);
 
   const handleDragEnter = (event: React.DragEvent<HTMLLabelElement>) => {
     event.preventDefault();
     event.stopPropagation();
-    console.log("handleDragEnter");
+    // console.log("handleDragEnter");
   };
 
   const handleDragOver = (event: React.DragEvent<HTMLLabelElement>) => {
     event.preventDefault();
     event.stopPropagation();
     setIsActive(true);
-    console.log("handleDragOver");
+    // console.log("handleDragOver");
   };
 
   const handleDragLeave = (event: React.DragEvent<HTMLLabelElement>) => {
@@ -60,7 +60,7 @@ const UploadPage = () => {
     if (!event.currentTarget.contains(event.relatedTarget as Node)) {
       // 마우스가 자식 요소에서 떠나면 이벤트 처리
       setIsActive(false);
-      console.log("handleDragLeave");
+      // console.log("handleDragLeave");
     }
   };
 
@@ -80,7 +80,7 @@ const UploadPage = () => {
           type: file[0].type,
         }
       );
-      console.log("drop이벤트 시 파일", newFile);
+      // console.log("drop이벤트 시 파일", newFile);
       setUploadFile({
         file: newFile,
         url: url,

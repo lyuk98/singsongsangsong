@@ -9,7 +9,7 @@ const WeeklyMusicPage = () => {
     url: "/music-playlist/weekly-hitsong",
   });
 
-  console.log(response);
+  // console.log(response);
 
   if (isLoading) {
     <p>곡정보를 로딩중입니다</p>;

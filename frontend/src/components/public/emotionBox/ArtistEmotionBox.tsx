@@ -37,7 +37,7 @@ const ArtistEmotionBox = () => {
   useEffect(() => {
     const callApi = async () => {
       const emotions = await getEmotions(artistId);
-      console.log("아티스트 이모션 박스에서 찍힌 emotions", emotions);
+      // console.log("아티스트 이모션 박스에서 찍힌 emotions", emotions);
       setArtistEmotions(emotions);
     };
     callApi();

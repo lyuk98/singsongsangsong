@@ -35,15 +35,15 @@ const ArtistPage = () => {
     method: "GET",
   });
 
-  console.log(response);
+  // console.log(response);
 
   useEffect(() => {
     const getItems = async () => {
       const emotions = await getEmotions(artistId);
       const songs = await getSongList(artistId);
       setSongData(songs);
-      console.log(songs);
-      console.log(emotions);
+      // console.log(songs);
+      // console.log(emotions);
     };
     // console.log("djasiofgnioasgnaegniae", getArtist(1));
     // setFollowerCount(getFollowerCount(artistId))
