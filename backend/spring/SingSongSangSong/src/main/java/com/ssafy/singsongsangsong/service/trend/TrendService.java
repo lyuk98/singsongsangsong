@@ -2,7 +2,7 @@ package com.ssafy.singsongsangsong.service.trend;
 
 import java.time.LocalDate;
 
-import com.ssafy.singsongsangsong.dto.AgeSexChartDto;
+import com.ssafy.singsongsangsong.dto.AgeSexDetailChartDto;
 import com.ssafy.singsongsangsong.dto.AnalyzeGenreAndAtmosphereResponse;
 import com.ssafy.singsongsangsong.dto.ArtistInfoDto;
 import com.ssafy.singsongsangsong.dto.BpmChartDetailDto;
@@ -23,7 +23,7 @@ public interface TrendService {
 
 	TrendChartDto getAllChart(LocalDate date);
 	
-	AgeSexChartDto getAgeSexChart(LocalDate date, String age, String sex);
+	AgeSexDetailChartDto getAgeSexChart(LocalDate date, String age, String sex);
 
 	SongArtistDetailDto getGenreChart(LocalDate date, String genre);
 
