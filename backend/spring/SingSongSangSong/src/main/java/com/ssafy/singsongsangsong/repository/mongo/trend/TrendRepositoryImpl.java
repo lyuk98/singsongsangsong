@@ -7,11 +7,12 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
+import com.ssafy.singsongsangsong.dto.AgeSexChartDto;
+import com.ssafy.singsongsangsong.dto.AllChartDto;
 import com.ssafy.singsongsangsong.dto.AtmosphereChartDto;
 import com.ssafy.singsongsangsong.dto.BpmChartDto;
 import com.ssafy.singsongsangsong.dto.GenreChartDto;
 import com.ssafy.singsongsangsong.dto.SongArtistDto;
-import com.ssafy.singsongsangsong.dto.TrendChartDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -22,8 +23,13 @@ public class TrendRepositoryImpl implements TrendRepository {
 	private final MongoTemplate mongoTemplate;
 
 	@Override
-	public TrendChartDto getAllChart(LocalDate date) {
-		return mongoTemplate.findOne(Query.query(Criteria.where("part").is("all").and("start").lte(date).and("end").gt(date)), TrendChartDto.class);
+	public AllChartDto getAllChart(LocalDate date) {
+		return mongoTemplate.findOne(Query.query(Criteria.where("part").is("all").and("start").lte(date).and("end").gt(date)), AllChartDto.class);
+	}
+	
+	@Override
+	public AgeSexChartDto getAgeSexChart(LocalDate date, String age, String sex) {
+		return mongoTemplate.findOne(Query.query(Criteria.where("age").is(age).and("sex").is(sex).and("start").lte(date).and("end").gt(date)), AgeSexChartDto.class);
 	}
 
 	@Override

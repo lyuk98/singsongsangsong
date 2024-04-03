@@ -13,7 +13,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class SongArtistDto {
 	
-	private List<TrendSongDto> songs;
-	private List<TrendSongDto> artists;
+	private List<Long> songs;
+	private List<Long> artists;
 
 }
