@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.ssafy.singsongsangsong.constants.DefaultFileName;
 import com.ssafy.singsongsangsong.constants.FileType;
 import com.ssafy.singsongsangsong.dto.UploadSongDto;
 import com.ssafy.singsongsangsong.entity.Artist;
@@ -48,7 +49,6 @@ public class MinioFileService implements FileService {
 		if (fileRepository.findByOriginalFileName(fileData.getOriginalFilename()).isPresent()) {
 			throw new DuplicatedFileException("동일한 파일을 중복하여 업로드 할 수 없습니다");
 		}
-
 		String savedFileName = uploadToMinIo(fileType.getName(), fileData);
 		log.info("original: {} => saved: {}", fileData.getOriginalFilename(), savedFileName);
 		fileRepository.save(File.of(savedFileName, fileData.getOriginalFilename(), artistId));
@@ -88,8 +88,10 @@ public class MinioFileService implements FileService {
 	public UploadSongDto uploadSong(Long artistId, FileType fileType, MultipartFile fileData) throws IOException {
 		String savedFileName = saveFile(artistId, fileType, fileData);
 		Artist artist = artistRepository.findById(artistId).orElseThrow(ArtistNotFoundException::new);
+		File defaultAlbumImage = fileRepository.findByOriginalFileName(DefaultFileName.DEFAULT_ALBUM_PICTURE.getName())
+			.orElseThrow(() -> new BusinessException("기본 앨범 이미지 확인.. 서버 파일 스토리지에 Default_Album 사진에 대한 정보가 없습니다."));
 		Song song = songRepository.save(
-			Song.builder().artist(artist).musicFileName(fileData.getOriginalFilename()).build());
+			Song.builder().artist(artist).musicFileName(fileData.getOriginalFilename()).albumImage(defaultAlbumImage).build());
 		return new UploadSongDto(song.getId(), fileData.getOriginalFilename(), savedFileName);
 	}
 

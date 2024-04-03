@@ -2,10 +2,13 @@ package com.ssafy.singsongsangsong.service.analyze;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.ssafy.singsongsangsong.constants.DefaultFileName;
 import com.ssafy.singsongsangsong.dto.PublishSongRequest;
 import com.ssafy.singsongsangsong.dto.SimpleSongDto;
 import com.ssafy.singsongsangsong.dto.UploadMainPageDto;
@@ -13,6 +16,7 @@ import com.ssafy.singsongsangsong.entity.Atmosphere;
 import com.ssafy.singsongsangsong.entity.File;
 import com.ssafy.singsongsangsong.entity.Song;
 import com.ssafy.singsongsangsong.exception.NotYetAnalyzedException;
+import com.ssafy.singsongsangsong.exception.common.BusinessException;
 import com.ssafy.singsongsangsong.exception.file.NotFoundFileException;
 import com.ssafy.singsongsangsong.exception.song.AlreadyCompletedException;
 import com.ssafy.singsongsangsong.exception.song.NotFoundSongException;
@@ -75,8 +79,15 @@ public class AnalyzeServiceImpl implements AnalyzeService {
 	@Transactional
 	public void registerPublishedInformation(PublishSongRequest dto) {
 		Song song = songRepository.findById(dto.getSongId()).orElseThrow(NotFoundSongException::new);
-		File file = fileRepository.findByOriginalFileName(dto.getAlbumImageName())
-			.orElseThrow(NotFoundFileException::new);
+		File file;
+		if(dto.getAlbumImageName() == null){
+			String defaultAlbumImageFile = DefaultFileName.DEFAULT_ALBUM_PICTURE.getName();
+			file = fileRepository.findByOriginalFileName(defaultAlbumImageFile)
+				.orElseThrow(() -> new BusinessException("기본 앨범 이미지 확인.. 서버 파일 스토리지에 Default_album 사진에 대한 정보가 없습니다."));
+		} else {
+			file = fileRepository.findByOriginalFileName(dto.getAlbumImageName())
+				.orElseThrow(NotFoundFileException::new);
+		}
 		song.setAlbumImage(file);
 		song.setLyrics(dto.getLyrics());
 		song.setSongDescription(dto.getDescription());

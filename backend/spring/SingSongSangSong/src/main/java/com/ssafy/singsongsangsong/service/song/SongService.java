@@ -1,6 +1,5 @@
 package com.ssafy.singsongsangsong.service.song;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
@@ -10,11 +9,11 @@ import com.ssafy.singsongsangsong.constants.EmotionsConstants;
 import com.ssafy.singsongsangsong.dto.AnalyzeGenreAndAtmosphereResponse;
 import com.ssafy.singsongsangsong.dto.CommentsResponseDto;
 import com.ssafy.singsongsangsong.dto.LikedResponseDto;
-import com.ssafy.singsongsangsong.dto.SectionAnalyzeResponseDto;
 import com.ssafy.singsongsangsong.dto.SectionElementDto;
 import com.ssafy.singsongsangsong.dto.SongInfoResponse;
 import com.ssafy.singsongsangsong.dto.SongListByThemeResponseDto;
 import com.ssafy.singsongsangsong.dto.SongSimilarityByRanksResponse;
+import com.ssafy.singsongsangsong.dto.SpectrumResponseDto;
 
 public interface SongService {
 
@@ -36,7 +35,9 @@ public interface SongService {
 
 	SongSimilarityByRanksResponse getSongsSimilarityByRanks(Long songId, int size);
 
-	SectionAnalyzeResponseDto getSectionOfSong(Long songId, Long spectrumImageId);
+	List<SectionElementDto> getSectionOfSong(Long songId);
 
 	LikedResponseDto likedSong(Long songId, Long artistId);
+
+	SpectrumResponseDto getSpectrumId(Long songId);
 }

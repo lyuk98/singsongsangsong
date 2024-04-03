@@ -1,9 +1,9 @@
 package com.ssafy.singsongsangsong.controller;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
+import org.simpleframework.xml.Path;
 import org.springframework.core.io.Resource;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -21,11 +21,11 @@ import com.ssafy.singsongsangsong.dto.AnalyzeGenreAndAtmosphereResponse;
 import com.ssafy.singsongsangsong.dto.CommentsResponseDto;
 import com.ssafy.singsongsangsong.dto.LikedResponseDto;
 import com.ssafy.singsongsangsong.dto.PostCommentsDto;
-import com.ssafy.singsongsangsong.dto.SectionAnalyzeResponseDto;
 import com.ssafy.singsongsangsong.dto.SectionElementDto;
 import com.ssafy.singsongsangsong.dto.SongInfoResponse;
 import com.ssafy.singsongsangsong.dto.SongListByThemeResponseDto;
 import com.ssafy.singsongsangsong.dto.SongSimilarityByRanksResponse;
+import com.ssafy.singsongsangsong.dto.SpectrumResponseDto;
 import com.ssafy.singsongsangsong.security.ArtistPrincipal;
 import com.ssafy.singsongsangsong.service.song.SongService;
 
@@ -100,11 +100,14 @@ public class SongController {
 	}
 
 	@GetMapping("/section/{songId}")
-	public SectionAnalyzeResponseDto getSectionOfSong(@PathVariable(value = "songId") Long songId,
-		@RequestParam(required = false, name = "spectrumImageId") Long spectrumImageId) {
-		return songService.getSectionOfSong(songId, spectrumImageId);
+	public List<SectionElementDto> getSectionOfSong(@PathVariable(value = "songId") Long songId) {
+		return songService.getSectionOfSong(songId);
 	}
 
+	@GetMapping("/spectrum/{songId}")
+	public SpectrumResponseDto getSpectrumId(@PathVariable(value = "songId") Long songId) {
+		return songService.getSpectrumId(songId);
+	}
 	@PostMapping("/liked/{songId}")
 	public LikedResponseDto likedSong(@PathVariable(value = "songId") Long songId,
 		@AuthenticationPrincipal ArtistPrincipal user) {
