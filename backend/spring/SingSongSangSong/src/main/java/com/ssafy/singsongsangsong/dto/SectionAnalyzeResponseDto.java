@@ -13,12 +13,12 @@ import lombok.Setter;
 @AllArgsConstructor
 public class SectionAnalyzeResponseDto {
 	private List<SectionElementDto> sectionElementList;
-	private ImageDto mfccImage;
+	private ImageDto spectrumImage;
 
-	public static SectionAnalyzeResponseDto from(List<SectionElementDto> list, ImageDto spectrum) {
+	public static SectionAnalyzeResponseDto from(List<SectionElementDto> list, ImageDto spectrumImage) {
 		SectionAnalyzeResponseDto dto = new SectionAnalyzeResponseDto();
 		dto.setSectionElementList(list);
-		dto.setMfccImage(spectrum);
+		dto.setSpectrumImage(spectrumImage);
 		return dto;
 	}
 }

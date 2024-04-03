@@ -150,6 +150,14 @@ public class SongServiceImpl implements SongService {
 			originalFileName = DefaultFileName.DEFAULT_PROFILE_PICTURE.getName();
 		}
 
+		Long mfccImageId = -1L;
+		if (song.getMfccImage() == null) {
+			mfccImageId = fileRepository.findByOriginalFileName(DefaultFileName.DEFAULT_NOT_YET_IMAGE.getName()).get()
+				.getId();
+		} else {
+			mfccImageId = song.getMfccImage().getId();
+		}
+
 		builder = builder.songTitle(song.getTitle())
 			.artist(ArtistInfoDto.from(artist))
 			.lyrics(song.getLyrics())
@@ -158,7 +166,7 @@ public class SongServiceImpl implements SongService {
 			.songFileName(musicFileName)
 			.albumImageFileName(originalFileName)
 			.songDescription(song.getSongDescription())
-			.spectrumImageId(song.getSpectrumImage().getId());
+			.mfccImageId(mfccImageId);
 
 		builder = builder.movedEmotionCount(song.getMovedEmotionCount())
 			.likeEmotionCount(song.getLikeEmotionCount())
