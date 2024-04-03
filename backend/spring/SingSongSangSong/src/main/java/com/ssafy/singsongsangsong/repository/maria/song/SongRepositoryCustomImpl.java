@@ -80,24 +80,24 @@ public class SongRepositoryCustomImpl implements SongRepositoryCustom {
 	}
 
 	@Override
-	public long decrementEmotionCount(Long songId, Long artistId, String emotionName) throws NoSuchFieldException {
+	public long decrementEmotionCount(Long songId, String emotionName) throws NoSuchFieldException {
 		String columnName = getEmotionColumnName(emotionName);
 		Path<Integer> targetEmotionPath = Expressions.numberPath(Integer.class, columnName);
 
 		return jpaQueryFactory.update(song)
 			.set(targetEmotionPath, ((NumberExpression<Integer>)targetEmotionPath).subtract(1))
-			.where(song.id.eq(songId).and(song.artist.id.eq(artistId)))
+			.where(song.id.eq(songId))
 			.execute();
 	}
 
 	@Override
-	public long incrementEmotionCount(Long songId, Long artistId, String emotionName) {
+	public long incrementEmotionCount(Long songId, String emotionName) {
 		String columnName = getEmotionColumnName(emotionName);
 		Path<Integer> targetEmotionPath = Expressions.numberPath(Integer.class, columnName);
 
 		return jpaQueryFactory.update(song)
 			.set(targetEmotionPath, ((NumberExpression<Integer>)targetEmotionPath).add(1))
-			.where(song.id.eq(songId).and(song.artist.id.eq(artistId)))
+			.where(song.id.eq(songId))
 			.execute();
 	}
 
