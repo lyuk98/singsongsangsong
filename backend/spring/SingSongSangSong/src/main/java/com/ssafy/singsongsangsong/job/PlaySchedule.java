@@ -14,7 +14,7 @@ public class PlaySchedule {
 	private final JobLauncher jobLauncher;
 	private final PlayJobConfig playJobConfig;
 	
-	@Scheduled(fixedRate = 20000)
+	@Scheduled(cron = "0 0 3 ? * MON")
 	public void playCount() throws Exception {
 		jobLauncher.run(playJobConfig.playJob(), new JobParametersBuilder().toJobParameters());
 	}
