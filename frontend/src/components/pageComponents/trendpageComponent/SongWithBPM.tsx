@@ -14,7 +14,7 @@ const SongWithBPM = ({ selectedDate }: PropsType) => {
   const [bpmData, setBpmData] = useState<any>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const handleBpmChange = (value: number) => {
-    console.log(bpm);
+    // console.log(bpm);
     setBpm(value);
   };
 
@@ -39,7 +39,7 @@ const SongWithBPM = ({ selectedDate }: PropsType) => {
     };
     request();
   }, [selectedDate, bpm]);
-  console.log(bpmData);
+  // console.log(bpmData);
 
   if (isLoading) {
     return <p>bpm데이터를 로딩중입니다</p>;

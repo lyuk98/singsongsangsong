@@ -57,7 +57,7 @@ const ChartWithMelonBillboard = ({ type, data }: PropsType) => {
   const handleSongIndex = (index: number) => {
     setSongIndex(index);
   };
-  console.log("ckadsignweqaognbvoweiugnboewrngbwoenbgvwenv8ew9nv", data);
+  // console.log("ckadsignweqaognbvoweiugnboewrngbwoenbgvwenv8ew9nv", data);
   return (
     <div className={`${styles.container}`}>
       <div className={`flex-row-center ${styles.header}`}>
