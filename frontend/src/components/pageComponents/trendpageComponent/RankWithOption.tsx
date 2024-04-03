@@ -119,7 +119,7 @@ const RankWithOption = ({ selectedDate }: PropsType) => {
             genre: contentOption,
           },
         });
-        console.log("asujgb aisguaeigiauegnauioe : ", response);
+        // console.log("asujgb aisguaeigiauegnauioe : ", response);
         setResponseData(response.data.data);
       } catch (error) {
         console.log(error);
@@ -127,9 +127,9 @@ const RankWithOption = ({ selectedDate }: PropsType) => {
       setIsLoading(false);
     };
     if (headerOption === "genre") {
-      console.log("이거 실행은돠냐?");
-      console.log("장르입니다");
-      console.log(responseData);
+      // console.log("이거 실행은돠냐?");
+      // console.log("장르입니다");
+      // console.log(responseData);
       genreAxios();
     }
   }, [headerOption, selectedDate, contentOption]);
@@ -162,7 +162,7 @@ const RankWithOption = ({ selectedDate }: PropsType) => {
     console.log(contentOption);
   }, [contentOption]);
 
-  console.log("장르 분위기 데이터", responseData);
+  // console.log("장르 분위기 데이터", responseData);
 
   if (isLoading) {
     return <p>로딩중입니당</p>;

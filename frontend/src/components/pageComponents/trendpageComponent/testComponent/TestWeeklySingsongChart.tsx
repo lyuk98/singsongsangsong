@@ -26,7 +26,7 @@ type WeeklyData = {
 };
 
 const TestWeeklySingsongChart = ({ weekly }: any) => {
-  console.log("Weekdata : ", weekly);
+  // console.log("Weekdata : ", weekly);
 
   return (
     <div className={`w-100 gap-15 flex-col-center ${styles.container}`}>
