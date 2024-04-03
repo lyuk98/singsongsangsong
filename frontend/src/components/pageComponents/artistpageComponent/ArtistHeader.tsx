@@ -95,9 +95,7 @@ const ArtistHeader = ({
             className={`flex-col-center`}
             style={{ borderRight: "1px solid white", paddingRight: "10px" }}
           >
-            <span style={{ fontSize: "32px", color: "black" }}>
-              {followerCount}
-            </span>
+            <span style={{ fontSize: "32px" }}>{followerCount}</span>
             <span style={{ fontSize: "14px" }}>FOLLOWER</span>
           </span>
           <span className={`flex-col-center`}>
