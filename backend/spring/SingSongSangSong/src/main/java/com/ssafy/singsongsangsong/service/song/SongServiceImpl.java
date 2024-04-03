@@ -2,7 +2,6 @@ package com.ssafy.singsongsangsong.service.song;
 
 import static com.ssafy.singsongsangsong.webclient.WebClientRequestService.SimilarityResponse.*;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
@@ -12,8 +11,6 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.singsongsangsong.annotation.CsvFileContents;
 import com.ssafy.singsongsangsong.annotation.ExportCsvFile;
 import com.ssafy.singsongsangsong.constants.DefaultFileName;
@@ -39,7 +36,6 @@ import com.ssafy.singsongsangsong.entity.Artist;
 import com.ssafy.singsongsangsong.entity.Atmosphere;
 import com.ssafy.singsongsangsong.entity.Comments;
 import com.ssafy.singsongsangsong.entity.Emotions;
-import com.ssafy.singsongsangsong.entity.File;
 import com.ssafy.singsongsangsong.entity.Genre;
 import com.ssafy.singsongsangsong.entity.Song;
 import com.ssafy.singsongsangsong.exception.artist.ArtistNotFoundException;
@@ -97,7 +93,7 @@ public class SongServiceImpl implements SongService {
 
 			// 기존 emotion 업데이트 및 반정규화된 table, count 조정
 			emotionRepository.updateEmotionType(song.getId(), artistId, emotionType);
-			songRepository.decrementEmotionCount(song.getId(),  previousEmotionName);
+			songRepository.decrementEmotionCount(song.getId(), previousEmotionName);
 			songRepository.incrementEmotionCount(song.getId(), emotionType.getName());
 		} else {
 			// emotion 추가 및 반정규화된 table, count++
@@ -262,20 +258,17 @@ public class SongServiceImpl implements SongService {
 			.comparison(comparison.subList(0, size - 1))
 			.build();
 
-		ObjectMapper objectMapper = new ObjectMapper();
-		try {
-			log.info("response: {}", objectMapper.writeValueAsString(response));
-		} catch (JsonProcessingException e) {
-			log.error(e.getLocalizedMessage());
-		}
 		return response;
 	}
 
 	@Override
-	public SectionAnalyzeResponseDto getSectionOfSong(Long songId , Long spectrumImageId) {
-		List<SectionElementDto> elementDtoList = structureRepository.getStructureBySongId(songId).stream().map(SectionElementDto::from).toList();
+	public SectionAnalyzeResponseDto getSectionOfSong(Long songId, Long spectrumImageId) {
+		List<SectionElementDto> elementDtoList = structureRepository.getStructureBySongId(songId)
+			.stream()
+			.map(SectionElementDto::from)
+			.toList();
 		ImageDto spectrumImage = ImageDto.from(fileRepository.findById(spectrumImageId).orElse(null));
-		return SectionAnalyzeResponseDto.from(elementDtoList,spectrumImage);
+		return SectionAnalyzeResponseDto.from(elementDtoList, spectrumImage);
 	}
 
 }
