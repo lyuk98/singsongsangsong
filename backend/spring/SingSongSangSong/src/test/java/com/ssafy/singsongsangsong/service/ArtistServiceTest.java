@@ -10,8 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
-import com.ssafy.singsongsangsong.dto.ArtistInfoDto;
-import com.ssafy.singsongsangsong.dto.ImageDto;
+import com.ssafy.singsongsangsong.constants.DefaultFileName;
+import com.ssafy.singsongsangsong.dto.ArtistDetailDto;
 import com.ssafy.singsongsangsong.entity.Artist;
 import com.ssafy.singsongsangsong.entity.File;
 import com.ssafy.singsongsangsong.repository.maria.artist.ArtistRepository;
@@ -68,14 +68,14 @@ public class ArtistServiceTest {
 		File profileImage = Optional.ofNullable(saved.getProfileImage()).orElseGet(() -> null);
 		String savedImageFileName = Optional.ofNullable(profileImage)
 			.map(File::getSavedFileName)
-			.orElseGet(() -> ImageDto.DEFAULT_SAVED_FILENAME);
+			.orElseGet(DefaultFileName.DEFAULT_PROFILE_PICTURE::getName);
 
-		ArtistInfoDto artistInfo = artistService.getArtistInfo(saved.getId());
-		assertThat(artistInfo.getArtistId()).isEqualTo(saved.getId());
-		assertThat(artistInfo.getIntroduction()).isEqualTo(saved.getIntroduction());
-		assertThat(artistInfo.getNickname()).isEqualTo(saved.getNickname());
-		assertThat(artistInfo.getProfileImage().getSavedFileName()).isEqualTo(savedImageFileName);
-		assertThat(artistInfo.getUsername()).isEqualTo(saved.getUsername());
+		ArtistDetailDto artistInfo = artistService.getArtistInfo(saved.getId());
+		assertThat(artistInfo.getArtistInfoDto().getArtistId()).isEqualTo(saved.getId());
+		assertThat(artistInfo.getArtistInfoDto().getIntroduction()).isEqualTo(saved.getIntroduction());
+		assertThat(artistInfo.getArtistInfoDto().getNickname()).isEqualTo(saved.getNickname());
+		assertThat(artistInfo.getArtistInfoDto().getProfileImage().getSavedFileName()).isEqualTo(savedImageFileName);
+		assertThat(artistInfo.getArtistInfoDto().getUsername()).isEqualTo(saved.getUsername());
 	}
 
 	@Test

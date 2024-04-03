@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.ssafy.singsongsangsong.common.ErrorEntity;
+import com.ssafy.singsongsangsong.exception.DuplicatedFileException;
 import com.ssafy.singsongsangsong.exception.NotYetAnalyzedException;
 import com.ssafy.singsongsangsong.exception.artist.AlreadyFollowedException;
 import com.ssafy.singsongsangsong.exception.artist.ArtistNotFoundException;
@@ -100,7 +101,7 @@ public class GlobalExceptionHandler {
 			.build();
 	}
 
-	@ExceptionHandler({MalformedURLException.class})
+	@ExceptionHandler({MalformedURLException.class, DuplicatedFileException.class})
 	public ErrorEntity handleMalformedURLException(IOException e, HttpServletResponse response) {
 		response.setStatus(HttpStatus.BAD_REQUEST.value());
 		return ErrorEntity.builder()

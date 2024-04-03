@@ -1,6 +1,8 @@
 package com.ssafy.singsongsangsong.exception;
 
-public class DuplicatedFileException extends RuntimeException {
+import org.apache.coyote.BadRequestException;
+
+public class DuplicatedFileException extends BadRequestException {
 	public DuplicatedFileException(String s) {
 		super(s);
 	}
