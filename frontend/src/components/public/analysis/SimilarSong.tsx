@@ -50,13 +50,13 @@ const SimilarSong = () => {
     <div className={`flex-col-center ${styles.container}`}>
       <h3>비슷한 노래에는 이런 노래가 있어요</h3>
       <div className={`flex-row-center ${styles.content}`}>
-        <div className={`flex-col-center ${styles.similarSong}`}>
+        <div className={`flex-row-center ${styles.similarSong}`}>
           {responseData.comparison.map((element: any, index: any) => {
             return (
               <div
                 key={index}
                 onClick={() => changeIndex(index)}
-                className={`flex-col-center ${styles.box} ${
+                className={`flex-row-center ${styles.box} ${
                   selectIndex === index ? styles.selceted : ""
                 }`}
               >
@@ -69,26 +69,34 @@ const SimilarSong = () => {
           })}
         </div>
         <div className={`flex-col-center ${styles.compareSongSection}`}>
-          <p>가장 일치한 부분의 </p>
-          <h3>
+          <p>비교할 곡과의 </p>
+          <h2 style={{ paddingBottom: "2px", borderBottom: "3px solid black" }}>
             유사도는{" "}
-            {`${Math.floor(responseData.comparison[0].correlation * 100)}%`}{" "}
+            {`${Math.floor(
+              responseData.comparison[selectIndex].correlation * 100
+            )}%`}{" "}
             입니다
-          </h3>
+          </h2>
           <div className={`flex-row-center ${styles.compareSong}`}>
-            <div className={`flex-col-center ${styles.selectedSong}`}>
+            <div className={`flex-col-center gap-15 ${styles.mySong}`}>
+              <div
+                style={{ width: "100px", height: "100px",  }}
+              >
+                <Album songId={songId} />
+              </div>
+              <h3>
+                {responseData.title ? responseData.title : "제목이 없습니다"}
+              </h3>
+              <p>나의 노래</p>
+            </div>
+            <div className={`flex-col-center gap-15 ${styles.selectedSong}`}>
               <div style={{ width: "100px", height: "100px" }}>
                 <Album
                   songId={responseData.comparison[selectIndex].target.songId}
                 />
               </div>
-              <p>{responseData.comparison[selectIndex].target.title}</p>
-            </div>
-            <div className={`flex-col-center ${styles.mySong}`}>
-              <div style={{ width: "100px", height: "100px" }}>
-                <Album songId={songId} />
-              </div>
-              <p>{responseData.title}</p>
+              <h3>{responseData.comparison[selectIndex].target.title}</h3>
+              <p>비교 노래</p>
             </div>
           </div>
         </div>
