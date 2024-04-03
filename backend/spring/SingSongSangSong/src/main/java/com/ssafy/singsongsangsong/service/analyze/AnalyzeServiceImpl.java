@@ -80,6 +80,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
 		song.setAlbumImage(file);
 		song.setLyrics(dto.getLyrics());
 		song.setSongDescription(dto.getDescription());
+		song.setPublished(true);
 	}
 
 	@Override
