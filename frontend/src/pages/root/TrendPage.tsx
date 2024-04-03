@@ -70,23 +70,23 @@ const TrendPage = () => {
   //   getdata();
   // }, []);
 
-  useEffect(() => {
-    const checkUser = async () => {
-      try {
-        const reponse = await axiosInstance.request({
-          method: "GET",
-          url: "/artist/myProfile",
-        });
-        console.log(response);
-        return reponse;
-      } catch (error) {
-        console.log("error at check user");
-      }
-    };
-    const accessToken = getCookie("accessToken");
-    if (accessToken) {
-    }
-  }, []);
+  // useEffect(() => {
+  //   const checkUser = async () => {
+  //     try {
+  //       const reponse = await axiosInstance.request({
+  //         method: "GET",
+  //         url: "/artist/myProfile",
+  //       });
+  //       console.log(response);
+  //       return reponse;
+  //     } catch (error) {
+  //       console.log("error at check user");
+  //     }
+  //   };
+  //   const accessToken = getCookie("accessToken");
+  //   if (accessToken) {
+  //   }
+  // }, []);
 
   const handleCalendarOpen = (): void => {
     setIsModalOpen(true);
@@ -138,13 +138,13 @@ const TrendPage = () => {
       )}
       {response && (
         <>
-          {/* <TestWeeklySingsongChart weekly={response.weekly} /> */}
+          <TestWeeklySingsongChart weekly={response.weekly} />
           <TrendWithOptions />
           <RankWithOption selectedDate={selectedDate} />
-          {/* <CompareWithAnotherSite
+          <CompareWithAnotherSite
             korean={response.korean}
             world={response.world}
-          /> */}
+          />
           <SongWithEmotion emotions={response.emotions} />
           <SongWithBPM selectedDate={selectedDate} />
         </>

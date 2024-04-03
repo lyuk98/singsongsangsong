@@ -45,7 +45,7 @@ type dataType = {
 
 type PropsType = {
   type: string;
-  data: dataType[];
+  data: any[];
 };
 /**
  * melon / billboard 두개의 상태에 따라서 보여줄 곡들을 다르게할 로직 추가 필요
@@ -57,7 +57,7 @@ const ChartWithMelonBillboard = ({ type, data }: PropsType) => {
   const handleSongIndex = (index: number) => {
     setSongIndex(index);
   };
-  console.log(data);
+  console.log("ckadsignweqaognbvoweiugnboewrngbwoenbgvwenv8ew9nv", data);
   return (
     <div className={`${styles.container}`}>
       <div className={`flex-row-center ${styles.header}`}>
@@ -91,37 +91,45 @@ const ChartWithMelonBillboard = ({ type, data }: PropsType) => {
                   songIndex === index ? styles.selected : ""
                 }`}
               >
-                <div style={{ width: "100px", height: "100px" }}>
-                  <Album />
+                <div
+                  className={`flex-col-center ${styles.album}`}
+                  style={{ width: "100px", height: "100px" }}
+                >
+                  <Album songId={element.songId} />
                 </div>
                 <div className={styles.info}>
                   <img src={medalImage} alt="" />
                   <p onClick={() => navigate(`/artist/${element.artistId}`)}>
-                    {element.artistName}
+                    {element.artist.nickname}
                   </p>
                   <h2 onClick={() => navigate(`/song/${element.songId}`)}>
-                    {element.title}
+                    {element.songTitle}
                   </h2>
                 </div>
               </div>
             );
           })}
         </div>
-        <div className={`flex-row-center ${styles.tagBox}`}>
-          {/* 해당 태그들의 mood값을 받아온값으로 변경하는 (selected index로 엮어서) 로직 필요 */}
+        {/* <div className={`flex-row-center ${styles.tagBox}`}>
+          해당 태그들의 mood값을 받아온값으로 변경하는 (selected index로 엮어서) 로직 필요
           {DUMMY_DATA[songIndex].mood.map((element) => {
             return <MoodTag key={element} mood={element} />;
           })}
-        </div>
+        </div> */}
         <div className={`flex-row-center ${styles.chartBox}`}>
           <div className={styles.leftChart}>
-            <RaderChart />
+            <RaderChart type="genre" data={data[songIndex].analysis.genres} />
           </div>
           <div className={styles.rightChart}>
-            <RaderChart />
+            <RaderChart
+              type="atmo"
+              data={data[songIndex].analysis.atmospheres}
+            />
           </div>
         </div>
-        <div className={styles.flowImg}>{/* 추후 추가필요 */}</div>
+        {/* <div className={styles.flowImg}>
+          추후 추가필요
+          </div> */}
       </div>
     </div>
   );
