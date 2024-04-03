@@ -193,14 +193,9 @@ const DiscoverPage = () => {
             </div>
             <div>
               <div
-                onClick={() => navigate("/favorite/artist")}
+                onClick={() => navigate("weekly-singsong-artist")}
                 className={`${styles.musicBox}`}
               >
-                <img src={likeArtist} alt="좋아요한 아티스트" />
-              </div>
-            </div>
-            <div>
-              <div className={`${styles.musicBox}`}>
                 <img src={singsongArtist} alt="싱송 아티스트" />
               </div>
             </div>
@@ -240,20 +235,6 @@ const DiscoverPage = () => {
                 </div>
               );
             })}
-          </StyledSlider>
-        </div>
-        <div className={`w-100 flex-col`}>
-          <h1 style={{ paddingBottom: "10px" }}>이번 주 인기 아티스트</h1>
-          <StyledSlider>
-            <div>
-              <div className={`${styles.musicBox}`}>1</div>
-            </div>
-            <div>
-              <div className={`${styles.musicBox}`}>2</div>
-            </div>
-            <div>
-              <div className={`${styles.musicBox}`}>3</div>
-            </div>
           </StyledSlider>
         </div>
       </div>

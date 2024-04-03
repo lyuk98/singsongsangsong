@@ -15,10 +15,11 @@ import ErrorPage from "../pages/Error/ErrorPage";
 import SearchResultPage from "../pages/root/SearchResultPage";
 import TopRankSongPage from "../pages/root/TopRankSongPage";
 import TopRankArtistPage from "../pages/root/TopRankArtistPage";
-import FavoriteArtistPage from "../pages/root/FavoriteArtistPage";
+import FavoriteArtistPage from "../pages/root/WeeklyArtistPage";
 import FavoriteSongPage from "../pages/root/FavoriteSongPage";
 import RegisterSelectPage from "../pages/root/RegisterSelectPage";
 import WeeklyMusicPage from "../pages/root/WeeklyMusicPage";
+import WeeklyArtistPage from "../pages/root/WeeklyArtistPage";
 
 export const router = createBrowserRouter([
   {
@@ -72,8 +73,8 @@ export const router = createBrowserRouter([
         element: <SongDetailPage />,
       },
       {
-        path: "favorite/artist",
-        element: <FavoriteArtistPage />,
+        path: "discover/weekly-singsong-artist",
+        element: <WeeklyArtistPage />,
       },
       {
         path: "favorite/song",
