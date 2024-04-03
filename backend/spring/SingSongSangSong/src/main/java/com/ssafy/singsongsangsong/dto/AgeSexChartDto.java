@@ -16,11 +16,9 @@ import lombok.Setter;
 @Document(collection = "trend")
 public class AgeSexChartDto {
 	
-	private String age;
-	private String sex;
-	private List<Integer> genreChart;
-	private List<Integer> atmosphereChart;
-	private List<Integer> songChart;
-	private List<Integer> artistChart;
+	private List<GenreAgeSexDto> genres;
+	private List<AtmosphereAgeSexDto> atmospheres;
+	private List<SongAgeSexDto> songs;
+	private List<ArtistAgeSexDto> artists;
 
 }

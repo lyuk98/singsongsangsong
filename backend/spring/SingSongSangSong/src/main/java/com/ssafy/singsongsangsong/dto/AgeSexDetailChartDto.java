@@ -2,8 +2,6 @@ package com.ssafy.singsongsangsong.dto;
 
 import java.util.List;
 
-import org.springframework.data.mongodb.core.mapping.Document;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,12 +11,11 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(collection = "trend")
-public class AllChartDto {
+public class AgeSexDetailChartDto {
 	
-	private List<Long> weekly;
-	private List<Long> world;
-	private List<Long> korean;
-	private List<Long> emotions;
+	private List<GenreAgeSexDetailDto> genres;
+	private List<AtmosphereAgeSexDetailDto> atmospheres;
+	private List<SongAgeSexDetailDto> songs;
+	private List<ArtistAgeSexDetailDto> artists;
 
 }

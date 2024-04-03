@@ -1,7 +1,5 @@
 package com.ssafy.singsongsangsong.dto;
 
-import java.util.List;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,9 +9,10 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class SongArtistDetailDto {
+public class ArtistAgeSexDto {
 	
-	private List<TrendSongDto> songs;
-	private List<ArtistInfoDto> artists;
+	private long artistId;
+	private int playCount;
+	private long songId;
 
 }

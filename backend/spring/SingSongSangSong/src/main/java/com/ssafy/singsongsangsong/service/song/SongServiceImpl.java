@@ -2,7 +2,6 @@ package com.ssafy.singsongsangsong.service.song;
 
 import static com.ssafy.singsongsangsong.webclient.WebClientRequestService.SimilarityResponse.*;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
@@ -38,7 +37,6 @@ import com.ssafy.singsongsangsong.entity.Artist;
 import com.ssafy.singsongsangsong.entity.Atmosphere;
 import com.ssafy.singsongsangsong.entity.Comments;
 import com.ssafy.singsongsangsong.entity.Emotions;
-import com.ssafy.singsongsangsong.entity.File;
 import com.ssafy.singsongsangsong.entity.Genre;
 import com.ssafy.singsongsangsong.entity.Likes;
 import com.ssafy.singsongsangsong.entity.Song;
@@ -57,7 +55,9 @@ import com.ssafy.singsongsangsong.service.file.FileService;
 import com.ssafy.singsongsangsong.webclient.WebClientRequestService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class SongServiceImpl implements SongService {
@@ -143,7 +143,6 @@ public class SongServiceImpl implements SongService {
 		Song song = songRepository.findById(songId).orElseThrow(NotFoundSongException::new);
 		Artist artist = song.getArtist();
 		List<Comments> commentsList = commentsRepository.findBySongId(songId);
-
 		SongInfoResponseBuilder builder = SongInfoResponse.builder();
 
 		String musicFileName = Optional.ofNullable(song.getMusicFileName())
@@ -228,7 +227,7 @@ public class SongServiceImpl implements SongService {
 		Collections.sort(retrieved);
 
 		List<Comparison> comparison = retrieved.stream().map(similarityInfo -> {
-			Long targetId = similarityInfo.getSimilarSongId();
+			Long targetId = similarityInfo.getId();
 			Song targetSong = songRepository.findById(targetId).orElseThrow(NotFoundSongException::new);
 			String originalFileName;
 
@@ -256,13 +255,15 @@ public class SongServiceImpl implements SongService {
 			originalAlbumImageFile = DefaultFileName.DEFAULT_ALBUM_PICTURE.getName();
 		}
 
-		return SongSimilarityByRanksResponse.builder()
+		SongSimilarityByRanksResponse response = SongSimilarityByRanksResponse.builder()
 			.size(size)
 			.albumImageFileName(originalAlbumImageFile)
 			.title(song.getTitle())
 			.createdDate(song.getCreatedDate())
 			.comparison(comparison.subList(0, size - 1))
 			.build();
+
+		return response;
 	}
 
 	@Override
