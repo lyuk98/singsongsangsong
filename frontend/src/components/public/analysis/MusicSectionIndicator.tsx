@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import img from "./../../../sources/testimg/sectionImg.png";
 import styles from "./MusicSectionIndicator.module.css";
 import SectionButton from "./SectionButton";
+import { useParams } from "react-router-dom";
+import { useAxios } from "../../../hooks/api/useAxios";
 
 /**
  * 구간분석용 지표가 나오는 컴포넌트.
@@ -12,8 +14,34 @@ import SectionButton from "./SectionButton";
  */
 
 const MusicSectionIndicator = () => {
-  // songSpectrum
+  const { songId } = useParams();
+  // const [intro, setIntro] = useState();
+  // const [transition, setTransition] = useState();
+  // const [chorus, setChorus] = useState();
+  // const [verse, setVerse] = useState();
+  // const [outro, setOutro] = useState();
 
+  const [section, setSection] = useState({
+    intro: [],
+    transition: [],
+    chorus: [],
+    verse: [],
+    outro: [],
+  });
+
+  const { response, isLoading } = useAxios({
+    method: "GET",
+    url: `/song/section/${songId}`,
+  });
+
+  console.log(response);
+
+  if (isLoading) {
+    return <p>데이터를 로드중입니다</p>;
+  }
+  if (!response) {
+    return <p>분석 데이터가 존재하지 않습니다</p>;
+  }
   return (
     <div className={`flex-col-center ${styles.content}`}>
       <h2>각 구간은 이런 특징을 가져요</h2>
@@ -25,25 +53,81 @@ const MusicSectionIndicator = () => {
           <div className={styles.type}>
             <h3>intro</h3>
           </div>
-          <SectionButton section="intro" startPoint={43} endPoint={61} />
+          {response
+            .filter((element: any) => element.label === "intro")
+            .map((element: any) => {
+              return (
+                <SectionButton
+                  section="intro"
+                  startPoint={element.start}
+                  endPoint={element.end}
+                />
+              );
+            })}
         </div>
         <div className={`flex-row-center ${styles.innerSection}`}>
           <div className={styles.type}>
             <h3>verse</h3>
           </div>
-          <SectionButton section="verse" startPoint={43} endPoint={67} />
+          {response
+            .filter((element: any) => element.label === "verse")
+            .map((element: any) => {
+              return (
+                <SectionButton
+                  section="verse"
+                  startPoint={element.start}
+                  endPoint={element.end}
+                />
+              );
+            })}
         </div>
         <div className={`flex-row-center ${styles.innerSection}`}>
           <div className={styles.type}>
             <h3>chorus</h3>
           </div>
-          <SectionButton section="chorus" startPoint={121} endPoint={143} />
+          {response
+            .filter((element: any) => element.label === "chorus")
+            .map((element: any) => {
+              return (
+                <SectionButton
+                  section="chorus"
+                  startPoint={element.start}
+                  endPoint={element.end}
+                />
+              );
+            })}
         </div>
         <div className={`flex-row-center ${styles.innerSection}`}>
           <div className={styles.type}>
             <h3>bridge</h3>
           </div>
-          <SectionButton section="bridge" startPoint={152} endPoint={190} />
+          {response
+            .filter((element: any) => element.label === "bridge")
+            .map((element: any) => {
+              return (
+                <SectionButton
+                  section="bridge"
+                  startPoint={element.start}
+                  endPoint={element.end}
+                />
+              );
+            })}
+        </div>
+        <div className={`flex-row-center ${styles.innerSection}`}>
+          <div className={styles.type}>
+            <h3>outro</h3>
+          </div>
+          {response
+            .filter((element: any) => element.label === "outro")
+            .map((element: any) => {
+              return (
+                <SectionButton
+                  section="outro"
+                  startPoint={element.start}
+                  endPoint={element.end}
+                />
+              );
+            })}
         </div>
       </div>
     </div>

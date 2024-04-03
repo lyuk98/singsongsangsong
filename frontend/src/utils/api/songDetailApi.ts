@@ -141,3 +141,15 @@ export const playSong = async (songId: string | undefined) => {
     console.log(error);
   }
 };
+
+export const getSection = async (songId: any) => {
+  try {
+    const response = await axiosInstance.request({
+      method: "GET",
+      url: `/song/section/${songId}`,
+    });
+    return response.data.data;
+  } catch (error) {
+    console.log("errror at getSection", error);
+  }
+};
