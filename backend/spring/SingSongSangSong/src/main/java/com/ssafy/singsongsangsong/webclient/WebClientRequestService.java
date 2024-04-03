@@ -30,21 +30,20 @@ public class WebClientRequestService {
 	@NoArgsConstructor
 	public static class RequestAnalyzeSongDto {
 		private Long songId;
-		private String savedFileName;
+		private String path;
 
-		public RequestAnalyzeSongDto(Long songId, String savedFileName) {
+		public RequestAnalyzeSongDto(Long songId, String originalFileName) {
 			this.songId = songId;
-			this.savedFileName = savedFileName;
+			this.path = originalFileName;
 		}
 	}
 
-	public void requestAnalyzeSong(Long songId, String savedFileName) {
-		RequestAnalyzeSongDto requestAnalyzeSongDto = new RequestAnalyzeSongDto(songId, savedFileName);
+	public void requestAnalyzeSong(Long songId, String originalFileName) {
+		RequestAnalyzeSongDto requestAnalyzeSongDto = new RequestAnalyzeSongDto(songId, originalFileName);
 		webClient.post()
-			.uri("/song/")
-			.bodyValue(requestAnalyzeSongDto)
+			.uri("/song/{songId}", songId)
 			.retrieve()
-			.bodyToMono(Void.class)
+			.toBodilessEntity()
 			.block();
 	}
 
