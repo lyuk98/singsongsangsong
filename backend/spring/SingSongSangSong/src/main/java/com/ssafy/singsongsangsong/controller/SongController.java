@@ -100,7 +100,7 @@ public class SongController {
 
 	@GetMapping("/section/{songId}")
 	public SectionAnalyzeResponseDto getSectionOfSong(@PathVariable(value = "songId") Long songId,
-		@RequestParam(required = false, name = "mfccImageId") Long mfccImageId) {
-		return songService.getSectionOfSong(songId, mfccImageId);
+		@RequestParam(required = false, name = "spectrumImageId") Long spectrumImageId) {
+		return songService.getSectionOfSong(songId, spectrumImageId);
 	}
 }

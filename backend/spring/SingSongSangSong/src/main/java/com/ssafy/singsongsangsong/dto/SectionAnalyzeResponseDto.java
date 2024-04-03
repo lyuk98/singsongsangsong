@@ -1,6 +1,5 @@
 package com.ssafy.singsongsangsong.dto;
 
-import java.awt.*;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -16,10 +15,10 @@ public class SectionAnalyzeResponseDto {
 	private List<SectionElementDto> sectionElementList;
 	private ImageDto mfccImage;
 
-	public static SectionAnalyzeResponseDto from(List<SectionElementDto> list, ImageDto mfcc) {
+	public static SectionAnalyzeResponseDto from(List<SectionElementDto> list, ImageDto spectrum) {
 		SectionAnalyzeResponseDto dto = new SectionAnalyzeResponseDto();
 		dto.setSectionElementList(list);
-		dto.setMfccImage(mfcc);
+		dto.setMfccImage(spectrum);
 		return dto;
 	}
 }

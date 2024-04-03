@@ -35,5 +35,5 @@ public interface SongService {
 
 	SongSimilarityByRanksResponse getSongsSimilarityByRanks(Long songId, int size);
 
-	SectionAnalyzeResponseDto getSectionOfSong(Long songId, Long mfccImageId);
+	SectionAnalyzeResponseDto getSectionOfSong(Long songId, Long spectrumImageId);
 }

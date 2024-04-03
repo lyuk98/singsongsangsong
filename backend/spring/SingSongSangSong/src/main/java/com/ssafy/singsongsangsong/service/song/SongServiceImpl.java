@@ -159,7 +159,7 @@ public class SongServiceImpl implements SongService {
 			.songFileName(musicFileName)
 			.albumImageFileName(originalFileName)
 			.songDescription(song.getSongDescription())
-			.mfccImageId(song.getMfccImage().getId());
+			.spectrumImageId(song.getSpectrumImage().getId());
 
 		builder = builder.movedEmotionCount(song.getMovedEmotionCount())
 			.likeEmotionCount(song.getLikeEmotionCount())
@@ -261,10 +261,10 @@ public class SongServiceImpl implements SongService {
 	}
 
 	@Override
-	public SectionAnalyzeResponseDto getSectionOfSong(Long songId , Long mfccImageId) {
+	public SectionAnalyzeResponseDto getSectionOfSong(Long songId , Long spectrumImageId) {
 		List<SectionElementDto> elementDtoList = structureRepository.getStructureBySongId(songId).stream().map(SectionElementDto::from).toList();
-		ImageDto mfccImage = ImageDto.from(fileRepository.findById(mfccImageId).orElse(null));
-		return SectionAnalyzeResponseDto.from(elementDtoList,mfccImage);
+		ImageDto spectrumImage = ImageDto.from(fileRepository.findById(spectrumImageId).orElse(null));
+		return SectionAnalyzeResponseDto.from(elementDtoList,spectrumImage);
 	}
 
 }
