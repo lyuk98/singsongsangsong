@@ -14,7 +14,9 @@ public interface SongRepositoryCustom {
 	public List<Song> findSongForGenreOrderByWeeklyCountDesc(String requestGenre);
 
 	public List<Song> findSongForAtmosphereOrderByWeeklyCountDesc(String requestAtmosphere);
-	public List<Song> findSongByBpmAndKeyword(String keyword, int startBpm, int endBpm, OrderSpecifier[] orderSpecifier, String requestGenre, String requestAtmosphere);
+
+	public List<Song> findSongByBpmAndKeyword(String keyword, int startBpm, int endBpm, OrderSpecifier[] orderSpecifier,
+		String requestGenre, String requestAtmosphere);
 
 	public Optional<Song> getSongByArtistIdAndSongId(Long songId, Long artistId);
 
@@ -29,4 +31,6 @@ public interface SongRepositoryCustom {
 	void incrementDownloadCount(Long songId);
 
 	List<Song> findAllByArtistIdAndIsPublished(Long artistId);
+
+	List<Song> getSongByArtistId(Long artistId);
 }

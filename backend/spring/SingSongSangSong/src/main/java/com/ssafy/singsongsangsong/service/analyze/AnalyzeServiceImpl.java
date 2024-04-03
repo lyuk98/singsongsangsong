@@ -2,11 +2,9 @@ package com.ssafy.singsongsangsong.service.analyze;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.ssafy.singsongsangsong.constants.DefaultFileName;
 import com.ssafy.singsongsangsong.dto.PublishSongRequest;
@@ -57,7 +55,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
 
 	@Override
 	public UploadMainPageDto getUploadStatus(Long artistId) {
-		List<Song> songList = songRepository.getPublishedSongsByArtistId(artistId);
+		List<Song> songList = songRepository.getSongByArtistId(artistId);
 		List<UploadMainPageDto.UploadProcess> uploadProcesses = new ArrayList<>();
 		songList.stream().forEach(song -> uploadProcesses.add(UploadMainPageDto.UploadProcess.from(song)));
 		return UploadMainPageDto.builder().uploadProcesses(uploadProcesses).build();
@@ -80,7 +78,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
 	public void registerPublishedInformation(PublishSongRequest dto) {
 		Song song = songRepository.findById(dto.getSongId()).orElseThrow(NotFoundSongException::new);
 		File file;
-		if(dto.getAlbumImageName() == null){
+		if (dto.getAlbumImageName() == null) {
 			String defaultAlbumImageFile = DefaultFileName.DEFAULT_ALBUM_PICTURE.getName();
 			file = fileRepository.findByOriginalFileName(defaultAlbumImageFile)
 				.orElseThrow(() -> new BusinessException("기본 앨범 이미지 확인.. 서버 파일 스토리지에 Default_album 사진에 대한 정보가 없습니다."));

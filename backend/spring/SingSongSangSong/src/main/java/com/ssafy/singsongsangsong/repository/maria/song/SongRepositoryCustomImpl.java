@@ -65,13 +65,19 @@ public class SongRepositoryCustomImpl implements SongRepositoryCustom {
 		if (keyword != null) {
 			builder.and(song.title.contains(keyword));
 		}
-		if(requestGenre != null) {
+		if (requestGenre != null) {
 			builder.and(song.customGenre.eq(requestGenre));
 		}
-		if(requestAtmosphere != null) {
+		if (requestAtmosphere != null) {
 			builder.and(song.themes.eq(requestAtmosphere));
 		}
-		return jpaQueryFactory.select(song).distinct().from(song).where(builder).orderBy(orderSpecifiers).limit(20).fetch();
+		return jpaQueryFactory.select(song)
+			.distinct()
+			.from(song)
+			.where(builder)
+			.orderBy(orderSpecifiers)
+			.limit(20)
+			.fetch();
 	}
 
 	public Optional<Song> getSongByArtistIdAndSongId(Long songId, Long artistId) {
@@ -129,6 +135,13 @@ public class SongRepositoryCustomImpl implements SongRepositoryCustom {
 	public List<Song> findAllByArtistIdAndIsPublished(Long artistId) {
 		return jpaQueryFactory.selectFrom(song)
 			.where(song.artist.id.eq(artistId).and(song.isPublished))
+			.fetch();
+	}
+
+	@Override
+	public List<Song> getSongByArtistId(Long artistId) {
+		return jpaQueryFactory.selectFrom(song)
+			.where(song.artist.id.eq(artistId))
 			.fetch();
 	}
 }
