@@ -37,8 +37,8 @@ public class SongController {
 
 	@PutMapping("/{songId}/{emotionType}")
 	@PreAuthorize("hasRole('USER')")
-	public void updateEmotion(@AuthenticationPrincipal ArtistPrincipal user, @PathVariable Long songId,
-		@PathVariable EmotionsConstants emotionType) throws
+	public void updateEmotion(@AuthenticationPrincipal ArtistPrincipal user, @PathVariable(value = "songId") Long songId,
+		@PathVariable(value = "emotionType") EmotionsConstants emotionType) throws
 		NoSuchFieldException {
 		// 기존 사용자가 해당 노래에 대해서 emotion을 남긴 경우, 해당 노래의 emotion을 삭제하고 count down 시킨 다음,
 		// 새로운 감정을 추가한다. count up++

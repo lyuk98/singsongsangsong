@@ -121,20 +121,13 @@ public class SongPlayListServiceImpl implements SongPlayListService {
 	public SearchResponseDto searchArtistAndSong(String keyword, String requestGenre, String requestAtmosphere,
 		Integer bpm,
 		String sort) {
-		int[] bpmRange = bpmRange(bpm);
-		List<OrderSpecifier> orderSpecifiers = sortStandard(sort);
-		List<Song> songListFiltering = songRepository.findSongByBpmAndKeyword(keyword, bpmRange[0], bpmRange[1],
-			orderSpecifiers);
-		List<Long> songIdList = songListFiltering.stream().map(Song::getId).toList();
-
-		if (requestGenre != null) {
+		if(requestGenre != null) {
 			requestGenre = castingGenreString(requestGenre);
-			songListFiltering = genreRepository.genreFilterList(songIdList, requestGenre);
-			songIdList = songListFiltering.stream().map(Song::getId).toList();
 		}
-		if (requestAtmosphere != null) {
-			songListFiltering = atmosphereRepository.atmosphereFilterList(songIdList, requestAtmosphere);
-		}
+		int[] bpmRange = bpmRange(bpm);
+		OrderSpecifier[] orderSpecifiers = sortStandard(sort);
+		List<Song> songListFiltering = songRepository.findSongByBpmAndKeyword(keyword, bpmRange[0], bpmRange[1],
+			orderSpecifiers, requestGenre, requestAtmosphere);
 
 		List<Artist> artistList = artistRepository.findArtistBySearchParam(keyword);
 		return SearchResponseDto.from(artistList, songListFiltering);
@@ -166,7 +159,7 @@ public class SongPlayListServiceImpl implements SongPlayListService {
 		return new int[] {startBpm, endBpm};
 	}
 
-	private List<OrderSpecifier> sortStandard(String sort) {
+	private OrderSpecifier[] sortStandard(String sort) {
 		List<OrderSpecifier> orderSpecifiers = new ArrayList<>();
 		if (sort.equals("date")) {
 			orderSpecifiers.add(new OrderSpecifier(Order.DESC, song.createdDate));
@@ -176,7 +169,7 @@ public class SongPlayListServiceImpl implements SongPlayListService {
 		} else {
 			orderSpecifiers.add(new OrderSpecifier(Order.DESC, song.likeCount));
 		}
-		return orderSpecifiers;
+		return orderSpecifiers.toArray(new OrderSpecifier[orderSpecifiers.size()]);
 	}
 
 }

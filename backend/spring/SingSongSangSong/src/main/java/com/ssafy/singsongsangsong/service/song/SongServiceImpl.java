@@ -79,9 +79,8 @@ public class SongServiceImpl implements SongService {
 		NoSuchFieldException {
 		// 기존 사용자가 해당 노래에 대해서 emotion을 남긴 경우, 해당 노래의 emotion을 삭제하고 count down 시킨 다음,
 		// 새로운 감정을 추가한다. count up++
-
+		Artist artist = artistRepository.findById(artistId).orElseThrow(ArtistNotFoundException::new);
 		Song song = songRepository.findById(songId).orElseThrow(NotFoundSongException::new);
-
 		Optional<java.lang.String> targetEmotion = emotionRepository.checkIfEmotionExists(song.getId(), artistId);
 		if (targetEmotion.isPresent()) {
 			java.lang.String previousEmotionName = targetEmotion.get();
@@ -92,8 +91,11 @@ public class SongServiceImpl implements SongService {
 			songRepository.incrementEmotionCount(song.getId(), artistId, emotionType.getName());
 		} else {
 			// emotion 추가 및 반정규화된 table, count++
-			emotionRepository.save(
-				Emotions.builder().song(song).artist(song.getArtist()).emotionType(emotionType).build());
+			emotionRepository.save(Emotions.builder()
+				.song(song)
+				.artist(artist)
+				.emotionType(emotionType)
+				.build());
 			songRepository.incrementEmotionCount(song.getId(), artistId, emotionType.getName());
 		}
 	}
@@ -160,7 +162,6 @@ public class SongServiceImpl implements SongService {
 			.sadEmotionCount(song.getSadEmotionCount());
 
 		List<CommentsInfoDto> comments = commentsList.stream().map(CommentsInfoDto::from).toList();
-
 		builder = builder.likeCount(song.getLikeCount())
 			.downloadCount(song.getDownloadCount())
 			.playCount(song.getPlayCount());
