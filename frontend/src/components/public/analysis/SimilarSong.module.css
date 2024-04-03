@@ -38,6 +38,12 @@
   width: 50%;
 }
 
+.box {
+  width: 200px;
+  height: 150px;
+  border: 2px solid #d7d7d7;
+  border-radius: 15px;
+}
 @media screen and (max-width: 992px) {
   .content {
   }

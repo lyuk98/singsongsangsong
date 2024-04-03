@@ -4,6 +4,7 @@ import RankedSongAndArtist from "../../pageComponents/trendpageComponent/RankedS
 import Album from "../Album";
 import { getSongSimilarity } from "../../../utils/api/songDetailApi";
 import { useParams } from "react-router-dom";
+import { axiosInstance } from "../../../hooks/api";
 
 const DUMMY = [
   { artist: "test1", song: "testmusic1" },
@@ -15,51 +16,76 @@ const DUMMY = [
 const SimilarSong = () => {
   const { songId } = useParams();
   const [selectIndex, setSelectIndex] = useState<number>(0);
-
+  const [responseData, setResponseData] = useState<any>();
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const changeIndex = (index: number) => {
     setSelectIndex(index);
   };
 
   useEffect(() => {
-    // const response = getSongSimilarity(songId);
+    const request = async () => {
+      setIsLoading(true);
+      try {
+        const response = await axiosInstance.request({
+          method: "GET",
+          url: `/song/similarity/${songId}`,
+        });
+        console.log(response.data.data);
+        setResponseData(response.data.data);
+      } catch (error) {
+        console.log(error);
+      }
+      setIsLoading(false);
+    };
+    request();
   }, []);
 
+  if (isLoading) {
+    return <p>데이터를 로딩중입니다</p>;
+  }
   return (
     <div className={`flex-col-center ${styles.container}`}>
       <h3>비슷한 노래에는 이런 노래가 있어요</h3>
       <div className={`flex-row-center ${styles.content}`}>
         <div className={`flex-col-center ${styles.similarSong}`}>
-          {DUMMY.map((element, index) => {
+          {responseData.comparison.map((element: any, index: any) => {
             return (
               <div
                 key={index}
                 onClick={() => changeIndex(index)}
-                className={`${styles.box} ${
+                className={`flex-col-center ${styles.box} ${
                   selectIndex === index ? styles.selceted : ""
                 }`}
               >
-                <RankedSongAndArtist type={"song"} showIndicator={false} />
+                <div style={{ width: "150px", height: "150px" }}>
+                  <Album songId={element.target.songId} />
+                </div>
+                {/* <RankedSongAndArtist type={"song"} showIndicator={false} /> */}
               </div>
             );
           })}
         </div>
         <div className={`flex-col-center ${styles.compareSongSection}`}>
           <p>가장 일치한 부분의 </p>
-          <h3>유사도는 {"78%"} 입니다</h3>
+          <h3>
+            유사도는{" "}
+            {`${Math.floor(responseData.comparison[0].correlation * 100)}%`}{" "}
+            입니다
+          </h3>
           <div className={`flex-row-center ${styles.compareSong}`}>
             <div className={`flex-col-center ${styles.selectedSong}`}>
               <div style={{ width: "100px", height: "100px" }}>
-                <Album />
+                <Album
+                  songId={responseData.comparison[selectIndex].target.songId}
+                />
               </div>
-              <p>{DUMMY[selectIndex].song}</p>
-              <p>{DUMMY[selectIndex].artist}</p>
+              <p>{responseData.comparison[selectIndex].target.title}</p>
             </div>
             <div className={`flex-col-center ${styles.mySong}`}>
               <div style={{ width: "100px", height: "100px" }}>
-                <Album />
+                <Album songId={songId} />
               </div>
-              <p>{`노래 이름`}</p>
-              <p>{"노래 작곡가"}</p>
+              <p>{responseData.title}</p>
             </div>
           </div>
         </div>

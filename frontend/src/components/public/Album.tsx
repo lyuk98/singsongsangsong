@@ -45,7 +45,7 @@ const Album = ({ songId }: PropsType) => {
       }
     };
     getFileData();
-  }, []);
+  }, [songId]);
 
   return (
     <div className={`flex-col-center ${styles.container}`}>
