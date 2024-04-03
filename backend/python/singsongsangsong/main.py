@@ -39,6 +39,17 @@ class SimilarityResult(BaseModel):
     id: int
     distance: float
 
+class SimilarityResultResponse(BaseModel):
+    """유사도 검색 결과 응답 model입니다
+
+    Attributes
+    ----------
+    data : list[SimilarityResult]
+        유사도 검색 결과
+    """
+
+    data: list[SimilarityResult]
+
 load_dotenv()
 
 app = FastAPI(
@@ -148,7 +159,7 @@ def save_similarity_data(
 @app.get(
     "/similarity/{id}",
     summary="곡 유사도 조회",
-    response_model=list[SimilarityResult],
+    response_model=SimilarityResultResponse,
     responses={
         200: { "description": "유사도 조회 완료" },
         404: { "description": "존재하지 않는 `id` 제공" },
@@ -169,7 +180,7 @@ def check_similarity(
     """지정한 id의 곡에 대한 유사도 정보를 조회합니다"""
 
     try:
-        return vector_database.search_similarity(song_id)
+        return { "data": vector_database.search_similarity(song_id) }
     except ValueError:
         return Response(status_code=status.HTTP_404_NOT_FOUND)
 
