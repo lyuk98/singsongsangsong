@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.singsongsangsong.dto.AgeSexChartDto;
 import com.ssafy.singsongsangsong.dto.BpmChartDto;
+import com.ssafy.singsongsangsong.dto.SongArtistDetailDto;
 import com.ssafy.singsongsangsong.dto.SongArtistDto;
 import com.ssafy.singsongsangsong.dto.TrendChartDto;
 import com.ssafy.singsongsangsong.service.trend.TrendService;
@@ -26,14 +28,19 @@ public class TrendController {
 	public TrendChartDto getAllChart(@RequestParam("date") String date) {
 		return trendService.getAllChart(LocalDate.parse(date, DateTimeFormatter.ISO_DATE));
 	}
+	
+	@GetMapping("/age")
+	public AgeSexChartDto getAgeSexChart(@RequestParam("date") String date, @RequestParam("age") String age, @RequestParam("sex") String sex) {
+		return trendService.getAgeSexChart(LocalDate.parse(date, DateTimeFormatter.ISO_DATE), age, sex);
+	}
 
 	@GetMapping("/genre")
-	public SongArtistDto getGenreChart(@RequestParam("date") String date, @RequestParam("genre") String genre) {
+	public SongArtistDetailDto getGenreChart(@RequestParam("date") String date, @RequestParam("genre") String genre) {
 		return trendService.getGenreChart(LocalDate.parse(date, DateTimeFormatter.ISO_DATE), genre);
 	}
 
 	@GetMapping("/atmosphere")
-	public SongArtistDto getAtmosphereChart(@RequestParam("date") String date,
+	public SongArtistDetailDto getAtmosphereChart(@RequestParam("date") String date,
 		@RequestParam("atmosphere") String atmosphere) {
 		return trendService.getAtmosphereChart(LocalDate.parse(date, DateTimeFormatter.ISO_DATE), atmosphere);
 	}
