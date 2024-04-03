@@ -5,7 +5,8 @@ import lombok.Getter;
 @Getter
 public enum FileType {
 	IMAGE("image"),
-	AUDIO("audio");
+	AUDIO("audio"),
+	MFCC("mfcc");
 
 	private final String name;
 

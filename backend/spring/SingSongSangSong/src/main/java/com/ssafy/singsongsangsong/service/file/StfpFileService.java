@@ -106,6 +106,11 @@ public class StfpFileService implements FileService {
 	}
 
 	@Override
+	public Resource getFileViaId(Long artistId, FileType fileType, Long fileId) throws IOException {
+		throw new Error("아직 구현되지 않은 메소드입니다.");
+	}
+
+	@Override
 	public UploadSongDto uploadSong(Long artistId, FileType fileType, MultipartFile fileData) throws IOException {
 		throw new Error("아직 구현되지 않은 메소드입니다.");
 	}
