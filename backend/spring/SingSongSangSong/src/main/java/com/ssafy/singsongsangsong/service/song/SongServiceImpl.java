@@ -149,7 +149,6 @@ public class SongServiceImpl implements SongService {
 		List<CommentsInfoDto> comments = commentsList.stream()
 			.map(CommentsInfoDto::from)
 			.toList();
-
 		builder = builder.likeCount(song.getLikeCount())
 			.downloadCount(song.getDownloadCount())
 			.playCount(song.getPlayCount());

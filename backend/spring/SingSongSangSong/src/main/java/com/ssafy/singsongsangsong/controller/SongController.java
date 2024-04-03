@@ -68,7 +68,7 @@ public class SongController {
 	}
 
 	@GetMapping("/detail/{songId}")
-	public SongInfoResponse getSong(@PathVariable Long songId) {
+	public SongInfoResponse getSong(@PathVariable(value = "songId") Long songId) {
 		return songService.getSong(songId);
 	}
 
