@@ -1,7 +1,5 @@
 package com.ssafy.singsongsangsong.repository.maria.song;
 
-import static com.ssafy.singsongsangsong.entity.QAtmosphere.*;
-import static com.ssafy.singsongsangsong.entity.QGenre.*;
 import static com.ssafy.singsongsangsong.entity.QSong.*;
 
 import java.util.List;
@@ -82,22 +80,22 @@ public class SongRepositoryCustomImpl implements SongRepositoryCustom {
 	}
 
 	@Override
-	public void decrementEmotionCount(Long songId, Long artistId, String emotionName) throws NoSuchFieldException {
+	public long decrementEmotionCount(Long songId, Long artistId, String emotionName) throws NoSuchFieldException {
 		String columnName = getEmotionColumnName(emotionName);
 		Path<Integer> targetEmotionPath = Expressions.numberPath(Integer.class, columnName);
 
-		jpaQueryFactory.update(song)
+		return jpaQueryFactory.update(song)
 			.set(targetEmotionPath, ((NumberExpression<Integer>)targetEmotionPath).subtract(1))
 			.where(song.id.eq(songId).and(song.artist.id.eq(artistId)))
 			.execute();
 	}
 
 	@Override
-	public void incrementEmotionCount(Long songId, Long artistId, String emotionName) {
+	public long incrementEmotionCount(Long songId, Long artistId, String emotionName) {
 		String columnName = getEmotionColumnName(emotionName);
 		Path<Integer> targetEmotionPath = Expressions.numberPath(Integer.class, columnName);
 
-		jpaQueryFactory.update(song)
+		return jpaQueryFactory.update(song)
 			.set(targetEmotionPath, ((NumberExpression<Integer>)targetEmotionPath).add(1))
 			.where(song.id.eq(songId).and(song.artist.id.eq(artistId)))
 			.execute();

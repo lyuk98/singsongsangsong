@@ -84,6 +84,7 @@ public class SongServiceImpl implements SongService {
 		Optional<java.lang.String> targetEmotion = emotionRepository.checkIfEmotionExists(song.getId(), artistId);
 		if (targetEmotion.isPresent()) {
 			java.lang.String previousEmotionName = targetEmotion.get();
+
 			// 기존 emotion 업데이트 및 반정규화된 table, count 조정
 			emotionRepository.updateEmotionType(song.getId(), artistId, emotionType);
 			songRepository.decrementEmotionCount(song.getId(), artistId, previousEmotionName);

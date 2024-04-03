@@ -1,5 +1,6 @@
 package com.ssafy.singsongsangsong.dto;
 
+import com.ssafy.singsongsangsong.constants.DefaultFileName;
 import com.ssafy.singsongsangsong.entity.File;
 
 import lombok.AllArgsConstructor;
@@ -17,9 +18,6 @@ public class ImageDto {
 	private String savedFileName;
 	private String originalFileName;
 
-	public static String DEFAULT_SAVED_FILENAME = "default.jpg";
-	public static String DEFAULT_ORIGINAL_FILENAME = "default.jpg";
-
 	public static ImageDto from(File image) {
 		String originalImageName;
 		String savedImageName;
@@ -28,8 +26,8 @@ public class ImageDto {
 			originalImageName = image.getOriginalFileName();
 			savedImageName = image.getSavedFileName();
 		} else {
-			originalImageName = DEFAULT_ORIGINAL_FILENAME;
-			savedImageName = DEFAULT_SAVED_FILENAME;
+			originalImageName = DefaultFileName.DEFAULT_PROFILE_PICTURE.getName();
+			savedImageName = DefaultFileName.DEFAULT_PROFILE_PICTURE.getName();
 		}
 
 		return ImageDto.builder()
