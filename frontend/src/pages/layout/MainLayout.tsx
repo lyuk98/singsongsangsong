@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate, Navigate } from "react-router-dom";
 
 import styles from "./MainLayout.module.css";
 import Sidebar from "../../components/sidebar/Sidebar";
@@ -64,9 +64,9 @@ const MainLayout = () => {
     }
   }, []);
 
-  // if (!login.isLogin) {
-  //   navigate("/login");
-  // }
+  if (!login.isLogin) {
+    return <Navigate to="/login" />;
+  }
 
   return (
     <>

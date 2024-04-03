@@ -1,4 +1,4 @@
-import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Link, Outlet, useLocation, useNavigate, Navigate } from "react-router-dom";
 import { useEffect } from "react";
 
 import titleImg from "./../../sources/imgs/title/logo_투명.png";
@@ -33,6 +33,10 @@ const AuthLayout = () => {
       checkUser();
     }
   });
+
+  if(userSlice.isLogin) {
+    return <Navigate to="/" />;
+  }
 
   return (
     <>
