@@ -71,7 +71,7 @@ public class SongRepositoryCustomImpl implements SongRepositoryCustom {
 		if(requestAtmosphere != null) {
 			builder.and(song.themes.eq(requestAtmosphere));
 		}
-		return jpaQueryFactory.select(song).distinct().from(song).where(builder).orderBy(orderSpecifiers).fetch();
+		return jpaQueryFactory.select(song).distinct().from(song).where(builder).orderBy(orderSpecifiers).limit(20).fetch();
 	}
 
 	public Optional<Song> getSongByArtistIdAndSongId(Long songId, Long artistId) {
@@ -123,5 +123,12 @@ public class SongRepositoryCustomImpl implements SongRepositoryCustom {
 			.set(song.downloadCount, song.downloadCount.add(1))
 			.where(song.id.eq(songId))
 			.execute();
+	}
+
+	@Override
+	public List<Song> findAllByArtistIdAndIsPublished(Long artistId) {
+		return jpaQueryFactory.selectFrom(song)
+			.where(song.artist.id.eq(artistId).and(song.isPublished))
+			.fetch();
 	}
 }

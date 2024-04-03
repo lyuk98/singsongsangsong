@@ -2,6 +2,7 @@ package com.ssafy.singsongsangsong.service.song;
 
 import static com.ssafy.singsongsangsong.webclient.WebClientRequestService.SimilarityResponse.*;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
@@ -23,7 +24,9 @@ import com.ssafy.singsongsangsong.dto.ArtistInfoDto;
 import com.ssafy.singsongsangsong.dto.CommentsInfoDto;
 import com.ssafy.singsongsangsong.dto.CommentsResponseDto;
 import com.ssafy.singsongsangsong.dto.CommentsResponseDto.CommentsResponse;
-import com.ssafy.singsongsangsong.dto.SectionResponseDto;
+import com.ssafy.singsongsangsong.dto.ImageDto;
+import com.ssafy.singsongsangsong.dto.SectionAnalyzeResponseDto;
+import com.ssafy.singsongsangsong.dto.SectionElementDto;
 import com.ssafy.singsongsangsong.dto.SimpleSongDto;
 import com.ssafy.singsongsangsong.dto.SongInfoResponse;
 import com.ssafy.singsongsangsong.dto.SongInfoResponse.SongInfoResponseBuilder;
@@ -34,14 +37,15 @@ import com.ssafy.singsongsangsong.entity.Artist;
 import com.ssafy.singsongsangsong.entity.Atmosphere;
 import com.ssafy.singsongsangsong.entity.Comments;
 import com.ssafy.singsongsangsong.entity.Emotions;
+import com.ssafy.singsongsangsong.entity.File;
 import com.ssafy.singsongsangsong.entity.Genre;
 import com.ssafy.singsongsangsong.entity.Song;
-import com.ssafy.singsongsangsong.entity.Structure;
 import com.ssafy.singsongsangsong.exception.artist.ArtistNotFoundException;
 import com.ssafy.singsongsangsong.exception.song.NotFoundSongException;
 import com.ssafy.singsongsangsong.repository.maria.artist.ArtistRepository;
 import com.ssafy.singsongsangsong.repository.maria.atmosphere.AtmosphereRepository;
 import com.ssafy.singsongsangsong.repository.maria.comments.CommentsRepository;
+import com.ssafy.singsongsangsong.repository.maria.file.FileRepository;
 import com.ssafy.singsongsangsong.repository.maria.genre.GenreRepository;
 import com.ssafy.singsongsangsong.repository.maria.song.EmotionRepository;
 import com.ssafy.singsongsangsong.repository.maria.song.SongRepository;
@@ -70,6 +74,8 @@ public class SongServiceImpl implements SongService {
 	private final StructureRepository structureRepository;
 
 	private final WebClientRequestService webClientRequestService;
+
+	private final FileRepository fileRepository;
 
 	private final FileService fileService;
 
@@ -152,7 +158,8 @@ public class SongServiceImpl implements SongService {
 			.bpm(song.getBpm())
 			.songFileName(musicFileName)
 			.albumImageFileName(originalFileName)
-			.songDescription(song.getSongDescription());
+			.songDescription(song.getSongDescription())
+			.spectrumImageId(song.getSpectrumImage().getId());
 
 		builder = builder.movedEmotionCount(song.getMovedEmotionCount())
 			.likeEmotionCount(song.getLikeEmotionCount())
@@ -254,8 +261,10 @@ public class SongServiceImpl implements SongService {
 	}
 
 	@Override
-	public List<SectionResponseDto> getSectionOfSong(Long songId) {
-		return structureRepository.getStructureBySongId(songId).stream().map(SectionResponseDto::from).toList();
+	public SectionAnalyzeResponseDto getSectionOfSong(Long songId , Long spectrumImageId) {
+		List<SectionElementDto> elementDtoList = structureRepository.getStructureBySongId(songId).stream().map(SectionElementDto::from).toList();
+		ImageDto spectrumImage = ImageDto.from(fileRepository.findById(spectrumImageId).orElse(null));
+		return SectionAnalyzeResponseDto.from(elementDtoList,spectrumImage);
 	}
 
 }

@@ -1,5 +1,6 @@
 package com.ssafy.singsongsangsong.controller;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
@@ -19,7 +20,8 @@ import com.ssafy.singsongsangsong.constants.EmotionsConstants;
 import com.ssafy.singsongsangsong.dto.AnalyzeGenreAndAtmosphereResponse;
 import com.ssafy.singsongsangsong.dto.CommentsResponseDto;
 import com.ssafy.singsongsangsong.dto.PostCommentsDto;
-import com.ssafy.singsongsangsong.dto.SectionResponseDto;
+import com.ssafy.singsongsangsong.dto.SectionAnalyzeResponseDto;
+import com.ssafy.singsongsangsong.dto.SectionElementDto;
 import com.ssafy.singsongsangsong.dto.SongInfoResponse;
 import com.ssafy.singsongsangsong.dto.SongListByThemeResponseDto;
 import com.ssafy.singsongsangsong.dto.SongSimilarityByRanksResponse;
@@ -97,7 +99,8 @@ public class SongController {
 	}
 
 	@GetMapping("/section/{songId}")
-	public List<SectionResponseDto> getSectionOfSong(@PathVariable(value = "songId") Long songId) {
-		return songService.getSectionOfSong(songId);
+	public SectionAnalyzeResponseDto getSectionOfSong(@PathVariable(value = "songId") Long songId,
+		@RequestParam(required = false, name = "spectrumImageId") Long spectrumImageId) {
+		return songService.getSectionOfSong(songId, spectrumImageId);
 	}
 }

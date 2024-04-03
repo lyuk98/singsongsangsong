@@ -37,4 +37,6 @@ public class SongInfoResponse {
 	private int downloadCount;
 
 	private List<CommentsInfoDto> comments;
+
+	private Long spectrumImageId;
 }
