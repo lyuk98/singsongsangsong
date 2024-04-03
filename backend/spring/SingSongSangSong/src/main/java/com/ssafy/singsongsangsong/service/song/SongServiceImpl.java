@@ -24,6 +24,7 @@ import com.ssafy.singsongsangsong.dto.CommentsInfoDto;
 import com.ssafy.singsongsangsong.dto.CommentsResponseDto;
 import com.ssafy.singsongsangsong.dto.CommentsResponseDto.CommentsResponse;
 import com.ssafy.singsongsangsong.dto.ImageDto;
+import com.ssafy.singsongsangsong.dto.LikedResponseDto;
 import com.ssafy.singsongsangsong.dto.SectionAnalyzeResponseDto;
 import com.ssafy.singsongsangsong.dto.SectionElementDto;
 import com.ssafy.singsongsangsong.dto.SimpleSongDto;
@@ -37,6 +38,7 @@ import com.ssafy.singsongsangsong.entity.Atmosphere;
 import com.ssafy.singsongsangsong.entity.Comments;
 import com.ssafy.singsongsangsong.entity.Emotions;
 import com.ssafy.singsongsangsong.entity.Genre;
+import com.ssafy.singsongsangsong.entity.Likes;
 import com.ssafy.singsongsangsong.entity.Song;
 import com.ssafy.singsongsangsong.exception.artist.ArtistNotFoundException;
 import com.ssafy.singsongsangsong.exception.song.NotFoundSongException;
@@ -45,6 +47,7 @@ import com.ssafy.singsongsangsong.repository.maria.atmosphere.AtmosphereReposito
 import com.ssafy.singsongsangsong.repository.maria.comments.CommentsRepository;
 import com.ssafy.singsongsangsong.repository.maria.file.FileRepository;
 import com.ssafy.singsongsangsong.repository.maria.genre.GenreRepository;
+import com.ssafy.singsongsangsong.repository.maria.liked.LikedRepository;
 import com.ssafy.singsongsangsong.repository.maria.song.EmotionRepository;
 import com.ssafy.singsongsangsong.repository.maria.song.SongRepository;
 import com.ssafy.singsongsangsong.repository.maria.song.StructureRepository;
@@ -76,6 +79,8 @@ public class SongServiceImpl implements SongService {
 	private final WebClientRequestService webClientRequestService;
 
 	private final FileRepository fileRepository;
+
+	private final LikedRepository likedRepository;
 
 	private final FileService fileService;
 
@@ -277,6 +282,29 @@ public class SongServiceImpl implements SongService {
 			.toList();
 		ImageDto spectrumImage = ImageDto.from(fileRepository.findById(spectrumImageId).orElse(null));
 		return SectionAnalyzeResponseDto.from(elementDtoList, spectrumImage);
+	}
+
+	@Override
+	public LikedResponseDto likedSong(Long songId, Long artistId) {
+		Song song = songRepository.findById(songId).orElseThrow(() -> new NotFoundSongException("유효하지 않은 곡입니다."));
+		Optional<Likes> isLike = likedRepository.findBySongIdAndArtistId(songId, artistId);
+		String result;
+		if (isLike.isPresent()) {
+			Likes like = isLike.get();
+			likedRepository.delete(like);
+			song.setLikeCount(song.getLikeCount() - 1);
+			result = "UnRegister Liked";
+		} else {
+			Likes like = new Likes();
+			like.setSong(song);
+			like.setArtist(
+				artistRepository.findById(artistId).orElseThrow(() -> new ArtistNotFoundException("유효하지 않은 아티스트입니다.")));
+			likedRepository.save(like);
+			song.setLikeCount(song.getLikeCount() + 1);
+			result = "Register Liked";
+		}
+		songRepository.save(song);
+		return LikedResponseDto.from(result);
 	}
 
 }

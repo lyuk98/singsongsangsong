@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ssafy.singsongsangsong.constants.EmotionsConstants;
 import com.ssafy.singsongsangsong.dto.AnalyzeGenreAndAtmosphereResponse;
 import com.ssafy.singsongsangsong.dto.CommentsResponseDto;
+import com.ssafy.singsongsangsong.dto.LikedResponseDto;
 import com.ssafy.singsongsangsong.dto.PostCommentsDto;
 import com.ssafy.singsongsangsong.dto.SectionAnalyzeResponseDto;
 import com.ssafy.singsongsangsong.dto.SectionElementDto;
@@ -102,5 +103,11 @@ public class SongController {
 	public SectionAnalyzeResponseDto getSectionOfSong(@PathVariable(value = "songId") Long songId,
 		@RequestParam(required = false, name = "spectrumImageId") Long spectrumImageId) {
 		return songService.getSectionOfSong(songId, spectrumImageId);
+	}
+
+	@PostMapping("/liked/{songId}")
+	public LikedResponseDto likedSong(@PathVariable(value = "songId") Long songId,
+		@AuthenticationPrincipal ArtistPrincipal user) {
+		return songService.likedSong(songId, user.getId());
 	}
 }
