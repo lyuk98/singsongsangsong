@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
+import com.ssafy.singsongsangsong.dto.ArtistDetailDto;
 import com.ssafy.singsongsangsong.dto.ArtistInfoDto;
 import com.ssafy.singsongsangsong.dto.EmotionsDto;
 import com.ssafy.singsongsangsong.dto.GuestJoinRequestDto;
@@ -17,7 +18,7 @@ import com.ssafy.singsongsangsong.exception.artist.ArtistNotFoundException;
 public interface ArtistService {
 	public void join(String username, GuestJoinRequestDto dto) throws IOException;
 
-	public ArtistInfoDto getArtistInfo(Long artistId);
+	public ArtistDetailDto getArtistInfo(Long artistId);
 
 	public List<SimpleSongDto> getPublishedSong(Long artistId);
 

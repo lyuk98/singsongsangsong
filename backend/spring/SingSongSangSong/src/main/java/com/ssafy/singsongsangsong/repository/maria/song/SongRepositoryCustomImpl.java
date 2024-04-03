@@ -124,4 +124,11 @@ public class SongRepositoryCustomImpl implements SongRepositoryCustom {
 			.where(song.id.eq(songId))
 			.execute();
 	}
+
+	@Override
+	public Long countByArtistIdAndIsPublished(Long artistId) {
+		return jpaQueryFactory.selectFrom(song)
+			.where(song.artist.id.eq(artistId).and(song.isPublished))
+			.stream().count();
+	}
 }

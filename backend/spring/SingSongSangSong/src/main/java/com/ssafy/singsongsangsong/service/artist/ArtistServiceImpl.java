@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.ssafy.singsongsangsong.constants.DefaultFileName;
 import com.ssafy.singsongsangsong.constants.FileType;
 import com.ssafy.singsongsangsong.constants.Role;
+import com.ssafy.singsongsangsong.dto.ArtistDetailDto;
 import com.ssafy.singsongsangsong.dto.ArtistInfoDto;
 import com.ssafy.singsongsangsong.dto.EmotionsDto;
 import com.ssafy.singsongsangsong.dto.FollowerCountResponse;
@@ -68,10 +69,11 @@ public class ArtistServiceImpl implements ArtistService {
 	}
 
 	@Override
-	public ArtistInfoDto getArtistInfo(Long artistId) {
+	public ArtistDetailDto getArtistInfo(Long artistId) {
 		Artist artist = artistRepository.findById(artistId)
 			.orElseThrow(() -> new IllegalArgumentException("해당 아티스트가 존재하지 않습니다."));
-		return ArtistInfoDto.from(artist);
+		int publishedSongCount = songRepository.countByArtistIdAndIsPublished(artistId).intValue();
+		return ArtistDetailDto.from(ArtistInfoDto.from(artist),publishedSongCount);
 	}
 
 	@Override
