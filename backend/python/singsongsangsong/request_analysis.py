@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-import os
-import requests
 from dotenv import load_dotenv
 import pandas as pd
+import vector_database
+import process
 
 # 곡 분석 시 시작 및 종료할 ID를 명시합니다
 SONG_FROM = 48
@@ -47,10 +47,13 @@ for index, row in tracks.iterrows():
     print(f"Requesting analysis of song {track_id}")
 
     # 곡 분석을 요청합니다
-    requests.post(
-        f"{os.environ.get('BASE_URI')}/song?id={track_id}&path={filename}",
-        timeout=5
-    )
+    process.analyse(track_id, filename, filename)
+
+    try:
+        # Milvus에 검색 가능 여부를 지정합니다
+        vector_database.set_searchable(track_id)
+    except ValueError as exception:
+        print(exception)
 
     # 지정한 ID까지 진행합니다
     if track_id >= SONG_UNTIL:
