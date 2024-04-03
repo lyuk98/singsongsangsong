@@ -18,9 +18,9 @@ public interface SongRepositoryCustom {
 
 	public Optional<Song> getSongByArtistIdAndSongId(Long songId, Long artistId);
 
-	long decrementEmotionCount(Long songId, Long artistId, String emotionName) throws NoSuchFieldException;
+	long decrementEmotionCount(Long songId, String emotionName) throws NoSuchFieldException;
 
-	long incrementEmotionCount(Long songId, Long artistId, String emotionName);
+	long incrementEmotionCount(Long songId, String emotionName);
 
 	List<Song> findByThemeName(String themeName, int size);
 

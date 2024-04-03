@@ -87,8 +87,8 @@ public class SongServiceImpl implements SongService {
 
 			// 기존 emotion 업데이트 및 반정규화된 table, count 조정
 			emotionRepository.updateEmotionType(song.getId(), artistId, emotionType);
-			songRepository.decrementEmotionCount(song.getId(), artistId, previousEmotionName);
-			songRepository.incrementEmotionCount(song.getId(), artistId, emotionType.getName());
+			songRepository.decrementEmotionCount(song.getId(),  previousEmotionName);
+			songRepository.incrementEmotionCount(song.getId(), emotionType.getName());
 		} else {
 			// emotion 추가 및 반정규화된 table, count++
 			emotionRepository.save(Emotions.builder()
@@ -96,7 +96,7 @@ public class SongServiceImpl implements SongService {
 				.artist(artist)
 				.emotionType(emotionType)
 				.build());
-			songRepository.incrementEmotionCount(song.getId(), artistId, emotionType.getName());
+			songRepository.incrementEmotionCount(song.getId(), emotionType.getName());
 		}
 	}
 
