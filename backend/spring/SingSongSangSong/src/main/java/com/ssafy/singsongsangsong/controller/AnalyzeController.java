@@ -65,13 +65,14 @@ public class AnalyzeController {
 	@PutMapping("/publish")
 	public void publishSong(@AuthenticationPrincipal ArtistPrincipal user,
 		@RequestBody PublishSongRequest publishSongRequest) {
-		// todo: 자기 자신만 publish song request를 보낼 수 있도록, 관련 인가 로직 구현을 filter chain에 등록
+		// todo: 자기 자신만 publish song request를 보낼 수 있도록, 관련 인가 로직 구현
 		analyzeService.registerPublishedInformation(publishSongRequest);
 		analyzeService.publishSong(publishSongRequest.getSongId());
 	}
 
 	@GetMapping("/{songId}")
 	public SimpleSongDto getSongsAnalistics(@AuthenticationPrincipal ArtistPrincipal user, @PathVariable Long songId) {
+		// todo: 자기 자신만 get songs analistics 확인 가능하도록, 관련 인가 로직 구현
 		return analyzeService.getSongAnalistics(songId);
 	}
 }
