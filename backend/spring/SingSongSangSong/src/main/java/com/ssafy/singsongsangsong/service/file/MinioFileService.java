@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.ssafy.singsongsangsong.constants.DefaultFileName;
 import com.ssafy.singsongsangsong.constants.FileType;
 import com.ssafy.singsongsangsong.dto.UploadSongDto;
 import com.ssafy.singsongsangsong.entity.Artist;
@@ -68,9 +69,11 @@ public class MinioFileService implements FileService {
 	public UploadSongDto uploadSong(Long artistId, FileType fileType, MultipartFile fileData) throws IOException {
 		String savedFileName = saveFile(artistId, fileType, fileData);
 		Artist artist = artistRepository.findById(artistId).orElseThrow(ArtistNotFoundException::new);
+		String originalFileName = fileData.getOriginalFilename() == null ?
+			DefaultFileName.DEFAULT_ALBUM_PICTURE.getName() : fileData.getOriginalFilename();
 		Song song = songRepository.save(
-			Song.builder().artist(artist).musicFileName(fileData.getOriginalFilename()).build());
-		return new UploadSongDto(song.getId(), fileData.getOriginalFilename(), savedFileName);
+			Song.builder().artist(artist).musicFileName(originalFileName).build());
+		return new UploadSongDto(song.getId(), originalFileName, savedFileName);
 	}
 
 	private String uploadToMinIo(String bucket, MultipartFile file) {
