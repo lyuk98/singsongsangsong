@@ -220,7 +220,7 @@ const UploadPage = () => {
           </button>
         </div>
         <div className={`w-100 bg-box flex-col-center p-15 ${styles.checkBox}`}>
-          {/* {analyzedData.uploadProcesses.length === 0 && (
+          {analyzedData.uploadProcesses.length === 0 && (
             <h2>현재 분석중인 음악이 없습니다.</h2>
           )}
           {analyzedData &&
@@ -240,8 +240,8 @@ const UploadPage = () => {
                   )}
                 </div>
               );
-            })} */}
-          {uploadProcesses.length === 0 && (
+            })}
+          {/* {uploadProcesses.length === 0 && (
             <h2>현재 분석중인 음악이 없습니다.</h2>
           )}
           {uploadProcesses &&
@@ -265,7 +265,7 @@ const UploadPage = () => {
                     >
                       분석완료
                     </h2>
-                  )}
+                  )} */}
                 </div>
               );
             })}
