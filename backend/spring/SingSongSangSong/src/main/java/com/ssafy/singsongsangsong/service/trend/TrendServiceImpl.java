@@ -153,10 +153,10 @@ public class TrendServiceImpl implements TrendService {
 		for (Long songId : dto.getWeekly()) weekly.add(getSongDetail(songId));
 		
 		List<TrendSongDetailDto> world = new ArrayList<>();
-		for (Long songId : dto.getWeekly()) world.add(getSongDetail(songId));
+		for (Long songId : dto.getWorld()) world.add(getSongDetail(songId));
 		
 		List<TrendSongDetailDto> korean = new ArrayList<>();
-		for (Long songId : dto.getWeekly()) korean.add(getSongDetail(songId));
+		for (Long songId : dto.getKorean()) korean.add(getSongDetail(songId));
 		
 		List<Long> emotions = dto.getEmotions();
 		
