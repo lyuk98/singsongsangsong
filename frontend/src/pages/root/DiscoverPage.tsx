@@ -27,10 +27,13 @@ import singsongSong from "./../../sources/imgs/playList/싱송음악.png";
 import likeSong from "./../../sources/imgs/playList/좋아곡.png";
 
 const SEARCH_OPTION = [
-  { type: "장르", option: ["발라드", "락", "힙합"] },
-  { type: "테마", option: ["신나는", "슬픈"] },
+  {
+    type: "장르",
+    option: ["blues", "rock", "hiphop", "jazz", "pop", "reggae"],
+  },
+  { type: "테마", option: ["happy", "sad", "love", "mystery", "calm", "etc"] },
   { type: "BPM", option: [40, 60, 80, 100, 120, 140, 160, 180, 200] },
-  { type: "정렬", option: ["최신순", "오래된 순"] },
+  { type: "정렬", option: ["view", "date", "like"] },
 ];
 
 const GENRE = [
