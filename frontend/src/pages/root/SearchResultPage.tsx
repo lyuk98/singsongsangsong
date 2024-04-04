@@ -87,7 +87,7 @@ const SearchResultPage = () => {
       </div>
       <div className={`w-100 flex-col py-15 gap-15`}>
         <h2 className={`${styles.borderBottom}`}>음악</h2>
-        {/* <TestMusicTable musicData={response.songBriefDtoList} /> */}
+        <TestMusicTable musicData={response.songBriefDtoList} />
       </div>
     </div>
   );
