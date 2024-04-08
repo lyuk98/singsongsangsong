@@ -29,7 +29,7 @@
 ### React
  > 사용자 UI에 대한 구현책 입니다.
  - 구현 기능 : 모든 기능에 대한 사용자 인터페이스
-  - 관련 상세 정보는 [이곳](./frontend/react/singsongsangsong/README.md)에서 확인 가능합니다.
+  - 관련 상세 정보는 [이곳](./frontend/README.md)에서 확인 가능합니다.
 
 ## 전체 환경 구성
 
